@@ -1,0 +1,51 @@
+{
+    "steps" : {
+        "step" : {
+            "id" : "001",
+            "nameToShow" : "step 001",
+            "nextStep" : "step 002",
+            "isStartStep" : true,
+            "selectionCriterium" : {
+                "min" : 1,
+                "max" : 1
+            },
+            "components" :[
+                {
+                    "id" : "001001",
+                    "nameToShow" : "component 001001"
+                },
+                {
+                    "id" : "001002",
+                    "nameToShow" : "component 001002"
+                },
+                {
+                    "id" : "001003",
+                    "nameToShow" : "component 001003"
+                }
+            ]
+        },
+        "step" : {
+            "id" : "002",
+            "nameToShow" : "step 002",
+            "nextStep" : "000",
+            "selectionCriterium" : {
+                "min" : 1,
+                "max" : 1
+            },
+            "components" :[
+                {
+                    "id" : "002001",
+                    "nameToShow" : "component 002001"
+                },
+                {
+                    "id" : "002002",
+                    "nameToShow" : "component 002002"
+                },
+                {
+                    "id" : "003",
+                    "nameToShow" : "component 002003"
+                }
+            ]
+        }
+    }
+}
