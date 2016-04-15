@@ -12,7 +12,14 @@ class ConfigFile {
 //    println(steps)
     
     val xmlTest = scala.xml.XML.loadFile("src/main/scala/configMgr/config.xml")
-    println(xmlTest)
+    
+    val xmlTag = <a> test </a>
+    
+      println(xmlTag)
+
+//    println(xmlTest)
+      
+      println("=>" + xmlTest \ "step")
 //    println(jsonObject)
   }
 }
