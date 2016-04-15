@@ -1,6 +1,8 @@
 package configMgr
 
-class Step {
-  val id = 0
-  val containers = "Container for this Steps"
-}
+case class Step(
+               id: String,
+               nameToShow: String,
+               nextStep: String,
+               isStartStep: String
+               )

@@ -4,22 +4,24 @@ package configMgr
 //import org.json4s.jackson.JsonMethods._
 
 class ConfigFile {
-  def getJson : Unit = {
-//    val json_string = scala.io.Source.fromFile("src/main/scala/configMgr/config.json").getLines.mkString
-//    println(json_string)
-//    val jsonObject = parse("" + json_string + "")
-//    val steps = jsonObject \ "steps"
-//    println(steps)
-    
-    val xmlTest = scala.xml.XML.loadFile("src/main/scala/configMgr/config.xml")
-    
-    val xmlTag = <a> test </a>
-    
-      println(xmlTag)
 
-//    println(xmlTest)
-      
-      println("=>" + xmlTest \ "step")
-//    println(jsonObject)
+  def getXML = scala.xml.XML.loadFile("src/main/scala/configMgr/config.xml")
+
+  def getStep(s: scala.xml.Node): Step = {
+    new Step(
+      (s \ "id").text,
+      (s \ "nameToShow").text,
+      (s \ "nextStep").text,
+      (s \ "isStartStep").text
+    )
+  }
+
+  val step: scala.xml.NodeSeq  = getXML \ "step"
+
+  val stepsObject: Seq[Step] = step.map(s => getStep(s))
+
+
+  for(stepCount <- stepsObject) {
+    println(stepCount)
   }
 }

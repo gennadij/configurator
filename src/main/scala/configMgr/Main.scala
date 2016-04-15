@@ -6,7 +6,7 @@ object Main {
   def main(args : Array[String]) = {
     println("I am configurator")
     val configFile = new ConfigFile
-    val json = configFile.getJson
+//    val json = configFile.getJson
 //    println(json \ "steps")
   }
 }
