@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<steps>
+	<step>
+		<id>001</id>
+		<nameToShow>step 001</nameToShow>
+		<nextStep>step 002</nextStep>
+		<isStartStep>true</isStartStep>
+		<selectionCriterium>
+			<min>1</min>
+			<max>1</max>
+		</selectionCriterium>
+		<components>
+			<component>
+				<id>001001</id>
+				<nameToShow>component 001001</nameToShow>
+			</component>
+			<component>
+				<id>001002</id>
+				<nameToShow>component 001002</nameToShow>
+			</component>
+			<component>
+				<id>001003</id>
+				<nameToShow>component 001003</nameToShow>
+			</component>
+		</components>
+	</step>
+	<step>
+		<id>002</id>
+		<nameToShow>step 002</nameToShow>
+		<nextStep>step 000</nextStep>
+		<isStartStep>false</isStartStep>
+		<selectionCriterium>
+			<min>1</min>
+			<max>1</max>
+		</selectionCriterium>
+		<components>
+			<component>
+				<id>002001</id>
+				<nameToShow>component 002001</nameToShow>
+			</component>
+			<component>
+				<id>002002</id>
+				<nameToShow>component 002002</nameToShow>
+			</component>
+			<component>
+				<id>002003</id>
+				<nameToShow>component 002003</nameToShow>
+			</component>
+		</components>
+	</step>
+</steps>
