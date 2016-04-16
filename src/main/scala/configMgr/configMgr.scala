@@ -1,5 +1,0 @@
-package configMgr
-
-class configMgr {
-  
-}

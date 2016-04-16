@@ -5,23 +5,28 @@ package configMgr
 
 class ConfigFile {
 
-  def getXML = scala.xml.XML.loadFile("src/main/scala/configMgr/config.xml")
+  def getXML = scala.xml.XML.loadFile("src/main/scala/xml_json/config.xml")
 
-  def getStep(s: scala.xml.Node): Step = {
+  def toStep(stepXML: scala.xml.Node): Step = {
     new Step(
-      (s \ "id").text,
-      (s \ "nameToShow").text,
-      (s \ "nextStep").text,
-      (s \ "isStartStep").text
+      (stepXML \ "id").text,
+      (stepXML \ "nameToShow").text,
+      (stepXML \ "nextStep").text,
+      (stepXML \ "isStartStep").text
     )
   }
 
-  val step: scala.xml.NodeSeq  = getXML \ "step"
-
-  val stepsObject: Seq[Step] = step.map(s => getStep(s))
-
-
-  for(stepCount <- stepsObject) {
-    println(stepCount)
+  def toComponents(componentXML: scala.xml.Node): Component = {
+    new Component(
+      (componentXML \ "id").text,
+      (componentXML \ "nameToShow").text
+    )
   }
+
+//  val step: scala.xml.NodeSeq  = getXML \ "step"
+//
+//  val stepsObject: Seq[Step] = step.map(s => getStep(s))
+
+
+
 }

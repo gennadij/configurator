@@ -3,8 +3,7 @@
 package configMgr
 
 
-class Component {
-  val id = 0
-  //test for ssh git
-  
-} 
+case class Component(
+                    id: String,
+                    nameToShow: String
+                    )
