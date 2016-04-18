@@ -16,4 +16,12 @@ class ConfigMgr {
 
     step \ "components" \ "component" map(c => configFile.toComponents(c))
   }
+  
+  def init = ???
+  
+  def getFirstStep = {
+    val firstStep = getSteps filter (s => s.isStartStep == "true")
+    //TODO Check for one Element in List
+    firstStep(0)
+  }
 }

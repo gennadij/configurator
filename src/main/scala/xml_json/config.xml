@@ -4,7 +4,7 @@
 	<step>
 		<id>001</id>
 		<nameToShow>step 001</nameToShow>
-		<nextStep>step 002</nextStep>
+		<nextStep>nextStep 002</nextStep>
 		<isStartStep>true</isStartStep>
 		<selectionCriterium>
 			<min>1</min>
@@ -28,7 +28,7 @@
 	<step>
 		<id>002</id>
 		<nameToShow>step 002</nameToShow>
-		<nextStep>step 000</nextStep>
+		<nextStep>nestStep 000</nextStep>
 		<isStartStep>false</isStartStep>
 		<selectionCriterium>
 			<min>1</min>

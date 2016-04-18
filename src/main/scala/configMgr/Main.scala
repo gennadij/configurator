@@ -1,7 +1,7 @@
 package configMgr
 
-import org.json4s._
-import org.json4s.jackson.JsonMethods._
+//import org.json4s._
+//import org.json4s.jackson.JsonMethods._
 object Main {
   def main(args : Array[String]) = {
     println("I am configurator")
@@ -16,5 +16,8 @@ object Main {
     for(component <- configMgr.getComponentsForStep("001")){
       println("Die Components fuer Id = 001: " + component)
     }
+    
+    println("First Step: " + configMgr.getFirstStep) 
+     
   }
 }
