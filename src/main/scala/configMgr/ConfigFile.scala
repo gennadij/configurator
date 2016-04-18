@@ -12,21 +12,16 @@ class ConfigFile {
       (stepXML \ "id").text,
       (stepXML \ "nameToShow").text,
       (stepXML \ "nextStep").text,
-      (stepXML \ "isStartStep").text
+      (stepXML \ "isStartStep").text,
+      (stepXML \ "components" \ "component") map (c => toComponents(c))
     )
   }
 
   def toComponents(componentXML: scala.xml.Node): Component = {
     new Component(
       (componentXML \ "id").text,
-      (componentXML \ "nameToShow").text
+      (componentXML \ "nameToShow").text,
+      (componentXML \ "nextStepId").text
     )
   }
-
-//  val step: scala.xml.NodeSeq  = getXML \ "step"
-//
-//  val stepsObject: Seq[Step] = step.map(s => getStep(s))
-
-
-
 }

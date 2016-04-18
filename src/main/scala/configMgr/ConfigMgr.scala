@@ -6,8 +6,22 @@ class ConfigMgr {
 
   val fileXML = configFile getXML
 
-  def getSteps : Seq[Step] = {
-    fileXML \ "step" map(s => configFile.toStep(s))
+//  def getSteps : Seq[Step] = {
+//    fileXML \ "step" map(s => configFile.toStep(s))
+//  }
+
+  /**
+    * Implement partial load from XML file
+    * @return
+    */
+  def loadStepsFromXML : Container = {
+    new Container(fileXML \ "step" map(s => configFile.toStep(s)))
+  }
+
+  def getNextStep(selectedComponentId: Int, step: Step) = {
+    val selectedComponent = step.components filter(_.id == selectedComponentId)
+    val nextStepId = selectedComponent(0).nextStepId
+
   }
 
   def getComponentsForStep(stepId: String, steps: scala.xml.NodeSeq = fileXML \ "step"): Seq[Component] = {
@@ -16,12 +30,11 @@ class ConfigMgr {
 
     step \ "components" \ "component" map(c => configFile.toComponents(c))
   }
+
   
-  def init = ???
-  
-  def getFirstStep = {
-    val firstStep = getSteps filter (s => s.isStartStep == "true")
-    //TODO Check for one Element in List
-    firstStep(0)
-  }
+//  def getFirstStep = {
+//    val firstStep = getSteps filter (s => s.isStartStep == "true")
+//    //TODO Check for one Element in List
+//    firstStep(0)
+//  }
 }

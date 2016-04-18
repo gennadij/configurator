@@ -4,5 +4,6 @@ case class Step(
                id: String,
                nameToShow: String,
                nextStep: String,
-               isStartStep: String
+               isStartStep: String,
+               components: Seq[Component]
                )
