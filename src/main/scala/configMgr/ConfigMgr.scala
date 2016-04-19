@@ -18,23 +18,24 @@ class ConfigMgr {
     new Container(fileXML \ "step" map(s => configFile.toStep(s)))
   }
 
-  def getNextStep(selectedComponentId: Int, step: Step) = {
+  def getNextStep(container: Container, selectedComponentId:  String, step: Step) = {
     val selectedComponent = step.components filter(_.id == selectedComponentId)
     val nextStepId = selectedComponent(0).nextStepId
-
+    container.steps filter (_.id == nextStepId)
   }
 
-  def getComponentsForStep(stepId: String, steps: scala.xml.NodeSeq = fileXML \ "step"): Seq[Component] = {
+  def getComponentsForStep(step: Step): Seq[Component] = {
 
-    val step = steps filter(s => (s \ "id").text == stepId)
-
-    step \ "components" \ "component" map(c => configFile.toComponents(c))
+//    val step = steps filter(s => (s \ "id").text == stepId)
+    
+//    step \ "components" \ "component" map(c => configFile.toComponents(c))
+    step.components
   }
 
   
-//  def getFirstStep = {
-//    val firstStep = getSteps filter (s => s.isStartStep == "true")
-//    //TODO Check for one Element in List
-//    firstStep(0)
-//  }
+  def getFirstStep(container: Container): Step = {
+    val firstStep = container.steps filter (s => s.isStartStep == "true")
+    //TODO Check for one Element in List
+    firstStep(0)
+  }
 }
