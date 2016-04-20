@@ -1,7 +1,13 @@
 package configMgr
 
-//import org.json4s._
-//import org.json4s.jackson.JsonMethods._
+/**
+  * TODO for whole project
+  * definition von dem letztem Step
+  * multichoose bei der Auswahl der Componenten
+  * pruefe ob mehrer Stepps als firstStep definiert sind
+  *
+  *
+  */
 object Main {
   def main(args : Array[String]) = {
     println("I am generic configurator")
@@ -10,29 +16,25 @@ object Main {
     //TODO create Factory object
     val configMgr = new ConfigMgr
 
-//    for(step <- configMgr.loadStepsFromXML) {
-//      println("Die Steps: " + step)
-//      println("Die Components von Step: " + step.components)
-//      println("############################################")
-//    }
     val container = configMgr.loadStepsFromXML
-    val curentConfig = configMgr.loadCurentConfig
+    val currentConfig = configMgr.loadCurrentConfig
     
     
     val firstStep = configMgr.getFirstStep(container)
-    
+    currentConfig.steps += firstStep
     
     println("First Step => id: " + firstStep.id)
     println("Components for first step2")
-    for(components <- configMgr.getComponentsForStep(firstStep)){
+    for(components <- firstStep.components){
       println(components.nameToShow)
     }
     
      def nextStep(enter: String): Unit = {
       val  nextStep = configMgr.getNextStep(container, enter)
-      println("Next Step: " + nextStep(0).nameToShow)
-      for(components <- nextStep(0).components){
-        println(components.nameToShow)
+       currentConfig.steps += nextStep
+      println("Next Step: " + nextStep.nameToShow)
+      for(components <- nextStep.components){
+        println("Components: " + components.nameToShow)
       }
     }
      
@@ -41,21 +43,11 @@ object Main {
 
       val enter = scala.io.StdIn.readLine()
       
-      val operation = enter match {
+      enter match {
         case "q" => System.exit(0)
         case a if a.length == 6 => nextStep(enter)
         case _ => println("no enter")
       }
-      
-     
-    
-//    
-//      println("NextStep: " + nextStep)
-//
-//      println("Next Step => id: " )
     }
-    
-    
-     
   }
 }
