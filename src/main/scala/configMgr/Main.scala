@@ -16,8 +16,11 @@ object Main {
 //      println("############################################")
 //    }
     val container = configMgr.loadStepsFromXML
+    val curentConfig = configMgr.loadCurentConfig
+    
     
     val firstStep = configMgr.getFirstStep(container)
+    
     
     println("First Step => id: " + firstStep.id)
     println("Components for first step2")
@@ -25,22 +28,27 @@ object Main {
       println(components.nameToShow)
     }
     
-    val flag = true
-    
-    while(flag){
+     def nextStep(enter: String): Unit = {
+      val  nextStep = configMgr.getNextStep(container, enter)
+      println("Next Step: " + nextStep(0).nameToShow)
+      for(components <- nextStep(0).components){
+        println(components.nameToShow)
+      }
+    }
+     
+    while(true){
       println("enter a id for component: ")
 
       val enter = scala.io.StdIn.readLine()
       
       val operation = enter match {
         case "q" => System.exit(0)
-        case a if a.length == 6 => println("nextStep")
+        case a if a.length == 6 => nextStep(enter)
         case _ => println("no enter")
-        
       }
       
-      
-//      val nextStep = configMgr.getNextStep(container, enter, firstStep)
+     
+    
 //    
 //      println("NextStep: " + nextStep)
 //
