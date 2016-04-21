@@ -2,6 +2,10 @@ package configMgr
 
 import scala.collection.mutable.ListBuffer
 
+/**
+ * TODO
+ * 
+ */
 class ConfigMgr {
   //TODO create Factory Object
   val configFile = new ConfigFile
@@ -35,14 +39,22 @@ class ConfigMgr {
     steps filter { _ != null }
   }
   
+  
+  
   def getNextStep(container: Container, selectedComponentId: String) = {
-    //TODO Pruefung der first Step einrichten damit die Funktion getFirstStep entfallen kann
     
     val selectedComponent: Seq[Component] = getSelectedComponent(container, selectedComponentId)
     val nextStepId = if (selectedComponent.length == 1) selectedComponent(0).nextStepId
-    if(nextStepId == "000") "Last Step reach"
+    val nextStep = container.steps filter (_.id == nextStepId)
+    
+    if(nextStepId == "000") {
+      for{
+        step <- container.steps
+        comp <- step.components
+        if(comp.id == selectedComponentId)
+      }yield step
+    }
     else {
-      val nextStep = container.steps filter (_.id == nextStepId)
       if(nextStep.length == 1) nextStep(0) else null
     }
   }
@@ -52,5 +64,13 @@ class ConfigMgr {
     val firstStep = container.steps filter (s => s.isStartStep == "true")
     //TODO Check for one Element in List
     firstStep(0)
+  }
+  
+  
+  def valideSteps(container: Container): Boolean = {
+    
+    val isStartStep = container.steps filter(_.isStartStep == true)
+    
+    if(isStartStep.length == 1) true else false
   }
 }

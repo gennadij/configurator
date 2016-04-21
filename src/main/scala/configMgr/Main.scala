@@ -21,7 +21,8 @@ object Main {
     val container = configMgr.loadStepsFromXML
     val currentConfig = configMgr.loadCurrentConfig
     
-    
+    println("Validirung des Configurators: " + configMgr.valideSteps(container))
+        
     val firstStep = configMgr.getFirstStep(container)
     
     println("First Step => id: " + firstStep.id)
@@ -31,24 +32,24 @@ object Main {
     }
     
     def nextStep(enter: String): Unit = {
-      val  nextStep = configMgr.getNextStep(container, enter) match {
-        case step: Step => {
-          val currentStep = configMgr.getStepWithSelectedComponent(container, enter)
-          currentConfig.steps += currentStep(0)
-          println("Next Step: " + step.nameToShow)
-          for(components <- step.components){
-            println("Components: " + components.nameToShow)
+      val  nextStep = configMgr.getNextStep(container, enter)
+      if(nextStep.nextStep == false){
+        val currentStep = configMgr.getStepWithSelectedComponent(container, enter)
+        currentConfig.steps += currentStep(0)
+        println("Aktuelle Konfiguration")
+        for(step <- currentConfig.steps){
+          println(step.nameToShow)
+          for(comp <- step.components){
+            println("Components: " + comp.nameToShow)
           }
         }
-        case string: String => {
-          println(string)
-          println("Aktuelle Konfiguration")
-          for(step <- currentConfig.steps){
-        	  println(step.nameToShow)
-        	  for(comp <- step.components){
-        	    println("Components: " + comp.nameToShow)
-        	  }
-          }
+      }
+      else{
+        val currentStep = configMgr.getStepWithSelectedComponent(container, enter)
+        currentConfig.steps += currentStep(0)
+        println("Next Step: " + nextStep.nameToShow)
+        for(components <- nextStep.components){
+          println("Components: " + components.nameToShow)
         }
       }
     }
