@@ -20,16 +20,31 @@ class ConfigMgr {
   def loadCurrentConfig : CurrentConfig = {
     new CurrentConfig(ListBuffer.empty)
   }
+  
+  def getSelectedComponent(container: Container, id: String) = {
+    container.steps flatMap (s => s.components filter (_.id == id))
+  }
 
+  def getStepWithSelectedComponent(container: Container, id: String): Seq[Step] = {
+    val steps = for {
+      step <- container.steps
+      component <- step.components
+    } yield 
+    if(component.id == id) new Step(step.id, step.nameToShow, step.nextStep, step.isStartStep, Seq(component))
+    else null
+    steps filter { _ != null }
+  }
   
   def getNextStep(container: Container, selectedComponentId: String) = {
+    //TODO Pruefung der first Step einrichten damit die Funktion getFirstStep entfallen kann
     
-    val selectedComponent: Seq[Component] = container.steps flatMap (
-      s => s.components filter (_.id == selectedComponentId)
-    )
+    val selectedComponent: Seq[Component] = getSelectedComponent(container, selectedComponentId)
     val nextStepId = if (selectedComponent.length == 1) selectedComponent(0).nextStepId
-    val nextStep = container.steps filter (_.id == nextStepId)
-    if(nextStep.length == 1) nextStep(0) else null
+    if(nextStepId == "000") "Last Step reach"
+    else {
+      val nextStep = container.steps filter (_.id == nextStepId)
+      if(nextStep.length == 1) nextStep(0) else null
+    }
   }
 
   

@@ -6,6 +6,7 @@
 		<nameToShow>step 001</nameToShow>
 		<nextStep>nextStep 002</nextStep>
 		<isStartStep>true</isStartStep>
+		<isLastStep>false</isLastStep>
 		<selectionCriterium>
 			<min>1</min>
 			<max>1</max>
@@ -33,6 +34,7 @@
 		<nameToShow>step 002</nameToShow>
 		<nextStep>nestStep 000</nextStep>
 		<isStartStep>false</isStartStep>
+		<isLastStep>false</isLastStep>
 		<selectionCriterium>
 			<min>1</min>
 			<max>1</max>
@@ -55,6 +57,7 @@
 		  <nameToShow>step 003</nameToShow>
 		  <nextStep>nextStep 000</nextStep>
 		  <isStartStep>false</isStartStep>
+		  <isLastStep>false</isLastStep>
 		  <selectionCriterium>
 				<min>1</min>
 				<max>1</max>
@@ -87,6 +90,7 @@
 		  <nameToShow>step 004</nameToShow>
 		  <nextStep>nextStep 000</nextStep>
 		  <isStartStep>false</isStartStep>
+		  <isLastStep>false</isLastStep>
 		  <selectionCriterium>
 				<min>1</min>
 				<max>1</max>
@@ -114,6 +118,7 @@
 		  <nameToShow>step 005</nameToShow>
 		  <nextStep>nextStep 000</nextStep>
 		  <isStartStep>false</isStartStep>
+		  <isLastStep>false</isLastStep>
 		  <selectionCriterium>
 				<min>1</min>
 				<max>1</max>
@@ -151,6 +156,7 @@
 		  <nameToShow>step 006</nameToShow>
 		  <nextStep>nextStep 000</nextStep>
 		  <isStartStep>false</isStartStep>
+		  <isLastStep>true</isLastStep>
 		  <selectionCriterium>
 				<min>1</min>
 				<max>1</max>
@@ -178,6 +184,7 @@
 		  <nameToShow>step 007</nameToShow>
 		  <nextStep>nextStep 000</nextStep>
 		  <isStartStep>false</isStartStep>
+		  <isLastStep>true</isLastStep>
 		  <selectionCriterium>
 				<min>1</min>
 				<max>1</max>
@@ -205,6 +212,7 @@
 		  <nameToShow>step 008</nameToShow>
 		  <nextStep>nextStep 000</nextStep>
 		  <isStartStep>false</isStartStep>
+		  <isLastStep>true</isLastStep>
 		  <selectionCriterium>
 				<min>1</min>
 				<max>1</max>

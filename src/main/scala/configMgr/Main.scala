@@ -2,11 +2,13 @@ package configMgr
 
 /**
   * TODO for whole project
-  * definition von dem letztem Step
-  * multichoose bei der Auswahl der Componenten
-  * pruefe ob mehrer Stepps als firstStep definiert sind
-  *
-  *
+  * - definition von dem letztem Step
+  * - multichoose bei der Auswahl der Componenten
+  * - pruefe ob mehrer Stepps als firstStep definiert sind
+  * - definition von dem variablen Components (Slide, variable Massen)
+  * - in currentCinfigutration unter Step nur die ausgewählte Komponente speichern
+  * - Logger einrichten
+  * - letzte Step wird nicht in der CurrentConfig hinzugefügt
   */
 object Main {
   def main(args : Array[String]) = {
@@ -21,7 +23,6 @@ object Main {
     
     
     val firstStep = configMgr.getFirstStep(container)
-    currentConfig.steps += firstStep
     
     println("First Step => id: " + firstStep.id)
     println("Components for first step2")
@@ -29,12 +30,26 @@ object Main {
       println(components.nameToShow)
     }
     
-     def nextStep(enter: String): Unit = {
-      val  nextStep = configMgr.getNextStep(container, enter)
-       currentConfig.steps += nextStep
-      println("Next Step: " + nextStep.nameToShow)
-      for(components <- nextStep.components){
-        println("Components: " + components.nameToShow)
+    def nextStep(enter: String): Unit = {
+      val  nextStep = configMgr.getNextStep(container, enter) match {
+        case step: Step => {
+          val currentStep = configMgr.getStepWithSelectedComponent(container, enter)
+          currentConfig.steps += currentStep(0)
+          println("Next Step: " + step.nameToShow)
+          for(components <- step.components){
+            println("Components: " + components.nameToShow)
+          }
+        }
+        case string: String => {
+          println(string)
+          println("Aktuelle Konfiguration")
+          for(step <- currentConfig.steps){
+        	  println(step.nameToShow)
+        	  for(comp <- step.components){
+        	    println("Components: " + comp.nameToShow)
+        	  }
+          }
+        }
       }
     }
      
