@@ -14,7 +14,7 @@ class ConfigMgr {
 
   /**
     * Implement partial load from XML file
- *
+    *
     * @return
     */
   def loadStepsFromXML : Container = {
@@ -46,16 +46,12 @@ class ConfigMgr {
     val selectedComponent: Seq[Component] = getSelectedComponent(container, selectedComponentId)
     val nextStepId = if (selectedComponent.length == 1) selectedComponent(0).nextStepId
     val nextStep = container.steps filter (_.id == nextStepId)
-    
+    val currentStep = getStepWithSelectedComponent(container, selectedComponentId)
     if(nextStepId == "000") {
-      for{
-        step <- container.steps
-        comp <- step.components
-        if(comp.id == selectedComponentId)
-      }yield step
+      (null, currentStep(0))
     }
     else {
-      if(nextStep.length == 1) nextStep(0) else null
+      (nextStep(0), currentStep(0))
     }
   }
 

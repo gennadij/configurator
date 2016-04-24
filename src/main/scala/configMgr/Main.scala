@@ -9,6 +9,7 @@ package configMgr
   * - in currentCinfigutration unter Step nur die ausgewählte Komponente speichern
   * - Logger einrichten
   * - letzte Step wird nicht in der CurrentConfig hinzugefügt
+  * - Prüfung einbauen, wenn Komponent, der nicht in Step exestiert, ausgewählt
   */
 object Main {
   def main(args : Array[String]) = {
@@ -32,10 +33,10 @@ object Main {
     }
     
     def nextStep(enter: String): Unit = {
-      val  nextStep = configMgr.getNextStep(container, enter)
-      if(nextStep.nextStep == false){
-        val currentStep = configMgr.getStepWithSelectedComponent(container, enter)
-        currentConfig.steps += currentStep(0)
+      val  step = configMgr.getNextStep(container, enter)
+
+      if(step._1 == null){
+        currentConfig.steps += step._2
         println("Aktuelle Konfiguration")
         for(step <- currentConfig.steps){
           println(step.nameToShow)
@@ -44,11 +45,10 @@ object Main {
           }
         }
       }
-      else{
-        val currentStep = configMgr.getStepWithSelectedComponent(container, enter)
-        currentConfig.steps += currentStep(0)
-        println("Next Step: " + nextStep.nameToShow)
-        for(components <- nextStep.components){
+      else {
+        currentConfig.steps += step._2
+        println("Next Step: " + step._1.nameToShow)
+        for(components <- step._1.components){
           println("Components: " + components.nameToShow)
         }
       }
