@@ -1,4 +1,7 @@
-package configMgr
+package org.configMgr
+
+import org.configTree.{ImmutableComponent, Step}
+import org.container.Container
 
 import scala.collection.mutable.ListBuffer
 
@@ -31,7 +34,7 @@ class ConfigMgr {
   
   def getNextStep(container: Container, selectedComponentId: String) = {
     
-    val selectedComponent: Seq[Component] = getSelectedComponent(container, selectedComponentId)
+    val selectedComponent: Seq[ImmutableComponent] = getSelectedComponent(container, selectedComponentId)
     val nextStepId = if (selectedComponent.length == 1) selectedComponent(0).nextStepId
     val nextStep = container.steps filter (_.id == nextStepId)
     val currentStep = getStepWithSelectedComponent(container, selectedComponentId)

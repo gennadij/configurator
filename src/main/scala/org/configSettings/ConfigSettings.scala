@@ -1,4 +1,7 @@
-package configMgr
+package org.configSettings
+
+import org.configTree.{ImmutableComponent, Step}
+import org.container.Container
 
 object ConfigSettings {
   
@@ -22,8 +25,8 @@ class ConfigSettings {
     )
   }
 
-  private def toComponents(componentXML: scala.xml.Node): Component = {
-    new Component(
+  private def toComponents(componentXML: scala.xml.Node): ImmutableComponent = {
+    new ImmutableComponent(
       (componentXML \ "id").text,
       (componentXML \ "nameToShow").text,
       (componentXML \ "nextStepId").text
