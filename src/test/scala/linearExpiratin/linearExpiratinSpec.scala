@@ -33,7 +33,4 @@ The first Step should
   val nextStep2 = configMgr.getNextStep(container, selection2)
   
   def e3 = nextStep2._1.id must beEqualTo("003")
-  
-  
-  
 }

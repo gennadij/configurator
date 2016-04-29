@@ -19,7 +19,7 @@ object Main {
     //TODO create Factory object
     val configMgr = new ConfigMgr
 
-    val container = configMgr.loadStepsFromXML
+    val container = ConfigSettings.configSettings
     val currentConfig = configMgr.loadCurrentConfig
     
     println("Validirung des Configurators: " + configMgr.valideSteps(container))
