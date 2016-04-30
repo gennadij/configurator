@@ -1,6 +1,6 @@
 package org.configMgr
 
-import org.configTree.{ImmutableComponent, Step}
+import org.configTree.{Component, Step}
 import org.container.Container
 
 import scala.collection.mutable.ListBuffer
@@ -17,12 +17,12 @@ class ConfigMgr {
   }
   
   def getSelectedComponent(container: Container, id: String) = {
-    container.steps flatMap (s => s.components filter (_.id == id))
+    container.configSettings flatMap (s => s.components filter (_.id == id))
   }
 
   def getStepWithSelectedComponent(container: Container, id: String): Seq[Step] = {
     val steps = for {
-      step <- container.steps
+      step <- container.configSettings
       component <- step.components
     } yield 
     if(component.id == id) new Step(step.id, step.nameToShow, step.nextStep, step.isStartStep, Seq(component))
@@ -32,11 +32,11 @@ class ConfigMgr {
   
   def getCurrentStep():Step = ???
   
-  def getNextStep(container: Container, selectedComponentId: String) = {
+  def  getNextStep(container: Container, selectedComponentId: String) = {
     
-    val selectedComponent: Seq[ImmutableComponent] = getSelectedComponent(container, selectedComponentId)
-    val nextStepId = if (selectedComponent.length == 1) selectedComponent(0).nextStepId
-    val nextStep = container.steps filter (_.id == nextStepId)
+    val selectedComponent: Seq[Component] = getSelectedComponent(container, selectedComponentId)
+    val nextStepId = if (selectedComponent.length == 1) selectedComponent(0).nextStep
+    val nextStep = container.configSettings filter (_.id == nextStepId)
     val currentStep = getStepWithSelectedComponent(container, selectedComponentId)
     if(nextStepId == "000") {
       (null, currentStep(0))
@@ -48,15 +48,18 @@ class ConfigMgr {
 
   
   def getFirstStep(container: Container): Step = {
-    val firstStep = container.steps filter (s => s.isStartStep == "true")
-    //TODO Check for one Element in List
-    firstStep(0)
+    val firstStep = container.configSettings filter (s => s.isStartStep == "true")
+    if(firstStep.size == 1){
+      firstStep(0)
+    }else{
+      new Step("999")
+    }
   }
   
   
   def valideSteps(container: Container): Boolean = {
     
-    val isStartStep = container.steps filter(_.isStartStep == true)
+    val isStartStep = container.configSettings filter(_.isStartStep == true)
     
     if(isStartStep.length == 1) true else false
   }

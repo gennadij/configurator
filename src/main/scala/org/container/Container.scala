@@ -2,11 +2,18 @@ package org.container
 
 import org.configTree.Step
 
+import scala.collection.mutable.ListBuffer
+
 /**
   * Created by gennadi on 29.04.16.
   */
-case class Container(
-                    currentConfig: Seq[Step],
-                    configSettings:Seq[Step],
-                    tempConfig:Seq[Step]
-                    )
+//object Container {
+//
+//
+//}
+
+
+case class Container (
+                       configSettings: Seq[Step],
+                       currentConfig: ListBuffer[Step] = ListBuffer.empty
+                      )

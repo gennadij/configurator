@@ -1,6 +1,6 @@
 package org.configSettings
 
-import org.configTree.{ImmutableComponent, Step}
+import org.configTree.{ImmutableComponent, MutableComponent, Step, Component}
 import org.container.Container
 
 object ConfigSettings {
@@ -24,12 +24,16 @@ class ConfigSettings {
       (stepXML \ "components" \ "component") map (c => toComponents(c))
     )
   }
-
-  private def toComponents(componentXML: scala.xml.Node): ImmutableComponent = {
-    new ImmutableComponent(
-      (componentXML \ "id").text,
-      (componentXML \ "nameToShow").text,
-      (componentXML \ "nextStepId").text
-    )
+  //TODO spec for correct separation between Innutable and mutable Componnents
+  private def toComponents(componentXML: scala.xml.Node): Component = {
+    if((componentXML \ "mutable").text.toBoolean == false){
+      new ImmutableComponent(
+        (componentXML \ "id").text,
+        (componentXML \ "nameToShow").text,
+        (componentXML \ "nextStepId").text
+      )
+    }else{
+      new MutableComponent("0", "0", "0", "0")
+    }
   }
 }

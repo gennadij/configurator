@@ -3,11 +3,11 @@ package org.configTree
 /**
   * Created by gennadi on 29.04.16.
   */
-// TODO nestStepp: Boolean
+// TODO nextStep: Boolean
 case class Step (
                id: String,
-               nameToShow: String,
-               nextStep: String,
-               isStartStep: String,
-               components: Seq[ImmutableComponent]
+               nameToShow: String = "standard",
+               nextStep: String = "999",
+               isStartStep: String = "false",
+               components: Seq[Component] = Seq.empty
                ) extends ConfigTree
