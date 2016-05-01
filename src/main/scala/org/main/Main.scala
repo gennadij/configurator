@@ -23,7 +23,6 @@ object Main {
     val configMgr = new ConfigMgr
 
     val container = ConfigSettings.configSettings
-    val currentConfig = configMgr.loadCurrentConfig
     
     println("Validirung des Configurators: " + configMgr.valideSteps(container))
         
@@ -39,9 +38,9 @@ object Main {
       val  step = configMgr.getNextStep(container, enter)
 
       if(step._1 == null){
-        currentConfig.steps += step._2
+        container.currentConfig += step._2
         println("Aktuelle Konfiguration")
-        for(step <- currentConfig.steps){
+        for(step <- container.currentConfig){
           println(step.nameToShow)
           for(comp <- step.components){
             println("Components: " + comp.nameToShow)
@@ -49,7 +48,7 @@ object Main {
         }
       }
       else {
-        currentConfig.steps += step._2
+        container.currentConfig += step._2
         println("Next Step: " + step._1.nameToShow)
         for(components <- step._1.components){
           println("Components: " + components.nameToShow)
