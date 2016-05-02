@@ -16,4 +16,4 @@ import scala.collection.mutable.ListBuffer
 case class Container (
                        configSettings: Seq[Step],
                        currentConfig: ListBuffer[Step] = ListBuffer.empty
-                      )
+                     )

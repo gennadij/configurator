@@ -7,6 +7,7 @@ import scala.collection.mutable.ListBuffer
 
 /**
  * TODO
+  * first Stepp ist immer erste hinzugefügte Step zu dem Config Setting
  * 
  */
 class ConfigMgr {
@@ -64,8 +65,8 @@ class ConfigMgr {
     val nextStep = container.configSettings filter (_.id == nextStepId)
     val currentStep = getStepWithSelectedComponent(container, selectedComponentId)
 
-    container.currentConfig += currentStep(0)
-    println(container.currentConfig.size)
+//    container.currentConfig += currentStep(0)
+//    println(container.currentConfig.size)
 
     if(nextStepId == "000") {
       (null, currentStep(0))

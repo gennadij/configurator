@@ -1,3 +1,4 @@
+
 val json4s = "org.json4s" %% "json4s-jackson" % "3.2.11"
 val xml = "org.scala-lang.modules" %% "scala-xml" % "1.0.2"
 val specs2 = "org.specs2" %% "specs2-core" % "3.7.2" % "test"

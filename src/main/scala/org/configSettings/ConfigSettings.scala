@@ -5,7 +5,7 @@ import org.container.Container
 
 object ConfigSettings {
   
-  val configSettings:Container  = {
+  val configSettings: Container  = {
      val configSet = new ConfigSettings
     new Container(configSet.getXML \ "step" map(s => configSet.toStep(s)))
   }
