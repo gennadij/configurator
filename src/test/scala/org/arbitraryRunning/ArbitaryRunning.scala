@@ -25,7 +25,7 @@ The first Step should
   val container = ConfigSettings.configSettings
   val size = container.currentConfig.size
   container.currentConfig.remove(0, size - 1)
-  val firstStep = configMgr.getFirstStep(container)
+  val firstStep = configMgr.startConfig(container)
 
   //=======================================================
 

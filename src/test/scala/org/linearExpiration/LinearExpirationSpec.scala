@@ -28,7 +28,7 @@ class LinearExpirationSpec extends Specification {
   val size = container.currentConfig.size
   println(size)
   //container.currentConfig.remove(0, size - 1)
-  val firstStep = configMgr.getFirstStep(container)
+  val firstStep = configMgr.startConfig(container)
 
   def e1 = firstStep.components.length must_== 3
 

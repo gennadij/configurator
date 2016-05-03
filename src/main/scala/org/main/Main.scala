@@ -13,6 +13,9 @@ import org.configSettings.ConfigSettings
   * - Logger einrichten
   * - letzte Step wird nicht in der CurrentConfig hinzugefügt
   * - Prüfung einbauen, wenn Komponent, der nicht in Step exestiert, ausgewählt
+  * - SimpleComponent (ImmutableComponent) nur einen Component in einem Step ausgewählt werden kann
+  * - MutableComponent nur einen Component mit einer Veränderbarer Wert ausgewählt werden kann
+  * - MultiComponent kombeniert Mutable und ImmutableComponent in einem in einem Step
   */
 object Main {
   def main(args : Array[String]) = {
@@ -28,7 +31,8 @@ object Main {
 
     // first step
     println("##################################################################")
-    val firstStep = configMgr.getFirstStep(container)
+
+    val firstStep = configMgr.startConfig(container)
 
     println("Components for step: " + firstStep.id)
     for(components <- firstStep.components){
@@ -40,6 +44,8 @@ object Main {
     println("Selected Component: " + selected001001)
 
     configMgr.addStepToCurrentConfig(container, selected001001)
+
+    println("Aktuelle Step: " + configMgr.getCurrentStep(container))
 
     println("Aktuelle Konfiguration")
     for(step <- container.currentConfig){
@@ -66,6 +72,8 @@ object Main {
 
     configMgr.addStepToCurrentConfig(container, selected002001)
 
+    println("Aktuelle Step: " + configMgr.getCurrentStep(container))
+
     println("Aktuelle Konfiguration")
     for(step <- container.currentConfig){
       println(step.nameToShow)
@@ -88,6 +96,7 @@ object Main {
     println("Selected Component: " + selected003001)
 
     configMgr.addStepToCurrentConfig(container, selected003001)
+    println("Aktuelle Step: " + configMgr.getCurrentStep(container))
 
     println("Aktuelle Konfiguration")
     for(step <- container.currentConfig){
@@ -111,6 +120,7 @@ object Main {
     println("Selected Component: " + selected004001)
 
     configMgr.addStepToCurrentConfig(container, selected004001)
+    println("Aktuelle Step: " + configMgr.getCurrentStep(container))
 
     println("Aktuelle Konfiguration")
     for(step <- container.currentConfig){
@@ -134,6 +144,7 @@ object Main {
     println("Selected Component: " + selected005001)
 
     configMgr.addStepToCurrentConfig(container, selected005001)
+    println("Aktuelle Step: " + configMgr.getCurrentStep(container))
 
     println("Aktuelle Konfiguration")
     for(step <- container.currentConfig){
@@ -157,6 +168,7 @@ object Main {
     println("Selected Component: " + selected007001)
 
     configMgr.addStepToCurrentConfig(container, selected007001)
+    println("Aktuelle Step: " + configMgr.getCurrentStep(container))
 
     println("Aktuelle Konfiguration")
     for(step <- container.currentConfig){
@@ -176,6 +188,8 @@ object Main {
     println("Selected Component: " + selected002002)
 
     configMgr.addStepToCurrentConfig(container, selected002002)
+
+    println("Aktuelle Step: " + configMgr.getCurrentStep(container))
 
     println("Components for step: " + eighthStep._1.nameToShow)
     for(components <- eighthStep._1.components){
