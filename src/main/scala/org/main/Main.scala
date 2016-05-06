@@ -15,7 +15,7 @@ import org.configSettings.ConfigSettings
   * - Prüfung einbauen, wenn Komponent, der nicht in Step exestiert, ausgewählt
   * - SimpleComponent (ImmutableComponent) nur einen Component in einem Step ausgewählt werden kann
   * - MutableComponent nur einen Component mit einer Veränderbarer Wert ausgewählt werden kann
-  * - MultiComponent kombeniert Mutable und ImmutableComponent in einem in einem Step
+  * - MultiComponent kombeniert Mutable und ImmutableComponent in einem in einem Steps
   */
 object Main {
   def main(args : Array[String]) = {

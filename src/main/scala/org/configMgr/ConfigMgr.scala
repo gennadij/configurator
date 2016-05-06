@@ -1,6 +1,7 @@
 package org.configMgr
 
-import org.configTree.{Component, Step}
+import org.configTree.Component
+import org.configTree.staticStep.Step
 import org.container.Container
 
 import scala.collection.mutable.ListBuffer
@@ -86,8 +87,16 @@ class ConfigMgr {
   }
 
 
+  /**
+    *
+    * @param container
+    * @param selectedComponentId
+    * @return
+    */
 
   def  getNextStep(container: Container, selectedComponentId: String) = {
+
+    //testen jeden Step ob er letzte step ist, wenn einen Letzten Step gefunden einen objekte LastStep zurückgeben
 
     val selectedComponent: Seq[Component] = getSelectedComponent(container, selectedComponentId)
     val nextStepId = if (selectedComponent.length == 1) selectedComponent(0).nextStep
