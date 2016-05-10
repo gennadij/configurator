@@ -2,6 +2,7 @@ package org.main
 
 import org.configMgr.ConfigMgr
 import org.configSettings.ConfigSettings
+import org.test._
 
 /**
   * TODO for whole project
@@ -21,7 +22,24 @@ object Main {
   def main(args : Array[String]) = {
     println("I am generic configurator")
     println("Generic configurator started")
+    
+     println("Test")
+    
+    val test= new Element("test", "extend")
 
+    println(test.test)
+    println(test.toString())
+    println(test.extend)
+    
+    
+     def testExtend  = {
+      new Element("test", "extend")
+    }
+    
+    val test2 = testExtend
+    println(test2.extend)
+
+   
     //TODO create Factory object
     val configMgr = new ConfigMgr
 
