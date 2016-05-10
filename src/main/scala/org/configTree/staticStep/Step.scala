@@ -7,9 +7,8 @@ import org.configTree.staticStep._
   * Created by gennadi on 29.04.16.
   */
 
-abstract class AbstractStep extends ConfigTree {
-  def nextStep: String
-}
+abstract class AbstractStep extends ConfigTree
+
 
 // TODO nextStep: Boolean
 case class Step (
@@ -29,7 +28,7 @@ case class StaticStep(
                        selectionCriterium: SelectionCriterium = null,
                        from: Source,
                        components: Seq[StaticComponent]
-                     )
+                     ) extends AbstractStep
 
 class FirstStep {
 
