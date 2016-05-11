@@ -48,7 +48,7 @@ class ConfigSettings {
 
   private def toNextStep(ns: scala.xml.Node): NextStep = {
     new NextStep(
-      (ns \ "@default").text,
+//      (ns \ "@default").text,
       (ns \ "nextStep" \ "@component").text,
       (ns \ "nextStep" \ "@step").text)
   }
@@ -81,7 +81,7 @@ class ConfigSettings {
       (step \ "nextSteps") map (ns => toNextStep(ns)),
       (step \ "kind").text,
       toSelectionCriterium  (step \ "selectionCriterium"),
-      toSource(step \ "components" \"from"),
+      toSource(step \"from"),
       (step \ "components" \ "component") map (c => toComponentv01(c))
     )
   }
