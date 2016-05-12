@@ -1,16 +1,12 @@
 package org.configSettings
 
-import org.configTree.step.Step
+import org.configTree.step._
 import org.configTree._
 import org.container.Container
 import org.configTree.component.StaticComponent
 import org.configTree.component.Component
 import org.configTree.component.ImmutableComponent
 import org.configTree.component.MutableComponent
-import org.configTree.step.Source
-import org.configTree.step.SelectionCriterium
-import org.configTree.step.DefaultStep
-import org.configTree.step.NextStep
 
 object ConfigSettings {
   
@@ -80,15 +76,26 @@ class ConfigSettings {
     )
   }
 
+  /**
+    * kind kann man entfernen in der Klasse AbstractStep2
+    * @param step
+    * @return
+    */
   private def toStepv01(step: scala.xml.Node) = {
-    new DefaultStep(
-      (step \ "id").text,
-      (step \ "nameToShow").text,
-      (step \ "nextSteps" \ "nextStep") map (ns => toNextStep(ns)),
-      (step \ "kind").text,
-      toSelectionCriterium  (step \ "selectionCriterium"),
-      toSource(step \"from"),
-      (step \ "components" \ "component") map (c => toComponentv01(c))
-    )
+    val id = (step \ "id").text
+    val nameToShow = (step \ "nameToShow").text
+    val nextSteps = (step \ "nextSteps" \ "nextStep") map (ns => toNextStep(ns))
+    val kind = (step \ "kind").text
+    val selectionCriterium = toSelectionCriterium  (step \ "selectionCriterium")
+    val from = toSource(step \"from")
+    val components = (step \ "components" \ "component") map (c => toComponentv01(c))
+
+    if(kind == "first") {
+      new FirstStep(id, nameToShow, nextSteps, kind, selectionCriterium, from, components)
+    }else if(kind == "default"){
+      new DefaultStep(id, nameToShow, nextSteps, kind, selectionCriterium, from, components)
+    }else{
+      new LastStep(id, nameToShow, nextSteps, kind, selectionCriterium, from, components)
+    }
   }
 }

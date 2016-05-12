@@ -29,6 +29,15 @@ class ConfigMgr {
     (container.configSettings filter(_.id == "001"))(0)
   }
 
+  /**
+    * durch den Typunterscheidung mit match herausfiltern
+    * @return
+    */
+  def startConfigV01 = {
+    val firstStep = containerV01.configSettingsForStatic filter(_.kind == "first")
+    if(firstStep.size == 1) firstStep(0) else null
+  }
+
   def getSelectedComponent(container: Container, id: String) = {
     container.configSettings flatMap (s => s.components filter (_.id == id))
   }
@@ -117,10 +126,11 @@ class ConfigMgr {
   }
   
   def getNextStepV01(selectedComponentId: String) = {
-    for{
+    val nextStep = for{
       step <- containerV01.configSettingsForStatic
       nextStep <- step.nextStep if(nextStep.byComponent == selectedComponentId) 
-    }yield nextStep.nextStep
+    }yield nextStep
+    (containerV01.configSettingsForStatic filter (_.id == nextStep(0).nextStep))(0)
   }
   
   def valideSteps(container: Container): Boolean = {
