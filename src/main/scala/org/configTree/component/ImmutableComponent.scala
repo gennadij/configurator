@@ -1,6 +1,5 @@
+package org.configTree.component
 
-
-package org.configTree
 
 case class ImmutableComponent(
                     id: String,

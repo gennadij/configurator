@@ -1,6 +1,4 @@
-package org.configTree.staticStep
-
-import org.configTree._
+package org.configTree.component
 
 /**
   * Created by gennadi on 07.05.16.

@@ -1,9 +1,16 @@
 package org.configSettings
 
-import org.configTree.staticStep.Step
+import org.configTree.step.Step
 import org.configTree._
-import org.configTree.staticStep._
 import org.container.Container
+import org.configTree.component.StaticComponent
+import org.configTree.component.Component
+import org.configTree.component.ImmutableComponent
+import org.configTree.component.MutableComponent
+import org.configTree.step.Source
+import org.configTree.step.SelectionCriterium
+import org.configTree.step.DefaultStep
+import org.configTree.step.NextStep
 
 object ConfigSettings {
   
@@ -46,11 +53,10 @@ class ConfigSettings {
     }
   }
 
-  private def toNextStep(ns: scala.xml.Node): NextStep = {
+  private def toNextStep(ns: scala.xml.NodeSeq): NextStep = {
     new NextStep(
-      (ns \ "@default").text,
-      (ns \ "nextStep" \ "@component").text,
-      (ns \ "nextStep" \ "@step").text)
+      (ns \ "@component").text,
+      (ns \ "@step").text)
   }
   private def toSelectionCriterium(sc: scala.xml.NodeSeq): SelectionCriterium = {
     new SelectionCriterium(
@@ -75,13 +81,13 @@ class ConfigSettings {
   }
 
   private def toStepv01(step: scala.xml.Node) = {
-    new StaticStep(
+    new DefaultStep(
       (step \ "id").text,
       (step \ "nameToShow").text,
-      (step \ "nextSteps") map (ns => toNextStep(ns)),
+      (step \ "nextSteps" \ "nextStep") map (ns => toNextStep(ns)),
       (step \ "kind").text,
       toSelectionCriterium  (step \ "selectionCriterium"),
-      toSource(step \ "components" \"from"),
+      toSource(step \"from"),
       (step \ "components" \ "component") map (c => toComponentv01(c))
     )
   }

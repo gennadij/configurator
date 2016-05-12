@@ -1,4 +1,4 @@
-package org.configTree
+package org.configTree.component
 
 /**
   * Created by gennadi on 30.04.16.

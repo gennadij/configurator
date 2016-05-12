@@ -9,9 +9,9 @@
 		<nextSteps default="000">
 			<nextStep component="001001" step="002"/>
 			<nextStep component="001002" step="002"/>
-			<nextStep component="002003" step="003"/>
+			<nextStep component="001003" step="003"/>
 		</nextSteps>
-		<!--last, first, next, current-->
+		<!--last, first, default-->
 		<kind>first</kind>
 		<selectionCriterium>
 			<min>1</min>
@@ -53,7 +53,7 @@
 			<nextStep component="002001" step="003"/>
 			<nextStep component="002002" step="003"/>
 		</nextSteps>
-		<kind>first</kind>
+		<kind>default</kind>
 		<selectionCriterium>
 			<min>1</min>
 			<max>1</max>
@@ -71,7 +71,7 @@
 			</component>
 		</components>
 	</step>
-	 <step>
+	<step>
 		<id>003</id>
 		<nameToShow>step 003</nameToShow>
 		<nextSteps default="000">
@@ -80,6 +80,7 @@
 			<nextStep component="003003" step="004"/>
 			<nextStep component="003004" step="004"/>
 		</nextSteps>
+		<kind>default</kind>
 		<selectionCriterium>
 			<min>1</min>
 			<max>1</max>
@@ -109,9 +110,9 @@
 				<id>003004</id>
 				<kind>immutable</kind>
 				<nameToShow>component 003004</nameToShow>
-				</component>
-		  </components>
-	 </step>
+			</component>
+		</components>
+	</step>
 	<step>
 		<id>004</id>
 		<nameToShow>step 004</nameToShow>
@@ -120,6 +121,7 @@
 			<nextStep component="004002" step="005"/>
 			<nextStep component="004003" step="006"/>
 		</nextSteps>
+		<kind>default</kind>
 		<selectionCriterium>
 			<min>1</min>
 			<max>1</max>
@@ -156,6 +158,7 @@
 			<nextStep component="005004" step="008"/>
 			<nextStep component="005005" step="008"/>
 		</nextSteps>
+		<kind>default</kind>
 		<selectionCriterium>
 			<min>1</min>
 			<max>1</max>
@@ -190,94 +193,97 @@
 				<kind>immutable</kind>
 				<nameToShow>component 005005</nameToShow>
 			</component>
-         </components>
-    </step>
-	<!--<step>
-         <id>006</id>
-         <nameToShow>step 006</nameToShow>
-         <nextStep>false</nextStep>
-         <isStartStep>false</isStartStep>
-         <isLastStep>true</isLastStep>
-         <selectionCriterium>
-               <min>1</min>
-               <max>1</max>
-         </selectionCriterium>
-         <components>
-               <component>
-                   <id>006001</id>
-                   <mutable>false</mutable>
-                   <nameToShow>component 006001</nameToShow>
-                   <nextStepId>000</nextStepId>
-               </component>
-               <component>
-                   <id>006002</id>
-                   <mutable>false</mutable>
-                   <nameToShow>component 006002</nameToShow>
-                   <nextStepId>000</nextStepId>
-               </component>
-               <component>
-                   <id>006003</id>
-                   <mutable>false</mutable>
-                   <nameToShow>component 006003</nameToShow>
-                   <nextStepId>000</nextStepId>
-               </component>
-         </components>
-    </step>
-    <step>
-         <id>007</id>
-         <nameToShow>step 007</nameToShow>
-         <nextStep>false</nextStep>
-         <isStartStep>false</isStartStep>
-         <isLastStep>true</isLastStep>
-         <selectionCriterium>
-               <min>1</min>
-               <max>1</max>
-         </selectionCriterium>
-         <components>
-               <component>
-                   <id>007001</id>
-                   <mutable>false</mutable>
-                   <nameToShow>component 007001</nameToShow>
-                   <nextStepId>000</nextStepId>
-               </component>
-               <component>
-                   <id>007002</id>
-                   <mutable>false</mutable>
-                   <nameToShow>component 007002</nameToShow>
-                   <nextStepId>000</nextStepId>
-               </component>
-               <component>
-                   <id>007003</id>
-                   <mutable>false</mutable>
-                   <nameToShow>component 007003</nameToShow>
-                   <nextStepId>000</nextStepId>
-               </component>
-         </components>
-    </step>
-    <step>
-         <id>008</id>
-         <nameToShow>step 008</nameToShow>
-         <nextStep>false</nextStep>
-
-         <isStartStep>false</isStartStep>
-         <isLastStep>true</isLastStep>
-         <selectionCriterium>
-               <min>1</min>
-               <max>1</max>
-         </selectionCriterium>
-         <components>
-               <component>
-                   <id>008001</id>
-                   <mutable>false</mutable>
-                   <nameToShow>component 008001</nameToShow>
-                   <nextStepId>000</nextStepId>
-               </component>
-               <component>
-                   <id>008002</id>
-                   <mutable>false</mutable>
-                   <nameToShow>component 008002</nameToShow>
-                   <nextStepId>000</nextStepId>
-               </component>
-         </components>
-    </step>-->
+		</components>
+	</step>
+	<step>
+		<id>006</id>
+		<nameToShow>step 006</nameToShow>
+		<nextSteps default="000">
+			<nextStep component="006001" step="000"/>
+			<nextStep component="006002" step="000"/>
+			<nextStep component="006003" step="000"/>
+		</nextSteps>
+		<kind>last</kind>
+		<selectionCriterium>
+			<min>1</min>
+			<max>1</max>
+		</selectionCriterium>
+		<from source="xml">
+			<sqlStatement></sqlStatement>
+			<path></path>
+		</from>
+		<components>
+			<component>
+				<id>006001</id>
+				<kind>immutable</kind>
+				<nameToShow>component 006001</nameToShow>
+			</component>
+			<component>
+				<id>006002</id>
+				<kind>immutable</kind>
+				<nameToShow>component 006002</nameToShow>
+			</component>
+			<component>
+				<id>006003</id>
+				<kind>immutable</kind>
+				<nameToShow>component 006003</nameToShow>
+			</component>
+		</components>
+	</step>
+	<step>
+		<id>007</id>
+		<nameToShow>step 007</nameToShow>
+		<nextSteps default="000">
+			<nextStep component="007001" step="000"/>
+			<nextStep component="007002" step="000"/>
+			<nextStep component="007003" step="000"/>
+		</nextSteps>
+		<kind>last</kind>
+		<selectionCriterium>
+			<min>1</min>
+			<max>1</max>
+		</selectionCriterium>
+		<components>
+			<component>
+				<id>007001</id>
+				<kind>immutable</kind>
+				<nameToShow>component 007001</nameToShow>
+			</component>
+			<component>
+				<id>007002</id>
+				<kind>immutable</kind>
+				<nameToShow>component 007002</nameToShow>
+			</component>
+			<component>
+				<id>007003</id>
+				<kind>immutable</kind>
+				<nameToShow>component 007003</nameToShow>
+			</component>
+		</components>
+	</step>
+	<step>
+		<id>008</id>
+		<nameToShow>step 008</nameToShow>
+		<nextSteps default="000">
+			<nextStep component="008001" step="000"/>
+			<nextStep component="008002" step="000"/>
+		</nextSteps>
+		<kind>last</kind>
+		<selectionCriterium>
+			<min>1</min>
+			<max>1</max>
+		</selectionCriterium>
+		<components>
+			<component>
+				<id>008001</id>
+				<kind>immutable</kind>
+				<nameToShow>component 008001</nameToShow>
+			</component>
+			<component>
+				<id>008002</id>
+				<kind>immutable</kind>
+				<nameToShow>component 008002</nameToShow>
+			</component>
+		</components>
+	</step>
 </steps>
