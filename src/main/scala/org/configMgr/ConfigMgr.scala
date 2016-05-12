@@ -1,10 +1,13 @@
 package org.configMgr
 
 import org.configTree.component.Component
-import org.configTree.staticStep.Step
+import org.configTree.step.Step
 import org.container.Container
-
 import scala.collection.mutable.ListBuffer
+import org.container.Container
+import org.container.Container
+import org.configSettings.ConfigSettings
+import org.configTree.step.AbstractStep2
 
 /**
  * TODO
@@ -14,6 +17,8 @@ import scala.collection.mutable.ListBuffer
  * 
  */
 class ConfigMgr {
+  
+  val containerV01 = ConfigSettings.configSettingsV01
 
   /**
     * TODO check if more component find, or multichose component selected
@@ -111,6 +116,12 @@ class ConfigMgr {
     }
   }
   
+  def getNextStepV01(selectedComponentId: String) = {
+    for{
+      step <- containerV01.configSettingsForStatic
+      nextStep <- step.nextStep if(nextStep.byComponent == selectedComponentId) 
+    }yield nextStep.nextStep
+  }
   
   def valideSteps(container: Container): Boolean = {
     

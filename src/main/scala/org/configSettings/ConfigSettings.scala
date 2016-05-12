@@ -1,8 +1,7 @@
 package org.configSettings
 
-import org.configTree.staticStep.Step
+import org.configTree.step.Step
 import org.configTree._
-import org.configTree.staticStep._
 import org.container.Container
 import org.configTree.component.StaticComponent
 import org.configTree.component.Component
@@ -10,6 +9,8 @@ import org.configTree.component.ImmutableComponent
 import org.configTree.component.MutableComponent
 import org.configTree.step.Source
 import org.configTree.step.SelectionCriterium
+import org.configTree.step.DefaultStep
+import org.configTree.step.NextStep
 
 object ConfigSettings {
   
