@@ -1,4 +1,6 @@
-package org.configTree
+package org.configTree.component
+
+import org.configTree.component.Component
 
 /**
   * Created by gennadi on 30.04.16.

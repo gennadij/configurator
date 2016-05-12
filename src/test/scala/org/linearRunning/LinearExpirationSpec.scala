@@ -44,17 +44,17 @@ class LinearExpirationSpec extends Specification {
 
   def e3 = staticStep.nextStep.size must_==3
 
-  def e4 = staticStep.nextStep(0).byComponent must beEqualTo("001001")
+  def e4 = staticStep.nextStep(0).byComponent must_== "001001"
 
-  def e5 = staticStep.nextStep(0).nextStep must beEqualTo("002")
+  def e5 = staticStep.nextStep(0).nextStep must_== "002"
   
-  def e6 = staticStep.nextStep(0).byComponent must beEqualTo("001002")
+  def e6 = staticStep.nextStep(1).byComponent must_== "001002"
 
-  def e7 = staticStep.nextStep(0).nextStep must beEqualTo("002")
+  def e7 = staticStep.nextStep(1).nextStep must_== "002"
   
-  def e8 = staticStep.nextStep(0).byComponent must beEqualTo("001003")
+  def e8 = staticStep.nextStep(2).byComponent must_== "001003"
 
-  def e9 = staticStep.nextStep(0).nextStep must beEqualTo("003")
+  def e9 = staticStep.nextStep(2).nextStep must_== "003"
 
   def e10 = staticStep.kind must beEqualTo("first")
 

@@ -1,4 +1,4 @@
-package org.configTree.staticStep
+package org.configTree.component
 
 import org.configTree._
 

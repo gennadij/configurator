@@ -1,6 +1,6 @@
 package org.configMgr
 
-import org.configTree.Component
+import org.configTree.component.Component
 import org.configTree.staticStep.Step
 import org.container.Container
 

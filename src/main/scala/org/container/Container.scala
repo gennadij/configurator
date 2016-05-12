@@ -1,6 +1,6 @@
 package org.container
 
-import org.configTree.staticStep.{AbstractStep, Step, StaticStep}
+import org.configTree.st
 
 import scala.collection.mutable.ListBuffer
 
@@ -12,5 +12,5 @@ case class Container (
                        configSettings: Seq[Step],
                        currentConfig: ListBuffer[Step] = ListBuffer.empty
                      ) {
-  var configSettingsForStatic: Seq[StaticStep] =  Seq.empty
+  var configSettingsForStatic: Seq[AbstarctStep] =  Seq.empty
 }
