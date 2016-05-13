@@ -10,15 +10,13 @@ import org.configTree.component.MutableComponent
 
 object ConfigSettings {
   
-  val configSettings: Container  = {
-     val configSet = new ConfigSettings
-    new Container(configSet.getXML \ "step" map(s => configSet.toStep(s)))
-  }
-  val configSettingsV01: Container = {
+//  val configSettings: Container  = {
+//     val configSet = new ConfigSettings
+//    new Container(configSet.getXML \ "step" map(s => configSet.toStep(s)))
+//  }
+  val configSettings: Container = {
     val configSet = new ConfigSettings
-    val container = new Container(null)
-    container.configSettingsForStatic = configSet.getXMLV01 \ "step" map(s => configSet.toStepv01(s))
-    container
+    new Container(configSet.getXMLV01 \ "step" map(s => configSet.toStepv01(s)))
   }
 }
 

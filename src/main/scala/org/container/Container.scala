@@ -9,8 +9,6 @@ import scala.collection.mutable.ListBuffer
   */
 
 case class Container (
-                       configSettings: Seq[Step],
-                       currentConfig: ListBuffer[Step] = ListBuffer.empty
-                     ) {
-  var configSettingsForStatic: Seq[AbstractStep2] =  Seq.empty
-}
+                       configSettings: Seq[AbstractStep],
+                       currentConfig: ListBuffer[AbstractStep] = ListBuffer.empty
+                     )

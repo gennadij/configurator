@@ -36,7 +36,7 @@ class LinearExpirationSpec extends Specification {
 
                                                                 """
 
-  val staticStep = ConfigSettings.configSettingsV01.configSettingsForStatic(0)
+  val staticStep = ConfigSettings.configSettings.configSettings(0)
 
   def e1 = staticStep.id must beEqualTo("001")
 

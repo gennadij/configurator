@@ -36,7 +36,7 @@ class NextStepSpec extends Specification {
 
 
 
-  def e1 = configMgr.getNextStepV01("001001") must_== step002
+  def e1 = configMgr.getNextStep("001001") must_== step002
   def e2 = configMgr.startConfigV01 must_== firstStep
   def e3 = ???
 }

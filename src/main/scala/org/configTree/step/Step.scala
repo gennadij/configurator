@@ -8,9 +8,9 @@ import org.configTree.component.StaticComponent
   * Created by gennadi on 29.04.16.
   */
 
-abstract class AbstractStep extends ConfigTree
+//abstract class AbstractStep extends ConfigTree
 
-abstract class AbstractStep2 extends ConfigTree {
+abstract class AbstractStep extends ConfigTree {
   def id: String
   def nameToShow: String
   def nextStep: Seq[NextStep]
@@ -28,8 +28,8 @@ case class DefaultStep  (
                               selectionCriterium: SelectionCriterium,
                               from: Source,
                               components: Seq[StaticComponent]
-                        ) extends AbstractStep2
-
+                        ) extends AbstractStep
+                        
 case class FirstStep    (
                               id: String,
                               nameToShow: String,
@@ -38,7 +38,7 @@ case class FirstStep    (
                               selectionCriterium: SelectionCriterium = null,
                               from: Source,
                               components: Seq[StaticComponent]
-                        ) extends AbstractStep2
+                        ) extends AbstractStep
 
 case class LastStep     (
                               id: String,
@@ -48,12 +48,12 @@ case class LastStep     (
                               selectionCriterium: SelectionCriterium = null,
                               from: Source,
                               components: Seq[StaticComponent]
-                        ) extends AbstractStep2
+                        ) extends AbstractStep
 
 case class NextStep     (
                               byComponent: String,
                               nextStep: String
-                        )
+                        )               
                         
                         
 
@@ -64,7 +64,7 @@ case class Step (
                   nextStep: String,
                   isStartStep: String,
                   components: Seq[Component]
-                )extends AbstractStep
+                )
 
                    //case class StaticStep(
 //                       id: String,
