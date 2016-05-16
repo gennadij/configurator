@@ -58,6 +58,11 @@
 			<min>1</min>
 			<max>1</max>
 		</selectionCriterium>
+		<from source="xml">
+			<sqlStatement></sqlStatement>
+			<!--inside empty, outside pathString -->
+			<path></path>
+		</from>
 		<components>
 			<component>
 				<id>002001</id>
@@ -243,6 +248,10 @@
 			<min>1</min>
 			<max>1</max>
 		</selectionCriterium>
+		<from source="xml">
+			<sqlStatement></sqlStatement>
+			<path></path>
+		</from>
 		<components>
 			<component>
 				<id>007001</id>
@@ -273,6 +282,10 @@
 			<min>1</min>
 			<max>1</max>
 		</selectionCriterium>
+		<from source="xml">
+			<sqlStatement></sqlStatement>
+			<path></path>
+		</from>
 		<components>
 			<component>
 				<id>008001</id>

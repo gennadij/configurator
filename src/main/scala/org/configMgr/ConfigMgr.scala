@@ -9,6 +9,8 @@ import org.container.Container
 import org.configSettings.ConfigSettings
 import org.configTree.step.AbstractStep
 import org.configTree.step.DefaultStep
+import org.configTree.step.FinalStep
+import org.configTree.step.FirstStep
 
 /**
  * TODO
@@ -25,28 +27,31 @@ class ConfigMgr {
     * durch den Typunterscheidung mit match herausfiltern
     * @return
     */
-  def startConfigV01 = {
-    val firstStep = container.configSettings filter(_.kind == "first")
+  def startConfig = {
+    val firstStep = container.configSettings filter(_.isInstanceOf[FirstStep])
     if(firstStep.size == 1) firstStep(0) else null
   }
 
-  def getNextStep(selectedComponentId: String) = {
+  def getNextStep(selectedComponentId: String): AbstractStep = {
+    
+    addStepToCurrentConfig(selectedComponentId)
+    
     val nextStep = for{
       step <- container.configSettings
       nextStep <- step.nextStep if(nextStep.byComponent == selectedComponentId)
     }yield nextStep
     if(nextStep(0).nextStep == "000")
-      //TODO ein Object zurueckgeben
-      null
+      new FinalStep("000", "I am final step")
     else
       (container.configSettings filter (_.id == nextStep(0).nextStep))(0)
-      
   }
   
   /**
    * neue step für CurrentConfig
    */
-  def addStepToCurrentConfig(selectedComponentId: String) = {
+  private def addStepToCurrentConfig(selectedComponentId: String) = {
+    
+    // return new val mit veränderer currentConfig mit zusätzlichem step
     val step = for {
       step <- container.configSettings
       component <- step.nextStep if (component.byComponent == selectedComponentId)
@@ -60,7 +65,6 @@ class ConfigMgr {
 
     container.currentConfig += step(0) 
   }
-    
   
   def getComponent(step: AbstractStep, selectedComponentId: String) = step.components filter (_.id == selectedComponentId)
     
