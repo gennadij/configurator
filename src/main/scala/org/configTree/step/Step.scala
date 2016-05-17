@@ -2,7 +2,6 @@ package org.configTree.step
 
 import org.configTree._
 import org.configTree.component.Component
-import org.configTree.component.StaticComponent
 
 /**
   * Created by gennadi on 29.04.16.
@@ -13,42 +12,47 @@ import org.configTree.component.StaticComponent
 abstract class AbstractStep extends ConfigTree {
   def id: String
   def nameToShow: String
-  def nextStep: Seq[NextStep]
-  def kind: String
-  def selectionCriterium: SelectionCriterium
-  def from: Source
-  def components: Seq[StaticComponent]
+  def nextStep: Seq[NextStep] = Seq.empty
+  def kind: String = ""
+  def selectionCriterium: SelectionCriterium = null
+  def from: Source = null
+  def components: Seq[Component] = null
 }
 
 case class DefaultStep  (
                               id: String,
                               nameToShow: String,
-                              nextStep: Seq[NextStep],
-                              kind: String,
-                              selectionCriterium: SelectionCriterium,
-                              from: Source,
-                              components: Seq[StaticComponent]
+                              override val nextStep: Seq[NextStep],
+                              override val kind: String,
+                              override val selectionCriterium: SelectionCriterium,
+                              override val from: Source,
+                              override val components: Seq[Component]
                         ) extends AbstractStep
                         
 case class FirstStep    (
                               id: String,
                               nameToShow: String,
-                              nextStep: Seq[NextStep],
-                              kind: String,
-                              selectionCriterium: SelectionCriterium = null,
-                              from: Source,
-                              components: Seq[StaticComponent]
+                              override val nextStep: Seq[NextStep],
+                              override val kind: String,
+                              override val selectionCriterium: SelectionCriterium = null,
+                              override val from: Source,
+                              override val components: Seq[Component]
                         ) extends AbstractStep
 
 case class LastStep     (
                               id: String,
                               nameToShow: String,
-                              nextStep: Seq[NextStep],
-                              kind: String,
-                              selectionCriterium: SelectionCriterium = null,
-                              from: Source,
-                              components: Seq[StaticComponent]
+                              override val nextStep: Seq[NextStep],
+                              override val kind: String,
+                              override val selectionCriterium: SelectionCriterium = null,
+                              override val from: Source,
+                              override val components: Seq[Component]
                         ) extends AbstractStep
+
+case class FinalStep(id: String, nameToShow: String) extends AbstractStep
+
+
+
 
 case class NextStep     (
                               byComponent: String,
@@ -65,6 +69,8 @@ case class Step (
                   isStartStep: String,
                   components: Seq[Component]
                 )
+                
+
 
                    //case class StaticStep(
 //                       id: String,

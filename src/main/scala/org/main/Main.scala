@@ -22,46 +22,28 @@ object Main {
   def main(args : Array[String]) = {
     println("I am generic configurator")
     println("Generic configurator started")
-    
-     println("Test")
-    
-    val test= new Element("test", "extend")
-
-    println(test.test)
-    println(test.toString())
-    println(test.extend)
-    
-    
-     def testExtend  = {
-      new Element("test", "extend")
-    }
-    
-    val test2 = testExtend
-    println(test2.extend)
-
    
     //TODO create Factory object
     val configMgr = new ConfigMgr
 
     val container = ConfigSettings.configSettings
     
-//    println("Validirung des Configurators: " + configMgr.valideSteps(container))
 
     // first step
     println("##################################################################")
 
-//    val firstStep = configMgr.startConfig(container)
+    val firstStep = configMgr.startConfig
 
-//    println("Components for step: " + firstStep.id)
-//    for(components <- firstStep.components){
-//      println(components.nameToShow)
-//    }
+    println("Components for step: " + firstStep.id)
+    for(components <- firstStep.components){
+      println(components.nameToShow)
+    }
 
     val selected001001 = "001001"
 
     println("Selected Component: " + selected001001)
 
-//    configMgr.addStepToCurrentConfig(container, selected001001)
+//    configMgr.addStepToCurrentConfig(selected001001)
 
 //    println("Aktuelle Step: " + configMgr.getCurrentStep(container))
 
@@ -76,19 +58,17 @@ object Main {
     // twice step
     println("##################################################################")
 
+    val twiceStep = configMgr.getNextStep(selected001001)
 
-
-//    val twiceStep = configMgr.getNextStep(container, selected001001)
-
-//    println("Components for step: " + twiceStep._1.id)
-//    for(components <- twiceStep._1.components){
-//      println(components.nameToShow)
-//    }
+    println("Components for step: " + twiceStep.id)
+    for(components <- twiceStep.components){
+      println(components.nameToShow)
+    }
 
     val selected002001 = "002001"
     println("Selected Component: " + selected002001)
 
-//    configMgr.addStepToCurrentConfig(container, selected002001)
+//    configMgr.addStepToCurrentConfig(selected002001)
 
 //    println("Aktuelle Step: " + configMgr.getCurrentStep(container))
 
@@ -103,17 +83,17 @@ object Main {
     // third Step
     println("##################################################################")
 
-//    val thirdStep = configMgr.getNextStep(container, selected002001)
+    val thirdStep = configMgr.getNextStep(selected002001)
 
-//    println("Components for step: " + thirdStep._1.nameToShow)
-//    for(components <- thirdStep._1.components){
-//      println(components.nameToShow)
-//    }
+    println("Components for step: " + thirdStep.nameToShow)
+    for(components <- thirdStep.components){
+      println(components.nameToShow)
+    }
 
     val selected003001 = "003001"
     println("Selected Component: " + selected003001)
 
-//    configMgr.addStepToCurrentConfig(container, selected003001)
+//    configMgr.addStepToCurrentConfig(selected003001)
 //    println("Aktuelle Step: " + configMgr.getCurrentStep(container))
 
     println("Aktuelle Konfiguration")
@@ -127,17 +107,17 @@ object Main {
     // fourth Step
     println("##################################################################")
 
-//    val fourthStep = configMgr.getNextStep(container, selected003001)
+    val fourthStep = configMgr.getNextStep(selected003001)
 
-//    println("Components for step: " + fourthStep._1.nameToShow)
-//    for(components <- fourthStep._1.components){
-//      println(components.nameToShow)
-//    }
+    println("Components for step: " + fourthStep.nameToShow)
+    for(components <- fourthStep.components){
+      println(components.nameToShow)
+    }
 
     val selected004001 = "004001"
     println("Selected Component: " + selected004001)
 
-//    configMgr.addStepToCurrentConfig(container, selected004001)
+//    configMgr.addStepToCurrentConfig(selected004001)
 //    println("Aktuelle Step: " + configMgr.getCurrentStep(container))
 
     println("Aktuelle Konfiguration")
@@ -151,17 +131,17 @@ object Main {
     // fifth Step
     println("##################################################################")
 
-//    val fifthStep = configMgr.getNextStep(container, selected004001)
+    val fifthStep = configMgr.getNextStep(selected004001)
 
-//    println("Components for step: " + fifthStep._1.nameToShow)
-//    for(components <- fifthStep._1.components){
-//      println(components.nameToShow)
-//    }
+    println("Components for step: " + fifthStep.nameToShow)
+    for(components <- fifthStep.components){
+      println(components.nameToShow)
+    }
 
     val selected005001 = "005001"
     println("Selected Component: " + selected005001)
 
-//    configMgr.addStepToCurrentConfig(container, selected005001)
+//    configMgr.addStepToCurrentConfig(selected005001)
 //    println("Aktuelle Step: " + configMgr.getCurrentStep(container))
 
     println("Aktuelle Konfiguration")
@@ -175,12 +155,12 @@ object Main {
     // seventh Step
     println("##################################################################")
 
-//    val seventhStep = configMgr.getNextStep(container, selected005001)
+    val seventhStep = configMgr.getNextStep(selected005001)
 
-//    println("Components for step: " + seventhStep._1.nameToShow)
-//    for(components <- seventhStep._1.components){
-//      println(components.nameToShow)
-//    }
+    println("Components for step: " + seventhStep.nameToShow)
+    for(components <- seventhStep.components){
+      println(components.nameToShow)
+    }
 
     val selected007001 = "007001"
     println("Selected Component: " + selected007001)
@@ -201,20 +181,18 @@ object Main {
 
     val selected002002 = "002002"
 
-//    val eighthStep = configMgr.getNextStep(container, selected002002)
+    val eighthStep = configMgr.getNextStep(selected002002)
 
     println("Selected Component: " + selected002002)
 
-//    configMgr.addStepToCurrentConfig(container, selected002002)
+//    configMgr.addStepToCurrentConfig(selected002002)
 
 //    println("Aktuelle Step: " + configMgr.getCurrentStep(container))
 //
-//    println("Components for step: " + eighthStep._1.nameToShow)
-//    for(components <- eighthStep._1.components){
-//      println(components.nameToShow)
-//    }
-
-
+    println("Components for step: " + eighthStep.nameToShow)
+    for(components <- eighthStep.components){
+      println(components.nameToShow)
+    }
 
     println("Aktuelle Konfiguration")
     for(step <- container.currentConfig){
@@ -224,68 +202,6 @@ object Main {
       }
     }
 
-//    // third Step
-//    println("##################################################################")
-//
-//    val selected002001 = "002001"
-//    println("Selected Component: " + selected002001)
-//
-//    val thirdStep = configMgr.getNextStep(container, selected002001)
-//
-//    println("Components for step: " + thirdStep._1.nameToShow)
-//    for(components <- thirdStep._1.components){
-//      println(components.nameToShow)
-//    }
-//
-//    println("Aktuelle Konfiguration")
-//    for(step <- container.currentConfig){
-//      println(step.nameToShow)
-//      for(comp <- step.components){
-//        println(comp.nameToShow)
-//      }
-//    }
-//
-//    // third Step
-//    println("##################################################################")
-//
-//    val selected002001 = "002001"
-//    println("Selected Component: " + selected002001)
-//
-//    val thirdStep = configMgr.getNextStep(container, selected002001)
-//
-//    println("Components for step: " + thirdStep._1.nameToShow)
-//    for(components <- thirdStep._1.components){
-//      println(components.nameToShow)
-//    }
-//
-//    println("Aktuelle Konfiguration")
-//    for(step <- container.currentConfig){
-//      println(step.nameToShow)
-//      for(comp <- step.components){
-//        println(comp.nameToShow)
-//      }
-//    }
-//
-//    // third Step
-//    println("##################################################################")
-//
-//    val selected002001 = "002001"
-//    println("Selected Component: " + selected002001)
-//
-//    val thirdStep = configMgr.getNextStep(container, selected002001)
-//
-//    println("Components for step: " + thirdStep._1.nameToShow)
-//    for(components <- thirdStep._1.components){
-//      println(components.nameToShow)
-//    }
-//
-//    println("Aktuelle Konfiguration")
-//    for(step <- container.currentConfig){
-//      println(step.nameToShow)
-//      for(comp <- step.components){
-//        println(comp.nameToShow)
-//      }
-//    }
 
 
     def nextStep(enter: String): Unit = {

@@ -3,7 +3,6 @@ package org.configSettings
 import org.configTree.step._
 import org.configTree._
 import org.container.Container
-import org.configTree.component.StaticComponent
 import org.configTree.component.Component
 import org.configTree.component.ImmutableComponent
 import org.configTree.component.MutableComponent
@@ -22,30 +21,8 @@ object ConfigSettings {
 
 
 class ConfigSettings {
-  private def getXML = scala.xml.XML.loadFile("src/main/scala/xml_json/config.xml")
+//  private def getXML = scala.xml.XML.loadFile("src/main/scala/xml_json/config.xml")
   private def getXMLV01 = scala.xml.XML.loadFile("src/main/scala/xml_json/config_v0.1.xml")
-
-  private def toStep(stepXML: scala.xml.Node): Step = {
-    new Step(
-      (stepXML \ "id").text,
-      (stepXML \ "nameToShow").text,
-      (stepXML \ "nextStep").text,
-      (stepXML \ "isStartStep").text,
-      (stepXML \ "components" \ "component") map (c => toComponents(c))
-    )
-  }
-  //TODO spec for correct separation between Innutable and mutable Componnents
-  private def toComponents(componentXML: scala.xml.Node): Component = {
-    if((componentXML \ "mutable").text.toBoolean == false){
-      new ImmutableComponent(
-        (componentXML \ "id").text,
-        (componentXML \ "nameToShow").text,
-        (componentXML \ "nextStepId").text
-      )
-    }else{
-      new MutableComponent("0", "0", "0", "0")
-    }
-  }
 
   private def toNextStep(ns: scala.xml.NodeSeq): NextStep = {
     new NextStep(
@@ -66,8 +43,25 @@ class ConfigSettings {
       (s \ "path").text
     )
   }
-  private def toComponentv01(c: scala.xml.Node): StaticComponent= {
-    new StaticComponent(
+  private def toComponent(c: scala.xml.Node): Component = {
+    (c \ "kind").text match {
+      case "immutable" => immutableComponent(c)
+      case "mutable" => mutableComponent(c)
+    }
+    
+    
+  }
+  
+  private def mutableComponent(c: scala.xml.Node) = {
+    new MutableComponent(
+      (c \ "id").text,
+      (c \ "kind").text,
+      (c \ "nameToShow").text
+    )
+  }
+  
+  private def immutableComponent(c: scala.xml.Node) = {
+    new ImmutableComponent(
       (c \ "id").text,
       (c \ "kind").text,
       (c \ "nameToShow").text
@@ -75,7 +69,8 @@ class ConfigSettings {
   }
 
   /**
-    * kind kann man entfernen in der Klasse AbstractStep2
+   	* TODO spec for correct separation between Innutable and mutable Componnents
+    * TODO kind kann man entfernen in der Klasse AbstractStep2
     * @param step
     * @return
     */
@@ -86,14 +81,15 @@ class ConfigSettings {
     val kind = (step \ "kind").text
     val selectionCriterium = toSelectionCriterium  (step \ "selectionCriterium")
     val from = toSource(step \"from")
-    val components = (step \ "components" \ "component") map (c => toComponentv01(c))
+    val components = (step \ "components" \ "component") map (c => toComponent(c))
 
-    if(kind == "first") {
-      new FirstStep(id, nameToShow, nextSteps, kind, selectionCriterium, from, components)
-    }else if(kind == "default"){
-      new DefaultStep(id, nameToShow, nextSteps, kind, selectionCriterium, from, components)
-    }else{
-      new LastStep(id, nameToShow, nextSteps, kind, selectionCriterium, from, components)
+    kind match {
+      case "first" => new FirstStep(id, nameToShow, nextSteps, kind, 
+                                    selectionCriterium, from, components)
+      case "default" => new DefaultStep(id, nameToShow, nextSteps, kind, 
+                                        selectionCriterium, from, components)
+      case "last" => new LastStep(id, nameToShow, nextSteps, kind, 
+                                  selectionCriterium, from, components)
     }
   }
 }
