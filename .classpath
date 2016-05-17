@@ -7,11 +7,11 @@
 	<classpathentry kind="src" output="target/scala-2.11/test-classes" path="src/test/scala"/>
 	<classpathentry kind="src" output="target/scala-2.11/test-classes" path="src/test/java"/>
 	<classpathentry exported="true" kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
-	<classpathentry exported="true" kind="lib" path="/home/gennadi/.ivy2/cache/com.thoughtworks.paranamer/paranamer/jars/paranamer-2.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/heimann/.ivy2/cache/org.scala-lang/scalap/jars/scalap-2.11.0.jar"/>
 	<classpathentry exported="true" kind="con" path="org.scala-ide.sdt.launching.SCALA_COMPILER_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/heimann/.ivy2/cache/org.scala-lang.modules/scala-xml_2.11/bundles/scala-xml_2.11-1.0.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="/home/gennadi/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.11/bundles/scala-parser-combinators_2.11-1.0.1.jar"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/heimann/.ivy2/cache/org.specs2/specs2-core_2.11/jars/specs2-core_2.11-3.7.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/heimann/.ivy2/cache/org.specs2/specs2-matcher_2.11/jars/specs2-matcher_2.11-3.7.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/heimann/.ivy2/cache/org.specs2/specs2-common_2.11/jars/specs2-common_2.11-3.7.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/heimann/scala/libs/scala-xml-2.11.0-M4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
