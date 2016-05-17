@@ -2,7 +2,10 @@ package org.linearRunning
 
 import org.specs2._
 import org.configSettings.ConfigSettings
+import org.junit.runner.RunWith
+import org.specs2.runner.JUnitRunner
 
+@RunWith(classOf[JUnitRunner])
 class LinearExpirationSpec extends Specification {
   def is = s2"""
 
