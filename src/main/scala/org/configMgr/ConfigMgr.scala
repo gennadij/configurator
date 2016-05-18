@@ -51,7 +51,6 @@ class ConfigMgr {
    */
   private def addStepToCurrentConfig(selectedComponentId: String) = {
     
-    // return new val mit veränderer currentConfig mit zusätzlichem step
     val step = for {
       step <- container.configSettings
       component <- step.nextStep if (component.byComponent == selectedComponentId)
@@ -64,6 +63,22 @@ class ConfigMgr {
     if(index != -1) container.currentConfig.remove(index, currentConfigSize - index)
 
     container.currentConfig += step(0) 
+  }
+    private def addStepToCurrentConfigForMutableCurrentConfig(selectedComponentId: String) = {
+          
+    val step = for {
+      step <- container.configSettings
+      component <- step.nextStep if (component.byComponent == selectedComponentId)
+    }yield new DefaultStep(step.id, step.nameToShow, step.nextStep, step.kind, 
+                              step.selectionCriterium, step.from, getComponent(step, selectedComponentId))
+    
+//    val index = container.immutableCurrentConfig.indexWhere(s => step(0).id == s.id)
+//
+//    val currentConfigSize = container.immutableCurrentConfig.size
+//
+//    val changedCurrentconfig = if(index != -1) container.immutableCurrentConfig.remove(index, currentConfigSize - index)
+
+    container.immutableCurrentConfig.+:(step(0)) 
   }
   
   def getComponent(step: AbstractStep, selectedComponentId: String) = step.components filter (_.id == selectedComponentId)

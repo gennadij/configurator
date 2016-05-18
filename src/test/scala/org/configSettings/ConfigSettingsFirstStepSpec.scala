@@ -1,7 +1,6 @@
-package org.linearRunning
+package org.configSettings
 
 import org.specs2._
-import org.configSettings.ConfigSettings
 import org.junit.runner.RunWith
 import org.specs2.runner.JUnitRunner
 

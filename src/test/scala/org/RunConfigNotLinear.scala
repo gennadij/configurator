@@ -4,8 +4,19 @@ import org.configMgr.ConfigMgr
 import org.configSettings.ConfigSettings
 import org.specs2.mutable.Specification
 import org.specs2.specification.Scope
+import org.specs2.specification.BeforeAfterAll
+import org.specs2.specification.BeforeEach
 
-class RunConfigNotLinear extends Specification {
+class RunConfigNotLinear extends Specification with BeforeEach{
+  
+  def before = {
+    println("befor")
+    confi
+  }
+//  def beforeAll = {println("beforAll")
+//  }
+//  def afterAll = {println("afterAll")
+//  }
   
   // step 1
   "1. Step 001 contain 3 Components" in new CurrentConfig {
@@ -150,5 +161,4 @@ class RunConfigNotLinear extends Specification {
 
 trait CurrentConfig extends Scope  {
   val configMgr = new ConfigMgr
-//  val container = ConfigSettings.configSettingsV01
 }

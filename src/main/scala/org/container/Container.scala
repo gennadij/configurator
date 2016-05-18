@@ -11,4 +11,6 @@ import scala.collection.mutable.ListBuffer
 case class Container (
                        configSettings: Seq[AbstractStep],
                        currentConfig: ListBuffer[AbstractStep] = ListBuffer.empty
-                     )
+                     ){
+  val immutableCurrentConfig: Seq[AbstractStep] = Seq.empty
+}

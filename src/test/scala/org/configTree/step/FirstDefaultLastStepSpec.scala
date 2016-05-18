@@ -35,7 +35,7 @@ class FirstDefaultLastStepSpec extends Specification{
   val lastStep = new LastStep("008","step 008", List(
       new NextStep("008001","000"), 
       new NextStep("008002","000")),
-      "default", new SelectionCriterium("1","1"), new Source("xml","",""),
+      "last", new SelectionCriterium("1","1"), new Source("xml","",""),
       List(
           new ImmutableComponent("008001","immutable","component 008001"), 
           new ImmutableComponent("008002","immutable","component 008002")))

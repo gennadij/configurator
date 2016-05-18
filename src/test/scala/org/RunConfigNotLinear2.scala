@@ -17,7 +17,6 @@ class RunConfigNotLinear2 extends Specification{ def is =
         step 004                        $e3
         step 006                        $e4
         step 003                        $e5
-        Config                          $e6
     """
 
   val configMgr = new ConfigMgr
@@ -44,20 +43,20 @@ class RunConfigNotLinear2 extends Specification{ def is =
   
   def e5 = configMgr.getNextStep(selctionComponent003003).id must_== "004"
                                   
-  val currentConfig = ListBuffer(
-                  new DefaultStep("001","step 001",List(new NextStep("001001","002"), new NextStep("001002","002"), 
-                  new NextStep("001003","003")),"first",new SelectionCriterium("1","1"),new Source("xml","",""), 
-                  List(
-                      new ImmutableComponent("001003","immutable","component 001003")
-                      ))
-                  ,
-                 new DefaultStep("003","step 003",List(new NextStep("003001","004"), 
-                 new NextStep("003002","004"), new NextStep("003003","004"), 
-                 new NextStep("003004","004")),"default",new SelectionCriterium("1","1"),
-                 new Source("xml","",""), 
-                   List(
-                      new ImmutableComponent("003003","immutable","component 003003")
-                      ))) 
+//  val currentConfig = ListBuffer(
+//                  new DefaultStep("001","step 001",List(new NextStep("001001","002"), new NextStep("001002","002"), 
+//                  new NextStep("001003","003")),"first",new SelectionCriterium("1","1"),new Source("xml","",""), 
+//                  List(
+//                      new ImmutableComponent("001003","immutable","component 001003")
+//                      ))
+//                  ,
+//                 new DefaultStep("003","step 003",List(new NextStep("003001","004"), 
+//                 new NextStep("003002","004"), new NextStep("003003","004"), 
+//                 new NextStep("003004","004")),"default",new SelectionCriterium("1","1"),
+//                 new Source("xml","",""), 
+//                   List(
+//                      new ImmutableComponent("003003","immutable","component 003003")
+//                      ))) 
 //             new DefaultStep("004","step 004",List(new NextStep("004001","005"),
 //                 new NextStep("004002","005"), new NextStep("004003","006")),
 //                 "default",new SelectionCriterium("1","1"),new Source("xml","",""), 
@@ -73,6 +72,6 @@ class RunConfigNotLinear2 extends Specification{ def is =
                       
                                             
   
-  def e6 = configMgr.container.currentConfig must_== currentConfig
+//  def e6 = configMgr.container.currentConfig must_== currentConfig
   
 }
