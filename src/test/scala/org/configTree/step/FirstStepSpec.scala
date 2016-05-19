@@ -4,7 +4,10 @@ import org.specs2.Specification
 import org.configMgr.ConfigMgr
 import org.configTree.component._
 
-class FirstStepSpec extends Specification{ def is = s2"""
+class FirstStepSpec extends Specification{ 
+  sequential 
+  
+  def is = s2"""
   
   This Specification check first step
       
@@ -18,9 +21,9 @@ class FirstStepSpec extends Specification{ def is = s2"""
       new NextStep("001003","003")),
       "first", new SelectionCriterium("1","1"), new Source("xml","",""),
       List(
-          new ImmutableComponent("001001","immutable","component 001001"), 
-          new ImmutableComponent("001002","immutable","component 001002"), 
-          new ImmutableComponent("001003","immutable","component 001003")))
+          new ImmutableComponent("001001","component 001001"), 
+          new ImmutableComponent("001002","component 001002"), 
+          new ImmutableComponent("001003","component 001003")))
   
   def e1 = configMgr.startConfig.asInstanceOf[FirstStep] must_== firstStep
   

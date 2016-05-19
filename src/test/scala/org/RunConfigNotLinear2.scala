@@ -8,7 +8,9 @@ import org.specs2.Specification
 
 
 
-class RunConfigNotLinear2 extends Specification{ def is =
+class RunConfigNotLinear2 extends Specification{ 
+  sequential 
+  def is =
   
   s2"""
       Specification for whole Config by step 001, 003, 004, 006

@@ -108,12 +108,12 @@
 			</component>
 			<component>
 				<id>003003</id>
-				<kind>immutable</kind>
+				<kind>mutable</kind>
 				<nameToShow>component 003003</nameToShow>
 			</component>
 			<component>
 				<id>003004</id>
-				<kind>immutable</kind>
+				<kind>mutable</kind>
 				<nameToShow>component 003004</nameToShow>
 			</component>
 		</components>

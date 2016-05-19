@@ -5,11 +5,14 @@ import org.configMgr._
 import org.configTree.step._
 import org.configTree.component._
 import scala.collection.mutable.ListBuffer
+import org.configSettings.ConfigSettings
 
 /**
   * Created by gennadi on 12.05.16.
   */
-class RunConfig extends Specification{ def is =
+class RunConfig extends Specification{
+  sequential 
+  def is = 
   
   s2"""
       Specification for whole Config by step 001, 003, 004, 006
@@ -18,22 +21,20 @@ class RunConfig extends Specification{ def is =
         step 004                        $e3
         step 006                        $e4
     """
-
-  val configMgr = new ConfigMgr
-  
-  def e1 = configMgr.startConfig.id must_== "001"
+        
+  def e1 = ConfigMgr.startConfig.id must_== "001"
   
   val selectedComponent001003 = "001003"
   
-  def e2 = configMgr.getNextStep(selectedComponent001003).id must_== "003"
+  def e2 = ConfigMgr.getNextStep(selectedComponent001003).id must_== "003"
   
   val selectedComponent003002 = "003002"
   
-  def e3 = configMgr.getNextStep("003002").id must_== "004"
+  def e3 = ConfigMgr.getNextStep("003002").id must_== "004"
   
   val selectedComponent004003 = "004003"
   
-  def e4 = configMgr.getNextStep("004003").id must_== "006"
+  def e4 = ConfigMgr.getNextStep("004003").id must_== "006"
   
   val selectedComponent006001 = "006001"
   

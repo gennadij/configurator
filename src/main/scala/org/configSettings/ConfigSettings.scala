@@ -7,6 +7,10 @@ import org.configTree.component.Component
 import org.configTree.component.ImmutableComponent
 import org.configTree.component.MutableComponent
 
+/**
+ * TODO
+ */
+
 object ConfigSettings {
   
 //  val configSettings: Container  = {
@@ -48,14 +52,12 @@ class ConfigSettings {
       case "immutable" => immutableComponent(c)
       case "mutable" => mutableComponent(c)
     }
-    
-    
   }
   
   private def mutableComponent(c: scala.xml.Node) = {
     new MutableComponent(
       (c \ "id").text,
-      (c \ "kind").text,
+//      (c \ "kind").text,
       (c \ "nameToShow").text
     )
   }
@@ -63,14 +65,13 @@ class ConfigSettings {
   private def immutableComponent(c: scala.xml.Node) = {
     new ImmutableComponent(
       (c \ "id").text,
-      (c \ "kind").text,
+//      (c \ "kind").text,
       (c \ "nameToShow").text
     )
   }
 
   /**
-   	* TODO spec for correct separation between Innutable and mutable Componnents
-    * TODO kind kann man entfernen in der Klasse AbstractStep2
+   	* 
     * @param step
     * @return
     */

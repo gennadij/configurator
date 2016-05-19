@@ -14,11 +14,16 @@ import org.configTree.step.FirstStep
 
 /**
  * TODO
-  * - first Stepp ist immer erste hinzugefügte Step zu dem Config Setting
-  * - Configuration zu der CurrentCOnfig sofort bei der Auruf von nextStep hinzufügen.
-  * - create Factory Object
- * 
+ * - Die Reihenfolge der Schritten prüfen
+ * - Lösung zu der zentrallen Stelle aller Fehler in dem Configurator
+ * - definition von dem mutable Components (Slide, variable Massen)
+ * - Lösung zu der Immutable CurrentConfig suchen
+ * - Logger einrichten
+ * - Prüfung einbauen, wenn Komponent, der nicht in Step exestiert, ausgewählt
+ * - MultiComponent kombeniert Mutable und ImmutableComponent in einem in einem Steps
+ * - multichoose bei der Auswahl der Componenten
  */
+
 class ConfigMgr {
   
   val container = ConfigSettings.configSettings
@@ -185,4 +190,22 @@ class ConfigMgr {
 //    
 //    if(isStartStep.length == 1) true else false
 //  }
+}
+
+
+
+object ConfigMgr{
+  val configMgr = new ConfigMgr
+
+  def currentConfig = {
+    configMgr.container.currentConfig
+  }
+  
+  def startConfig = {
+    configMgr.startConfig
+  }
+  
+  def getNextStep(selectedComponentId: String) = {
+    configMgr.getNextStep(selectedComponentId)
+  }
 }

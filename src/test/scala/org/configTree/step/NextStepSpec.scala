@@ -8,6 +8,8 @@ import org.configTree.component.ImmutableComponent
   * Created by gennadi on 12.05.16.
   */
 class NextStepSpec extends Specification {
+  sequential 
+  
   def is = s2"""
 
     This is specification for next step
@@ -28,9 +30,9 @@ class NextStepSpec extends Specification {
     "first",
     new SelectionCriterium("1","1"),
     new Source("xml","",""),
-    List(new ImmutableComponent("001001", "immutable", "component 001001"),
-          new ImmutableComponent("001002", "immutable", "component 001002"),
-          new ImmutableComponent("001003", "immutable", "component 001003")))
+    List(new ImmutableComponent("001001", "component 001001"),
+          new ImmutableComponent("001002", "component 001002"),
+          new ImmutableComponent("001003", "component 001003")))
     
     configMgr.startConfig must_== firstStep
   }
@@ -38,8 +40,8 @@ class NextStepSpec extends Specification {
   def e2 = {
     
     val step002 = new DefaultStep("002", "step 002", List(new NextStep("002001","003"), new NextStep("002002", "003")), "default",
-    new SelectionCriterium("1", "1"), new Source("xml","",""), List(new ImmutableComponent("002001", "immutable", "component 002001"),
-      new ImmutableComponent("002002", "immutable", "component 002002")))
+    new SelectionCriterium("1", "1"), new Source("xml","",""), List(new ImmutableComponent("002001", "component 002001"),
+      new ImmutableComponent("002002", "component 002002")))
     
     configMgr.getNextStep("001001") must_== step002
   }

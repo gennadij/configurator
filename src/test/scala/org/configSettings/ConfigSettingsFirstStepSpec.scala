@@ -7,6 +7,8 @@ import org.specs2.runner.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
 class LinearExpirationSpec extends Specification {
+  sequential 
+  
   def is = s2"""
 
     "This is specification for leniar expiration from configurator from Step 1 to Step 7
@@ -28,13 +30,10 @@ class LinearExpirationSpec extends Specification {
       14. components->from->sqlStatement=                      $e14
       15. components->from->path=                              $e15
       16. components->component->id=001001                     $e16
-      17. components->component->kind=immutable                $e17
       18. components->component->nameToShow=component=001001   $e18
       19. components->component->id=001002                     $e19
-      20. components->component->kind=immutable                $e20
       21. components->component->nameToShow=component=001002   $e21
       22. components->component->id=001003                     $e22
-      23. components->component->kind=immutable                $e23
       24. components->component->nameToShow=component=001003   $e24
 
                                                                 """
@@ -73,19 +72,19 @@ class LinearExpirationSpec extends Specification {
 
   def e16 = staticStep.components(0).id must beEqualTo("001001")
 
-  def e17 = staticStep.components(0).kind must beEqualTo("immutable")
+//  def e17 = staticStep.components(0).kind must beEqualTo("immutable")
 
   def e18 = staticStep.components(0).nameToShow must beEqualTo("component 001001")
 
   def e19 = staticStep.components(1).id must beEqualTo("001002")
 
-  def e20 = staticStep.components(1).kind must beEqualTo("immutable")
+//  def e20 = staticStep.components(1).kind must beEqualTo("immutable")
 
   def e21 = staticStep.components(1).nameToShow must beEqualTo("component 001002")
 
   def e22 = staticStep.components(2).id must beEqualTo("001003")
 
-  def e23 = staticStep.components(2).kind must beEqualTo("immutable")
+//  def e23 = staticStep.components(2).kind must beEqualTo("immutable")
 
   def e24 = staticStep.components(2).nameToShow must beEqualTo("component 001003")
 }
