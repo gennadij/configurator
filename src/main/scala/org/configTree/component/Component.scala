@@ -13,12 +13,14 @@ abstract class Component extends ConfigTree {
 
 case class ImmutableComponent(
                     id: String,
-//                    kind: String,
                     nameToShow: String
-                    ) extends Component
+                    ) extends Component{
+  require(id != "000000", "id must not be 000000")
+}
                     
 case class MutableComponent(
                            id: String,
-//                           kind: String,
                            nameToShow: String
-                           ) extends Component
+                           ) extends Component {
+  require(id != "000000", "id must not be 000000")
+}

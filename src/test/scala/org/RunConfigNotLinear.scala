@@ -1,163 +1,79 @@
-//package org
-//
-//import org.configMgr.ConfigMgr
-//import org.configSettings.ConfigSettings
-//import org.specs2.mutable.Specification
-//import org.specs2.specification.Scope
-//import org.specs2.specification.BeforeAfterAll
-//import org.specs2.specification.BeforeEach
-//
-//class RunConfigNotLinear extends Specification with BeforeEach{
-//  
-//  def before = {
-//    println("befor")
-//  }
-////  def beforeAll = {println("beforAll")
-////  }
-////  def afterAll = {println("afterAll")
-////  }
-//  
-//  // step 1
-//  "1. Step 001 contain 3 Components" in new CurrentConfig {
-//    val firstStep = configMgr.startConfig
-//    firstStep.components.length must_== 3
-//  }
-//
-//  "1. Selection Component 001001 -> nextStepID=002" in new CurrentConfig {
-//    val selection = "001001"
-//    val nextStep1 = configMgr.getNextStep(selection)
-//    nextStep1.id must beEqualTo("002")
-//  }
-//
-////  "1. CurrentConfig step(0) id=001|component id=001001 " in new CurrentConfig {
-////    configMgr.addStepToCurrentConfig("001001")
-//    
-////    val step = configMgr.container.currentConfig filter (_.id == "001")
-////    step(0).id  must beEqualTo("001")
-////    step(0).components(0).id must beEqualTo("001001")
-////  }
-//
-//  //=========================================================================================
-//  // step 2
-//  "2. Selection Component 002001 -> nextStepID=003" in new CurrentConfig {
-//    val selection2 = "002001"
-////    configMgr.addStepToCurrentConfig(selection2)
-//    val nextStep2 = configMgr.getNextStep(selection2)
-//    nextStep2.id must beEqualTo("003")
-//  }
-//
-//  "2. CurrentConfig step(1) id=002||component id=002001 " in new CurrentConfig {
-//    val step = configMgr.container.currentConfig filter (_.id == "002")
-//    step(0).id  must beEqualTo("002")
-//    step(0).components(0).id must beEqualTo("002001")
-//  }
-//
-//  //======================================================================================
-//  // step 3 
-//  
-//  "3. Selection Component 003001 -> nextStepID=003" in new CurrentConfig {
-//    val selection3 = "003001"
-////    configMgr.addStepToCurrentConfig(selection3)
-//    val nextStep2 = configMgr.getNextStep(selection3)
-//    nextStep2.id must beEqualTo("004")
-//  }
-//
-//  "3. CurrentConfig step(2) id=003" in new CurrentConfig {
-//    val step = configMgr.container.currentConfig filter (_.id == "003")
-//    step(0).id  must beEqualTo("003")
-//  }
-//
-//  "3. CurrentConfig component id=003001 " in new CurrentConfig {
-//    val step = configMgr.container.currentConfig filter (_.id == "003")
-//    step(0).components(0).id must beEqualTo("003001")
-//  }
-//
-//  //=======================================================================
-//  // step 4
-//  
-//  "4. Selection Component 004001 -> nextStepID=005" in new CurrentConfig {
-//    val selection4 = "004001"
-////    configMgr.addStepToCurrentConfig(selection4)
-//    val nextStep2 = configMgr.getNextStep(selection4)
-//    nextStep2.id must beEqualTo("005")
-//  }
-//
-//  "4. CurrentConfig step(3) id=004" in new CurrentConfig {
-//    val step = configMgr.container.currentConfig filter (_.id == "004")
-//    step(0).id  must beEqualTo("004")
-//  }
-//
-//  "4. CurrentConfig component id=004001 " in new CurrentConfig {
-//    val step = configMgr.container.currentConfig filter (_.id == "004")
-//    step(0).components(0).id must beEqualTo("004001")
-//  }
-//
-//  //============================================================================
-//  //step 5
-//  
-//  "5. Selection Component 005001 -> nextStepID=006" in new CurrentConfig {
-//    val selection5 = "005001"
-////    configMgr.addStepToCurrentConfig(selection5)
-//    val nextStep2 = configMgr.getNextStep(selection5)
-//    nextStep2.id must beEqualTo("007")
-//  }
-//
-//  "5. CurrentConfig step(4) id=005" in new CurrentConfig {
-//    val step = configMgr.container.currentConfig filter (_.id == "005")
-//    step(0).id  must beEqualTo("005")
-//  }
-//
-//  "5. CurrentConfig component id=005001 " in new CurrentConfig {
-//    val step = configMgr.container.currentConfig filter (_.id == "005")
-//    step(0).components(0).id must beEqualTo("005001")
-//  }
-//
-//  //=============================================================================
-//  //step 6
-//  
-//  "6. Selection Component 007001 -> nextStep=null" in new CurrentConfig {
-//    val selection7 = "007001"
-////    configMgr.addStepToCurrentConfig(selection7)
-//    val nextStep2 = configMgr.getNextStep(selection7)
-//    nextStep2.id must beEqualTo("000")
-//    nextStep2.nameToShow must_== "I am final step"
-//  }
-//
-//  "6. CurrentConfig step(5) id=007" in new CurrentConfig {
-//    val step = configMgr.container.currentConfig filter (_.id == "006")
-//    step(0).id  must beEqualTo("007")
-//  }
-//
-//  "6. CurrentConfig component id=007001 " in new CurrentConfig {
-//    val step = configMgr.container.currentConfig filter (_.id == "006")
-//    step(0).components(0).id must beEqualTo("007001")
-//  }
-//  
-//  //=============================================================================
-//  // step 4
-//  
-//  "4. Selection Component 004001 -> nextStepID=005" in new CurrentConfig {
-//    val selection = "004001"
-////    configMgr.addStepToCurrentConfig(selection)
-//    val nextStep2 = configMgr.getNextStep(selection)
-//    nextStep2.id must beEqualTo("005")
-//  }
-//
-//  "4. CurrentConfig step(3) id=004" in new CurrentConfig {
-//    val step = configMgr.container.currentConfig filter (_.id == "004")
-//    step(0).id  must beEqualTo("004")
-//  }
-//
-//  "4. CurrentConfig component id=004001 " in new CurrentConfig {
-//    val step = configMgr.container.currentConfig filter (_.id == "004")
-//    step(0).components(0).id must beEqualTo("004001")
-//  }
-//  
-//  "7. Currentconfig size = ?" in new CurrentConfig {
-//    configMgr.container.currentConfig.size must_==4
-//  }
-//}
-//
-//trait CurrentConfig extends Scope  {
-//  val configMgr = new ConfigMgr
-//}
+package org
+
+import org.configMgr._
+import org.configTree.step._
+import org.configTree.component._
+import scala.collection.mutable.ListBuffer
+import org.specs2.Specification
+
+
+
+class RunConfigNotLinear extends Specification{ 
+  sequential 
+  def is =
+  
+  s2"""
+      Specification for whole Config by step 001, 003, 004, 006
+        Step 001                        $e1
+        Step 003                        $e2
+        step 004                        $e3
+        step 006                        $e4
+        step 003                        $e5
+    """
+
+  val configMgr = new ConfigMgr
+  
+  configMgr.container.currentConfig.clear()
+  
+  def e1 = configMgr.startConfig.id must_== "001"
+  
+  val selectedComponent001003 = "001003"
+  
+  def e2 = configMgr.getNextStep(selectedComponent001003).id must_== "003"
+  
+  val selectedComponent003002 = "003002"
+  
+  def e3 = configMgr.getNextStep("003002").id must_== "004"
+  
+  val selectedComponent004003 = "004003"
+  
+  def e4 = configMgr.getNextStep("004003").id must_== "006"
+  
+  val selectedComponent006001 = "006001"
+  
+  val selctionComponent003003 = "003003"
+  
+  def e5 = configMgr.getNextStep(selctionComponent003003).id must_== "004"
+                                  
+//  val currentConfig = ListBuffer(
+//                  new DefaultStep("001","step 001",List(new NextStep("001001","002"), new NextStep("001002","002"), 
+//                  new NextStep("001003","003")),"first",new SelectionCriterium("1","1"),new Source("xml","",""), 
+//                  List(
+//                      new ImmutableComponent("001003","immutable","component 001003")
+//                      ))
+//                  ,
+//                 new DefaultStep("003","step 003",List(new NextStep("003001","004"), 
+//                 new NextStep("003002","004"), new NextStep("003003","004"), 
+//                 new NextStep("003004","004")),"default",new SelectionCriterium("1","1"),
+//                 new Source("xml","",""), 
+//                   List(
+//                      new ImmutableComponent("003003","immutable","component 003003")
+//                      ))) 
+//             new DefaultStep("004","step 004",List(new NextStep("004001","005"),
+//                 new NextStep("004002","005"), new NextStep("004003","006")),
+//                 "default",new SelectionCriterium("1","1"),new Source("xml","",""), 
+//                 List(
+//                      new StaticComponent("004003","immutable","component 004003")
+//                      )), 
+//             new DefaultStep("006","step 006", List(new NextStep("006001","000"), new NextStep("006002","000"), 
+//                 new NextStep("006003","000")),"last",new SelectionCriterium("1","1"),new Source("xml","",""),
+//                 List(
+//                      new StaticComponent("006001","immutable","component 006001")
+//                      ))
+//              )
+                      
+                                            
+  
+//  def e6 = configMgr.container.currentConfig must_== currentConfig
+  
+}

@@ -27,7 +27,10 @@ case class DefaultStep  (
                               override val selectionCriterium: SelectionCriterium,
                               override val from: Source,
                               override val components: Seq[Component]
-                        ) extends AbstractStep
+                        ) extends AbstractStep {
+  require(id != "000", "id must not bi 000")
+  require(!components.isEmpty, "components list should not be empty")
+}
                         
 case class FirstStep    (
                               id: String,
@@ -37,7 +40,10 @@ case class FirstStep    (
                               override val selectionCriterium: SelectionCriterium = null,
                               override val from: Source,
                               override val components: Seq[Component]
-                        ) extends AbstractStep
+                        ) extends AbstractStep {
+  require(id != "000", "id must not bi 000")
+  require(!components.isEmpty, "components list should not be empty")
+}
 
 case class LastStep     (
                               id: String,
@@ -47,9 +53,14 @@ case class LastStep     (
                               override val selectionCriterium: SelectionCriterium = null,
                               override val from: Source,
                               override val components: Seq[Component]
-                        ) extends AbstractStep
+                        ) extends AbstractStep {
+  require(id != "000", "id must not bi 000")
+  require(!components.isEmpty, "components list should not be empty")
+}
 
-case class FinalStep(id: String, nameToShow: String) extends AbstractStep
+case class FinalStep(id: String, nameToShow: String) extends AbstractStep {
+  require(id == "000", "id must be 000")
+}
 
 
 
