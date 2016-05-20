@@ -57,7 +57,6 @@ class ConfigSettings {
   private def mutableComponent(c: scala.xml.Node) = {
     new MutableComponent(
       (c \ "id").text,
-//      (c \ "kind").text,
       (c \ "nameToShow").text
     )
   }
@@ -65,7 +64,6 @@ class ConfigSettings {
   private def immutableComponent(c: scala.xml.Node) = {
     new ImmutableComponent(
       (c \ "id").text,
-//      (c \ "kind").text,
       (c \ "nameToShow").text
     )
   }
@@ -85,11 +83,11 @@ class ConfigSettings {
     val components = (step \ "components" \ "component") map (c => toComponent(c))
 
     kind match {
-      case "first" => new FirstStep(id, nameToShow, nextSteps, kind, 
+      case "first" => new FirstStep(id, nameToShow, nextSteps, 
                                     selectionCriterium, from, components)
-      case "default" => new DefaultStep(id, nameToShow, nextSteps, kind, 
+      case "default" => new DefaultStep(id, nameToShow, nextSteps,
                                         selectionCriterium, from, components)
-      case "last" => new LastStep(id, nameToShow, nextSteps, kind, 
+      case "last" => new LastStep(id, nameToShow, nextSteps,  
                                   selectionCriterium, from, components)
     }
   }

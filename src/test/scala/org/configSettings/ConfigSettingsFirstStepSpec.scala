@@ -23,7 +23,6 @@ class LinearExpirationSpec extends Specification {
       7. nextSteps->nextStep->step=002                         $e7
       8. nextSteps->nextStep->component=001003                 $e8
       9. nextSteps->nextStep->step=003                         $e9
-      10. kind=first                                           $e10
       11. selectionCriterium->min=1                            $e11
       12. selectionCriterium->max=1                            $e12
       13. components->from->source=xml                         $e13
@@ -57,8 +56,6 @@ class LinearExpirationSpec extends Specification {
   def e8 = staticStep.nextStep(2).byComponent must_== "001003"
 
   def e9 = staticStep.nextStep(2).nextStep must_== "003"
-
-  def e10 = staticStep.kind must beEqualTo("first")
 
   def e11 = staticStep.selectionCriterium.min must beEqualTo("1")
 

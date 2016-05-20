@@ -13,7 +13,7 @@ abstract class AbstractStep extends ConfigTree {
   def id: String
   def nameToShow: String
   def nextStep: Seq[NextStep] = Seq.empty
-  def kind: String = ""
+//  def kind: String = ""
   def selectionCriterium: SelectionCriterium = null
   def from: Source = null
   def components: Seq[Component] = null
@@ -23,7 +23,7 @@ case class DefaultStep  (
                               id: String,
                               nameToShow: String,
                               override val nextStep: Seq[NextStep],
-                              override val kind: String,
+//                              override val kind: String,
                               override val selectionCriterium: SelectionCriterium,
                               override val from: Source,
                               override val components: Seq[Component]
@@ -36,7 +36,7 @@ case class FirstStep    (
                               id: String,
                               nameToShow: String,
                               override val nextStep: Seq[NextStep],
-                              override val kind: String,
+//                              override val kind: String,
                               override val selectionCriterium: SelectionCriterium = null,
                               override val from: Source,
                               override val components: Seq[Component]
@@ -49,7 +49,7 @@ case class LastStep     (
                               id: String,
                               nameToShow: String,
                               override val nextStep: Seq[NextStep],
-                              override val kind: String,
+//                              override val kind: String,
                               override val selectionCriterium: SelectionCriterium = null,
                               override val from: Source,
                               override val components: Seq[Component]
@@ -80,15 +80,3 @@ case class Step (
                   isStartStep: String,
                   components: Seq[Component]
                 )
-                
-
-
-                   //case class StaticStep(
-//                       id: String,
-//                       nameToShow: String,
-//                       nextStep: Seq[NextStep],
-//                       kind: String,
-//                       selectionCriterium: SelectionCriterium = null,
-//                       from: Source,
-//                       components: Seq[StaticComponent]
-//                     ) extends AbstractStep

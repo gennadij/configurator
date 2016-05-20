@@ -59,7 +59,7 @@ class ConfigMgr {
     val step = for {
       step <- container.configSettings
       component <- step.nextStep if (component.byComponent == selectedComponentId)
-    }yield new DefaultStep(step.id, step.nameToShow, step.nextStep, step.kind, 
+    }yield new DefaultStep(step.id, step.nameToShow, step.nextStep, 
                               step.selectionCriterium, step.from, getComponent(step, selectedComponentId))
     val index = container.currentConfig.indexWhere(s => step(0).id == s.id)
 
@@ -76,7 +76,7 @@ class ConfigMgr {
     val step = for {
       step <- container.configSettings
       component <- step.nextStep if (component.byComponent == selectedComponentId)
-    }yield new DefaultStep(step.id, step.nameToShow, step.nextStep, step.kind, 
+    }yield new DefaultStep(step.id, step.nameToShow, step.nextStep,  
                               step.selectionCriterium, step.from, getComponent(step, selectedComponentId))
     
 //    val index = container.immutableCurrentConfig.indexWhere(s => step(0).id == s.id)
