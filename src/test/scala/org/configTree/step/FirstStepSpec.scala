@@ -19,7 +19,7 @@ class FirstStepSpec extends Specification{
       new NextStep("001001","002"), 
       new NextStep("001002","002"), 
       new NextStep("001003","003")),
-      "first", new SelectionCriterium("1","1"), new Source("xml","",""),
+      new SelectionCriterium("1","1"), new Source("xml","",""),
       List(
           new ImmutableComponent("001001","component 001001"), 
           new ImmutableComponent("001002","component 001002"), 

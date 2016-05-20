@@ -12,20 +12,13 @@ import org.configTree.component.MutableComponent
  */
 
 object ConfigSettings {
-  
-//  val configSettings: Container  = {
-//     val configSet = new ConfigSettings
-//    new Container(configSet.getXML \ "step" map(s => configSet.toStep(s)))
-//  }
   val configSettings: Container = {
     val configSet = new ConfigSettings
-    new Container(configSet.getXMLV01 \ "step" map(s => configSet.toStepv01(s)))
+    new Container(configSet.getXMLV01 \ "step" map(s => configSet.toStep(s)))
   }
 }
 
-
 class ConfigSettings {
-//  private def getXML = scala.xml.XML.loadFile("src/main/scala/xml_json/config.xml")
   private def getXMLV01 = scala.xml.XML.loadFile("src/main/scala/xml_json/config_v0.1.xml")
 
   private def toNextStep(ns: scala.xml.NodeSeq): NextStep = {
@@ -57,7 +50,6 @@ class ConfigSettings {
   private def mutableComponent(c: scala.xml.Node) = {
     new MutableComponent(
       (c \ "id").text,
-//      (c \ "kind").text,
       (c \ "nameToShow").text
     )
   }
@@ -65,7 +57,6 @@ class ConfigSettings {
   private def immutableComponent(c: scala.xml.Node) = {
     new ImmutableComponent(
       (c \ "id").text,
-//      (c \ "kind").text,
       (c \ "nameToShow").text
     )
   }
@@ -75,7 +66,7 @@ class ConfigSettings {
     * @param step
     * @return
     */
-  private def toStepv01(step: scala.xml.Node) = {
+  private def toStep(step: scala.xml.Node) = {
     val id = (step \ "id").text
     val nameToShow = (step \ "nameToShow").text
     val nextSteps = (step \ "nextSteps" \ "nextStep") map (ns => toNextStep(ns))
@@ -85,11 +76,11 @@ class ConfigSettings {
     val components = (step \ "components" \ "component") map (c => toComponent(c))
 
     kind match {
-      case "first" => new FirstStep(id, nameToShow, nextSteps, kind, 
+      case "first" => new FirstStep(id, nameToShow, nextSteps,
                                     selectionCriterium, from, components)
-      case "default" => new DefaultStep(id, nameToShow, nextSteps, kind, 
+      case "default" => new DefaultStep(id, nameToShow, nextSteps,
                                         selectionCriterium, from, components)
-      case "last" => new LastStep(id, nameToShow, nextSteps, kind, 
+      case "last" => new LastStep(id, nameToShow, nextSteps, 
                                   selectionCriterium, from, components)
     }
   }

@@ -27,7 +27,6 @@ class NextStepSpec extends Specification {
     "step 001",
     List(new NextStep("001001", "002"), new NextStep("001002", "002"),
           new NextStep("001003", "003")),
-    "first",
     new SelectionCriterium("1","1"),
     new Source("xml","",""),
     List(new ImmutableComponent("001001", "component 001001"),
@@ -39,7 +38,7 @@ class NextStepSpec extends Specification {
   
   def e2 = {
     
-    val step002 = new DefaultStep("002", "step 002", List(new NextStep("002001","003"), new NextStep("002002", "003")), "default",
+    val step002 = new DefaultStep("002", "step 002", List(new NextStep("002001","003"), new NextStep("002002", "003")),
     new SelectionCriterium("1", "1"), new Source("xml","",""), List(new ImmutableComponent("002001", "component 002001"),
       new ImmutableComponent("002002", "component 002002")))
     

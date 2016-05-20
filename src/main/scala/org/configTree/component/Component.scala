@@ -7,7 +7,6 @@ import org.configTree.ConfigTree
   */
 abstract class Component extends ConfigTree {
   def id: String
-//  def kind: String
   def nameToShow: String
 }
 
