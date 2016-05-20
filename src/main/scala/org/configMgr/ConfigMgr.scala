@@ -69,6 +69,8 @@ class ConfigMgr {
 
     container.currentConfig += step(0) 
   }
+  
+  //TODO Implement immutable current config
     private def addStepToCurrentConfigForMutableCurrentConfig(selectedComponentId: String) = {
           
     val step = for {
