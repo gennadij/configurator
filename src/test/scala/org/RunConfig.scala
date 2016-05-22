@@ -26,13 +26,13 @@ class RunConfig extends Specification{
   
   val selectedComponent001003 = "001003"
   
-  def e2 = ConfigMgr.getNextStep(selectedComponent001003).id must_== "003"
+  def e2 = ConfigMgr.getNextStep(List(selectedComponent001003)).id must_== "003"
   
   val selectedComponent003002 = "003002"
   
-  def e3 = ConfigMgr.getNextStep("003002").id must_== "004"
+  def e3 = ConfigMgr.getNextStep(List("003002")).id must_== "004"
   
   val selectedComponent004003 = "004003"
   
-  def e4 = ConfigMgr.getNextStep("004003").id must_== "006"
+  def e4 = ConfigMgr.getNextStep(List("004003")).id must_== "006"
 }

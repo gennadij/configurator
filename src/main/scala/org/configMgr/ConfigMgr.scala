@@ -35,8 +35,8 @@ object ConfigMgr{
     configMgr.startConfig
   }
   
-  def getNextStep(selectedComponentId: String) = {
-    configMgr.getNextStep(selectedComponentId)
+  def getNextStep(selectedComponentIds: List[String]) = {
+    configMgr.getNextStep(selectedComponentIds)
   }
 }
 
@@ -55,19 +55,21 @@ class ConfigMgr {
 
   def getNextStep(selectedComponents: List[String]): AbstractStep = {
     
-    checkSelectionCriterium(selectedComponents)
+    if(checkSelectionCriterium(selectedComponents)){
+      addStepToCurrentConfig(selectedComponents(0))
     
-    addStepToCurrentConfig(selectedComponents(0))
+      val nextStep = for{
+        step <- container.configSettings
+        nextStep <- step.nextStep if(nextStep.byComponent == selectedComponents(0))
+      }yield nextStep
     
-    val nextStep = for{
-      step <- container.configSettings
-      nextStep <- step.nextStep if(nextStep.byComponent == selectedComponents(0))
-    }yield nextStep
-    
-    if(nextStep(0).nextStep == "000")
-      new FinalStep("000", "I am final step")
-    else
-      (container.configSettings filter (_.id == nextStep(0).nextStep))(0)
+      if(nextStep(0).nextStep == "000")
+        new FinalStep("000", "I am final step")
+      else
+        (container.configSettings filter (_.id == nextStep(0).nextStep))(0)
+    }else{
+      throw new IllegalArgumentException
+    }
   }
   
   /**
@@ -91,12 +93,14 @@ class ConfigMgr {
   
   private def getComponent(step: AbstractStep, selectedComponentId: String) = step.components filter (_.id == selectedComponentId)
   
-  private def checkSelectionCriterium(selectedComponents: List[String]) = {
-    if(selectedComponents.size == 1) true
-    else {
-      for{
-        step <- container.configSettings 
-      } yield checkComponents(step.components, selectedComponents)
+  def checkSelectionCriterium(selectedComponents: List[String]): Boolean = {
+    val componentsExistInStep = for{  
+      step <- container.configSettings 
+    } yield checkComponents(step.components, selectedComponents)
+    if ((componentsExistInStep filter (_ == true)).size == 1){
+      (componentsExistInStep filter (_ == true))(0)
+    }else {
+      false
     }
   }
   
@@ -107,7 +111,7 @@ class ConfigMgr {
   
   def checkComponents(components: Seq[Component], selectedComponents: List[String]) = {
     val ids = components map (_.id)
-    ids.exists ( components contains _ )
+    ids.exists ( selectedComponents contains _ )
   }
   
   

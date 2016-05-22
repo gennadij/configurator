@@ -42,6 +42,6 @@ class NextStepSpec extends Specification {
     new SelectionCriterium("1", "1"), new Source("xml","",""), List(new ImmutableComponent("002001", "component 002001"),
       new ImmutableComponent("002002", "component 002002")))
     
-    configMgr.getNextStep("001001") must_== step002
+    configMgr.getNextStep(List("001001")) must_== step002
   }
 }
