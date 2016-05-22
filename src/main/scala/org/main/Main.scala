@@ -17,6 +17,10 @@ object Main {
 //    currentConfig.mutableCurrentConfig
     val selCrit = new TestSelectionCriterium
     
-    selCrit.selectCriterium
+//    selCrit.selectCriterium
+    
+    selCrit.getStepOfComponents
+    
+    println("END")
   }
 }

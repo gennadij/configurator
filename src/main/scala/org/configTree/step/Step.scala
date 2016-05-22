@@ -63,3 +63,7 @@ case class NextStep     (
                               nextStep: String
                         )               
                         
+case class ErrorStep(id: String, nameToShow: String) extends AbstractStep{
+  require(id == "000", "id must be 000")
+  require(!nameToShow.isEmpty(), "id must be not empty")
+}

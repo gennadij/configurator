@@ -10,6 +10,8 @@ import org.configTree.step.AbstractStep
 import org.configTree.step.DefaultStep
 import org.configTree.step.FinalStep
 import org.configTree.step.FirstStep
+import org.configTree.step.ErrorStep
+import org.configTree.step.LastStep
 
 /**
  * TODO
@@ -37,6 +39,10 @@ object ConfigMgr{
   
   def getNextStep(selectedComponentIds: List[String]) = {
     configMgr.getNextStep(selectedComponentIds)
+  }
+  
+  def getStepOfComponent(selectedComponentIds: List[String]): AbstractStep ={
+    configMgr.getStepOfComponent(selectedComponentIds)
   }
 }
 
@@ -94,9 +100,10 @@ class ConfigMgr {
   private def getComponent(step: AbstractStep, selectedComponentId: String) = step.components filter (_.id == selectedComponentId)
   
   def checkSelectionCriterium(selectedComponents: List[String]): Boolean = {
-    val componentsExistInStep = for{  
-      step <- container.configSettings 
-    } yield checkComponents(step.components, selectedComponents)
+    
+    val componentsExistInStep = for{
+      step <- container.configSettings
+    } yield checkComponents(step, selectedComponents)
     if ((componentsExistInStep filter (_ == true)).size == 1){
       (componentsExistInStep filter (_ == true))(0)
     }else {
@@ -104,14 +111,45 @@ class ConfigMgr {
     }
   }
   
-  private def getStepOfComponent(components: List[String]): AbstractStep = {
-//    container.configSettings map (_.components.contains())
-    null
+  private def getStepOfComponent(selectedComponentIds: List[String]): AbstractStep = {
+    val steps = for{
+      step <- container.configSettings
+    }yield {
+      val ids = step.components map (_.id)
+      if(ids.exists { selectedComponentIds.contains _ }){
+        step
+      }else{
+        new ErrorStep("000", "Error in Selection Criterium")
+      }
+    }
+    
+    val filterdSteps = steps filter (!checkErrorStepType(_))
+    if(filterdSteps.size == 1){
+      filterdSteps(0)
+    }else{
+      new ErrorStep("000", "Error in getStepComponent")
+    }
+      
   }
   
-  def checkComponents(components: Seq[Component], selectedComponents: List[String]) = {
-    val ids = components map (_.id)
-    ids.exists ( selectedComponents contains _ )
+  
+  private def checkErrorStepType(step: AbstractStep): Boolean = 
+    step match {
+    case first: FirstStep => false
+    case default: DefaultStep => false
+    case last: LastStep => false
+    case error: ErrorStep => true
+  }
+  
+  def checkComponents(step: AbstractStep, selectedComponents: List[String]) = {
+    val ids = step.components map (_.id)
+    if(ids.exists ( selectedComponents contains _ ) &&
+          selectedComponents.size >= step.selectionCriterium.min.toInt &&
+          selectedComponents.size <= step.selectionCriterium.max.toInt){
+      true
+    }else{
+      false
+    }
   }
   
   
