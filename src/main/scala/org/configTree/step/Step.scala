@@ -77,7 +77,9 @@ case class NextStep     (
                               nameToShow: String,
                               override val byComponent: String,
                               override val step: String
-                        ) extends AbstractStep
+                        ) extends AbstractStep{
+  require(id == "1", "id must bi 1")
+}
 /**
  * Error step hat immer id 7                        
  */
