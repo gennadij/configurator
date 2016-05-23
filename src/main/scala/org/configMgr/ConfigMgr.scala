@@ -12,6 +12,7 @@ import org.configTree.step.FinalStep
 import org.configTree.step.FirstStep
 import org.configTree.step.ErrorStep
 import org.configTree.step.LastStep
+import org.configTree.step.NextStep
 
 /**
  * TODO
@@ -21,9 +22,8 @@ import org.configTree.step.LastStep
  * - Lösung zu der Immutable CurrentConfig suchen
  * - Logger einrichten
  * - Prüfung einbauen, wenn Komponent, der nicht in Step exestiert, ausgewählt
- * - MultiComponent kombeniert Mutable und ImmutableComponent in einem in einem Steps
- * - multichoose bei der Auswahl der Componenten
  * - Selection criterium checken, wenn 2 meherere Components ausgewaehlt werden koennen 
+ * - Selection Criterium to Int konvertieren
  */
 
 object ConfigMgr{
@@ -42,7 +42,7 @@ object ConfigMgr{
   }
   
   def getStepOfComponent(selectedComponentIds: List[String]): AbstractStep ={
-    configMgr.getStepOfComponent(selectedComponentIds)
+    configMgr.getStepOfComponents(selectedComponentIds)
   }
 }
 
@@ -58,24 +58,45 @@ class ConfigMgr {
     val firstStep = container.configSettings filter(_.isInstanceOf[FirstStep])
     if(firstStep.size == 1) firstStep(0) else null
   }
-
-  def getNextStep(selectedComponents: List[String]): AbstractStep = {
+  
+  /**
+   * - addStepToCurrentConfig(selectedComponentIds(0)) vor List vorbereiten
+   * - nextStep Id bei der Multichoose Component muss bei allen componentId mit Step Id übereinstimmen 
+   */
+  def getNextStep(selectedComponentIds: List[String]): AbstractStep = {
     
-    if(checkSelectionCriterium(selectedComponents)){
-      addStepToCurrentConfig(selectedComponents(0))
+    val step = getStepOfComponents(selectedComponentIds)
     
-      val nextStep = for{
-        step <- container.configSettings
-        nextStep <- step.nextStep if(nextStep.byComponent == selectedComponents(0))
-      }yield nextStep
-    
-      if(nextStep(0).nextStep == "000")
-        new FinalStep("000", "I am final step")
-      else
-        (container.configSettings filter (_.id == nextStep(0).nextStep))(0)
+    if(step.isInstanceOf[ErrorStep]){
+      step
     }else{
-      throw new IllegalArgumentException
+      if(checkSelectionCriterium(step, selectedComponentIds)){
+        addStepToCurrentConfig(selectedComponentIds(0))
+        
+        val nextStep = step.nextStep filter(_.byComponent == selectedComponentIds(0))
+        
+        println("checkNextSteps " + checkNextSteps(step, selectedComponentIds))
+        
+        if(nextStep(0).nextStep == "000")
+          new FinalStep("0", "I am final step")
+        else
+          (container.configSettings filter (_.id == nextStep(0).nextStep))(0)
+      }else{
+        null
+      }
     }
+    
+    
+    
+//    val nextStep = for{
+//      step <- container.configSettings
+//      nextStep <- step.nextStep if(nextStep.byComponent == selectedComponents(0))
+//    }yield nextStep
+    
+//    if(nextStep(0).nextStep == "000")
+//      new FinalStep("000", "I am final step")
+//    else
+//      (container.configSettings filter (_.id == nextStep(0).nextStep))(0)
   }
   
   /**
@@ -99,19 +120,33 @@ class ConfigMgr {
   
   private def getComponent(step: AbstractStep, selectedComponentId: String) = step.components filter (_.id == selectedComponentId)
   
-  def checkSelectionCriterium(selectedComponents: List[String]): Boolean = {
-    
-    val componentsExistInStep = for{
-      step <- container.configSettings
-    } yield checkComponents(step, selectedComponents)
-    if ((componentsExistInStep filter (_ == true)).size == 1){
-      (componentsExistInStep filter (_ == true))(0)
-    }else {
+  def checkSelectionCriterium(step: AbstractStep, selectedComponentIds: List[String]): Boolean = {
+    val ids = step.components map (_.id)
+    if(selectedComponentIds.size >= step.selectionCriterium.min.toInt &&
+          selectedComponentIds.size <= step.selectionCriterium.max.toInt){
+      true
+    }else{
       false
     }
+    
+//    val step = getStepOfComponents(selectedComponentIds)
+//    
+//    val componentsExistInStep = for{
+//      step <- container.configSettings
+//    } yield checkComponents(step, selectedComponentIds)
+//    if ((componentsExistInStep filter (_ == true)).size == 1){
+//      (componentsExistInStep filter (_ == true))(0)
+//    }else {
+//      false
+//    }
   }
+  /**
+   * sucht den Step in Config Settings mit Hilfe der IDs des Components
+   * 
+   * @return Step mit dem Components
+   */
   
-  private def getStepOfComponent(selectedComponentIds: List[String]): AbstractStep = {
+  private def getStepOfComponents(selectedComponentIds: List[String]): AbstractStep = {
     val steps = for{
       step <- container.configSettings
     }yield {
@@ -119,26 +154,18 @@ class ConfigMgr {
       if(ids.exists { selectedComponentIds.contains _ }){
         step
       }else{
-        new ErrorStep("000", "Error in Selection Criterium")
+        new ErrorStep("7", "error step", "The selected components has " + 
+            "not been found in any configuration step")
       }
     }
-    
-    val filterdSteps = steps filter (!checkErrorStepType(_))
+    val filterdSteps = steps filter (!_.isInstanceOf[ErrorStep])
     if(filterdSteps.size == 1){
       filterdSteps(0)
     }else{
-      new ErrorStep("000", "Error in getStepComponent")
+      new ErrorStep("7", "error step", "found more than one step with " + 
+          "selected components")
     }
       
-  }
-  
-  
-  private def checkErrorStepType(step: AbstractStep): Boolean = 
-    step match {
-    case first: FirstStep => false
-    case default: DefaultStep => false
-    case last: LastStep => false
-    case error: ErrorStep => true
   }
   
   def checkComponents(step: AbstractStep, selectedComponents: List[String]) = {
@@ -152,6 +179,21 @@ class ConfigMgr {
     }
   }
   
+  private def checkNextSteps(step: AbstractStep, selectedComponentIds: List[String]) = {
+    val nextStep: Seq[NextStep] = for{
+      nextStep <- step.nextStep
+      selCom <- selectedComponentIds
+    }yield if (nextStep.byComponent == selCom) nextStep else null
+    
+    checkElem(nextStep filter (_.isInstanceOf[NextStep]) map (_.step))
+  }
+  
+  def checkElem(list: Seq[String]) = {
+    list match {
+      case x :: rest => rest forall (_ == x)
+      case _ => true
+    }
+  }
   
   
 //  def valideSteps(container: Container): Boolean = {

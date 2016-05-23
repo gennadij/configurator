@@ -5,6 +5,8 @@ import org.configTree.component.Component
 
 /**
   * Created by gennadi on 29.04.16.
+  * 
+  * 
   */
 
 //abstract class AbstractStep extends ConfigTree
@@ -12,10 +14,16 @@ import org.configTree.component.Component
 abstract class AbstractStep extends ConfigTree {
   def id: String
   def nameToShow: String
+  //DefaultStep, FirstStep, LastStep
   def nextStep: Seq[NextStep] = Seq.empty
   def selectionCriterium: SelectionCriterium = null
   def from: Source = null
   def components: Seq[Component] = null
+  //ErrorStep 
+  def errorMessage: String = ""
+  //NextStep
+  def byComponent: String = ""
+  def step: String = ""
 }
 
 case class DefaultStep  (
@@ -54,16 +62,32 @@ case class LastStep     (
   require(!components.isEmpty, "components list should not be empty")
 }
 
+/**
+ * Final step hat immer id 0
+ */
 case class FinalStep(id: String, nameToShow: String) extends AbstractStep {
-  require(id == "000", "id must be 000")
+  require(id == "0", "id must be 000")
 }
 
+/**
+ * NextStep hat immer id 1
+ */
 case class NextStep     (
-                              byComponent: String,
-                              nextStep: String
-                        )               
-                        
-case class ErrorStep(id: String, nameToShow: String) extends AbstractStep{
-  require(id == "000", "id must be 000")
+                              id: String,
+                              nameToShow: String,
+                              override val byComponent: String,
+                              override val step: String
+                        ) extends AbstractStep
+/**
+ * Error step hat immer id 7                        
+ */
+case class ErrorStep(         id: String, 
+                              nameToShow: String, 
+                              override val errorMessage: String
+                    ) extends AbstractStep{
+  require(id == "7", "id must be 0")
   require(!nameToShow.isEmpty(), "id must be not empty")
 }
+
+
+

@@ -19,7 +19,10 @@ object Main {
     
 //    selCrit.selectCriterium
     
-    selCrit.getStepOfComponents
+//    selCrit.getStepOfComponents
+    
+    selCrit.getNextStep
+
     
     println("END")
   }

@@ -23,8 +23,10 @@ class ConfigSettings {
 
   private def toNextStep(ns: scala.xml.NodeSeq): NextStep = {
     new NextStep(
-      (ns \ "@component").text,
-      (ns \ "@step").text)
+        "1",
+        "next step",
+        (ns \ "@component").text,
+        (ns \ "@step").text)
   }
   private def toSelectionCriterium(sc: scala.xml.NodeSeq): SelectionCriterium = {
     new SelectionCriterium(
