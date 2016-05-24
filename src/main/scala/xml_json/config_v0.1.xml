@@ -51,7 +51,7 @@
 		<nameToShow>step 002</nameToShow>
 		<nextSteps default="000">
 			<nextStep component="002001" step="003"/>
-			<nextStep component="002002" step="004"/>
+			<nextStep component="002002" step="003"/>
 		</nextSteps>
 		<kind>default</kind>
 		<selectionCriterium>

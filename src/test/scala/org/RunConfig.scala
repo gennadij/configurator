@@ -11,7 +11,6 @@ import org.configSettings.ConfigSettings
   * Created by gennadi on 12.05.16.
   */
 class RunConfig extends Specification{
-  sequential 
   def is = 
   
   s2"""

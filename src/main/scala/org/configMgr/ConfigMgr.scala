@@ -51,7 +51,8 @@ class ConfigMgr {
   val container = ConfigSettings.configSettings
 
   /**
-    * durch den Typunterscheidung mit match herausfiltern
+    * - durch den Typunterscheidung mit match herausfiltern
+    * - ErrorStep als Fehler difenieren
     * @return
     */
   def startConfig = {
@@ -73,16 +74,22 @@ class ConfigMgr {
       if(checkSelectionCriterium(step, selectedComponentIds)){
         addStepToCurrentConfig(selectedComponentIds(0))
         
+        //TODO test
         val nextStep = step.nextStep filter(_.byComponent == selectedComponentIds(0))
-        
-        println("checkNextSteps " + checkNextSteps(step, selectedComponentIds))
-        
-        if(nextStep(0).nextStep == "000")
-          new FinalStep("0", "I am final step")
-        else
-          (container.configSettings filter (_.id == nextStep(0).nextStep))(0)
+          
+        if(checkNextSteps(step, selectedComponentIds)){
+          // TODO has yet to be implemented
+          if(nextStep(0).step == "000")
+            new FinalStep("0", "I am final step")
+          else
+            (container.configSettings filter (_.id == nextStep(0).step))(0)
+          
+          
+        }else{
+          new ErrorStep("7", "error step", "has yet to be implemented")
+        }
       }else{
-        null
+        new ErrorStep("7", "error step", "has yet to be implemented")
       }
     }
     

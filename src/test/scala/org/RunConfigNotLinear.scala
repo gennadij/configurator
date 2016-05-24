@@ -9,7 +9,6 @@ import org.specs2.Specification
 
 
 class RunConfigNotLinear extends Specification{ 
-  sequential 
   def is =
   
   s2"""

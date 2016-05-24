@@ -6,7 +6,7 @@ import org.specs2.runner.JUnitRunner
 
 
 @RunWith(classOf[JUnitRunner])
-class LinearExpirationSpec extends Specification {
+class ConfigSettingsFirstStepSpec extends Specification {
   sequential 
   
   def is = s2"""
@@ -47,15 +47,15 @@ class LinearExpirationSpec extends Specification {
 
   def e4 = staticStep.nextStep(0).byComponent must_== "001001"
 
-  def e5 = staticStep.nextStep(0).nextStep must_== "002"
+  def e5 = staticStep.nextStep(0).step must_== "002"
   
   def e6 = staticStep.nextStep(1).byComponent must_== "001002"
 
-  def e7 = staticStep.nextStep(1).nextStep must_== "002"
+  def e7 = staticStep.nextStep(1).step must_== "002"
   
   def e8 = staticStep.nextStep(2).byComponent must_== "001003"
 
-  def e9 = staticStep.nextStep(2).nextStep must_== "003"
+  def e9 = staticStep.nextStep(2).step must_== "003"
 
   def e11 = staticStep.selectionCriterium.min must beEqualTo("1")
 
@@ -69,19 +69,13 @@ class LinearExpirationSpec extends Specification {
 
   def e16 = staticStep.components(0).id must beEqualTo("001001")
 
-//  def e17 = staticStep.components(0).kind must beEqualTo("immutable")
-
   def e18 = staticStep.components(0).nameToShow must beEqualTo("component 001001")
 
   def e19 = staticStep.components(1).id must beEqualTo("001002")
 
-//  def e20 = staticStep.components(1).kind must beEqualTo("immutable")
-
   def e21 = staticStep.components(1).nameToShow must beEqualTo("component 001002")
 
   def e22 = staticStep.components(2).id must beEqualTo("001003")
-
-//  def e23 = staticStep.components(2).kind must beEqualTo("immutable")
 
   def e24 = staticStep.components(2).nameToShow must beEqualTo("component 001003")
 }

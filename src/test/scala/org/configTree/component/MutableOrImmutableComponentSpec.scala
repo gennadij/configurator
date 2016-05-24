@@ -2,7 +2,11 @@ package org.configTree.component
 
 import org.specs2.Specification
 import org.configMgr.ConfigMgr
+import org.junit.runner.RunWith
+import org.specs2.runner.JUnitRunner
 
+
+@RunWith(classOf[JUnitRunner])
 class MutableOrImmutableComponentSpec extends Specification{
   sequential
   def is = s2"""
@@ -22,6 +26,7 @@ class MutableOrImmutableComponentSpec extends Specification{
   def e2 = {
     val imComponent = List(new MutableComponent("003003","component 003003"))
     
-    ConfigMgr.getNextStep(List("002001")).components filter (_.id == "003003") must_== imComponent
+    val nextStep = ConfigMgr.getNextStep(List("002001"))
+    nextStep.components filter (_.id == "003003") must_== imComponent
   }
 }
