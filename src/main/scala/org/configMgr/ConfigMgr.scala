@@ -89,7 +89,8 @@ class ConfigMgr {
           new ErrorStep("7", "error step", "has yet to be implemented")
         }
       }else{
-        new ErrorStep("7", "error step", "has yet to be implemented")
+        new ErrorStep("7", "error step", "ivalible selectiumCriterium or "+
+            "was selected to mach or to few Components")
       }
     }
     

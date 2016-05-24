@@ -86,8 +86,8 @@
 		</nextSteps>
 		<kind>default</kind>
 		<selectionCriterium>
-			<min>1</min>
-			<max>1</max>
+			<min>2</min>
+			<max>4</max>
 		</selectionCriterium>
 		<from source="xml">
 			<sqlStatement></sqlStatement>
