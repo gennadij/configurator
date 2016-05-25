@@ -20,59 +20,13 @@ class RunConfigNotLinear extends Specification{
         step 003                        $e5
     """
 
-  val configMgr = new ConfigMgr
+  def e1 = ConfigMgr.startConfig.id must_== "001"
   
-  configMgr.container.currentConfig.clear()
+  def e2 = ConfigMgr.getNextStep(Set("001003")).id must_== "003"
   
-  def e1 = configMgr.startConfig.id must_== "001"
+  def e3 = ConfigMgr.getNextStep(Set("003002", "003003")).id must_== "004"
   
-  val selectedComponent001003 = "001003"
+  def e4 = ConfigMgr.getNextStep(Set("004003")).id must_== "006"
   
-  def e2 = configMgr.getNextStep(Set(selectedComponent001003)).id must_== "003"
-  
-  val selectedComponent003002 = "003002"
-  
-  def e3 = configMgr.getNextStep(Set("003002")).id must_== "004"
-  
-  val selectedComponent004003 = "004003"
-  
-  def e4 = configMgr.getNextStep(Set("004003")).id must_== "006"
-  
-  val selectedComponent006001 = "006001"
-  
-  val selctionComponent003003 = "003003"
-  
-  def e5 = configMgr.getNextStep(Set(selctionComponent003003)).id must_== "004"
-                                  
-//  val currentConfig = ListBuffer(
-//                  new DefaultStep("001","step 001",List(new NextStep("001001","002"), new NextStep("001002","002"), 
-//                  new NextStep("001003","003")),"first",new SelectionCriterium("1","1"),new Source("xml","",""), 
-//                  List(
-//                      new ImmutableComponent("001003","immutable","component 001003")
-//                      ))
-//                  ,
-//                 new DefaultStep("003","step 003",List(new NextStep("003001","004"), 
-//                 new NextStep("003002","004"), new NextStep("003003","004"), 
-//                 new NextStep("003004","004")),"default",new SelectionCriterium("1","1"),
-//                 new Source("xml","",""), 
-//                   List(
-//                      new ImmutableComponent("003003","immutable","component 003003")
-//                      ))) 
-//             new DefaultStep("004","step 004",List(new NextStep("004001","005"),
-//                 new NextStep("004002","005"), new NextStep("004003","006")),
-//                 "default",new SelectionCriterium("1","1"),new Source("xml","",""), 
-//                 List(
-//                      new StaticComponent("004003","immutable","component 004003")
-//                      )), 
-//             new DefaultStep("006","step 006", List(new NextStep("006001","000"), new NextStep("006002","000"), 
-//                 new NextStep("006003","000")),"last",new SelectionCriterium("1","1"),new Source("xml","",""),
-//                 List(
-//                      new StaticComponent("006001","immutable","component 006001")
-//                      ))
-//              )
-                      
-                                            
-  
-//  def e6 = configMgr.container.currentConfig must_== currentConfig
-  
+  def e5 = ConfigMgr.getNextStep(Set("003003", "003001")).id must_== "004"
 }

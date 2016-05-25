@@ -42,8 +42,8 @@ class FirstDefaultLastStepSpec extends Specification{
           new ImmutableComponent("008001","component 008001"), 
           new ImmutableComponent("008002","component 008002")))
   
-  def e1 = configMgr.startConfig.asInstanceOf[FirstStep] must_== firstStep
-  def e2 = configMgr.getNextStep(Set("001001")).asInstanceOf[DefaultStep] must_== defaultStep
-  def e3 = configMgr.getNextStep(Set("005005")).asInstanceOf[LastStep] must_== lastStep
+  def e1 = configMgr.startConfig must_== firstStep
+  def e2 = configMgr.getNextStep(Set("001001")) must_== defaultStep
+  def e3 = configMgr.getNextStep(Set("005005")) must_== lastStep
   
 }

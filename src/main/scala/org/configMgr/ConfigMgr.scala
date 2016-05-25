@@ -41,10 +41,6 @@ object ConfigMgr{
   def getNextStep(selectedComponentIds: Set[String]) = {
     configMgr.getNextStep(selectedComponentIds)
   }
-  
-  def getStepOfComponent(selectedComponentIds: Set[String]): AbstractStep ={
-    configMgr.getStepOfComponents(selectedComponentIds)
-  }
 }
 
 class ConfigMgr {
@@ -58,7 +54,7 @@ class ConfigMgr {
     */
   def startConfig = {
     val firstStep = container.configSettings filter(_.isInstanceOf[FirstStep])
-    if(firstStep.size == 1) firstStep(0) else null
+    if(firstStep.size == 1) firstStep(0) else new ErrorStep("7", "error step", "exist more as one step")
   }
   
   /**
@@ -73,40 +69,15 @@ class ConfigMgr {
         case lastStep: LastStep => new FinalStep("0", "I am final step")
         case step => {
 //          addStepToCurrentConfig(selectedComponentIds.head)
-//          val nextStep = step.nextStep filter(_.byComponent == selectedComponentIds.head)
           checkNextSteps(step, selectedComponentIds)
-          
         }
     }
-
-//    val step = getStepOfComponents(selectedComponentIds)
-    
-//    if(step.isInstanceOf[ErrorStep]){
-//      step
-//    }else{
-//      checkSelectionCriterium(step, selectedComponentIds) match {
-//        case errorStep : ErrorStep => errorStep
-//        case successStep: SuccessStep => {
-//          addStepToCurrentConfig(selectedComponentIds.head)
-//          val nextStep = step.nextStep filter(_.byComponent == selectedComponentIds.head)
-//          if(checkNextSteps(step, selectedComponentIds)){
-//            // TODO has yet to be implemented
-//            if(nextStep(0).step == "000")
-//              new FinalStep("0", "I am final step")
-//            else
-//              (container.configSettings filter (_.id == nextStep(0).step))(0)
-//          }else{
-//            new ErrorStep("7", "error step", "has yet to be implemented")
-//          }
-//        }
-//      }
-//    }
   }
   
   /**
    * neue step für CurrentConfig
    */
-  private def addStepToCurrentConfig(selectedComponentId: String) = {
+  def addStepToCurrentConfig(selectedComponentId: String) = {
     
     val step = for {
       step <- container.configSettings
@@ -125,21 +96,8 @@ class ConfigMgr {
   private def getComponent(step: AbstractStep, selectedComponentId: String) = {
     step.components filter (_.id == selectedComponentId)
   }
-  // TODO Verschieden ErrorStep werfen wenn max oder min verstoßen wurde
-//  def checkSelectionCriterium(  step: AbstractStep, 
-//                                selectedComponentIds: Set[String]): AbstractStep = {
-//    
-//    val min = step.selectionCriterium.min.toInt
-//    val max = step.selectionCriterium.max.toInt
-//    
-//    selectedComponentIds.size match {
-//      case com1: Int if com1 < min => ErrorStep("7", "error step", "selected to few components")
-//      case com2: Int if com2 > max => ErrorStep("7", "error step", "selected to match components")
-//      case _ => SuccessStep("3", "success step", "available selection criterium")
-//    }
-//  }
   
-  def checkSelectionCriterium(  step: AbstractStep, 
+  private def checkSelectionCriterium(  step: AbstractStep, 
                                 selectedComponentIds: Set[String]): AbstractStep = {
     
     val min = step.selectionCriterium.min.toInt
@@ -165,16 +123,16 @@ class ConfigMgr {
       if(ids.exists { selectedComponentIds.contains _ }){
         step
       }else{
-        new ErrorStep("7", "error step", "The selected components has " + 
-            "not been found in any configuration steps")
+        null
       }
     }
-    val filterdSteps = steps filter (!_.isInstanceOf[ErrorStep])
+    val filterdSteps = steps filter (_ != null)
+    
     if(filterdSteps.size == 1){
       filterdSteps(0)
     }else{
-      new ErrorStep("7", "error step", "found more than one step with " + 
-          "selected components")
+      new ErrorStep("7", "error step", "The selected components has " + 
+            "not been found in any configuration steps")
     }
   }
   

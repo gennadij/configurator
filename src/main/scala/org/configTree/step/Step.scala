@@ -37,7 +37,15 @@ case class DefaultStep  (
                               override val components: Seq[Component]
                         ) extends AbstractStep {
   require(id != "000", "id must not bi 000")
+  require(id.size <= 3, "id size must be greater as 3")
+  require(!nextStep.isEmpty, "nextStep must not be empty")
+  require(selectionCriterium != null, "must not be null")
+  require(from != null, "must not be null")
   require(!components.isEmpty, "components list should not be empty")
+  require(errorMessage == "", "must be empty")
+  require(succsessMessage == "", "must be empty")
+  require(byComponent == "", "must be empty")
+  require(step == "", "must be empty")
 }
                         
 case class FirstStep    (
@@ -49,7 +57,15 @@ case class FirstStep    (
                               override val components: Seq[Component]
                         ) extends AbstractStep {
   require(id != "000", "id must not bi 000")
+  require(id.size <= 3, "id size must be greater as 3")
+  require(!nextStep.isEmpty, "nextStep must not be empty")
+  require(selectionCriterium != null, "must not be null")
+  require(from != null, "must not be null")
   require(!components.isEmpty, "components list should not be empty")
+  require(errorMessage == "", "must be empty")
+  require(succsessMessage == "", "must be empty")
+  require(byComponent == "", "must be empty")
+  require(step == "", "must be empty")
 }
 
 case class LastStep     (
@@ -61,14 +77,31 @@ case class LastStep     (
                               override val components: Seq[Component]
                         ) extends AbstractStep {
   require(id != "000", "id must not bi 000")
+  require(id.size <= 3, "id size must be greater as 3")
+  require(!nextStep.isEmpty, "nextStep must not be empty")
+  require(selectionCriterium != null, "must not be null")
+  require(from != null, "must not be null")
   require(!components.isEmpty, "components list should not be empty")
+  require(errorMessage == "", "must be empty")
+  require(succsessMessage == "", "must be empty")
+  require(byComponent == "", "must be empty")
+  require(step == "", "must be empty")
 }
 
 /**
  * Final step hat immer id 0
  */
 case class FinalStep(id: String, nameToShow: String) extends AbstractStep {
-  require(id == "0", "id must be 000")
+  require(id == "0", "id must be 0")
+  require(id.size == 1, "id size must be 1")
+  require(nextStep.isEmpty, "nextStep must be empty")
+  require(selectionCriterium == null, "must be null")
+  require(from == null, "must be null")
+  require(components == null, "components list should be empty")
+  require(errorMessage == "", "must be empty")
+  require(succsessMessage == "", "must be empty")
+  require(byComponent == "", "must be empty")
+  require(step == "", "must be empty")
 }
 
 /**
@@ -80,7 +113,16 @@ case class NextStep     (
                               override val byComponent: String,
                               override val step: String
                         ) extends AbstractStep{
-  require(id == "1", "id must bi 1")
+  require(id == "1", "id must be 1")
+  require(id.size == 1, "id size must be 1")
+  require(nextStep.isEmpty, "nextStep must be empty")
+  require(selectionCriterium == null, "must be null")
+  require(from == null, "must be null")
+  require(components == null, "components list should be null")
+  require(errorMessage == "", "must be empty")
+  require(succsessMessage == "", "must be empty")
+  require(byComponent != "", "must be not empty")
+  require(step != "", "must be not empty")
 }
 /**
  * Error step hat immer id 7                        
@@ -89,8 +131,17 @@ case class ErrorStep(         id: String,
                               nameToShow: String, 
                               override val errorMessage: String
                     ) extends AbstractStep{
-  require(id == "7", "id must be 0")
+  require(id == "7", "id must be 7")
+  require(id.size == 1, "id size must be 1")
   require(!nameToShow.isEmpty(), "id must be not empty")
+  require(nextStep.isEmpty, "nextStep must be empty")
+  require(selectionCriterium == null, "must be null")
+  require(from == null, "must be null")
+  require(components == null, "components list should be empty")
+  require(errorMessage != "", "must be not empty")
+  require(succsessMessage == "", "must be empty")
+  require(byComponent == "", "must be empty")
+  require(step == "", "must be empty")
 }
 
 case class SuccessStep(
@@ -98,8 +149,17 @@ case class SuccessStep(
                                nameToShow: String,
                                override val succsessMessage: String
                        ) extends AbstractStep {
-  require(id == "3", "id must be 0")
+  require(id == "3", "id must be 3")
+  require(id.size == 1, "id size must be 1")
   require(!nameToShow.isEmpty(), "id must be not empty")
+  require(nextStep.isEmpty, "nextStep must be empty")
+  require(selectionCriterium == null, "must be null")
+  require(from == null, "must be null")
+  require(components.isEmpty, "components list should be empty")
+  require(errorMessage == "", "must be empty")
+  require(succsessMessage != "", "must be not empty")
+  require(byComponent == "", "must be empty")
+  require(step == "", "must be empty")
 }
 
 

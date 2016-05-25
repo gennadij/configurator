@@ -25,6 +25,6 @@ class FirstStepSpec extends Specification{
           new ImmutableComponent("001002","component 001002"), 
           new ImmutableComponent("001003","component 001003")))
   
-  def e1 = configMgr.startConfig.asInstanceOf[FirstStep] must_== firstStep
+  def e1 = configMgr.startConfig must_== firstStep
   
 }

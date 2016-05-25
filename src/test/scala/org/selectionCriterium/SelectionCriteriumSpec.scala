@@ -68,8 +68,6 @@ class SelectionCriteriumSpec extends Specification{
                       new ImmutableComponent("004003","component 004003")
                       ))
   
-  val errorStepFore2 = new ErrorStep("7", "error step", "it was selected same components")
-  
   val errorStepForFew = new ErrorStep("7", "error step", "selected to few components")
   val errorStepForMatch = ErrorStep("7", "error step", "selected to match components")
   
