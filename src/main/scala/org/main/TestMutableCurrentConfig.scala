@@ -36,7 +36,7 @@ class TestMutableCurrentConfig {
 
     println("Selected Component: " + selected001001)
     
-    val twiceStep = ConfigMgr.getNextStep(List(selected001001))
+    val twiceStep = ConfigMgr.getNextStep(Set(selected001001))
 
     require(ConfigMgr.currentConfig.size == 1, "CurrentConfig size is 1")
     
@@ -59,7 +59,7 @@ class TestMutableCurrentConfig {
     val selected002001 = "002001"
     println("Selected Component: " + selected002001)
     
-    val thirdStep = ConfigMgr.getNextStep(List(selected002001))
+    val thirdStep = ConfigMgr.getNextStep(Set(selected002001))
     
     require(ConfigMgr.currentConfig.size == 2, "CurrentConfig size is 2")
 
@@ -83,7 +83,7 @@ class TestMutableCurrentConfig {
     val selected003001 = "003001"
     println("Selected Component: " + selected003001)
     
-    val fourthStep = ConfigMgr.getNextStep(List(selected003001))
+    val fourthStep = ConfigMgr.getNextStep(Set(selected003001))
 
     require(ConfigMgr.currentConfig.size == 3, "CurrentConfig size is 3")
     
@@ -106,7 +106,7 @@ class TestMutableCurrentConfig {
     val selected004001 = "004001"
     println("Selected Component: " + selected004001)
     
-    val fifthStep = ConfigMgr.getNextStep(List(selected004001))
+    val fifthStep = ConfigMgr.getNextStep(Set(selected004001))
 
     require(ConfigMgr.currentConfig.size == 4, "CurrentConfig size is 4")
     
@@ -129,7 +129,7 @@ class TestMutableCurrentConfig {
     val selected005001 = "005001"
     println("Selected Component: " + selected005001)
     
-    val seventhStep = ConfigMgr.getNextStep(List(selected005001))
+    val seventhStep = ConfigMgr.getNextStep(Set(selected005001))
 
     require(ConfigMgr.currentConfig.size == 5, "CurrentConfig size is 5")
     
@@ -152,7 +152,7 @@ class TestMutableCurrentConfig {
 
     val selected002002 = "002002"
 
-    val eighthStep = ConfigMgr.getNextStep(List(selected002002))
+    val eighthStep = ConfigMgr.getNextStep(Set(selected002002))
     
     require(ConfigMgr.currentConfig.size == 2, "CurrentConfig size is 2")
 

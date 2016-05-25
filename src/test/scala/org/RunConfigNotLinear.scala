@@ -28,21 +28,21 @@ class RunConfigNotLinear extends Specification{
   
   val selectedComponent001003 = "001003"
   
-  def e2 = configMgr.getNextStep(List(selectedComponent001003)).id must_== "003"
+  def e2 = configMgr.getNextStep(Set(selectedComponent001003)).id must_== "003"
   
   val selectedComponent003002 = "003002"
   
-  def e3 = configMgr.getNextStep(List("003002")).id must_== "004"
+  def e3 = configMgr.getNextStep(Set("003002")).id must_== "004"
   
   val selectedComponent004003 = "004003"
   
-  def e4 = configMgr.getNextStep(List("004003")).id must_== "006"
+  def e4 = configMgr.getNextStep(Set("004003")).id must_== "006"
   
   val selectedComponent006001 = "006001"
   
   val selctionComponent003003 = "003003"
   
-  def e5 = configMgr.getNextStep(List(selctionComponent003003)).id must_== "004"
+  def e5 = configMgr.getNextStep(Set(selctionComponent003003)).id must_== "004"
                                   
 //  val currentConfig = ListBuffer(
 //                  new DefaultStep("001","step 001",List(new NextStep("001001","002"), new NextStep("001002","002"), 

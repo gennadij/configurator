@@ -21,6 +21,8 @@ abstract class AbstractStep extends ConfigTree {
   def components: Seq[Component] = null
   //ErrorStep 
   def errorMessage: String = ""
+  //SaccessStep
+  def succsessMessage: String = ""
   //NextStep
   def byComponent: String = ""
   def step: String = ""
@@ -88,6 +90,15 @@ case class ErrorStep(         id: String,
                               override val errorMessage: String
                     ) extends AbstractStep{
   require(id == "7", "id must be 0")
+  require(!nameToShow.isEmpty(), "id must be not empty")
+}
+
+case class SuccessStep(
+                               id: String,
+                               nameToShow: String,
+                               override val succsessMessage: String
+                       ) extends AbstractStep {
+  require(id == "3", "id must be 0")
   require(!nameToShow.isEmpty(), "id must be not empty")
 }
 

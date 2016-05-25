@@ -4,7 +4,11 @@ import org.specs2.Specification
 import org.configTree.step._
 import org.configTree.component._
 import org.configMgr.ConfigMgr
+import org.junit.runner.RunWith
+import org.specs2.runner.JUnitRunner
 
+
+@RunWith(classOf[JUnitRunner])
 class SelectionCriteriumSpec extends Specification{
   def is = s2"""
     
@@ -23,6 +27,8 @@ class SelectionCriteriumSpec extends Specification{
       003001, 003002, by SelectionCriterium min 2 and max 4                  $e6
       7. Methode checkSelectionCriterium return ErrorStep for selection
       003001 by SelectionCriterium min 2 and max 4                           $e7
+      8. Methode checkSelectionCriterium return ErrorStep for selection
+      003001,003002, 003003, 003004, by SelectionCriterium min 2 and max 4   $e8
       
       
       
@@ -64,21 +70,23 @@ class SelectionCriteriumSpec extends Specification{
   
   val errorStepFore2 = new ErrorStep("7", "error step", "it was selected same components")
   
-  val errorStepFore3 = new ErrorStep("7", "error step", "ivalible selectiumCriterium or "+
-            "was selected to mach or to few Components")
+  val errorStepForFew = new ErrorStep("7", "error step", "selected to few components")
+  val errorStepForMatch = ErrorStep("7", "error step", "selected to match components")
   
   
-  def e1 = ConfigMgr.getNextStep(List("002001", "002002")) must_== step003
+  def e1 = ConfigMgr.getNextStep(Set("002001", "002002")) must_== step003
 
-  def e2 = ConfigMgr.getNextStep(List("002001", "002001")) must_== errorStepFore2
+  def e2 = ConfigMgr.getNextStep(Set("002001", "002001")) must_== step003
   
-  def e3 = ConfigMgr.getNextStep(List("001001", "001002")) must_== errorStepFore3
+  def e3 = ConfigMgr.getNextStep(Set("001001", "001002")) must_== errorStepForMatch
 
-  def e4 = ConfigMgr.getNextStep(List("001001")) must_== step002
+  def e4 = ConfigMgr.getNextStep(Set("001001")) must_== step002
   
-  def e5 = ConfigMgr.getNextStep(List("003001", "003002", "003003")) must_== step004
+  def e5 = ConfigMgr.getNextStep(Set("003001", "003002", "003003")) must_== step004
   
-  def e6 = ConfigMgr.getNextStep(List("003001", "003002")) must_== step004
+  def e6 = ConfigMgr.getNextStep(Set("003001", "003002")) must_== step004
   
-  def e7 = ConfigMgr.getNextStep(List("003001")) must_== errorStepFore3
+  def e7 = ConfigMgr.getNextStep(Set("003001")) must_== errorStepForFew
+  
+  def e8 = ConfigMgr.getNextStep(Set("003001", "003002", "003003", "003004")) must_== step004
 }
