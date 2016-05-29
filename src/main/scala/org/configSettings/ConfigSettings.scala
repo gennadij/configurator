@@ -8,7 +8,7 @@ import org.configTree.component.ImmutableComponent
 import org.configTree.component.MutableComponent
 
 /**
- * TODO
+ *
  */
 
 object ConfigSettings {

@@ -12,16 +12,16 @@ object Main {
     println("I am generic configurator")
     println("Generic configurator started")
     
-//    val currentConfig = new TestMutableCurrentConfig
+    val currentConfig = new TestMutableCurrentConfig
 //    
-//    currentConfig.mutableCurrentConfig
-    val selCrit = new TestSelectionCriterium
+    currentConfig.mutableCurrentConfig
+//    val selCrit = new TestSelectionCriterium
     
 //    selCrit.selectCriterium
     
 //    selCrit.getStepOfComponents
     
-    selCrit.getNextStep
+//    selCrit.getNextStep
 
     
     println("END")

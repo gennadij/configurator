@@ -2,6 +2,8 @@ package org.main
 
 import org.configMgr.ConfigMgr
 import org.configSettings.ConfigSettings
+import org.configTree.step.ErrorStep
+import org.configTree.step.FinalStep
 
 class TestMutableCurrentConfig {
   
@@ -37,6 +39,8 @@ class TestMutableCurrentConfig {
     println("Selected Component: " + selected001001)
     
     val twiceStep = ConfigMgr.getNextStep(Set(selected001001))
+    
+    if(twiceStep.isInstanceOf[ErrorStep]) println("Error -> " + twiceStep.errorMessage)
 
     require(ConfigMgr.currentConfig.size == 1, "CurrentConfig size is 1")
     
@@ -61,6 +65,8 @@ class TestMutableCurrentConfig {
     
     val thirdStep = ConfigMgr.getNextStep(Set(selected002001))
     
+    if(thirdStep.isInstanceOf[ErrorStep]) println("Error -> " + thirdStep.errorMessage)
+    
     require(ConfigMgr.currentConfig.size == 2, "CurrentConfig size is 2")
 
     println("Components for step: " + thirdStep.nameToShow)
@@ -81,10 +87,13 @@ class TestMutableCurrentConfig {
     println("##################################################################")
 
     val selected003001 = "003001"
+    val selected003002 = "003002"
     println("Selected Component: " + selected003001)
     
-    val fourthStep = ConfigMgr.getNextStep(Set(selected003001))
+    val fourthStep = ConfigMgr.getNextStep(Set(selected003001, selected003002))
 
+    if(fourthStep.isInstanceOf[ErrorStep]) println("Error -> " + fourthStep.errorMessage)
+    
     require(ConfigMgr.currentConfig.size == 3, "CurrentConfig size is 3")
     
     println("Components for step: " + fourthStep.nameToShow)
@@ -108,6 +117,8 @@ class TestMutableCurrentConfig {
     
     val fifthStep = ConfigMgr.getNextStep(Set(selected004001))
 
+    if(fifthStep.isInstanceOf[ErrorStep]) println("Error -> " + fifthStep.errorMessage)
+    
     require(ConfigMgr.currentConfig.size == 4, "CurrentConfig size is 4")
     
     println("Components for step: " + fifthStep.nameToShow)
@@ -131,6 +142,9 @@ class TestMutableCurrentConfig {
     
     val seventhStep = ConfigMgr.getNextStep(Set(selected005001))
 
+    if(seventhStep.isInstanceOf[ErrorStep]) println("Error -> " + seventhStep.errorMessage)
+    if(seventhStep.isInstanceOf[FinalStep]) println("Final -> " + seventhStep.nameToShow)
+    
     require(ConfigMgr.currentConfig.size == 5, "CurrentConfig size is 5")
     
     println("Components for step: " + seventhStep.nameToShow)
@@ -146,20 +160,49 @@ class TestMutableCurrentConfig {
         println(comp.nameToShow)
       }
     }
+    
+        // eighth Step
+    println("##################################################################")
 
-    // eighth Step
+    val selected007001 = "007001"
+    println("Selected Component: " + selected007001)
+    
+    val eighthStep = ConfigMgr.getNextStep(Set(selected007001))
+
+    if(eighthStep.isInstanceOf[ErrorStep]) println("Error -> " + eighthStep.errorMessage)
+    if(eighthStep.isInstanceOf[FinalStep]) println("Final -> " + eighthStep.nameToShow)
+    
+    require(ConfigMgr.currentConfig.size == 5, "CurrentConfig size is 5")
+    
+    println("Components for step: " + eighthStep.nameToShow)
+    
+//    for(components <- eighthStep.components){
+//      println(components.nameToShow)
+//    }
+
+    println("Aktuelle Konfiguration")
+    for(step <- ConfigMgr.currentConfig){
+      println(step.nameToShow)
+      for(comp <- step.components){
+        println(comp.nameToShow)
+      }
+    }
+
+    // ninth Step
     println("##################################################################")
 
     val selected002002 = "002002"
 
-    val eighthStep = ConfigMgr.getNextStep(Set(selected002002))
+    val ninthStep = ConfigMgr.getNextStep(Set(selected002002))
+    
+    if(ninthStep.isInstanceOf[ErrorStep]) println("Error -> " + ninthStep.errorMessage)
     
     require(ConfigMgr.currentConfig.size == 2, "CurrentConfig size is 2")
 
     println("Selected Component: " + selected002002)
 
-    println("Components for step: " + eighthStep.nameToShow)
-    for(components <- eighthStep.components){
+    println("Components for step: " + ninthStep.nameToShow)
+    for(components <- ninthStep.components){
       println(components.nameToShow)
     }
 

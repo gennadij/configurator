@@ -1,6 +1,6 @@
 package org.configMgr
 
-import org.configTree.component.Component
+import org.configTree.component._
 import org.container.Container
 import scala.collection.mutable.ListBuffer
 import org.container.Container
@@ -23,8 +23,8 @@ import org.configTree.step.SuccessStep
  * - Lösung zu der Immutable CurrentConfig suchen
  * - Logger einrichten
  * - Prüfung einbauen, wenn Komponent, der nicht in Step exestiert, ausgewählt
- * - Selection criterium checken, wenn 2 meherere Components ausgewaehlt werden koennen 
- * - Selection Criterium to Int konvertieren
+ * - extra Step fuer CurrentConfig
+ * - type Error component
  */
 
 object ConfigMgr{
@@ -65,10 +65,10 @@ class ConfigMgr {
   def getNextStep(selectedComponentIds: Set[String]): AbstractStep = {
     checkSelectedComponentIds(selectedComponentIds) match {
         case errorStep: ErrorStep => errorStep
-        //TODO final step testen
+        //TODO final step testen, letzte step wird nicht in die CurrentConfig hinzugefuegt
         case lastStep: LastStep => new FinalStep("0", "I am final step")
         case step => {
-//          addStepToCurrentConfig(selectedComponentIds.head)
+          addStepToCurrentConfig(step, selectedComponentIds)
           checkNextSteps(step, selectedComponentIds)
         }
     }
@@ -77,25 +77,39 @@ class ConfigMgr {
   /**
    * neue step für CurrentConfig
    */
-  def addStepToCurrentConfig(selectedComponentId: String) = {
+  def addStepToCurrentConfig(step: AbstractStep, selectedComponentIds: Set[String]) = {
     
-    val step = for {
-      step <- container.configSettings
-      component <- step.nextStep if (component.byComponent == selectedComponentId)
-    }yield new DefaultStep(step.id, step.nameToShow, step.nextStep,
-                              step.selectionCriterium, step.from, getComponent(step, selectedComponentId))
-    val index = container.currentConfig.indexWhere(s => step(0).id == s.id)
+        val stepForCurrentConfig: DefaultStep = new DefaultStep(step.id, step.nameToShow, step.nextStep,
+                              step.selectionCriterium, step.from, getComponent(step, selectedComponentIds))
+        
+    
+//    val step = for {
+//      step <- container.configSettings
+//      component <- step.nextStep if (component.byComponent == selectedComponentId)
+//    }yield new DefaultStep(step.id, step.nameToShow, step.nextStep,
+//                              step.selectionCriterium, step.from, getComponent(step, selectedComponentId))
+        
+        
+    val index = container.currentConfig.indexWhere(s => stepForCurrentConfig.id == s.id)
 
     val currentConfigSize = container.currentConfig.size
 
     if(index != -1) container.currentConfig.remove(index, currentConfigSize - index)
 
-    container.currentConfig += step(0) 
+    container.currentConfig += stepForCurrentConfig
   }
   
-  private def getComponent(step: AbstractStep, selectedComponentId: String) = {
-    step.components filter (_.id == selectedComponentId)
+  private def getComponent(step: AbstractStep, selectedComponentIds: Set[String]): Seq[Component] = {
+    val components = for{
+      component <- step.components
+      id <- selectedComponentIds
+    }yield if (component.id == id) component else new ErrorComponent("7", "error compnent", "error")
+    
+    components filter { ! _.isInstanceOf[ErrorComponent]}
+    
   }
+  
+  
   
   private def checkSelectionCriterium(  step: AbstractStep, 
                                 selectedComponentIds: Set[String]): AbstractStep = {
@@ -154,7 +168,6 @@ class ConfigMgr {
         val nextStep = step.nextStep filter(_.byComponent == selectedComponentIds.head)
         (container.configSettings filter (_.id == nextStep(0).step))(0)
       }
-      //TODO testen
       case false => new ErrorStep("7", "error step", "nextSteps for selectedComponentIds was not same")
     }
   }
