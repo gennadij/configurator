@@ -19,7 +19,7 @@ object ConfigSettings {
 }
 
 class ConfigSettings {
-  private def getXMLV01 = scala.xml.XML.loadFile("src/main/scala/xml_json/config_v0.1.xml")
+  private def getXMLV01 = scala.xml.XML.loadFile("config/config_v0.1.xml")
 
   private def toNextStep(ns: scala.xml.NodeSeq): NextStep = {
     new NextStep(

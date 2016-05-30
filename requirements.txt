@@ -1,0 +1,14 @@
+Anforderungen
+
+ - Client darf die Konfiguration jederzeit abändern.
+
+ - Der Client kann jederzeit in die Vorherige Steps springen und der 
+   Konfigurator muss die Konfiguration neue bearbeiten.
+ - Innerhalb des Steps kann man die veränderbare Components definieren. 
+   Änderbare Components sind die Components, die beim Auswahl noch einen Wert 
+   eingestellt werden kann . Z.B. ein Slider, in dem man die Länge oder Anzahl 
+   einstellen kann. Die Abhängigkeit zu der anderen Components oder Steps wird 
+   dadurch komplizierter. Die Abhängigkeit hängt damit auch von dem Wert im 
+   Component ab.  
+ - Die Konfiguration kann willkürlich Verlaufen. Der User kann zu der 
+   vorherigen Schritten zurückkehren aber er kann nicht die Schritte überspringen.

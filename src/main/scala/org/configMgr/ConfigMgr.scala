@@ -25,6 +25,7 @@ import org.configTree.step.SuccessStep
  * - Prüfung einbauen, wenn Komponent, der nicht in Step exestiert, ausgewählt
  * - Selection criterium checken, wenn 2 meherere Components ausgewaehlt werden koennen 
  * - Selection Criterium to Int konvertieren
+ * - selectionCriteriumMax darf nicht grösser als Anzahl der Components sein und Umgekehrt
  */
 
 object ConfigMgr{
