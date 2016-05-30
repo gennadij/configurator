@@ -1,6 +1,6 @@
 Anforderungen
 
- - Client darf die Konfiguration jederzeit abändern.
+ - Client darf die Konfiguration jederzeit abändern. 
 
  - Der Client kann jederzeit in die Vorherige Steps springen und der 
    Konfigurator muss die Konfiguration neue bearbeiten.
