@@ -18,14 +18,11 @@ import org.configTree.step.CurrentConfigStep
 
 /**
  * TODO
+ * - Logger einrichten
  * - Die Reihenfolge der Schritten prüfen
  * - Lösung zu der zentrallen Stelle aller Fehler in dem Configurator
  * - definition von dem mutable Components (Slide, variable Massen)
  * - Lösung zu der Immutable CurrentConfig suchen
- * - Logger einrichten
- * - Prüfung einbauen, wenn Komponent, der nicht in Step exestiert, ausgewählt
- * - extra Step fuer CurrentConfig
- * - type Error component
  * - Selection criterium checken, wenn 2 meherere Components ausgewaehlt werden koennen 
  * - Selection Criterium to Int konvertieren
  * - selectionCriteriumMax darf nicht grösser als Anzahl der Components sein und Umgekehrt
@@ -83,8 +80,8 @@ class ConfigMgr {
    */
   def addStepToCurrentConfig(step: AbstractStep, selectedComponentIds: Set[String]) = {
     
-        val stepForCurrentConfig: CurrentConfigStep = new CurrentConfigStep(step.id, step.nameToShow, step.nextStep,
-                              step.selectionCriterium, step.from, getComponent(step, selectedComponentIds))
+        val stepForCurrentConfig: CurrentConfigStep = new CurrentConfigStep(step.id, step.nameToShow, 
+                              step.selectionCriterium, getComponent(step, selectedComponentIds))
         
     val index = container.currentConfig.indexWhere(s => stepForCurrentConfig.id == s.id)
 
