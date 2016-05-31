@@ -14,6 +14,7 @@ import org.configTree.step.ErrorStep
 import org.configTree.step.LastStep
 import org.configTree.step.NextStep
 import org.configTree.step.SuccessStep
+import org.configTree.step.CurrentConfigStep
 
 /**
  * TODO
@@ -82,16 +83,8 @@ class ConfigMgr {
    */
   def addStepToCurrentConfig(step: AbstractStep, selectedComponentIds: Set[String]) = {
     
-        val stepForCurrentConfig: DefaultStep = new DefaultStep(step.id, step.nameToShow, step.nextStep,
+        val stepForCurrentConfig: CurrentConfigStep = new CurrentConfigStep(step.id, step.nameToShow, step.nextStep,
                               step.selectionCriterium, step.from, getComponent(step, selectedComponentIds))
-        
-    
-//    val step = for {
-//      step <- container.configSettings
-//      component <- step.nextStep if (component.byComponent == selectedComponentId)
-//    }yield new DefaultStep(step.id, step.nameToShow, step.nextStep,
-//                              step.selectionCriterium, step.from, getComponent(step, selectedComponentId))
-        
         
     val index = container.currentConfig.indexWhere(s => stepForCurrentConfig.id == s.id)
 

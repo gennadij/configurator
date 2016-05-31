@@ -162,5 +162,14 @@ case class SuccessStep(
   require(step == "", "must be empty")
 }
 
+case class CurrentConfigStep(
+                               id: String,
+                               nameToShow: String,
+                               override val selectionCriterium: SelectionCriterium,
+                               override val components: Seq[Component]
+                               ) extends AbstractStep{
+  
+}
+
 
 
