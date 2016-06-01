@@ -26,6 +26,7 @@ import org.configTree.step.CurrentConfigStep
  * - Selection criterium checken, wenn 2 meherere Components ausgewaehlt werden koennen 
  * - Selection Criterium to Int konvertieren
  * - selectionCriteriumMax darf nicht grösser als Anzahl der Components sein und Umgekehrt
+ * - ID durch 100100 ersetzen => Typ Int
  */
 
 object ConfigMgr{
