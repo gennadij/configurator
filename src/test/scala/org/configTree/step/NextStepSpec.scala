@@ -2,7 +2,7 @@ package org.configTree.step
 
 import org.configMgr.ConfigMgr
 import org.specs2._
-import org.configTree.component.ImmutableComponent
+import org.configTree.component._
 
 /**
   * Created by gennadi on 12.05.16.
@@ -40,9 +40,9 @@ class NextStepSpec extends Specification {
     new SelectionCriterium("1", "2"), new Source("xml","",""), List(new ImmutableComponent("002001", "component 002001"),
       new ImmutableComponent("002002", "component 002002")))
     
-    ConfigMgr.getNextStep(Set("001001")) must_== step002
+    ConfigMgr.getNextStep(Set(new SelectedComponent("001001",""))) must_== step002
   }
   
   val errorE3 = new ErrorStep("7", "error step", "nextSteps for selectedComponentIds was not same")
-  def e3 = ConfigMgr.getNextStep(Set("004002", "004003")) must_== errorE3
+  def e3 = ConfigMgr.getNextStep(Set(new SelectedComponent("004002",""), new SelectedComponent("004003",""))) must_== errorE3
 }

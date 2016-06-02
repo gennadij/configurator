@@ -26,7 +26,7 @@ case class ImmutableComponent(
   require(minValue == 0, "minValue should be 0")
   require(defaultValue == 0, "defaultValue should be 0")
   require(interval == 0, "interval should be 0")
-  require(intervals != List.empty, "interval should be 0")
+  require(intervals == List.empty, "interval should be 0")
 }
                     
 case class MutableComponent(
@@ -40,12 +40,24 @@ case class MutableComponent(
                            ) extends Component {
   require(id != "000000", "id must not be 000000")
   require(nameToShow != null, "nameToShow should not be null")
-  require(maxValue != 0, "maxValue should not be 0")
-  require(minValue != 0, "minValue should not be 0")
-  require(defaultValue != 0, "defaultValue should not be 0")
-  require(interval != 0 && intervals == List.empty, "interval should not be 0")
-  require(interval == 0 && intervals != List.empty, "interval should not be 0")
+//  require(maxValue != 0, "maxValue should not be 0")
+//  require(minValue != 0, "minValue should not be 0")
+//  require(defaultValue != 0, "defaultValue should not be 0")
+//  require(interval != 0 && intervals == List.empty, "interval should not be 0")
+//  require(interval == 0 && intervals != List.empty, "interval should not be 0")
 }
+
+case class SelectedComponent(
+                           id: String,
+                           nameToShow: String,
+                           override val maxValue: Int = 0,
+                           override val minValue: Int = 0,
+                           override val defaultValue: Int = 0,
+                           override val interval: Int = 0,
+                           override val intervals: List[Int] = List.empty
+                            ) extends Component
+
+
 /**
  * id = 7
  */

@@ -4,6 +4,7 @@ import org.configMgr.ConfigMgr
 import org.configSettings.ConfigSettings
 import org.configTree.step.ErrorStep
 import org.configTree.step.FinalStep
+import org.configTree.component.SelectedComponent
 
 class TestMutableCurrentConfig {
   
@@ -34,11 +35,11 @@ class TestMutableCurrentConfig {
     // twice step
     println("##################################################################")
 
-    val selected001001 = "001001"
+    val selected001001 = Set(new SelectedComponent("001001", ""))
 
-    println("Selected Component: " + selected001001)
+    println("Selected Component: " + selected001001.head.id)
     
-    val twiceStep = ConfigMgr.getNextStep(Set(selected001001))
+    val twiceStep = ConfigMgr.getNextStep(selected001001)
     
     if(twiceStep.isInstanceOf[ErrorStep]) println("Error -> " + twiceStep.errorMessage)
 
@@ -60,8 +61,8 @@ class TestMutableCurrentConfig {
     // third Step
     println("##################################################################")
 
-    val selected002001 = "002001"
-    println("Selected Component: " + selected002001)
+    val selected002001 = new SelectedComponent("002001", "")
+    println("Selected Component: " + selected002001.id)
     
     val thirdStep = ConfigMgr.getNextStep(Set(selected002001))
     
@@ -86,9 +87,9 @@ class TestMutableCurrentConfig {
     // fourth Step
     println("##################################################################")
 
-    val selected003001 = "003001"
-    val selected003002 = "003002"
-    println("Selected Component: " + selected003001)
+    val selected003001 = new SelectedComponent("003001","")
+    val selected003002 = new SelectedComponent("003002","")
+    println("Selected Component: " + selected003001.id)
     
     val fourthStep = ConfigMgr.getNextStep(Set(selected003001, selected003002))
 
@@ -112,8 +113,8 @@ class TestMutableCurrentConfig {
     // fifth Step
     println("##################################################################")
 
-    val selected004001 = "004001"
-    println("Selected Component: " + selected004001)
+    val selected004001 = new SelectedComponent("004001","")
+    println("Selected Component: " + selected004001.id)
     
     val fifthStep = ConfigMgr.getNextStep(Set(selected004001))
 
@@ -137,8 +138,8 @@ class TestMutableCurrentConfig {
     // seventh Step
     println("##################################################################")
 
-    val selected005001 = "005001"
-    println("Selected Component: " + selected005001)
+    val selected005001 = new SelectedComponent("005001","")
+    println("Selected Component: " + selected005001.id)
     
     val seventhStep = ConfigMgr.getNextStep(Set(selected005001))
 
@@ -164,7 +165,7 @@ class TestMutableCurrentConfig {
         // eighth Step
     println("##################################################################")
 
-    val selected007001 = "007001"
+    val selected007001 = new SelectedComponent("007001","")
     println("Selected Component: " + selected007001)
     
     val eighthStep = ConfigMgr.getNextStep(Set(selected007001))
@@ -191,7 +192,7 @@ class TestMutableCurrentConfig {
     // ninth Step
     println("##################################################################")
 
-    val selected002002 = "002002"
+    val selected002002 = new SelectedComponent("002002","")
 
     val ninthStep = ConfigMgr.getNextStep(Set(selected002002))
     

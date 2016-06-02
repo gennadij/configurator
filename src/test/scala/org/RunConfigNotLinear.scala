@@ -22,11 +22,11 @@ class RunConfigNotLinear extends Specification{
 
   def e1 = ConfigMgr.startConfig.id must_== "001"
   
-  def e2 = ConfigMgr.getNextStep(Set("001003")).id must_== "003"
+  def e2 = ConfigMgr.getNextStep(Set(new SelectedComponent("001003",""))).id must_== "003"
   
-  def e3 = ConfigMgr.getNextStep(Set("003002", "003003")).id must_== "004"
+  def e3 = ConfigMgr.getNextStep(Set(new SelectedComponent("003002",""), new SelectedComponent("003003",""))).id must_== "004"
   
-  def e4 = ConfigMgr.getNextStep(Set("004003")).id must_== "006"
+  def e4 = ConfigMgr.getNextStep(Set(new SelectedComponent("004003",""))).id must_== "006"
   
-  def e5 = ConfigMgr.getNextStep(Set("003003", "003001")).id must_== "004"
+  def e5 = ConfigMgr.getNextStep(Set(new SelectedComponent("003003",""), new SelectedComponent("003001",""))).id must_== "004"
 }

@@ -40,7 +40,7 @@ object ConfigMgr{
     configMgr.startConfig
   }
   
-  def getNextStep(selectedComponentIds: Set[String]) = {
+  def getNextStep(selectedComponentIds: Set[SelectedComponent]) = {
     configMgr.getNextStep(selectedComponentIds)
   }
 }
@@ -64,14 +64,14 @@ class ConfigMgr {
    * - nextStep Id bei der Multichoose Component muss bei allen componentId mit Step Id übereinstimmen 
    * - currentConfig für den Multichoose Komponent erweitern
    */
-  def getNextStep(selectedComponentIds: Set[String]): AbstractStep = {
-    checkSelectedComponentIds(selectedComponentIds) match {
+  def getNextStep(selectedComponents: Set[SelectedComponent]): AbstractStep = {
+    checkSelectedComponents(selectedComponents) match {
         case errorStep: ErrorStep => errorStep
         //TODO final step testen, letzte step wird nicht in die CurrentConfig hinzugefuegt
         case lastStep: LastStep => new FinalStep("0", "I am final step")
         case step => {
-          addStepToCurrentConfig(step, selectedComponentIds)
-          checkNextSteps(step, selectedComponentIds)
+          addStepToCurrentConfig(step, selectedComponents)
+          checkNextSteps(step, selectedComponents)
         }
     }
   }
@@ -79,10 +79,10 @@ class ConfigMgr {
   /**
    * neue step für CurrentConfig
    */
-  def addStepToCurrentConfig(step: AbstractStep, selectedComponentIds: Set[String]) = {
+  def addStepToCurrentConfig(step: AbstractStep, selectedComponents: Set[SelectedComponent]) = {
     
-        val stepForCurrentConfig: CurrentConfigStep = new CurrentConfigStep(step.id, step.nameToShow, 
-                              step.selectionCriterium, getComponent(step, selectedComponentIds))
+    val stepForCurrentConfig: CurrentConfigStep = new CurrentConfigStep(step.id, step.nameToShow, 
+                              step.selectionCriterium, getComponent(step, selectedComponents))
         
     val index = container.currentConfig.indexWhere(s => stepForCurrentConfig.id == s.id)
 
@@ -93,7 +93,8 @@ class ConfigMgr {
     container.currentConfig += stepForCurrentConfig
   }
   
-  private def getComponent(step: AbstractStep, selectedComponentIds: Set[String]): Seq[Component] = {
+  private def getComponent(step: AbstractStep, selectedComponents: Set[SelectedComponent]): Seq[Component] = {
+    val selectedComponentIds = selectedComponents map (_.id)
     val components = for{
       component <- step.components
       id <- selectedComponentIds
@@ -104,30 +105,57 @@ class ConfigMgr {
   }
   
   
+  private def checkParameterOfSelectedComponents(step: AbstractStep, 
+                  selectedComponents: Set[SelectedComponent]): AbstractStep = {
+    
+    val components = step.components filter (_.isInstanceOf[MutableComponent])
+    
+    for{
+      component <- components
+      selectedComponent <- selectedComponents
+    } yield {
+      if(component.id == selectedComponent.id){
+        if(selectedComponent.minValue < component.minValue &&
+            selectedComponent.maxValue > component.maxValue){
+          ErrorStep("7", "error step", "minValue is smaller or naxValue is greater as definition in configSttings")
+        }
+      }
+      
+      
+      component
+    }
+    
+    ErrorStep("7", "error step", "not implemented")
+    
+  }
+  
   
   private def checkSelectionCriterium(  step: AbstractStep, 
-                                selectedComponentIds: Set[String]): AbstractStep = {
+                                selectedComponents: Set[SelectedComponent]): AbstractStep = {
     
     val min = step.selectionCriterium.min.toInt
     val max = step.selectionCriterium.max.toInt
     
+    val selectedComponentIds = selectedComponents map (_.id)
     selectedComponentIds.size match {
       case com1: Int if com1 < min => new ErrorStep("7", "error step", "selected to few components")
       case com2: Int if com2 > max => new ErrorStep("7", "error step", "selected to match components")
       case _ => step
     }
   }
+  
   /**
    * sucht den Step in Config Settings mit Hilfe der IDs des Components
    * 
    * @return Step mit dem Components
    */
   
-  private def getStepOfComponents(selectedComponentIds: Set[String]): AbstractStep = {
+  private def getStepOfComponents(selectedComponents: Set[SelectedComponent]): AbstractStep = {
     val steps = for{
       step <- container.configSettings
     }yield {
       val ids = step.components map (_.id)
+      val selectedComponentIds = selectedComponents map (_.id)
       if(ids.exists { selectedComponentIds.contains _ }){
         step
       }else{
@@ -151,7 +179,8 @@ class ConfigMgr {
    * Bei der Multichoose werden die difenierte next Steps verglichen. Es darf nicht bei 
    * der verschiedenen selectedComponentsIds verscheidene nextSteps difeniert werden
    */
-  private def checkNextSteps(step: AbstractStep, selectedComponentIds: Set[String]): AbstractStep = {
+  private def checkNextSteps(step: AbstractStep, selectedComponents: Set[SelectedComponent]): AbstractStep = {
+    val selectedComponentIds = selectedComponents map (_.id)
     val nextStep: Seq[NextStep] = for{
       nextStep <- step.nextStep
       selCom <- selectedComponentIds
@@ -173,10 +202,13 @@ class ConfigMgr {
     }
   }
   
-  private def checkSelectedComponentIds(selectedComponentIds: Set[String]): AbstractStep = {
-    getStepOfComponents(selectedComponentIds) match {
+  private def checkSelectedComponents(selectedComponents: Set[SelectedComponent]): AbstractStep = {
+    
+    
+    
+    getStepOfComponents(selectedComponents) match {
       case errorStep: ErrorStep => errorStep
-      case step => checkSelectionCriterium(step, selectedComponentIds)
+      case step => checkSelectionCriterium(step, selectedComponents)
     }
   }
 }

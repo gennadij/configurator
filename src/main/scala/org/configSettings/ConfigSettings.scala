@@ -52,7 +52,12 @@ class ConfigSettings {
   private def mutableComponent(c: scala.xml.Node) = {
     new MutableComponent(
       (c \ "id").text,
-      (c \ "nameToShow").text
+      (c \ "nameToShow").text,
+      (c \ "minValue").text.toInt,
+			(c \ "maxValue").text.toInt,
+			(c \ "defaultValue").text.toInt,
+			(c \ "interval").text.toInt,
+      List.empty
     )
   }
   

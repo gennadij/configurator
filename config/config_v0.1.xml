@@ -109,11 +109,21 @@
 				<id>003003</id>
 				<kind>mutable</kind>
 				<nameToShow>component 003003</nameToShow>
+				<minValue>0</minValue>
+				<maxValue>10</maxValue>
+				<defaultValue>5</defaultValue>
+				<interval>1</interval>
+                <intervals></intervals>
 			</component>
 			<component>
 				<id>003004</id>
 				<kind>mutable</kind>
 				<nameToShow>component 003004</nameToShow>
+				<minValue>0</minValue>
+				<maxValue>10</maxValue>
+				<defaultValue>5</defaultValue>
+				<interval>1</interval>
+                <intervals></intervals>
 			</component>
 		</components>
 	</step>

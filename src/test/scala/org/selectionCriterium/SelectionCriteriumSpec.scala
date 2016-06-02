@@ -53,15 +53,15 @@ class SelectionCriteriumSpec extends Specification{
                    List(
                       new ImmutableComponent("003001","component 003001"),
                       new ImmutableComponent("003002","component 003002"),
-                      new MutableComponent("003003","component 003003"),
-                      new MutableComponent("003004","component 003004")
+                      new MutableComponent("003003","component 003003", 0, 10, 5, 1, List.empty),
+                      new MutableComponent("003004","component 003004", 0, 10, 5, 1, List.empty)
                       ))
   
   val step004 = new DefaultStep("004","step 004",List(
       new NextStep("1", "next step","004001","005"),
       new NextStep("1", "next step","004002","005"),
       new NextStep("1", "next step","004003","006")),
-      new SelectionCriterium("1","1"),new Source("xml","",""), 
+      new SelectionCriterium("1","2"),new Source("xml","",""), 
                  List(
                       new ImmutableComponent("004001","component 004001"),
                       new ImmutableComponent ("004002","component 004002"),
@@ -72,19 +72,26 @@ class SelectionCriteriumSpec extends Specification{
   val errorStepForMatch = ErrorStep("7", "error step", "selected to match components")
   
   
-  def e1 = ConfigMgr.getNextStep(Set("002001", "002002")) must_== step003
+  def e1 = ConfigMgr.getNextStep(Set(new SelectedComponent("002001",""), 
+      new SelectedComponent("002002",""))) must_== step003
 
-  def e2 = ConfigMgr.getNextStep(Set("002001", "002001")) must_== step003
+  def e2 = ConfigMgr.getNextStep(Set(new SelectedComponent("002001",""), 
+      new SelectedComponent("002001",""))) must_== step003
   
-  def e3 = ConfigMgr.getNextStep(Set("001001", "001002")) must_== errorStepForMatch
+  def e3 = ConfigMgr.getNextStep(Set(new SelectedComponent("001001",""), 
+      new SelectedComponent("001002",""))) must_== errorStepForMatch
 
-  def e4 = ConfigMgr.getNextStep(Set("001001")) must_== step002
+  def e4 = ConfigMgr.getNextStep(Set(new SelectedComponent("001001",""))) must_== step002
   
-  def e5 = ConfigMgr.getNextStep(Set("003001", "003002", "003003")) must_== step004
+  def e5 = ConfigMgr.getNextStep(Set(new SelectedComponent("003001",""), 
+      new SelectedComponent("003002",""), new SelectedComponent("003003",""))) must_== step004
   
-  def e6 = ConfigMgr.getNextStep(Set("003001", "003002")) must_== step004
+  def e6 = ConfigMgr.getNextStep(Set(new SelectedComponent("003001",""), 
+      new SelectedComponent("003002",""))) must_== step004
   
-  def e7 = ConfigMgr.getNextStep(Set("003001")) must_== errorStepForFew
+  def e7 = ConfigMgr.getNextStep(Set(new SelectedComponent("003001",""))) must_== errorStepForFew
   
-  def e8 = ConfigMgr.getNextStep(Set("003001", "003002", "003003", "003004")) must_== step004
+  def e8 = ConfigMgr.getNextStep(Set(new SelectedComponent("003001",""), 
+      new SelectedComponent("003002",""), new SelectedComponent("003003",""), 
+      new SelectedComponent("003004",""))) must_== step004
 }
