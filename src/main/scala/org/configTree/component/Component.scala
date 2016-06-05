@@ -11,6 +11,7 @@ abstract class Component extends ConfigTree {
   def errorMessage: String = null
   def maxValue: Int = 0
   def minValue: Int = 0
+  def value: Int = 0
   def defaultValue: Int = 0
   def interval: Int = 0 // 0 = default value
   def intervals: List[Int] = List.empty //specific intervals
@@ -50,11 +51,7 @@ case class MutableComponent(
 case class SelectedComponent(
                            id: String,
                            nameToShow: String,
-                           override val maxValue: Int = 0,
-                           override val minValue: Int = 0,
-                           override val defaultValue: Int = 0,
-                           override val interval: Int = 0,
-                           override val intervals: List[Int] = List.empty
+                           override val value: Int = 0
                             ) extends Component
 
 

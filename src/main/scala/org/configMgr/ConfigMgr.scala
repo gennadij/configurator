@@ -27,6 +27,7 @@ import org.configTree.step.CurrentConfigStep
  * - Selection Criterium to Int konvertieren
  * - selectionCriteriumMax darf nicht grösser als Anzahl der Components sein und Umgekehrt
  * - ID durch 100100 ersetzen => Typ Int
+ * - nur bei MutableComponent kann der value übergeben werden
  */
 
 object ConfigMgr{
@@ -228,9 +229,6 @@ class ConfigMgr {
   }
   
   private def checkSelectedComponents(selectedComponents: Set[SelectedComponent]): AbstractStep = {
-    
-    
-    
     getStepOfComponents(selectedComponents) match {
       case errorStep: ErrorStep => errorStep
       case step => checkSelectionCriterium(step, selectedComponents)
