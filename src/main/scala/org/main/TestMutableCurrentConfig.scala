@@ -5,6 +5,7 @@ import org.configSettings.ConfigSettings
 import org.configTree.step.ErrorStep
 import org.configTree.step.FinalStep
 import org.configTree.component.SelectedComponent
+import org.configTree.component.MutableComponent
 
 class TestMutableCurrentConfig {
   
@@ -28,7 +29,16 @@ class TestMutableCurrentConfig {
     for(step <- ConfigMgr.currentConfig){
       println(step.nameToShow)
       for(comp <- step.components){
-        println(comp.nameToShow)
+        if(comp.isInstanceOf[MutableComponent]){
+          println(comp.nameToShow)
+          println(comp.maxValue)
+          println(comp.minValue)
+          println(comp.defaultValue)
+          println(comp.interval)
+          println(comp.intervals)
+        }else{
+        	println(comp.nameToShow)
+        }
       }
     }
 
@@ -54,7 +64,16 @@ class TestMutableCurrentConfig {
     for(step <- ConfigMgr.currentConfig){
       println(step.nameToShow)
       for(comp <- step.components){
-        println(comp.nameToShow)
+        if(comp.isInstanceOf[MutableComponent]){
+          println(comp.nameToShow)
+          println(comp.maxValue)
+          println(comp.minValue)
+          println(comp.defaultValue)
+          println(comp.interval)
+          println(comp.intervals)
+        }else{
+        	println(comp.nameToShow)
+        }
       }
     }
 
@@ -80,14 +99,23 @@ class TestMutableCurrentConfig {
     for(step <- ConfigMgr.currentConfig){
       println(step.nameToShow)
       for(comp <- step.components){
-        println(comp.nameToShow)
+        if(comp.isInstanceOf[MutableComponent]){
+          println(comp.nameToShow)
+          println(comp.maxValue)
+          println(comp.minValue)
+          println(comp.defaultValue)
+          println(comp.interval)
+          println(comp.intervals)
+        }else{
+        	println(comp.nameToShow)
+        }
       }
     }
 
     // fourth Step
     println("##################################################################")
 
-    val selected003001 = new SelectedComponent("003001","")
+    val selected003001 = new SelectedComponent("003003","")
     val selected003002 = new SelectedComponent("003002","")
     println("Selected Component: " + selected003001.id)
     
@@ -106,7 +134,16 @@ class TestMutableCurrentConfig {
     for(step <- ConfigMgr.currentConfig){
       println(step.nameToShow)
       for(comp <- step.components){
-        println(comp.nameToShow)
+        if(comp.isInstanceOf[MutableComponent]){
+          println(comp.nameToShow)
+          println(comp.maxValue)
+          println(comp.minValue)
+          println(comp.defaultValue)
+          println(comp.interval)
+          println(comp.intervals)
+        }else{
+        	println(comp.nameToShow)
+        }
       }
     }
 
@@ -131,7 +168,16 @@ class TestMutableCurrentConfig {
     for(step <- ConfigMgr.currentConfig){
       println(step.nameToShow)
       for(comp <- step.components){
-        println(comp.nameToShow)
+        if(comp.isInstanceOf[MutableComponent]){
+          println(comp.nameToShow)
+          println(comp.maxValue)
+          println(comp.minValue)
+          println(comp.defaultValue)
+          println(comp.interval)
+          println(comp.intervals)
+        }else{
+        	println(comp.nameToShow)
+        }
       }
     }
 
@@ -158,7 +204,16 @@ class TestMutableCurrentConfig {
     for(step <- ConfigMgr.currentConfig){
       println(step.nameToShow)
       for(comp <- step.components){
-        println(comp.nameToShow)
+        if(comp.isInstanceOf[MutableComponent]){
+          println(comp.nameToShow)
+          println(comp.maxValue)
+          println(comp.minValue)
+          println(comp.defaultValue)
+          println(comp.interval)
+          println(comp.intervals)
+        }else{
+        	println(comp.nameToShow)
+        }
       }
     }
     
@@ -173,7 +228,7 @@ class TestMutableCurrentConfig {
     if(eighthStep.isInstanceOf[ErrorStep]) println("Error -> " + eighthStep.errorMessage)
     if(eighthStep.isInstanceOf[FinalStep]) println("Final -> " + eighthStep.nameToShow)
     
-    require(ConfigMgr.currentConfig.size == 5, "CurrentConfig size is 5")
+    require(ConfigMgr.currentConfig.size == 6, "CurrentConfig size is 6")
     
     println("Components for step: " + eighthStep.nameToShow)
     
@@ -185,7 +240,16 @@ class TestMutableCurrentConfig {
     for(step <- ConfigMgr.currentConfig){
       println(step.nameToShow)
       for(comp <- step.components){
-        println(comp.nameToShow)
+        if(comp.isInstanceOf[MutableComponent]){
+          println(comp.nameToShow)
+          println(comp.maxValue)
+          println(comp.minValue)
+          println(comp.defaultValue)
+          println(comp.interval)
+          println(comp.intervals)
+        }else{
+        	println(comp.nameToShow)
+        }
       }
     }
 
@@ -211,7 +275,16 @@ class TestMutableCurrentConfig {
     for(step <- ConfigMgr.currentConfig){
       println(step.nameToShow)
       for(comp <- step.components){
-        println(comp.nameToShow)
+        if(comp.isInstanceOf[MutableComponent]){
+          println(comp.nameToShow)
+          println(comp.maxValue)
+          println(comp.minValue)
+          println(comp.defaultValue)
+          println(comp.interval)
+          println(comp.intervals)
+        }else{
+        	println(comp.nameToShow)
+        }
       }
     }
   }

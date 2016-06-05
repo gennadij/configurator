@@ -27,7 +27,12 @@ import org.configTree.step.CurrentConfigStep
  * - Selection Criterium to Int konvertieren
  * - selectionCriteriumMax darf nicht grösser als Anzahl der Components sein und Umgekehrt
  * - ID durch 100100 ersetzen => Typ Int
+<<<<<<< HEAD
  * - nur bei MutableComponent kann der value übergeben werden
+=======
+ * - alle Überprüfungen in eine Methode zusammenführen
+ * - Spec für minValues und maxValues schreiben
+>>>>>>> a84f36e66dd02fe52149473d3dc88b5822a63cbf
  */
 
 object ConfigMgr{
@@ -69,7 +74,10 @@ class ConfigMgr {
     checkSelectedComponents(selectedComponents) match {
         case errorStep: ErrorStep => errorStep
         //TODO final step testen, letzte step wird nicht in die CurrentConfig hinzugefuegt
-        case lastStep: LastStep => new FinalStep("0", "I am final step")
+        case lastStep: LastStep => {
+          addStepToCurrentConfig(lastStep, selectedComponents)
+          new FinalStep("0", "I am final step")
+        }
         case step => {
           addStepToCurrentConfig(step, selectedComponents)
           checkNextSteps(step, selectedComponents)
@@ -109,51 +117,20 @@ class ConfigMgr {
   private def checkParameterOfSelectedComponents(step: AbstractStep, 
                   selectedComponents: Set[SelectedComponent]) = {
     
-//    step.components filter(checkValues(_, selectedComponents))
-    
-    
-    
-    
-    val components = step.components filter (_.isInstanceOf[MutableComponent])
-    
-    
-    
-    
-    val checkedComponents = for{
-      component <- components
-      selectedComponent <- selectedComponents
-    } yield {
-      if(component.id == selectedComponent.id){
-        if(selectedComponent.minValue < component.minValue &&
-            selectedComponent.maxValue > component.maxValue){
-          new ErrorComponent("7", "error step", "minValue is smaller or naxValue is greater as definition in configSttings")
-        }
-      }
+    (step.components filter(checkValues(_, selectedComponents))).size match{
+      case 0 => step
+      case _ => ErrorStep("7", "error step", "minValue is smaller or naxValue is greater as definition in configSttings")
     }
-    
-    val errorStep = checkedComponents filter (_.isInstanceOf[ErrorStep])
-    if(errorStep.size >= 0){
-      errorStep(0)
-    }else{
-      errorStep(0)
-    }
-    
   }
   
-//  private def checkValues(component: Component, 
-//      selectedComponents: Set[SelectedComponent]): Boolean {
-//    val checkedValues = for{
-//      selectedComponent <- selectedComponents
-//    }yield {
-//      if(selectedComponent.minValue < component.minValue &&
-//            selectedComponent.maxValue > component.maxValue){
-//        false
-//      }else{
-//        true
-//      }
-//    }
-//    (checkedValues contains(false))
-//  }
+  private def checkValues(component: Component, selectedComponents: Set[SelectedComponent]): Boolean = {
+    
+    if((selectedComponents filter (sc => sc.minValue > component.minValue && 
+        sc.maxValue < component.maxValue)).size == 0)
+      false
+    else
+      true
+  }
   
   
   private def checkSelectionCriterium(  step: AbstractStep, 
@@ -166,7 +143,7 @@ class ConfigMgr {
     selectedComponentIds.size match {
       case com1: Int if com1 < min => new ErrorStep("7", "error step", "selected to few components")
       case com2: Int if com2 > max => new ErrorStep("7", "error step", "selected to match components")
-      case _ => step
+      case _ => checkParameterOfSelectedComponents(step, selectedComponents)
     }
   }
   
