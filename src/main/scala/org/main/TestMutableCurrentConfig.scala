@@ -6,6 +6,7 @@ import org.configTree.step.ErrorStep
 import org.configTree.step.FinalStep
 import org.configTree.component.SelectedComponent
 import org.configTree.component.MutableComponent
+import org.configTree.component.CurrentConfigMutableComponent
 
 class TestMutableCurrentConfig {
   
@@ -103,7 +104,7 @@ class TestMutableCurrentConfig {
     // fourth Step
     println("##################################################################")
 
-    val selected003001 = new SelectedComponent("003003", 5)
+    val selected003001 = new SelectedComponent("003003", -1)
     val selected003002 = new SelectedComponent("003002", 1)
     println("Selected Component: " + selected003001.id)
     
@@ -122,7 +123,7 @@ class TestMutableCurrentConfig {
     for(step <- ConfigMgr.currentConfig){
       println(step.nameToShow)
       for(comp <- step.components){
-        if(comp.isInstanceOf[MutableComponent]){
+        if(comp.isInstanceOf[CurrentConfigMutableComponent]){
           println(comp.nameToShow)
           println("value: " + comp.value)
         }else{

@@ -31,6 +31,7 @@ import org.configTree.step.CurrentConfigStep
  * - alle Überprüfungen in eine Methode zusammenführen
  * - Spec für minValues und maxValues schreiben
  * - Fehler -> wenn Immutable Component value gesetzt wird (Test dazu)
+ * - Test min max Value funktioniert nicht
  */
 
 object ConfigMgr{
