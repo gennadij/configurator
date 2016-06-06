@@ -7,7 +7,7 @@ import org.configTree.ConfigTree
   */
 abstract class Component extends ConfigTree {
   def id: String
-  def nameToShow: String
+  def nameToShow: String = ""
   def errorMessage: String = null
   def maxValue: Int = 0
   def minValue: Int = 0
@@ -19,7 +19,7 @@ abstract class Component extends ConfigTree {
 
 case class ImmutableComponent(
                     id: String,
-                    nameToShow: String
+                    override val nameToShow: String = ""
                     ) extends Component{
   require(id != "000000", "id must not be 000000")
   require(nameToShow != null, "nameToShow should not be null")
@@ -32,7 +32,7 @@ case class ImmutableComponent(
                     
 case class MutableComponent(
                            id: String,
-                           nameToShow: String,
+                           override val nameToShow: String = "",
                            override val maxValue: Int,
                            override val minValue: Int,
                            override val defaultValue: Int,
@@ -50,7 +50,6 @@ case class MutableComponent(
 
 case class SelectedComponent(
                            id: String,
-                           nameToShow: String,
                            override val value: Int = 0
                             ) extends Component
 
@@ -58,9 +57,9 @@ case class SelectedComponent(
 /**
  * id = 7
  */
-case class ErrorComponent(id: String,
-                           nameToShow: String,
-                           override val errorMessage: String) extends Component{
+case class ErrorComponent(   
+                          id: String,
+                          override val errorMessage: String) extends Component{
     require(id == "7", "id must be 7") 
 }
 

@@ -16,9 +16,9 @@ class FirstStepSpec extends Specification{
   val configMgr = new ConfigMgr
   
   val firstStep = new FirstStep("001","step 001", List(
-      new NextStep("1", "next step", "001001","002"), 
-      new NextStep("1", "next step", "001002","002"), 
-      new NextStep("1", "next step", "001003","003")),
+      new NextStep("1", "001001","002"), 
+      new NextStep("1", "001002","002"), 
+      new NextStep("1", "001003","003")),
       new SelectionCriterium("1","1"), new Source("xml","",""),
       List(
           new ImmutableComponent("001001","component 001001"), 

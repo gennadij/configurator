@@ -31,19 +31,19 @@ class RunConfig extends Specification{
   
   def e5 = ConfigMgr.startConfig.isInstanceOf[FirstStep] must_== true 
   
-  def e2 = ConfigMgr.getNextStep(Set(new SelectedComponent("001003",""))).id must_== "003"
+  def e2 = ConfigMgr.getNextStep(Set(new SelectedComponent("001003"))).id must_== "003"
   
-  def e6 = ConfigMgr.getNextStep(Set(new SelectedComponent("001003",""))).isInstanceOf[DefaultStep]  must_== true
+  def e6 = ConfigMgr.getNextStep(Set(new SelectedComponent("001003"))).isInstanceOf[DefaultStep]  must_== true
   
-  def e3 = ConfigMgr.getNextStep(Set(new SelectedComponent("003002",""), new SelectedComponent("003003",""))).id must_== "004"
+  def e3 = ConfigMgr.getNextStep(Set(new SelectedComponent("003002"), new SelectedComponent("003003"))).id must_== "004"
   
-  def e7 = ConfigMgr.getNextStep(Set(new SelectedComponent("003002",""), new SelectedComponent("003003",""))).isInstanceOf[DefaultStep]  must_== true
+  def e7 = ConfigMgr.getNextStep(Set(new SelectedComponent("003002"), new SelectedComponent("003003"))).isInstanceOf[DefaultStep]  must_== true
   
-  def e4 = ConfigMgr.getNextStep(Set(new SelectedComponent("004003",""))).id must_== "006"
+  def e4 = ConfigMgr.getNextStep(Set(new SelectedComponent("004003"))).id must_== "006"
   
-  def e8 = ConfigMgr.getNextStep(Set(new SelectedComponent("004003",""))).isInstanceOf[LastStep]  must_== true
+  def e8 = ConfigMgr.getNextStep(Set(new SelectedComponent("004003"))).isInstanceOf[LastStep]  must_== true
   
-  def e9 = ConfigMgr.getNextStep(Set(new SelectedComponent("006001",""))).id must_== "0"
+  def e9 = ConfigMgr.getNextStep(Set(new SelectedComponent("006001"))).id must_== "0"
   
-  def e10 = ConfigMgr.getNextStep(Set(new SelectedComponent("006001",""))).isInstanceOf[FinalStep]  must_== true
+  def e10 = ConfigMgr.getNextStep(Set(new SelectedComponent("006001"))).isInstanceOf[FinalStep]  must_== true
 }

@@ -26,7 +26,7 @@ class MutableOrImmutableComponentSpec extends Specification{
   def e2 = {
     val imComponent = List(new MutableComponent("003003","component 003003", 0, 10, 5, 1, List.empty))
     
-    val nextStep = ConfigMgr.getNextStep(Set(new SelectedComponent("002001","")))
+    val nextStep = ConfigMgr.getNextStep(Set(new SelectedComponent("002001")))
     nextStep.components filter (_.id == "003003") must_== imComponent
   }
 }
