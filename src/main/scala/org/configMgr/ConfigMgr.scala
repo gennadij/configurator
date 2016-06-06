@@ -106,8 +106,18 @@ class ConfigMgr {
     val selectedComponentIds = selectedComponents map (_.id)
     val components = for{
       component <- step.components
-      id <- selectedComponentIds
-    }yield if (component.id == id) component else new ErrorComponent("7", "error compnent", "error")
+      selectedComponent <- selectedComponents
+    }yield 
+    if (component.id == selectedComponent.id){
+      if(component.isInstanceOf[MutableComponent]){
+        new CurrentConfigMutableComponent(component.id, component.nameToShow, selectedComponent.value)
+      }else{
+        new CurrentConfigImmutableComponent(component.id, component.nameToShow)
+      }
+    }
+    else{
+        new ErrorComponent("7", "two or more same component was selected")
+    }
     
     components filter { ! _.isInstanceOf[ErrorComponent]}
     
