@@ -27,12 +27,10 @@ import org.configTree.step.CurrentConfigStep
  * - Selection Criterium to Int konvertieren
  * - selectionCriteriumMax darf nicht grösser als Anzahl der Components sein und Umgekehrt
  * - ID durch 100100 ersetzen => Typ Int
-<<<<<<< HEAD
  * - nur bei MutableComponent kann der value übergeben werden
-=======
  * - alle Überprüfungen in eine Methode zusammenführen
  * - Spec für minValues und maxValues schreiben
->>>>>>> a84f36e66dd02fe52149473d3dc88b5822a63cbf
+ * - Fehler -> wenn Immutable Component value gesetzt wird (Test dazu)
  */
 
 object ConfigMgr{
@@ -62,7 +60,7 @@ class ConfigMgr {
     */
   def startConfig = {
     val firstStep = container.configSettings filter(_.isInstanceOf[FirstStep])
-    if(firstStep.size == 1) firstStep(0) else new ErrorStep("7", "error step", "exist more as one step")
+    if(firstStep.size == 1) firstStep(0) else new ErrorStep("7", "exist more as one step")
   }
   
   /**
@@ -127,19 +125,24 @@ class ConfigMgr {
   private def checkParameterOfSelectedComponents(step: AbstractStep, 
                   selectedComponents: Set[SelectedComponent]) = {
     
+    
     (step.components filter(checkValues(_, selectedComponents))).size match{
       case 0 => step
-      case _ => ErrorStep("7", "error step", "minValue is smaller or naxValue is greater as definition in configSttings")
+      case _ => ErrorStep("7", "minValue is smaller or naxValue is greater as definition in configSttings")
     }
   }
   
   private def checkValues(component: Component, selectedComponents: Set[SelectedComponent]): Boolean = {
     
-    if((selectedComponents filter (sc => sc.minValue > component.minValue && 
-        sc.maxValue < component.maxValue)).size == 0)
+    if(component.isInstanceOf[MutableComponent]){
+    	if((selectedComponents filter (sc => sc.value < component.minValue && 
+    			sc.value > component.maxValue)).size == 0)
+    		true
+    	else
+    		false
+    }else{
       false
-    else
-      true
+    }
   }
   
   
@@ -151,8 +154,8 @@ class ConfigMgr {
     
     val selectedComponentIds = selectedComponents map (_.id)
     selectedComponentIds.size match {
-      case com1: Int if com1 < min => new ErrorStep("7", "error step", "selected to few components")
-      case com2: Int if com2 > max => new ErrorStep("7", "error step", "selected to match components")
+      case com1: Int if com1 < min => new ErrorStep("7", "selected to few components")
+      case com2: Int if com2 > max => new ErrorStep("7", "selected to match components")
       case _ => checkParameterOfSelectedComponents(step, selectedComponents)
     }
   }
@@ -180,7 +183,7 @@ class ConfigMgr {
     if(filterdSteps.size == 1){
       filterdSteps(0)
     }else{
-      new ErrorStep("7", "error step", "The selected components has " + 
+      new ErrorStep("7", "The selected components has " + 
             "not been found in any configuration steps")
     }
   }
@@ -204,7 +207,7 @@ class ConfigMgr {
         val nextStep = step.nextStep filter(_.byComponent == selectedComponentIds.head)
         (container.configSettings filter (_.id == nextStep(0).step))(0)
       }
-      case false => new ErrorStep("7", "error step", "nextSteps for selectedComponentIds was not same")
+      case false => new ErrorStep("7", "nextSteps for selectedComponentIds was not same")
     }
   }
   

@@ -24,7 +24,6 @@ class ConfigSettings {
   private def toNextStep(ns: scala.xml.NodeSeq): NextStep = {
     new NextStep(
         "1",
-        "next step",
         (ns \ "@component").text,
         (ns \ "@step").text)
   }

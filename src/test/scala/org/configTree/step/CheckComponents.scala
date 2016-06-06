@@ -12,9 +12,9 @@ class CheckComponents extends Specification{
       The selected components has not been found in any configuration steps                 $e1
     
     """
-  val errorE1 = new ErrorStep("7", "error step", "The selected components has " + 
+  val errorE1 = new ErrorStep("7", "The selected components has " + 
             "not been found in any configuration steps")
   
-  def e1 = ConfigMgr.getNextStep(Set(new SelectedComponent("000000",""))) must_== errorE1 
+  def e1 = ConfigMgr.getNextStep(Set(new SelectedComponent("000000"))) must_== errorE1 
   
 }

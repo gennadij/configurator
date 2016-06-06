@@ -23,8 +23,8 @@ class NextStepSpec extends Specification {
     val firstStep = new FirstStep(
     "001",
     "step 001",
-    List(new NextStep("1", "next step", "001001", "002"), new NextStep("1", "next step", "001002", "002"),
-          new NextStep("1", "next step", "001003", "003")),
+    List(new NextStep("1", "001001", "002"), new NextStep("1", "001002", "002"),
+          new NextStep("1", "001003", "003")),
     new SelectionCriterium("1","1"),
     new Source("xml","",""),
     List(new ImmutableComponent("001001", "component 001001"),
@@ -36,13 +36,13 @@ class NextStepSpec extends Specification {
   
   def e2 = {
     
-    val step002 = new DefaultStep("002", "step 002", List(new NextStep("1", "next step", "002001","003"), new NextStep("1", "next step", "002002", "003")),
+    val step002 = new DefaultStep("002", "step 002", List(new NextStep("1", "002001","003"), new NextStep("1", "002002", "003")),
     new SelectionCriterium("1", "2"), new Source("xml","",""), List(new ImmutableComponent("002001", "component 002001"),
       new ImmutableComponent("002002", "component 002002")))
     
-    ConfigMgr.getNextStep(Set(new SelectedComponent("001001",""))) must_== step002
+    ConfigMgr.getNextStep(Set(new SelectedComponent("001001"))) must_== step002
   }
   
-  val errorE3 = new ErrorStep("7", "error step", "nextSteps for selectedComponentIds was not same")
-  def e3 = ConfigMgr.getNextStep(Set(new SelectedComponent("004002",""), new SelectedComponent("004003",""))) must_== errorE3
+  val errorE3 = new ErrorStep("7", "nextSteps for selectedComponentIds was not same")
+  def e3 = ConfigMgr.getNextStep(Set(new SelectedComponent("004002"), new SelectedComponent("004003"))) must_== errorE3
 }

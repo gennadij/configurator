@@ -17,9 +17,9 @@ class FirstDefaultLastStepSpec extends Specification{
   val configMgr = new ConfigMgr
   
   val firstStep = new FirstStep("001","step 001", List(
-      new NextStep("1", "next step", "001001","002"), 
-      new NextStep("1", "next step", "001002","002"), 
-      new NextStep("1", "next step", "001003","003")),
+      new NextStep("1", "001001","002"), 
+      new NextStep("1", "001002","002"), 
+      new NextStep("1", "001003","003")),
       new SelectionCriterium("1","1"), new Source("xml","",""),
       List(
           new ImmutableComponent("001001","component 001001"), 
@@ -27,23 +27,23 @@ class FirstDefaultLastStepSpec extends Specification{
           new ImmutableComponent("001003","component 001003")))
   
   val defaultStep = new DefaultStep("002","step 002", List(
-      new NextStep("1", "next step", "002001","003"), 
-      new NextStep("1", "next step", "002002","003")),
+      new NextStep("1", "002001","003"), 
+      new NextStep("1", "002002","003")),
       new SelectionCriterium("1","2"), new Source("xml","",""),
       List(
           new ImmutableComponent("002001","component 002001"), 
           new ImmutableComponent("002002","component 002002")))
   
   val lastStep = new LastStep("008","step 008", List(
-      new NextStep("1", "next step", "008001","000"), 
-      new NextStep("1", "next step", "008002","000")),
+      new NextStep("1", "008001","000"), 
+      new NextStep("1", "008002","000")),
       new SelectionCriterium("1","1"), new Source("xml","",""),
       List(
           new ImmutableComponent("008001","component 008001"), 
           new ImmutableComponent("008002","component 008002")))
   
   def e1 = configMgr.startConfig must_== firstStep
-  def e2 = configMgr.getNextStep(Set(new SelectedComponent("001001",""))) must_== defaultStep
-  def e3 = configMgr.getNextStep(Set(new SelectedComponent("005005",""))) must_== lastStep
+  def e2 = configMgr.getNextStep(Set(new SelectedComponent("001001"))) must_== defaultStep
+  def e3 = configMgr.getNextStep(Set(new SelectedComponent("005005"))) must_== lastStep
   
 }

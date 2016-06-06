@@ -7,5 +7,4 @@ package org.configTree
   */
 abstract class ConfigTree {
   def id: String
-  def nameToShow: String
 }
