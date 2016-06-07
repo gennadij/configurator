@@ -153,8 +153,10 @@ class ConfigMgr {
   private def checkValue(mutableComponent: Component, selection: Component) = {
     if(selection.value < mutableComponent.minValue || selection.value > mutableComponent.maxValue){
       new ErrorComponent("7", "minValue is smaller or naxValue is greater as definition in configSttings")
+    }else if(mutableComponent.isInstanceOf[ImmutableComponent]){
+      new ErrorComponent("7", "ImmutableComponent has not parameter for value")
     }else{
-      selection
+    	selection
     }
   }
   

@@ -29,6 +29,8 @@ class SelectionCriteriumSpec extends Specification{
       003001 by SelectionCriterium min 2 and max 4                           $e7
       8. Methode checkSelectionCriterium return ErrorStep for selection
       003001,003002, 003003, 003004, by SelectionCriterium min 2 and max 4   $e8
+      8. Methode checkSelectionCriterium return ErrorStep for selection
+      003003 by SelectionCriterium min 2 and max 4                           $e9
       
       
       
@@ -94,4 +96,6 @@ class SelectionCriteriumSpec extends Specification{
   def e8 = ConfigMgr.getNextStep(Set(new SelectedComponent("003001"), 
       new SelectedComponent("003002"), new SelectedComponent("003003"), 
       new SelectedComponent("003004"))) must_== step004
+      
+  def e9 = ConfigMgr.getNextStep(Set(new SelectedComponent("003003", 3))) must_== step004
 }
