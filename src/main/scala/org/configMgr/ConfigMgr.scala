@@ -32,6 +32,7 @@ import org.configTree.step.CurrentConfigStep
  * - Spec für minValues und maxValues schreiben
  * - Fehler -> wenn Immutable Component value gesetzt wird (Test dazu)
  * - Test min max Value funktioniert nicht
+ * - ErrorStrings in der zentralle Stelle definieren
  */
 
 object ConfigMgr{
@@ -126,26 +127,36 @@ class ConfigMgr {
   private def checkParameterOfSelectedComponents(step: AbstractStep, 
                   selectedComponents: Set[SelectedComponent]) = {
     
+    // mutable components from ConfigSettings
+    val mutableComponents = step.components filter (_.isInstanceOf[MutableComponent])
     
-    (step.components filter(checkValues(_, selectedComponents))).size match{
+    // finde passende id und pruefe das max und min values
+    val filteredSelection = for {
+      mutableComponent <- mutableComponents
+      selection <- selectedComponents
+    } yield if(mutableComponent.id == selection.id) {
+      checkValue(mutableComponent, selection)
+    }
+    
+    // falls ErrorComponent in der Liste exestiert, Error weiter leiten
+    (filteredSelection filter(_.isInstanceOf[ErrorComponent])).size match{
       case 0 => step
       case _ => ErrorStep("7", "minValue is smaller or naxValue is greater as definition in configSttings")
     }
   }
   
-  private def checkValues(component: Component, selectedComponents: Set[SelectedComponent]): Boolean = {
-    
-    if(component.isInstanceOf[MutableComponent]){
-    	if((selectedComponents filter (sc => sc.value < component.minValue && 
-    			sc.value > component.maxValue)).size == 0)
-    		true
-    	else
-    		false
+  /**
+   * pruft max und min Values
+   * @return ErrorComponent -> value invalid
+   * 				 Component -> value valid
+   */
+  private def checkValue(mutableComponent: Component, selection: Component) = {
+    if(selection.value < mutableComponent.minValue || selection.value > mutableComponent.maxValue){
+      new ErrorComponent("7", "minValue is smaller or naxValue is greater as definition in configSttings")
     }else{
-      false
+      selection
     }
   }
-  
   
   private def checkSelectionCriterium(  step: AbstractStep, 
                                 selectedComponents: Set[SelectedComponent]): AbstractStep = {

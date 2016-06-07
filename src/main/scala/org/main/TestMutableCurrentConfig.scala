@@ -104,7 +104,7 @@ class TestMutableCurrentConfig {
     // fourth Step
     println("##################################################################")
 
-    val selected003001 = new SelectedComponent("003003", -1)
+    val selected003001 = new SelectedComponent("003003", 1)
     val selected003002 = new SelectedComponent("003002", 1)
     println("Selected Component: " + selected003001.id)
     

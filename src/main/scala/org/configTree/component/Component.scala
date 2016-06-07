@@ -33,8 +33,8 @@ case class ImmutableComponent(
 case class MutableComponent(
                            id: String,
                            override val nameToShow: String,
-                           override val maxValue: Int,
                            override val minValue: Int,
+                           override val maxValue: Int,
                            override val defaultValue: Int,
                            override val interval: Int,
                            override val intervals: List[Int]
@@ -50,7 +50,7 @@ case class MutableComponent(
 
 case class SelectedComponent(
                            id: String,
-                           override val value: Int = 0
+                           override val value: Int = -1
                             ) extends Component
 
 
