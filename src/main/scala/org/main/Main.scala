@@ -15,6 +15,10 @@ object Main {
     val currentConfig = new TestMutableCurrentConfig
 //    
     currentConfig.mutableCurrentConfig
+    
+    val scenario1 = new TestScenario1
+    
+    scenario1.scenario1
 //    val selCrit = new TestSelectionCriterium
     
 //    selCrit.selectCriterium
