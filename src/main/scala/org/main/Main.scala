@@ -12,9 +12,9 @@ object Main {
     println("I am generic configurator")
     println("Generic configurator started")
     
-    val currentConfig = new TestMutableCurrentConfig
-//    
-    currentConfig.mutableCurrentConfig
+//    val currentConfig = new TestMutableCurrentConfig
+////    
+//    currentConfig.mutableCurrentConfig
     
     val scenario1 = new TestScenario1
     

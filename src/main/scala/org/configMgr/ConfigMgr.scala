@@ -76,7 +76,7 @@ class ConfigMgr {
         //TODO final step testen, letzte step wird nicht in die CurrentConfig hinzugefuegt
         case lastStep: LastStep => {
           addStepToCurrentConfig(lastStep, selectedComponents)
-          new FinalStep("0", "I am final step")
+          new FinalStep("0")
         }
         case step => {
           addStepToCurrentConfig(step, selectedComponents)
@@ -91,7 +91,7 @@ class ConfigMgr {
   def addStepToCurrentConfig(step: AbstractStep, selectedComponents: Set[SelectedComponent]) = {
     
     val stepForCurrentConfig: CurrentConfigStep = new CurrentConfigStep(step.id, step.nameToShow, 
-                              step.selectionCriterium, getComponent(step, selectedComponents))
+                               getComponent(step, selectedComponents))
         
     val index = container.currentConfig.indexWhere(s => stepForCurrentConfig.id == s.id)
 

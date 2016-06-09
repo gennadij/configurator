@@ -91,17 +91,17 @@ case class LastStep     (
 /**
  * Final step hat immer id 0
  */
-case class FinalStep(id: String, override val nameToShow: String = "") extends AbstractStep {
-  require(id == "0", "id must be 0")
-  require(id.size == 1, "id size must be 1")
-//  require(nextStep.isEmpty, "nextStep must be empty")
-  require(selectionCriterium == null, "must be null")
-  require(from == null, "must be null")
-  require(components == null, "components list should be empty")
-  require(errorMessage == "", "must be empty")
-  require(succsessMessage == "", "must be empty")
-  require(byComponent == "", "must be empty")
-//  require(step == "", "must be empty")
+case class FinalStep(id: String) extends AbstractStep {
+//  require(id == "0", "id must be 0")
+//  require(id.size == 1, "id size must be 1")
+////  require(nextStep.isEmpty, "nextStep must be empty")
+//  require(selectionCriterium == null, "must be null")
+//  require(from == null, "must be null")
+//  require(components == null, "components list should be empty")
+//  require(errorMessage == "", "must be empty")
+//  require(succsessMessage == "", "must be empty")
+//  require(byComponent == "", "must be empty")
+////  require(step == "", "must be empty")
 }
 
 /**
@@ -162,7 +162,6 @@ case class SuccessStep(
 case class CurrentConfigStep(
                                id: String,
                                override val nameToShow: String = "",
-                               override val selectionCriterium: SelectionCriterium,
                                override val components: Seq[Component]
                                ) extends AbstractStep{
   
