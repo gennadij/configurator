@@ -16,7 +16,7 @@ class MinAndMaxValueSpec extends Specification{
         value in ImmutableComponent                                         $e4
     """
   
-  val errorStep = new ErrorStep("7", "minValue is smaller or naxValue is greater as definition in configSttings")
+  val errorStep = new ErrorStep("7",Nil, List("minValue is smaller or naxValue is greater as definition in configSttings"))
   
   val defaulStep = new DefaultStep("004","step 004",
       List(  new NextStep("1","004001","005"), 

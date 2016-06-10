@@ -62,7 +62,7 @@ class ConfigMgr {
     */
   def startConfig = {
     val firstStep = container.configSettings filter(_.isInstanceOf[FirstStep])
-    if(firstStep.size == 1) firstStep(0) else new ErrorStep("7", "exist more as one step")
+    if(firstStep.size == 1) firstStep(0) else new ErrorStep("7", Nil, List("exist more as one step"))
   }
   
   /**
@@ -141,7 +141,7 @@ class ConfigMgr {
     // falls ErrorComponent in der Liste exestiert, Error weiter leiten
     (filteredSelection filter(_.isInstanceOf[ErrorComponent])).size match{
       case 0 => step
-      case _ => ErrorStep("7", "minValue is smaller or naxValue is greater as definition in configSttings")
+      case _ => ErrorStep("7", Nil, List("minValue is smaller or naxValue is greater as definition in configSttings"))
     }
   }
   
@@ -168,8 +168,8 @@ class ConfigMgr {
     
     val selectedComponentIds = selectedComponents map (_.id)
     selectedComponentIds.size match {
-      case com1: Int if com1 < min => new ErrorStep("7", "selected to few components")
-      case com2: Int if com2 > max => new ErrorStep("7", "selected to match components")
+      case com1: Int if com1 < min => new ErrorStep("7", Nil, List("selected to few components"))
+      case com2: Int if com2 > max => new ErrorStep("7", Nil, List("selected to match components"))
       case _ => checkParameterOfSelectedComponents(step, selectedComponents)
     }
   }
@@ -197,8 +197,8 @@ class ConfigMgr {
     if(filterdSteps.size == 1){
       filterdSteps(0)
     }else{
-      new ErrorStep("7", "The selected components has " + 
-            "not been found in any configuration steps")
+      new ErrorStep("7", List(new ErrorComponent("","")), List("The selected components has " + 
+            "not been found in any configuration steps"))
     }
   }
   
@@ -221,7 +221,7 @@ class ConfigMgr {
         val nextStep = step.nextStep filter(_.byComponent == selectedComponentIds.head)
         (container.configSettings filter (_.id == nextStep(0).step))(0)
       }
-      case false => new ErrorStep("7", "nextSteps for selectedComponentIds was not same")
+      case false => new ErrorStep("7",Nil, List("nextSteps for selectedComponentIds was not same"))
     }
   }
   

@@ -1,7 +1,7 @@
 package org.configTree.step
 
 import org.configTree._
-import org.configTree.component.Component
+import org.configTree.component._
 
 /**
   * Created by gennadi on 29.04.16.
@@ -20,7 +20,8 @@ abstract class AbstractStep extends ConfigTree {
   def from: Source = null
   def components: Seq[Component] = null
   //ErrorStep 
-  def errorMessage: String = ""
+  def errorComponent: List[ErrorComponent] = Nil
+  def errorMessage: List[String] = Nil
   //SaccessStep
   def succsessMessage: String = ""
   //NextStep
@@ -126,8 +127,9 @@ case class NextStep     (
 /**
  * Error step hat immer id 7                        
  */
-case class ErrorStep(         id: String, 
-                              override val errorMessage: String
+case class ErrorStep(         id: String,      // id for step within was error
+                              override val errorComponent: List[ErrorComponent], // for error within component
+                              override val errorMessage: List[String] // for error within step 
                     ) extends AbstractStep{
   require(id == "7", "id must be 7")
   require(id.size == 1, "id size must be 1")
