@@ -19,6 +19,8 @@ object Main {
     val scenario1 = new TestScenario1
     
     scenario1.scenario1
+    
+    new TestScenario2().scenario2
 //    val selCrit = new TestSelectionCriterium
     
 //    selCrit.selectCriterium
