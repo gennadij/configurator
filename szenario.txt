@@ -13,4 +13,34 @@ Step 1 | 001003 				-> (003001), (003002), (003003), (003004)
 Step 2 | 003003|4, 003004|5 	-> (004001), (004002), (004003)
 Step 3 | 004002 				-> (005001), (005002), (005003), (005004), (005005)
 Step 4 | 005005 				-> (008001), (008002)
-Step 5 | 008002					-> 
+Step 5 | 008002					->
+
+Szenario 3
+
+Step 1 | 001003 				-> (003001), (003002), (003003), (003004)
+Step 2 | 003003|4, 003004|5 	-> (004001), (004002), (004003)
+Step 3 | 004002 				-> (005001), (005002), (005003), (005004), (005005)
+Step 4 | 005005 				-> (008001), (008002)
+Step 5 | 008002					->
+Step 6 | 002002					-> Error = Component existiert nicht in der CurrentConfig
+
+Szenario 4
+
+error 1 -> ErrorComponent("7", "minValue is smaller or naxValue is greater as definition in configSttings")
+ErrorComponent("7", "ImmutableComponent has not parameter for value")
+
+ErrorStep("7", "exist more as one step")
+ErrorStep("7", "minValue is smaller or naxValue is greater as definition in configSttings")
+ErrorStep("7", "selected to few components")
+ErrorStep("7", "selected to match components")
+ErrorStep("7", "The selected components has not been found in any configuration steps")
+ErrorStep("7", "nextSteps for selectedComponentIds was not same")
+
+error 1 | 
+
+
+Step 1 | 001005 				-> Error
+Step 2 | 003003|4, 003004|5 	-> (004001), (004002), (004003)
+Step 3 | 004002 				-> (005001), (005002), (005003), (005004), (005005)
+Step 4 | 005005 				-> (008001), (008002)
+Step 5 | 008002					->

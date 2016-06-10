@@ -101,29 +101,32 @@ class ConfigMgr {
 
     container.currentConfig += stepForCurrentConfig
   }
-  
+  //TODO TEST
   private def getComponent(step: AbstractStep, selectedComponents: Set[SelectedComponent]): Seq[Component] = {
-    val selectedComponentIds = selectedComponents map (_.id)
-    val components = for{
-      component <- step.components
+    
+    val mutableComponents = step.components filter (_.isInstanceOf[MutableComponent])
+    
+    var immutableComponents = step.components filter (_.isInstanceOf[ImmutableComponent])
+    
+    val currentConfigMutableCommponents = for{
+      mutableComponent <- mutableComponents
       selectedComponent <- selectedComponents
-    }yield 
-    if (component.id == selectedComponent.id){
-      if(component.isInstanceOf[MutableComponent]){
-        new CurrentConfigMutableComponent(component.id, component.nameToShow, selectedComponent.value)
-      }else{
-        new CurrentConfigImmutableComponent(component.id, component.nameToShow)
-      }
-    }
-    else{
-        new ErrorComponent("7", "two or more same component was selected")
-    }
+      if mutableComponent.id == selectedComponent.id
+    }yield new CurrentConfigMutableComponent(  mutableComponent.id, 
+                                               mutableComponent.nameToShow, 
+                                               selectedComponent.value)
     
-    components filter { ! _.isInstanceOf[ErrorComponent]}
+     val currentConfigImmutableCommponents = for{
+      immutableComponent <- immutableComponents
+      selectedComponent <- selectedComponents
+      if immutableComponent.id == selectedComponent.id
+    }yield new CurrentConfigImmutableComponent(  immutableComponent.id, 
+                                               immutableComponent.nameToShow)
     
+    currentConfigImmutableCommponents ++ currentConfigMutableCommponents
   }
   
-  
+  //TODO TEST
   private def checkParameterOfSelectedComponents(step: AbstractStep, 
                   selectedComponents: Set[SelectedComponent]) = {
     
@@ -134,14 +137,22 @@ class ConfigMgr {
     val filteredSelection = for {
       mutableComponent <- mutableComponents
       selection <- selectedComponents
-    } yield if(mutableComponent.id == selection.id) {
-      checkValue(mutableComponent, selection)
-    }
+      if mutableComponent.id == selection.id
+    } yield checkValue(mutableComponent, selection)
     
     // falls ErrorComponent in der Liste exestiert, Error weiter leiten
     (filteredSelection filter(_.isInstanceOf[ErrorComponent])).size match{
       case 0 => step
-      case _ => ErrorStep("7", "minValue is smaller or naxValue is greater as definition in configSttings")
+      case _ => {
+         val errorStep = for {
+           selection <- filteredSelection
+            if selection.isInstanceOf[ErrorComponent]
+         }yield new ErrorStep("7", selection.errorMessage)
+         
+         //TODO
+         errorStep(0)
+         
+      }
     }
   }
   
@@ -152,7 +163,7 @@ class ConfigMgr {
    */
   private def checkValue(mutableComponent: Component, selection: Component) = {
     if(selection.value < mutableComponent.minValue || selection.value > mutableComponent.maxValue){
-      new ErrorComponent("7", "minValue is smaller or naxValue is greater as definition in configSttings")
+      new ErrorComponent("7", "minValue is smaller or maxValue is greater as definition in configSttings")
     }else if(mutableComponent.isInstanceOf[ImmutableComponent]){
       new ErrorComponent("7", "ImmutableComponent has not parameter for value")
     }else{
