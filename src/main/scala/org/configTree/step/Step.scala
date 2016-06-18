@@ -20,8 +20,8 @@ abstract class Step extends ConfigTree {
   def from: Source = null
   def components: Seq[Component] = null
   //ErrorStep 
-  def errorComponent: List[ErrorComponent] = Nil
-  def errorMessage: List[String] = Nil
+  def errorComponent: Seq[Component] = Nil
+  def errorMessage: String = ""
 //  SaccessStep
   def succsessMessage: String = ""
   NextStep
@@ -44,8 +44,8 @@ abstract class ConfigSettingsStep extends Step {
 
 abstract class AnnounceStep extends Step{
   //  //ErrorStep 
-  override def errorComponent: List[ErrorComponent] = Nil
-  override def errorMessage: List[String] = Nil
+  override def errorComponent: Seq[Component] = Nil
+  override def errorMessage: String = ""
     //SaccessStep
   override def succsessMessage: String = ""
 }
@@ -151,8 +151,8 @@ case class NextStep     (
  * Error step hat immer id 7                        
  */
 case class ErrorStep(         id: String,      // id for step within was error
-                              override val errorComponent: List[ErrorComponent], // for error within component
-                              override val errorMessage: List[String] // for error within step 
+                              override val errorMessage: String, // for error within step 
+                              override val errorComponent: Seq[Component] // for error within component
                     ) extends AnnounceStep{
   require(id == "7", "id must be 7")
   require(id.size == 1, "id size must be 1")

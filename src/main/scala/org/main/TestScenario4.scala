@@ -13,6 +13,12 @@ class TestScenario4 {
     startConfig
     
     error1
+    
+    error2
+    
+    error3
+    
+    error4
   }
   
   def startConfig = {
@@ -55,48 +61,60 @@ class TestScenario4 {
       require(step.isInstanceOf[ErrorStep] == true, step.errorMessage)
       
       require(step.id == "7")
-      require(step.errorMessage(0) == "minValue is smaller or maxValue is greater as definition in configSttings", step.errorMessage)
-//      require(step.errorComponent(0).id == "7", step.errorComponent(0).id)
-//      require(step.errorComponent(0).errorMessage == "")
-      
+      require(step.errorMessage == "error", step.errorMessage)
+      require(step.errorComponent.size == 2, step.errorComponent.size) 
+      require(step.errorComponent(0).id == "7", step.errorComponent(0).id)
+      require(step.errorComponent(0).errorMessage == "minValue is smaller or maxValue is greater as definition in configSttings")
+//      require(step.errorComponent(0).isInstanceOf[SuccessComponent] == true)
+      require(step.errorComponent(1).id == "7", step.errorComponent(0).id)
+      require(step.errorComponent(1).errorMessage == "minValue is smaller or maxValue is greater as definition in configSttings")
+  }
   
-//      require(step.isInstanceOf[DefaultStep] == true)
-//      
-//      require(step.id == "004", step.id)
-//      
-//      require(step.selectionCriterium.min == "1")
-//      require(step.selectionCriterium.max == "2")
-//  
-//      require(step.nextStep(0).byComponent == "004001")
-//      require(step.nextStep(0).step == "005")
-//      require(step.nextStep(1).byComponent == "004002")
-//      require(step.nextStep(1).step == "005")
-//      require(step.nextStep(2).byComponent == "004003")
-//      require(step.nextStep(2).step == "006")
-//      
-//      require(step.components(0).id == "004001")
-//      require(step.components(0).nameToShow == "component 004001")
-//      require(step.components(0).isInstanceOf[ImmutableComponent] == true)
-//      
-//      require(step.components(1).id == "004002")
-//      require(step.components(1).nameToShow == "component 004002")
-//      require(step.components(1).isInstanceOf[ImmutableComponent] == true)
-//      
-//      require(step.components(2).id == "004003")
-//      require(step.components(2).nameToShow == "component 004003")
-//      require(step.components(2).isInstanceOf[ImmutableComponent] == true)
-//      
-//      require(ConfigMgr.currentConfig.size == 2, "CurrentConfig size is 2")
-//      require(ConfigMgr.currentConfig(1).id == "003")
-//      require(ConfigMgr.currentConfig(1).nameToShow == "step 003")
-//      require(ConfigMgr.currentConfig(1).components.size == 2)
-//      require(ConfigMgr.currentConfig(1).components(0).isInstanceOf[CurrentConfigMutableComponent] == true)
-//      require(ConfigMgr.currentConfig(1).components(0).id == "003003")
-//      require(ConfigMgr.currentConfig(1).components(0).nameToShow == "component 003003")
-//      require(ConfigMgr.currentConfig(1).components(0).value == 4)
-//      require(ConfigMgr.currentConfig(1).components(1).isInstanceOf[CurrentConfigMutableComponent] == true)
-//      require(ConfigMgr.currentConfig(1).components(1).id == "003004")
-//      require(ConfigMgr.currentConfig(1).components(1).nameToShow == "component 003004")
-//      require(ConfigMgr.currentConfig(1).components(1).value == 5)
+    def error2 = {
+      
+      val step = ConfigMgr.getNextStep(Set(  new SelectedComponent("003003", 2),
+                                             new SelectedComponent("003004", 12)))
+      
+      require(step.isInstanceOf[ErrorStep] == true, step.errorMessage)
+      
+      require(step.id == "7")
+      require(step.errorMessage == "error", step.errorMessage)
+      require(step.errorComponent.size == 2, step.errorComponent.size) 
+      require(step.errorComponent(0).isInstanceOf[SuccessComponent] == true)
+      require(step.errorComponent(0).id == "3", step.errorComponent(0).id)
+      require(step.errorComponent(1).id == "7", step.errorComponent(0).id)
+      require(step.errorComponent(1).errorMessage == "minValue is smaller or maxValue is greater as definition in configSttings")
+  }
+    
+  def error3 = {
+    
+    val step = ConfigMgr.getNextStep(Set(  new SelectedComponent("003003", -1),
+                                           new SelectedComponent("003004", 9)))
+    
+    require(step.isInstanceOf[ErrorStep] == true, step.errorMessage)
+    
+    require(step.id == "7")
+    require(step.errorMessage == "error", step.errorMessage)
+    require(step.errorComponent.size == 2, step.errorComponent.size) 
+    require(step.errorComponent(0).id == "7", step.errorComponent(0).id)
+    require(step.errorComponent(0).errorMessage == "minValue is smaller or maxValue is greater as definition in configSttings")
+    require(step.errorComponent(1).isInstanceOf[SuccessComponent] == true)
+    require(step.errorComponent(1).id == "3", step.errorComponent(0).id)
+  }
+  
+  def error4 = {
+    
+    val step = ConfigMgr.getNextStep(Set(  new SelectedComponent("003002", 2),
+                                           new SelectedComponent("003003", 8)))
+    
+    require(step.isInstanceOf[ErrorStep] == true, step.toString())
+    
+    require(step.id == "7")
+    require(step.errorMessage == "error", step.errorMessage)
+    require(step.errorComponent.size == 2, step.errorComponent.size) 
+    require(step.errorComponent(0).id == "7", step.errorComponent(0).id)
+    require(step.errorComponent(0).errorMessage == "minValue is smaller or maxValue is greater as definition in configSttings")
+    require(step.errorComponent(1).isInstanceOf[SuccessComponent] == true)
+    require(step.errorComponent(1).id == "3", step.errorComponent(0).id)
   }
 }

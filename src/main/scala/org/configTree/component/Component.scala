@@ -64,6 +64,9 @@ case class ErrorComponent(
     require(id == "7", "id must be 7") 
 }
 
+case class SuccessComponent(id: String
+    ) extends Component
+
 case class CurrentConfigMutableComponent(
                                 id: String,
                                 override val nameToShow: String,

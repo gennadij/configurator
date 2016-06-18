@@ -65,7 +65,7 @@ class ConfigMgr {
     */
   def startConfig = {
     val firstStep = container.configSettings filter(_.isInstanceOf[FirstStep])
-    if(firstStep.size == 1) firstStep(0) else new ErrorStep("7", Nil, List("exist more as one step"))
+    if(firstStep.size == 1) firstStep(0) else new ErrorStep("7", "exist more as one step", Nil)
   }
   
   /**
@@ -210,15 +210,16 @@ class ConfigMgr {
       // falls ErrorComponent in der Liste exestiert, Error weiter leiten
       (filteredSelection filter(_.isInstanceOf[ErrorComponent])).size match{
         case 0 => SuccessStep("3","")
-        case _ => {
-           val errorStep = for {
-             selection <- filteredSelection
-              if selection.isInstanceOf[ErrorComponent]
-           }yield new ErrorStep("7", Nil, List(selection.errorMessage))
+        case _ => new ErrorStep("7", "error", filteredSelection)
+//          {
+//           val errorStep = for {
+//             selection <- filteredSelection
+//              if selection.isInstanceOf[ErrorComponent]
+//           }yield new ErrorStep("7", "errorComponent exist", selection)
            
            //TODO
-           errorStep(0)
-        }
+//           errorStep(0)
+//        }
       }
     }
     
@@ -233,9 +234,10 @@ class ConfigMgr {
     if(selection.value < mutableComponent.minValue || selection.value > mutableComponent.maxValue){
       new ErrorComponent("7", "minValue is smaller or maxValue is greater as definition in configSttings")
     }else if(mutableComponent.isInstanceOf[ImmutableComponent]){
+      //TODO Dieser Fehler wird nicht gefasst
       new ErrorComponent("7", "ImmutableComponent has not parameter for value")
     }else{
-    	selection
+    	new SuccessComponent("3")
     }
   }
   
@@ -267,8 +269,8 @@ class ConfigMgr {
     
       val selectedComponentIds = selectedComponents map (_.id)
       selectedComponentIds.size match {
-        case com1: Int if com1 < min => new ErrorStep("7", Nil, List("selected to few components"))
-        case com2: Int if com2 > max => new ErrorStep("7", Nil, List("selected to match components"))
+        case com1: Int if com1 < min => new ErrorStep("7", "selected to few components", Nil)
+        case com2: Int if com2 > max => new ErrorStep("7", "selected to match components", Nil)
         case _ => new SuccessStep("3","")
       }
     }
@@ -297,8 +299,8 @@ class ConfigMgr {
     if(filterdSteps.size == 1){
       filterdSteps(0)
     }else{
-      new ErrorStep("7", Nil, List("The selected components has " + 
-            "not been found in any configuration steps"))
+      new ErrorStep("7", "The selected components has " + 
+            "not been found in any configuration steps", Nil)
     }
   }
   
@@ -321,7 +323,7 @@ class ConfigMgr {
         val nextStep = step.nextStep filter(_.byComponent == selectedComponentIds.head)
         (container.configSettings filter (_.id == nextStep(0).step))(0)
       }
-      case false => new ErrorStep("7",Nil, List("nextSteps for selectedComponentIds was not same"))
+      case false => new ErrorStep("7", "nextSteps for selectedComponentIds was not same", Nil)
     }
   }
   

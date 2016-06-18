@@ -26,8 +26,14 @@ Step 6 | 002002					-> Error = Component existiert nicht in der CurrentConfig
 
 Szenario 4
 
-error 1 -> ErrorComponent("7", "minValue is smaller or naxValue is greater as definition in configSttings")
-ErrorComponent("7", "ImmutableComponent has not parameter for value")
+error 1 | 003003|-1, 003004|12	-> ErrorComponent("7", "minValue is smaller or naxValue is greater as definition in configSttings")
+								   ErrorComponent("7", "minValue is smaller or naxValue is greater as definition in configSttings")
+error 2 | 003003|2, 003004|12 	-> SuccessComponent("3")
+								-> ErrorComponent("7", "minValue is smaller or naxValue is greater as definition in configSttings")
+error 3 | 003003|-1, 003004|9 	-> ErrorComponent("7", "minValue is smaller or naxValue is greater as definition in configSttings")
+								-> SuccessComponent("3")
+error 2 | 003002|2	003003|8	-> ErrorComponent("7", "ImmutableComponent has not parameter for value")
+								-> SuccessComponent("3")
 
 ErrorStep("7", "exist more as one step")
 ErrorStep("7", "minValue is smaller or naxValue is greater as definition in configSttings")
