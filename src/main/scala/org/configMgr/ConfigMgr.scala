@@ -18,6 +18,7 @@ import org.configTree.step.CurrentConfigStep
 import org.configTree.step.ConfigSettingsStep
 import org.configTree.step.ConfigSettingsStep
 import org.configTree.step.ConfigSettingsStep
+import org.configTree.step.AnnounceStep
 
 /**
  * TODO
@@ -36,6 +37,7 @@ import org.configTree.step.ConfigSettingsStep
  * - Fehler -> wenn Immutable Component value gesetzt wird (Test dazu)
  * - Test min max Value funktioniert nicht
  * - ErrorStrings in der zentralle Stelle definieren
+ * - weitere Parameter bei der MutableComponent prüfen und testen
  */
 
 object ConfigMgr{
@@ -77,9 +79,9 @@ class ConfigMgr {
     
     val step: Step = getStepOfComponents(selectedComponents)
     
-    val selectCrit = checkSelectionCriteriumV01(step, selectedComponents)
+    val selectCrit: AnnounceStep = checkSelectionCriterium(step, selectedComponents)
     
-    val selectValue = checkParameterOfSelectedComponentsV01(step, selectedComponents)
+    val selectValue: AnnounceStep = checkParameterOfSelectedComponents(step, selectedComponents)
     
     if(selectCrit.isInstanceOf[ErrorStep]){
       selectCrit
@@ -103,21 +105,6 @@ class ConfigMgr {
         }
       }
     }
-    
-//    checkSelectedComponents(selectedComponents) match {
-//        case errorStep: ErrorStep => errorStep
-//        //TODO final step testen, letzte step wird nicht in die CurrentConfig hinzugefuegt
-//        case lastStep: LastStep => {
-//          addStepToCurrentConfig(lastStep, selectedComponents)
-//          new FinalStep("0")
-//        }
-//        case step => {
-//          addStepToCurrentConfig(step, selectedComponents)
-//          checkNextSteps(step, selectedComponents)
-//        }
-//    }
-    
-   
   }
   
   /**
@@ -160,42 +147,13 @@ class ConfigMgr {
     
     currentConfigImmutableCommponents ++ currentConfigMutableCommponents
   }
-  
-  //TODO TEST
-//  private def checkParameterOfSelectedComponents(step: AbstractStep, 
-//                  selectedComponents: Set[SelectedComponent]) = {
-//    
-//    // mutable components from ConfigSettings
-//    val mutableComponents = step.components filter (_.isInstanceOf[MutableComponent])
-//    
-//    // finde passende id und pruefe das max und min values
-//    val filteredSelection = for {
-//      mutableComponent <- mutableComponents
-//      selection <- selectedComponents
-//      if mutableComponent.id == selection.id
-//    } yield checkValue(mutableComponent, selection)
-//    
-//    // falls ErrorComponent in der Liste exestiert, Error weiter leiten
-//    (filteredSelection filter(_.isInstanceOf[ErrorComponent])).size match{
-//      case 0 => step
-//      case _ => {
-//         val errorStep = for {
-//           selection <- filteredSelection
-//            if selection.isInstanceOf[ErrorComponent]
-//         }yield new ErrorStep("7", Nil, List(selection.errorMessage))
-//         
-//         //TODO
-//         errorStep(0)
-//      }
-//    }
-//  }
 
   
-  private def checkParameterOfSelectedComponentsV01(step: Step, 
-                  selectedComponents: Set[SelectedComponent]) = {
+  private def checkParameterOfSelectedComponents(step: Step, 
+                  selectedComponents: Set[SelectedComponent]): AnnounceStep = {
     
     if(step.isInstanceOf[ErrorStep]){
-      step
+      new ErrorStep("7", step.errorMessage, step.errorComponent)
     }else{
       // mutable components from ConfigSettings
       val mutableComponents = step.components filter (_.isInstanceOf[MutableComponent])
@@ -211,15 +169,6 @@ class ConfigMgr {
       (filteredSelection filter(_.isInstanceOf[ErrorComponent])).size match{
         case 0 => SuccessStep("3","")
         case _ => new ErrorStep("7", "error", filteredSelection)
-//          {
-//           val errorStep = for {
-//             selection <- filteredSelection
-//              if selection.isInstanceOf[ErrorComponent]
-//           }yield new ErrorStep("7", "errorComponent exist", selection)
-           
-           //TODO
-//           errorStep(0)
-//        }
       }
     }
     
@@ -241,28 +190,10 @@ class ConfigMgr {
     }
   }
   
-//  private def checkSelectionCriterium(  step: AbstractStep, 
-//                                selectedComponents: Set[SelectedComponent]): AbstractStep = {
-//    
-//    if(step.isInstanceOf[ErrorStep]){
-//      step
-//    }else{
-//      val min = step.selectionCriterium.min.toInt
-//      val max = step.selectionCriterium.max.toInt
-//    
-//      val selectedComponentIds = selectedComponents map (_.id)
-//      selectedComponentIds.size match {
-//        case com1: Int if com1 < min => new ErrorStep("7", Nil, List("selected to few components"))
-//        case com2: Int if com2 > max => new ErrorStep("7", Nil, List("selected to match components"))
-//        case _ => checkParameterOfSelectedComponents(step, selectedComponents)
-//      }
-//    }
-//  }
-  
-  private def checkSelectionCriteriumV01(step: Step, 
-                                selectedComponents: Set[SelectedComponent]): Step = {
+  private def checkSelectionCriterium(step: Step, 
+                                selectedComponents: Set[SelectedComponent]): AnnounceStep = {
     if(step.isInstanceOf[ErrorStep]){
-      step
+      new ErrorStep("7", step.errorMessage, step.errorComponent)
     }else{
       val min = step.selectionCriterium.min.toInt
       val max = step.selectionCriterium.max.toInt
@@ -330,14 +261,6 @@ class ConfigMgr {
   private def checkElem(list: Seq[String]) = {
     list match {
       case x :: rest => rest forall (_ == x)
-//      case _ => true
     }
   }
-  
-//  private def checkSelectedComponents(selectedComponents: Set[SelectedComponent]): AbstractStep = {
-//    getStepOfComponents(selectedComponents) match {
-//      case errorStep: ErrorStep => errorStep
-//      case step => checkSelectionCriterium(step, selectedComponents)
-//    }
-//  }
 }
