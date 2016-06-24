@@ -15,6 +15,7 @@ import org.configTree.step.LastStep
 import org.configTree.step.NextStep
 import org.configTree.step.SuccessStep
 import org.configTree.step.CurrentConfigStep
+import org.configTree.ConfigTree
 
 /**
  * TODO
@@ -33,6 +34,7 @@ import org.configTree.step.CurrentConfigStep
  * - Fehler -> wenn Immutable Component value gesetzt wird (Test dazu)
  * - Test min max Value funktioniert nicht
  * - ErrorStrings in der zentralle Stelle definieren
+ * - Problem mit Error beheben
  */
 
 object ConfigMgr{
@@ -54,6 +56,14 @@ object ConfigMgr{
 class ConfigMgr {
   
   val container = ConfigSettings.configSettings
+  
+  def addError(error: ConfigTree) = {
+    
+    error match {
+      case errorComponent: ErrorComponent => Nil
+      case errorStep: ErrorStep => Nil
+    }
+  }
 
   /**
     * - durch den Typunterscheidung mit match herausfiltern
@@ -71,9 +81,9 @@ class ConfigMgr {
    * - currentConfig für den Multichoose Komponent erweitern
    */
   def getNextStep(selectedComponents: Set[SelectedComponent]): AbstractStep = {
+    
     checkSelectedComponents(selectedComponents) match {
         case errorStep: ErrorStep => errorStep
-        //TODO final step testen, letzte step wird nicht in die CurrentConfig hinzugefuegt
         case lastStep: LastStep => {
           addStepToCurrentConfig(lastStep, selectedComponents)
           new FinalStep("0")
@@ -244,9 +254,57 @@ class ConfigMgr {
   }
   
   private def checkSelectedComponents(selectedComponents: Set[SelectedComponent]): AbstractStep = {
+    
+    
     getStepOfComponents(selectedComponents) match {
       case errorStep: ErrorStep => errorStep
       case step => checkSelectionCriterium(step, selectedComponents)
     }
   }
+  
+//  private def checkSelectedComponents(step: AbstractStep, selectedComponents: Set[SelectedComponent]) = {
+//    val errorSelectionCriterum = checkSelectionCriteriumV01(step, selectedComponents)
+//    val errorSelectedComponents = checkParameterOfSelectedComponentsV01(step, selectedComponents)
+//    List(errorSelectedComponents, errorSelectionCriterum)
+//  }
+//  
+//  def checkSelectionCriteriumV01(step: AbstractStep, selectedComponents: Set[SelectedComponent]) = {
+//    val min = step.selectionCriterium.min.toInt
+//    val max = step.selectionCriterium.max.toInt
+//    
+//    val selectedComponentIds = selectedComponents map (_.id)
+//    selectedComponentIds.size match {
+//      case com1: Int if com1 < min => new ErrorStep("7", Nil, List("selected to few components"))
+//      case com2: Int if com2 > max => new ErrorStep("7", Nil, List("selected to match components"))
+//      case _ => SuccessStep("3","SelectionCriterium is OK")
+//    }
+//  }
+//  
+//  def checkParameterOfSelectedComponentsV01(step: AbstractStep, selectedComponents: Set[SelectedComponent]) = {
+//    // mutable components from ConfigSettings
+//    val mutableComponents = step.components filter (_.isInstanceOf[MutableComponent])
+//    
+//    // finde passende id und pruefe das max und min values
+//    val filteredSelection = for {
+//      mutableComponent <- mutableComponents
+//      selection <- selectedComponents
+//      if mutableComponent.id == selection.id
+//    } yield checkValue(mutableComponent, selection)
+//    
+//    // falls ErrorComponent in der Liste exestiert, Error weiter leiten
+//    (filteredSelection filter(_.isInstanceOf[ErrorComponent])).size match{
+//      case 0 => SuccessStep("3", "Selected value is OK")
+//      case _ => {
+//         val errorStep = for {
+//           selection <- filteredSelection
+//            if selection.isInstanceOf[ErrorComponent]
+//         }yield new ErrorStep("7", Nil, List(selection.errorMessage))
+//         
+//         //TODO
+//         errorStep(0)
+//         
+//      }
+//    }
+//  }
+  
 }
