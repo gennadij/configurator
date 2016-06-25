@@ -43,6 +43,6 @@ class NextStepSpec extends Specification {
     ConfigMgr.getNextStep(Set(new SelectedComponent("001001"))) must_== step002
   }
   
-  val errorE3 = new ErrorStep("7",Nil, List("nextSteps for selectedComponentIds was not same"))
+  val errorE3 = new ErrorStep("7", "nextSteps for selectedComponentIds was not same", Nil)
   def e3 = ConfigMgr.getNextStep(Set(new SelectedComponent("004002"), new SelectedComponent("004003"))) must_== errorE3
 }
