@@ -269,6 +269,7 @@ class ConfigMgr {
     }
   }
   
+  
   private def checkElem(list: Seq[String]) = {
     list match {
       case x :: rest => rest forall (_ == x)
