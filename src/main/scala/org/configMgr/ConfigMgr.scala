@@ -83,6 +83,12 @@ class ConfigMgr {
     
     val selectValue: AnnounceStep = checkParameterOfSelectedComponents(step, selectedComponents)
     
+    val checkedSteps: List[AnnounceStep] = List(selectCrit, selectValue)
+    
+//    checkedSteps.filter { _.isInstanceOf[ErrorStep] }
+    
+//    checkedSteps.exists { _.isInstanceOf[ErrorStep] == true }
+    
     if(selectCrit.isInstanceOf[ErrorStep]){
       selectCrit
     }else if (selectValue.isInstanceOf[ErrorStep]){
