@@ -11,18 +11,21 @@ object Main {
   def main(args : Array[String]) = {
     println("I am generic configurator")
     println("Generic configurator started")
-    
-//    val currentConfig = new TestMutableCurrentConfig
-////    
-//    currentConfig.mutableCurrentConfig
-    
-    val scenario1 = new TestScenario1
-    
-    scenario1.scenario1
+    println("Run Test Scenarios")
+    new TestScenario1().scenario1
     
     new TestScenario2().scenario2
     
     new TestScenario4().scenario4
+    
+    println("END")
+  }
+}
+
+
+//    val currentConfig = new TestMutableCurrentConfig
+////    
+//    currentConfig.mutableCurrentConfig
 //    val selCrit = new TestSelectionCriterium
     
 //    selCrit.selectCriterium
@@ -30,8 +33,3 @@ object Main {
 //    selCrit.getStepOfComponents
     
 //    selCrit.getNextStep
-
-    
-    println("END")
-  }
-}

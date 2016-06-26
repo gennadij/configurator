@@ -50,7 +50,7 @@ case class MutableComponent(
 
 case class SelectedComponent(
                            id: String,
-                           override val value: Int = -1
+                           override val value: Int = 0
                             ) extends Component
 
 

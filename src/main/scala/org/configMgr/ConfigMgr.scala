@@ -89,12 +89,6 @@ class ConfigMgr {
     
     val selectValue: AnnounceStep = checkParameterOfSelectedComponents(step, selectedComponents)
     
-    val checkedSteps: List[AnnounceStep] = List(selectCrit, selectValue)
-    
-//    checkedSteps.filter { _.isInstanceOf[ErrorStep] }
-    
-//    checkedSteps.exists { _.isInstanceOf[ErrorStep] == true }
-    
     if(selectCrit.isInstanceOf[ErrorStep]){
       selectCrit
     }else if (selectValue.isInstanceOf[ErrorStep]){
@@ -163,28 +157,79 @@ class ConfigMgr {
   private def checkParameterOfSelectedComponents(step: Step, 
                   selectedComponents: Set[SelectedComponent]): AnnounceStep = {
     
+    
     if(step.isInstanceOf[ErrorStep]){
       new ErrorStep("7", step.errorMessage, step.errorComponent)
     }else{
-      // mutable components from ConfigSettings
-      val mutableComponents = step.components filter (_.isInstanceOf[MutableComponent])
       
-      // finde passende id und pruefe das max und min values
-      val filteredSelection = for {
-        mutableComponent <- mutableComponents
-        selection <- selectedComponents
-        if mutableComponent.id == selection.id
-      } yield checkValue(mutableComponent, selection)
+      val checkedMutableComponents: List[Component] = checkMutableComponents(step, selectedComponents).toList
+      
+      val checkedImmutableComponents: List[Component] = checkImmutableComponents(step, selectedComponents).toList
+      
+      val checkedComponents = checkedImmutableComponents ::: checkedMutableComponents
+      
+      val errorComponents = checkedComponents filter { _.isInstanceOf[ErrorComponent] }
+      
+//      falls ErrorComponent in der Liste exestiert, Error weiter leiten
+      errorComponents.size match{
+        case 0 => SuccessStep("3","")
+        case _ => new ErrorStep("7", "error", errorComponents)
+      }
+      
+      
+//      // mutable components from ConfigSettings
+//      val mutableComponents = step.components filter (_.isInstanceOf[MutableComponent])
+//      
+//      // finde passende id und pruefe das max und min values
+//      val filteredSelection = for {
+//        mutableComponent <- mutableComponents
+//        selection <- selectedComponents
+//        if mutableComponent.id == selection.id
+//      } yield checkValue(mutableComponent, selection)
       
       // falls ErrorComponent in der Liste exestiert, Error weiter leiten
-      (filteredSelection filter(_.isInstanceOf[ErrorComponent])).size match{
-        case 0 => SuccessStep("3","")
-        case _ => new ErrorStep("7", "error", filteredSelection)
-      }
+//      (filteredSelection filter(_.isInstanceOf[ErrorComponent])).size match{
+//        case 0 => SuccessStep("3","")
+//        case _ => new ErrorStep("7", "error", filteredSelection)
+//      }
     }
-    
-    
   }
+  
+  private def checkMutableComponents(step: Step, 
+                  selectedComponents: Set[SelectedComponent]): Seq[Component] = {
+    // mutable components from ConfigSettings
+    val mutableComponents = step.components filter (_.isInstanceOf[MutableComponent])
+    
+    // finde passende id und pruefe das max und min values
+    for {
+      mutableComponent <- mutableComponents
+      selection <- selectedComponents
+      if mutableComponent.id == selection.id
+    } yield checkValue(mutableComponent, selection)
+  }
+  
+  
+  
+  
+  private def checkImmutableComponents(step: Step, 
+      selectedComponents: Set[SelectedComponent]): Seq[Component] = {
+    
+    val immutableComponents = step.components filter (_.isInstanceOf[ImmutableComponent])
+    
+    // finde passende id und pruefe das max und min values
+    for {
+      immutableComponent <- immutableComponents
+      selection <- selectedComponents
+      if immutableComponent.id == selection.id
+    } yield checkParameterPresence(immutableComponent, selection)
+  }
+  
+  private def checkParameterPresence(immutableComponent: Component, selection:SelectedComponent) = {
+    if(selection.value != 0) new ErrorComponent("7","ImmutableComponent allowed not parameter for value")
+    else new SuccessComponent("3")
+  }
+  
+  
   /**
    * pruft max und min Values
    * @return ErrorComponent -> value invalid
@@ -193,14 +238,11 @@ class ConfigMgr {
   private def checkValue(mutableComponent: Component, selection: Component) = {
     if(selection.value < mutableComponent.minValue || selection.value > mutableComponent.maxValue){
       new ErrorComponent("7", "minValue is smaller or maxValue is greater as definition in configSttings")
-    }else if(mutableComponent.isInstanceOf[ImmutableComponent]){
-      //TODO Dieser Fehler wird nicht gefasst
-      new ErrorComponent("7", "ImmutableComponent has not parameter for value")
     }else{
     	new SuccessComponent("3")
     }
   }
-  
+
   private def checkSelectionCriterium(step: Step, 
                                 selectedComponents: Set[SelectedComponent]): AnnounceStep = {
     if(step.isInstanceOf[ErrorStep]){
