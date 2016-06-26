@@ -1,0 +1,311 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+
+<!-- tag isStartStep wird nicht mehr gebraucht -->
+<steps>
+	<step>
+		<id>001</id>
+		<nameToShow>step 001</nameToShow>
+		<nextSteps default="000">
+			<nextStep component="001001" step="002"/>
+			<nextStep component="001002" step="002"/>
+			<nextStep component="001003" step="003"/>
+		</nextSteps>
+		<!--last, first, default-->
+		<kind>first</kind>
+		<selectionCriterium>
+			<min>1</min>
+			<max>1</max>
+		</selectionCriterium>
+		<!-- sources | db | xml | json -->
+		<!--wenn Quelle DB ist, werden alle Spalten des Components ins Objekt geschrieben,
+        deswegen der Objekt soll dynamisch aufgebaut werden. Die felder werden mit z.B Peflexion
+        erzeugt werden, da keine definierte aufbau existiert. -->
+		<from source="xml">
+			<sqlStatement></sqlStatement>
+			<!--inside empty, outside pathString -->
+			<path></path>
+		</from>
+		<!-- Bevor die Komponenten gelesen werden, sollte die nextSteps mit components übereinstimmen -->
+		<components>
+			<component>
+				<id>001001</id>
+				<!--immutable, mutable -->
+				<kind>immutable</kind>
+				<nameToShow>component 001001</nameToShow>
+			</component>
+			<component>
+				<id>001002</id>
+				<kind>immutable</kind>
+				<nameToShow>component 001002</nameToShow>
+			</component>
+			<component>
+				<id>001003</id>
+				<kind>immutable</kind>
+				<nameToShow>component 001003</nameToShow>
+			</component>
+		</components>
+	</step>
+	<step>
+		<id>002</id>
+		<nameToShow>step 002</nameToShow>
+		<nextSteps default="000">
+			<nextStep component="002001" step="003"/>
+			<nextStep component="002002" step="003"/>
+		</nextSteps>
+		<kind>default</kind>
+		<selectionCriterium>
+			<min>1</min>
+			<max>2</max>
+		</selectionCriterium>
+		<from source="xml">
+			<sqlStatement></sqlStatement>
+			<path></path>
+		</from>
+		<components>
+			<component>
+				<id>002001</id>
+				<kind>immutable</kind>
+				<nameToShow>component 002001</nameToShow>
+			</component>
+			<component>
+				<id>002002</id>
+				<kind>immutable</kind>
+				<nameToShow>component 002002</nameToShow>
+			</component>
+		</components>
+	</step>
+	<step>
+		<id>003</id>
+		<nameToShow>step 003</nameToShow>
+		<nextSteps default="000">
+			<nextStep component="003001" step="004"/>
+			<nextStep component="003002" step="004"/>
+			<nextStep component="003003" step="004"/>
+			<nextStep component="003004" step="004"/>
+		</nextSteps>
+		<kind>default</kind>
+		<selectionCriterium>
+			<min>2</min>
+			<max>4</max>
+		</selectionCriterium>
+		<from source="xml">
+			<sqlStatement></sqlStatement>
+			<!--inside empty, outside pathString -->
+			<path></path>
+		</from>
+		<components>
+			<component>
+				<id>003001</id>
+				<kind>immutable</kind>
+				<nameToShow>component 003001</nameToShow>
+			</component>
+			<component>
+				<id>003002</id>
+				<kind>immutable</kind>
+				<nameToShow>component 003002</nameToShow>
+			</component>
+			<component>
+				<id>003003</id>
+				<kind>mutable</kind>
+				<nameToShow>component 003003</nameToShow>
+				<minValue>0</minValue>
+				<maxValue>10</maxValue>
+				<defaultValue>5</defaultValue>
+				<interval>1</interval>
+                <intervals></intervals>
+			</component>
+			<component>
+				<id>003004</id>
+				<kind>mutable</kind>
+				<nameToShow>component 003004</nameToShow>
+				<minValue>0</minValue>
+				<maxValue>10</maxValue>
+				<defaultValue>5</defaultValue>
+				<interval>1</interval>
+                <intervals></intervals>
+			</component>
+		</components>
+	</step>
+	<step>
+		<id>004</id>
+		<nameToShow>step 004</nameToShow>
+		<nextSteps default="000">
+			<nextStep component="004001" step="005"/>
+			<nextStep component="004002" step="005"/>
+			<nextStep component="004003" step="006"/>
+		</nextSteps>
+		<kind>default</kind>
+		<selectionCriterium>
+			<min>1</min>
+			<max>2</max>
+		</selectionCriterium>
+		<from source="xml">
+			<sqlStatement></sqlStatement>
+			<path></path>
+		</from>
+		<components>
+			<component>
+				<id>004001</id>
+				<kind>immutable</kind>
+				<nameToShow>component 004001</nameToShow>
+			</component>
+			<component>
+				<id>004002</id>
+				<kind>immutable</kind>
+				<nameToShow>component 004002</nameToShow>
+			</component>
+			<component>
+				<id>004003</id>
+				<kind>immutable</kind>
+				<nameToShow>component 004003</nameToShow>
+			</component>
+		</components>
+	</step>
+	<step>
+		<id>005</id>
+		<nameToShow>step 005</nameToShow>
+		<nextSteps default="000">
+			<nextStep component="005001" step="007"/>
+			<nextStep component="005002" step="007"/>
+			<nextStep component="005003" step="007"/>
+			<nextStep component="005004" step="008"/>
+			<nextStep component="005005" step="008"/>
+		</nextSteps>
+		<kind>default</kind>
+		<selectionCriterium>
+			<min>1</min>
+			<max>1</max>
+		</selectionCriterium>
+		<from source="xml">
+			<sqlStatement></sqlStatement>
+			<path></path>
+		</from>
+		<components>
+			<component>
+				<id>005001</id>
+				<kind>immutable</kind>
+				<nameToShow>component 005001</nameToShow>
+			</component>
+			<component>
+				<id>005002</id>
+				<kind>immutable</kind>
+				<nameToShow>component 005002</nameToShow>
+			</component>
+			<component>
+				<id>005003</id>
+				<kind>immutable</kind>
+				<nameToShow>component 005003</nameToShow>
+			</component>
+			<component>
+				<id>005004</id>
+				<kind>immutable</kind>
+				<nameToShow>component 005004</nameToShow>
+			</component>
+			<component>
+				<id>005005</id>
+				<kind>immutable</kind>
+				<nameToShow>component 005005</nameToShow>
+			</component>
+		</components>
+	</step>
+	<step>
+		<id>006</id>
+		<nameToShow>step 006</nameToShow>
+		<nextSteps default="000">
+			<nextStep component="006001" step="000"/>
+			<nextStep component="006002" step="000"/>
+			<nextStep component="006003" step="000"/>
+		</nextSteps>
+		<kind>last</kind>
+		<selectionCriterium>
+			<min>1</min>
+			<max>1</max>
+		</selectionCriterium>
+		<from source="xml">
+			<sqlStatement></sqlStatement>
+			<path></path>
+		</from>
+		<components>
+			<component>
+				<id>006001</id>
+				<kind>immutable</kind>
+				<nameToShow>component 006001</nameToShow>
+			</component>
+			<component>
+				<id>006002</id>
+				<kind>immutable</kind>
+				<nameToShow>component 006002</nameToShow>
+			</component>
+			<component>
+				<id>006003</id>
+				<kind>immutable</kind>
+				<nameToShow>component 006003</nameToShow>
+			</component>
+		</components>
+	</step>
+	<step>
+		<id>007</id>
+		<nameToShow>step 007</nameToShow>
+		<nextSteps default="000">
+			<nextStep component="007001" step="000"/>
+			<nextStep component="007002" step="000"/>
+			<nextStep component="007003" step="000"/>
+		</nextSteps>
+		<kind>last</kind>
+		<selectionCriterium>
+			<min>1</min>
+			<max>1</max>
+		</selectionCriterium>
+		<from source="xml">
+			<sqlStatement></sqlStatement>
+			<path></path>
+		</from>
+		<components>
+			<component>
+				<id>007001</id>
+				<kind>immutable</kind>
+				<nameToShow>component 007001</nameToShow>
+			</component>
+			<component>
+				<id>007002</id>
+				<kind>immutable</kind>
+				<nameToShow>component 007002</nameToShow>
+			</component>
+			<component>
+				<id>007003</id>
+				<kind>immutable</kind>
+				<nameToShow>component 007003</nameToShow>
+			</component>
+		</components>
+	</step>
+	<step>
+		<id>008</id>
+		<nameToShow>step 008</nameToShow>
+		<nextSteps default="000">
+			<nextStep component="008001" step="000"/>
+			<nextStep component="008002" step="000"/>
+		</nextSteps>
+		<kind>last</kind>
+		<selectionCriterium>
+			<min>1</min>
+			<max>1</max>
+		</selectionCriterium>
+		<from source="xml">
+			<sqlStatement></sqlStatement>
+			<path></path>
+		</from>
+		<components>
+			<component>
+				<id>008001</id>
+				<kind>immutable</kind>
+				<nameToShow>component 008001</nameToShow>
+			</component>
+			<component>
+				<id>008002</id>
+				<kind>immutable</kind>
+				<nameToShow>component 008002</nameToShow>
+			</component>
+		</components>
+	</step>
+</steps>

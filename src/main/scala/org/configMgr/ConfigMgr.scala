@@ -1,41 +1,15 @@
 package org.configMgr
 
+import scala.collection.mutable.ListBuffer
+
 import org.configTree.component._
 import org.container.Container
-import scala.collection.mutable.ListBuffer
-import org.container.Container
-import org.container.Container
 import org.configSettings.ConfigSettings
-import org.configTree.step.Step
-import org.configTree.step.DefaultStep
-import org.configTree.step.FinalStep
-import org.configTree.step.FirstStep
-import org.configTree.step.ErrorStep
-import org.configTree.step.LastStep
-import org.configTree.step.NextStep
-import org.configTree.step.SuccessStep
-import org.configTree.step.CurrentConfigStep
-import org.configTree.step.ConfigSettingsStep
-import org.configTree.step.AnnounceStep
+import org.configTree.step._
+import org.errorHandling.ErrorStrings
 
 /**
- * TODO
- * - Logger einrichten
- * - Die Reihenfolge der Schritten prüfen
- * - Lösung zu der zentrallen Stelle aller Fehler in dem Configurator
- * - definition von dem mutable Components (Slide, variable Massen)
- * - Lösung zu der Immutable CurrentConfig suchen
- * - Selection criterium checken, wenn 2 meherere Components ausgewaehlt werden koennen 
- * - Selection Criterium to Int konvertieren
- * - selectionCriteriumMax darf nicht grösser als Anzahl der Components sein und Umgekehrt
- * - ID durch 100100 ersetzen => Typ Int
- * - nur bei MutableComponent kann der value übergeben werden
- * - alle Überprüfungen in eine Methode zusammenführen
- * - Spec für minValues und maxValues schreiben
- * - Fehler -> wenn Immutable Component value gesetzt wird (Test dazu)
- * - Test min max Value funktioniert nicht
- * - ErrorStrings in der zentralle Stelle definieren
- * - weitere Parameter bei der MutableComponent prüfen und testen
+ *  Managment of whole general Configurator
  */
 
 object ConfigMgr{
@@ -57,14 +31,6 @@ object ConfigMgr{
 class ConfigMgr {
   
   val container = ConfigSettings.configSettings
-  
-//  def addError(error: ConfigTree) = {
-//    
-//    error match {
-//      case errorComponent: ErrorComponent => Nil
-//      case errorStep: ErrorStep => Nil
-//    }
-//  }
 
   /**
     * - durch den Typunterscheidung mit match herausfiltern
@@ -72,8 +38,9 @@ class ConfigMgr {
     * @return
     */
   def startConfig = {
+    
     val firstStep = container.configSettings filter(_.isInstanceOf[FirstStep])
-    if(firstStep.size == 1) firstStep(0) else new ErrorStep("7", "exist more as one step", Nil)
+    if(firstStep.size == 1) firstStep.head else new ErrorStep("7", ErrorStrings.existigOfMoreStep, Nil)
   }
   
   /**
@@ -157,7 +124,6 @@ class ConfigMgr {
   private def checkParameterOfSelectedComponents(step: Step, 
                   selectedComponents: Set[SelectedComponent]): AnnounceStep = {
     
-    
     if(step.isInstanceOf[ErrorStep]){
       new ErrorStep("7", step.errorMessage, step.errorComponent)
     }else{
@@ -173,25 +139,8 @@ class ConfigMgr {
 //      falls ErrorComponent in der Liste exestiert, Error weiter leiten
       errorComponents.size match{
         case 0 => SuccessStep("3","")
-        case _ => new ErrorStep("7", "error", errorComponents)
+        case _ => new ErrorStep("7", ErrorStrings.fromErrorComponent, errorComponents)
       }
-      
-      
-//      // mutable components from ConfigSettings
-//      val mutableComponents = step.components filter (_.isInstanceOf[MutableComponent])
-//      
-//      // finde passende id und pruefe das max und min values
-//      val filteredSelection = for {
-//        mutableComponent <- mutableComponents
-//        selection <- selectedComponents
-//        if mutableComponent.id == selection.id
-//      } yield checkValue(mutableComponent, selection)
-      
-      // falls ErrorComponent in der Liste exestiert, Error weiter leiten
-//      (filteredSelection filter(_.isInstanceOf[ErrorComponent])).size match{
-//        case 0 => SuccessStep("3","")
-//        case _ => new ErrorStep("7", "error", filteredSelection)
-//      }
     }
   }
   
@@ -225,7 +174,7 @@ class ConfigMgr {
   }
   
   private def checkParameterPresence(immutableComponent: Component, selection:SelectedComponent) = {
-    if(selection.value != 0) new ErrorComponent("7","ImmutableComponent allowed not parameter for value")
+    if(selection.value != 0) new ErrorComponent("7", ErrorStrings.valueForImmutableComponent)
     else new SuccessComponent("3")
   }
   
@@ -237,7 +186,7 @@ class ConfigMgr {
    */
   private def checkValue(mutableComponent: Component, selection: Component) = {
     if(selection.value < mutableComponent.minValue || selection.value > mutableComponent.maxValue){
-      new ErrorComponent("7", "minValue is smaller or maxValue is greater as definition in configSttings")
+      new ErrorComponent("7", ErrorStrings.minMaxValue)
     }else{
     	new SuccessComponent("3")
     }
@@ -253,8 +202,8 @@ class ConfigMgr {
     
       val selectedComponentIds = selectedComponents map (_.id)
       selectedComponentIds.size match {
-        case com1: Int if com1 < min => new ErrorStep("7", "selected to few components", Nil)
-        case com2: Int if com2 > max => new ErrorStep("7", "selected to match components", Nil)
+        case com1: Int if com1 < min => new ErrorStep("7", ErrorStrings.selectionFewComponents, Nil)
+        case com2: Int if com2 > max => new ErrorStep("7", ErrorStrings.selectionMatchComponents, Nil)
         case _ => new SuccessStep("3","")
       }
     }
@@ -283,8 +232,7 @@ class ConfigMgr {
     if(filterdSteps.size == 1){
       filterdSteps(0)
     }else{
-      new ErrorStep("7", "The selected components has " + 
-            "not been found in any configuration steps", Nil)
+      new ErrorStep("7", ErrorStrings.notFoundSteps, Nil)
     }
   }
   
@@ -307,7 +255,7 @@ class ConfigMgr {
         val nextStep = step.nextStep filter(_.byComponent == selectedComponentIds.head)
         (container.configSettings filter (_.id == nextStep(0).step))(0)
       }
-      case false => new ErrorStep("7", "nextSteps for selectedComponentIds was not same", Nil)
+      case false => new ErrorStep("7", ErrorStrings.notFoundNextStep, Nil)
     }
   }
   
@@ -317,50 +265,4 @@ class ConfigMgr {
       case x :: rest => rest forall (_ == x)
     }
   }
-  
-//  private def checkSelectedComponents(step: AbstractStep, selectedComponents: Set[SelectedComponent]) = {
-//    val errorSelectionCriterum = checkSelectionCriteriumV01(step, selectedComponents)
-//    val errorSelectedComponents = checkParameterOfSelectedComponentsV01(step, selectedComponents)
-//    List(errorSelectedComponents, errorSelectionCriterum)
-//  }
-//  
-//  def checkSelectionCriteriumV01(step: AbstractStep, selectedComponents: Set[SelectedComponent]) = {
-//    val min = step.selectionCriterium.min.toInt
-//    val max = step.selectionCriterium.max.toInt
-//    
-//    val selectedComponentIds = selectedComponents map (_.id)
-//    selectedComponentIds.size match {
-//      case com1: Int if com1 < min => new ErrorStep("7", Nil, List("selected to few components"))
-//      case com2: Int if com2 > max => new ErrorStep("7", Nil, List("selected to match components"))
-//      case _ => SuccessStep("3","SelectionCriterium is OK")
-//    }
-//  }
-//  
-//  def checkParameterOfSelectedComponentsV01(step: AbstractStep, selectedComponents: Set[SelectedComponent]) = {
-//    // mutable components from ConfigSettings
-//    val mutableComponents = step.components filter (_.isInstanceOf[MutableComponent])
-//    
-//    // finde passende id und pruefe das max und min values
-//    val filteredSelection = for {
-//      mutableComponent <- mutableComponents
-//      selection <- selectedComponents
-//      if mutableComponent.id == selection.id
-//    } yield checkValue(mutableComponent, selection)
-//    
-//    // falls ErrorComponent in der Liste exestiert, Error weiter leiten
-//    (filteredSelection filter(_.isInstanceOf[ErrorComponent])).size match{
-//      case 0 => SuccessStep("3", "Selected value is OK")
-//      case _ => {
-//         val errorStep = for {
-//           selection <- filteredSelection
-//            if selection.isInstanceOf[ErrorComponent]
-//         }yield new ErrorStep("7", Nil, List(selection.errorMessage))
-//         
-//         //TODO
-//         errorStep(0)
-//         
-//      }
-//    }
-//  }
-  
 }

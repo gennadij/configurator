@@ -1,0 +1,17 @@
+-- Logger einrichten
+-- Die Reihenfolge der Schritten prüfen
+-- Lösung zu der zentrallen Stelle aller Fehler in dem Configurator
+-- definition von dem mutable Components (Slide, variable Massen)
+-- Lösung zu der Immutable CurrentConfig suchen
+-- Selection criterium checken, wenn 2 meherere Components ausgewaehlt werden koennen 
+-- Selection Criterium to Int konvertieren
+-- selectionCriteriumMax darf nicht grösser als Anzahl der Components sein und Umgekehrt
+-- ID durch 100100 ersetzen => Typ Int
+-- nur bei MutableComponent kann der value übergeben werden
+-- alle Überprüfungen in eine Methode zusammenführen
+-- Spec für minValues und maxValues schreiben
+-- Fehler -> wenn Immutable Component value gesetzt wird (Test dazu)
+-- Test min max Value funktioniert nicht
+-- ErrorStrings in der zentralle Stelle definieren
+-- weitere Parameter bei der MutableComponent prüfen und testen
+-- Error for inkompotible oder nicht gefundene Strings in SelectionsComponent 

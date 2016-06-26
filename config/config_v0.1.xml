@@ -53,7 +53,7 @@
 			<nextStep component="002001" step="003"/>
 			<nextStep component="002002" step="003"/>
 		</nextSteps>
-		<kind>default</kind>
+		<kind>first</kind>
 		<selectionCriterium>
 			<min>1</min>
 			<max>2</max>

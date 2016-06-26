@@ -12,14 +12,15 @@ import org.configTree.component.MutableComponent
  */
 
 object ConfigSettings {
-  val configSettings: Container = {
+  def configSettings: Container = {
     val configSet = new ConfigSettings
-    new Container(configSet.getXMLV01 \ "step" map(s => configSet.toStep(s)))
+    new Container(configSet.getXML \ "step" map(s => configSet.toStep(s)))
   }
 }
 
 class ConfigSettings {
-  private def getXMLV01 = scala.xml.XML.loadFile("config/config_v0.1.xml")
+  
+  private def getXML = scala.xml.XML.loadFile("config/config_v0.1.xml")
 
   private def toNextStep(ns: scala.xml.NodeSeq): NextStep = {
     new NextStep(

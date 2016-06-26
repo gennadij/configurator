@@ -154,14 +154,14 @@ case class ErrorStep(         id: String,      // id for step within was error
                               override val errorMessage: String, // for error within step 
                               override val errorComponent: Seq[Component] // for error within component
                     ) extends AnnounceStep{
-  require(id == "7", "id must be 7")
-  require(id.size == 1, "id size must be 1")
+//  require(id == "7", "id must be 7")
+//  require(id.size == 1, "id size must be 1")
 //  require(!nameToShow.isEmpty(), "id must be not empty")
 //  require(nextStep.isEmpty, "nextStep must be empty")
 //  require(selectionCriterium == null, "must be null")
 //  require(from == null, "must be null")
 //  require(components == null, "components list should be empty")
-  require(errorMessage != "", "must be not empty")
+//  require(errorMessage != "", "must be not empty")
 //  require(succsessMessage == "", "must be empty")
 //  require(byComponent == "", "must be empty")
 //  require(step == "", "must be empty")

@@ -3,6 +3,7 @@ package org.main
 import org.configTree.component._
 import org.configMgr._
 import org.configTree.step._
+import org.errorHandling.ErrorStrings
 
 class TestScenario4 {
   
@@ -61,7 +62,7 @@ class TestScenario4 {
       require(step.isInstanceOf[ErrorStep] == true, step.errorMessage)
       
       require(step.id == "7")
-      require(step.errorMessage == "error", step.errorMessage)
+      require(step.errorMessage == "show error string in ErrorComponent", step.errorMessage)
       require(step.errorComponent.size == 2, step.errorComponent.size) 
       require(step.errorComponent(0).id == "7", step.errorComponent(0).id)
       require(step.errorComponent(0).errorMessage == "minValue is smaller or maxValue is greater as definition in configSttings")
@@ -77,7 +78,7 @@ class TestScenario4 {
       require(step.isInstanceOf[ErrorStep] == true, step.errorMessage)
       
       require(step.id == "7")
-      require(step.errorMessage == "error", step.errorMessage)
+      require(step.errorMessage == "show error string in ErrorComponent", step.errorMessage)
       require(step.errorComponent.size == 1, step.errorComponent.size)
       require(step.errorComponent(0).id == "7", step.errorComponent(0).id)
       require(step.errorComponent(0).errorMessage == "minValue is smaller or maxValue is greater as definition in configSttings")
@@ -91,7 +92,7 @@ class TestScenario4 {
     require(step.isInstanceOf[ErrorStep] == true, step.errorMessage)
     
     require(step.id == "7")
-    require(step.errorMessage == "error", step.errorMessage)
+    require(step.errorMessage == "show error string in ErrorComponent", step.errorMessage)
     require(step.errorComponent.size == 1, step.errorComponent.size) 
     require(step.errorComponent.head.id == "7", step.errorComponent(0).id)
     require(step.errorComponent.head.errorMessage == "minValue is smaller or maxValue is greater as definition in configSttings")
@@ -100,14 +101,16 @@ class TestScenario4 {
   def error4 = {
     
     val step = ConfigMgr.getNextStep(Set(  new SelectedComponent("003001", 2),
-                                           new SelectedComponent("003002	", 8)))
+                                           new SelectedComponent("003002 ", 8)))
     
     require(step.isInstanceOf[ErrorStep] == true, step.toString())
     
     require(step.id == "7")
-    require(step.errorMessage == "error", step.errorMessage)
-    require(step.errorComponent.size == 1, step.errorComponent.size) 
-    require(step.errorComponent.head.id == "7", step.errorComponent(0).id)
-    require(step.errorComponent.head.errorMessage == "ImmutableComponent allowed not parameter for value", step.errorComponent.head.errorMessage)
+    require(step.errorMessage == ErrorStrings.fromErrorComponent, step.errorMessage)
+    require(step.errorComponent.size == 2, step.errorComponent.size) 
+    require(step.errorComponent.head.id == "7", step.errorComponent.head.id)
+    require(step.errorComponent.head.errorMessage == ErrorStrings.valueForImmutableComponent, step.errorComponent.head.errorMessage)
+    require(step.errorComponent.tail.head.id == "7", step.errorComponent.head.id)
+    require(step.errorComponent.tail.head.errorMessage == ErrorStrings.valueForImmutableComponent, step.errorComponent.head.errorMessage)
   }
 }
