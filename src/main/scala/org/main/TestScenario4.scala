@@ -65,7 +65,6 @@ class TestScenario4 {
       require(step.errorComponent.size == 2, step.errorComponent.size) 
       require(step.errorComponent(0).id == "7", step.errorComponent(0).id)
       require(step.errorComponent(0).errorMessage == "minValue is smaller or maxValue is greater as definition in configSttings")
-//      require(step.errorComponent(0).isInstanceOf[SuccessComponent] == true)
       require(step.errorComponent(1).id == "7", step.errorComponent(0).id)
       require(step.errorComponent(1).errorMessage == "minValue is smaller or maxValue is greater as definition in configSttings")
   }
