@@ -15,3 +15,5 @@
 -- ErrorStrings in der zentralle Stelle definieren
 -- weitere Parameter bei der MutableComponent prüfen und testen
 -- Error for inkompotible oder nicht gefundene Strings in SelectionsComponent 
+-- Veränderung der der Konfigutration kann nur Admin machen.
+-- Die ID Des Steps S000000 ID COmponents S000000C000000
