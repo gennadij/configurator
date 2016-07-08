@@ -6,5 +6,5 @@ package org.configTree
   * - Es soll dynamic und static object existiert werden.
   */
 abstract class ConfigTree {
-  def id: String
+  val id: String
 }

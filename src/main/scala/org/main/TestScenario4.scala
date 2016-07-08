@@ -4,6 +4,8 @@ import org.configTree.component._
 import org.configMgr._
 import org.configTree.step._
 import org.errorHandling.ErrorStrings
+import org.admin.Admin
+import org.configSettings.ConfigSettings
 
 class TestScenario4 {
   
@@ -19,36 +21,42 @@ class TestScenario4 {
     
     error3
     
-    error4
+//    error4
+    
+    error5
+    
+    error6
+    
+    error7
   }
   
   def startConfig = {
-        
+    
         ConfigMgr.currentConfig.clear()
-        val firstStep = ConfigMgr.startConfig
+        val step = ConfigMgr.startConfig
         
-        require(firstStep.isInstanceOf[FirstStep] == true)
-        require(firstStep.id == "001", "id must be 001")
-        require(firstStep.selectionCriterium.max == "1")
-        require(firstStep.selectionCriterium.min == "1")
-        require(firstStep.nextStep(0).step == "002")
-        require(firstStep.nextStep(0).byComponent == "001001")
-        require(firstStep.nextStep(1).step == "002")
-        require(firstStep.nextStep(1).byComponent == "001002")
-        require(firstStep.nextStep(2).step == "003")
-        require(firstStep.nextStep(2).byComponent == "001003")
+        require(step.isInstanceOf[FirstStep] == true)
+        require(step.id == "S000001", "id must be 001")
+        require(step.selectionCriterium.max == "1")
+        require(step.selectionCriterium.min == "1")
+        require(step.nextStep(0).step == "S000002")
+        require(step.nextStep(0).byComponent == "S000001C000001")
+        require(step.nextStep(1).step == "S000002")
+        require(step.nextStep(1).byComponent == "S000001C000002")
+        require(step.nextStep(2).step == "S000003")
+        require(step.nextStep(2).byComponent == "S000001C000003")
         
-        require(firstStep.components(0).id == "001001")
-        require(firstStep.components(0).nameToShow == "component 001001")
-        require(firstStep.components(0).isInstanceOf[ImmutableComponent] == true)
+        require(step.components(0).id == "S000001C000001")
+        require(step.components(0).nameToShow == "Component 1")
+        require(step.components(0).isInstanceOf[ImmutableComponent] == true)
         
-        require(firstStep.components(1).id == "001002")
-        require(firstStep.components(1).nameToShow == "component 001002")
-        require(firstStep.components(1).isInstanceOf[ImmutableComponent] == true)
+        require(step.components(1).id == "S000001C000002")
+        require(step.components(1).nameToShow == "Component 2")
+        require(step.components(1).isInstanceOf[ImmutableComponent] == true)
         
-        require(firstStep.components(2).id == "001003")
-        require(firstStep.components(2).nameToShow == "component 001003")
-        require(firstStep.components(2).isInstanceOf[ImmutableComponent] == true)
+        require(step.components(2).id == "S000001C000003")
+        require(step.components(2).nameToShow == "Component 3")
+        require(step.components(2).isInstanceOf[ImmutableComponent] == true)
         
         require(ConfigMgr.currentConfig.size == 0, "CurrentConfig size is 0")
     }
@@ -56,8 +64,8 @@ class TestScenario4 {
   
   def error1 = {
       
-      val step = ConfigMgr.getNextStep(Set(  new SelectedComponent("003003", -1),
-                                             new SelectedComponent("003004", 12)))
+      val step = ConfigMgr.getNextStep(Set(  new SelectedComponent("S000003C000003", -1),
+                                             new SelectedComponent("S000003C000004", 12)))
       
       require(step.isInstanceOf[ErrorStep] == true, step.errorMessage)
       
@@ -72,8 +80,8 @@ class TestScenario4 {
   
     def error2 = {
       
-      val step = ConfigMgr.getNextStep(Set(  new SelectedComponent("003003", 2),
-                                             new SelectedComponent("003004", 12)))
+      val step = ConfigMgr.getNextStep(Set(  new SelectedComponent("S000003C000003", 2),
+                                             new SelectedComponent("S000003C000004", 12)))
       
       require(step.isInstanceOf[ErrorStep] == true, step.errorMessage)
       
@@ -86,8 +94,8 @@ class TestScenario4 {
     
   def error3 = {
     
-    val step = ConfigMgr.getNextStep(Set(  new SelectedComponent("003003", -1),
-                                           new SelectedComponent("003004", 9)))
+    val step = ConfigMgr.getNextStep(Set(  new SelectedComponent("S000003C000003", -1),
+                                           new SelectedComponent("S000003C000004", 9)))
     
     require(step.isInstanceOf[ErrorStep] == true, step.errorMessage)
     
@@ -98,19 +106,49 @@ class TestScenario4 {
     require(step.errorComponent.head.errorMessage == "minValue is smaller or maxValue is greater as definition in configSttings")
   }
   
-  def error4 = {
+//  def error4 = {
+//    
+//    val step = ConfigMgr.getNextStep(Set(  new SelectedComponent("003001", 2),
+//                                           new SelectedComponent("003002", 8)))
+//    
+//    require(step.isInstanceOf[ErrorStep] == true, step.toString())
+//    
+//    require(step.id == "7")
+//    require(step.errorMessage == ErrorStrings.fromErrorComponent, step.errorMessage)
+//    require(step.errorComponent.size == 2, step.errorComponent.size)
+//    require(step.errorComponent.head.id == "7", step.errorComponent.head.id)
+//    require(step.errorComponent.head.errorMessage == ErrorStrings.valueForImmutableComponent, step.errorComponent.head.errorMessage)
+//    require(step.errorComponent.tail.head.id == "7", step.errorComponent.head.id)
+//    require(step.errorComponent.tail.head.errorMessage == ErrorStrings.valueForImmutableComponent, step.errorComponent.head.errorMessage)
+//  }
+  
+  
+  def error5 = {
+  }
+  
+  def error6 = {
     
-    val step = ConfigMgr.getNextStep(Set(  new SelectedComponent("003001", 2),
-                                           new SelectedComponent("003002 ", 8)))
+    val step = ConfigMgr.getNextStep(Set(new SelectedComponent("S000005C000001", 0)))
     
     require(step.isInstanceOf[ErrorStep] == true, step.toString())
     
     require(step.id == "7")
-    require(step.errorMessage == ErrorStrings.fromErrorComponent, step.errorMessage)
-    require(step.errorComponent.size == 2, step.errorComponent.size) 
-    require(step.errorComponent.head.id == "7", step.errorComponent.head.id)
-    require(step.errorComponent.head.errorMessage == ErrorStrings.valueForImmutableComponent, step.errorComponent.head.errorMessage)
-    require(step.errorComponent.tail.head.id == "7", step.errorComponent.head.id)
-    require(step.errorComponent.tail.head.errorMessage == ErrorStrings.valueForImmutableComponent, step.errorComponent.head.errorMessage)
+    require(step.errorMessage == ErrorStrings.selectionFewComponents, step.errorMessage)
+    require(step.errorComponent.size == 0, step.errorComponent.size)
+  }
+  
+  def error7 = {
+    
+    val step = ConfigMgr.getNextStep(Set(  new SelectedComponent("S000005C000001"),
+                                           new SelectedComponent("S000005C000002"),
+                                           new SelectedComponent("S000005C000003"),
+                                           new SelectedComponent("S000005C000004"),
+                                           new SelectedComponent("S000005C000005")))
+    
+    require(step.isInstanceOf[ErrorStep] == true, step.toString())
+    
+    require(step.id == "7")
+    require(step.errorMessage == ErrorStrings.selectionMatchComponents, step.errorMessage)
+    require(step.errorComponent.size == 0, step.errorComponent.size)
   }
 }

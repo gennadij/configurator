@@ -26,17 +26,22 @@ object ConfigMgr{
   def getNextStep(selectedComponentIds: Set[SelectedComponent]): Step = {
     configMgr.getNextStep(selectedComponentIds)
   }
+  
+  def init = ???
 }
 
 class ConfigMgr {
   
-  val container = ConfigSettings.configSettings
+  println(this.hashCode())
+  
+  val container: Container = ConfigSettings.configSettings
 
   /**
     * - durch den Typunterscheidung mit match herausfiltern
     * - ErrorStep als Fehler difenieren
     * @return
     */
+  
   def startConfig = {
     
     val firstStep = container.configSettings filter(_.isInstanceOf[FirstStep])
@@ -65,7 +70,7 @@ class ConfigMgr {
         case errorStep: ErrorStep => errorStep
         case lastStep: LastStep => {
           addStepToCurrentConfig(lastStep, selectedComponents)
-          new FinalStep("0")
+          new FinalStep("FS000000")
         }
         case step: DefaultStep => {
           addStepToCurrentConfig(step, selectedComponents)
@@ -130,6 +135,9 @@ class ConfigMgr {
       
       val checkedMutableComponents: List[Component] = checkMutableComponents(step, selectedComponents).toList
       
+      //TODO DIe ImmutableComponents braucht man nicht zu testen die gesetzten Values in 
+      // der selectedComponent werden einfach ignoriert.
+      
       val checkedImmutableComponents: List[Component] = checkImmutableComponents(step, selectedComponents).toList
       
       val checkedComponents = checkedImmutableComponents ::: checkedMutableComponents
@@ -149,7 +157,7 @@ class ConfigMgr {
     // mutable components from ConfigSettings
     val mutableComponents = step.components filter (_.isInstanceOf[MutableComponent])
     
-    // finde passende id und pruefe das max und min values
+    // finde passende id
     for {
       mutableComponent <- mutableComponents
       selection <- selectedComponents
@@ -173,9 +181,10 @@ class ConfigMgr {
     } yield checkParameterPresence(immutableComponent, selection)
   }
   
-  private def checkParameterPresence(immutableComponent: Component, selection:SelectedComponent) = {
-    if(selection.value != 0) new ErrorComponent("7", ErrorStrings.valueForImmutableComponent)
-    else new SuccessComponent("3")
+  private def checkParameterPresence(immutableComponent: Component, selection: SelectedComponent) = {
+//    if(selection.value != 0) new ErrorComponent("7", ErrorStrings.valueForImmutableComponent)
+//    else new SuccessComponent("3")
+    new SuccessComponent("3")
   }
   
   

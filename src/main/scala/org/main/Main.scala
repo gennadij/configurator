@@ -3,6 +3,7 @@ package org.main
 import org.configMgr.ConfigMgr
 import org.configSettings.ConfigSettings
 import org.test._
+import org.admin._
 
 /**
   * 
@@ -12,6 +13,7 @@ object Main {
     println("I am generic configurator")
     println("Generic configurator started")
     println("Run Test Scenarios")
+    
     new TestScenario1().scenario1
     
     new TestScenario2().scenario2

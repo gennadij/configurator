@@ -6,7 +6,7 @@ import org.configTree.ConfigTree
   * Created by gennadi on 29.04.16.
   */
 abstract class Component extends ConfigTree {
-  def id: String
+  val id: String
   def nameToShow: String = ""
   def errorMessage: String = null
   def maxValue: Int = 0
@@ -52,7 +52,6 @@ case class SelectedComponent(
                            id: String,
                            override val value: Int = 0
                             ) extends Component
-
 
 /**
  * id = 7

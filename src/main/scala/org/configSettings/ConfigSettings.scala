@@ -6,6 +6,7 @@ import org.container.Container
 import org.configTree.component.Component
 import org.configTree.component.ImmutableComponent
 import org.configTree.component.MutableComponent
+import org.admin.Admin
 
 /**
  *
@@ -16,12 +17,18 @@ object ConfigSettings {
     val configSet = new ConfigSettings
     new Container(configSet.getXML \ "step" map(s => configSet.toStep(s)))
   }
+  
+  def setConfigSettings(xmlFile: String){
+    setConfigSettings(xmlFile)
+  }
+  
 }
 
 class ConfigSettings {
   
-  private def getXML = scala.xml.XML.loadFile("config/config_v0.1.xml")
-
+  println(Admin.getXmlFile())
+  private def getXML = scala.xml.XML.loadFile(Admin.getXmlFile())
+  
   private def toNextStep(ns: scala.xml.NodeSeq): NextStep = {
     new NextStep(
         "1",

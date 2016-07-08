@@ -4,9 +4,8 @@
 <!-- tag isStartStep wird nicht mehr gebraucht -->
 <steps>
 	<step>
-		<id>001</id>
-		<nameToShow>step 001</nameToShow>
-		<nextSteps>true</nextSteps>
+		<id>S000001</id>
+		<nameToShow>step 1</nameToShow>
 		<isStartStep>true</isStartStep>
 		<isLastStep>false</isLastStep>
 		<selectionCriterium>
@@ -15,28 +14,28 @@
 		</selectionCriterium>
 		<components>
 			<component>
-				<id>001001</id>
+				<id>S000001C000001</id>
 				<mutable>false</mutable>
-				<nameToShow>component 001001</nameToShow>
-				<nextStepId>002</nextStepId>
+				<nameToShow>component 1</nameToShow>
+				<nextStepId>S000002</nextStepId>
 			</component>
 			<component>
-				<id>001002</id>
+				<id>S000001C000002</id>
 				<mutable>false</mutable>
-				<nameToShow>component 001002</nameToShow>
-				<nextStepId>002</nextStepId>
+				<nameToShow>component 2</nameToShow>
+				<nextStepId>S000002</nextStepId>
 			</component>
 			<component>
-				<id>001003</id>
+				<id>S000001C000003</id>
 				<mutable>false</mutable>
-				<nameToShow>component 001003</nameToShow>
-				<nextStepId>003</nextStepId>
+				<nameToShow>component 3</nameToShow>
+				<nextStepId>S000003</nextStepId>
 			</component>
 		</components>
 	</step>
 	<step>
-		<id>002</id>
-		<nameToShow>step 002</nameToShow>
+		<id>S000002</id>
+		<nameToShow>step 2</nameToShow>
 		<nextStep>true</nextStep>
 		<isStartStep>false</isStartStep>
 		<isLastStep>false</isLastStep>

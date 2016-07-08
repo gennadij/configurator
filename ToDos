@@ -1,12 +1,12 @@
--- Logger einrichten
--- Die Reihenfolge der Schritten prüfen
+** Selection Criterium to Int konvertieren-- Logger einrichten
+** definition von dem mutable Components (Slide, variable Massen)
+** Selection criterium checken, wenn 2 meherere Components ausgewaehlt werden koennen
+** selectionCriteriumMax darf nicht grösser als Anzahl der Components sein und Umgekehrt
+** Pruefen von ImmutableComponent nicht funktioniert
+
+-- Die Reihenfolge der Schritten prüfen -> sorted eisetzen
 -- Lösung zu der zentrallen Stelle aller Fehler in dem Configurator
--- definition von dem mutable Components (Slide, variable Massen)
 -- Lösung zu der Immutable CurrentConfig suchen
--- Selection criterium checken, wenn 2 meherere Components ausgewaehlt werden koennen 
--- Selection Criterium to Int konvertieren
--- selectionCriteriumMax darf nicht grösser als Anzahl der Components sein und Umgekehrt
--- ID durch 100100 ersetzen => Typ Int
 -- nur bei MutableComponent kann der value übergeben werden
 -- alle Überprüfungen in eine Methode zusammenführen
 -- Spec für minValues und maxValues schreiben
@@ -17,3 +17,13 @@
 -- Error for inkompotible oder nicht gefundene Strings in SelectionsComponent 
 -- Veränderung der der Konfigutration kann nur Admin machen.
 -- Die ID Des Steps S000000 ID COmponents S000000C000000
+-- Die ErrorStep ID stellt sich aus der E Buchstabe und Step ID (nur Ziffern), 
+     in dem Fehler passiert wurde, zusammen. Genauso auch beim ErrorComponent.
+-- Die Steps werden einzeln aus der xmlFile augelesen.
+-- Lösung zu der Aktualisierung der xmlFile.
+-- Definition von verschiedenen Clients die seine Configuration laden.
+-- Admin definiert einen Client Connection zu dem entschprechendem Configuration.
+-- Jeder Client hat eigene Configuration.
+--    1. Administrator erzeugt eine Configuration.
+      2. Administrator erzeugt eine Connection Pfad für die Client.
+      3. Der Client durch diesen Connection-Pfad connected mit dem Configuration.

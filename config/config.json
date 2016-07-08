@@ -1,9 +1,23 @@
-{
-    "steps" : {
+"steps" : {
         "step" : {
-            "id" : "001",
+            "id" : "S000001",
             "nameToShow" : "step 001",
-            "nextStep" : "step 002",
+            "nextSteps" : {
+            	"nextStep":{
+            		"component": "S000001C000001",
+								"step": S000002"
+							},
+							"nextStep":{
+            		"component": "S000001C000002",
+								"step": S000002"
+							},
+							"nextStep":{
+            		"component": "S000001C000003",
+								"step": S000002"
+							}
+						}
+						"kind": "first"
+            	"step 002",
             "isStartStep" : true,
             "selectionCriterium" : {
                 "min" : 1,

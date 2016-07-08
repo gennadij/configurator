@@ -32,8 +32,9 @@ error 2 | 003003|2,  003004|12 		-> ErrorComponent("7", "minValue is smaller or 
 error 3 | 003003|-1, 003004|9 		-> ErrorComponent("7", "minValue is smaller or naxValue is greater as definition in configSttings")
 error 4 | 003002|2,  003003|8			-> ErrorComponent("7", "ImmutableComponent allowed not parameter for value")
 error 5 | 												-> ErrorStep("7", "exist more as one step")
-error 6 | 												-> ErrorStep("7", "selected to few components")
-error 7 | 												-> ErrorStep("7", "selected to match components")
+error 6 | 005001|0								-> ErrorStep("7", "selected to few components")
+error 7 | 005001, 005002, 005003,
+					005004, 005005					-> ErrorStep("7", "selected to match components")
 error 8 | 												-> ErrorStep("7", "The selected components has not been found in any configuration steps")
 error 9 | 												-> ErrorStep("7", "nextSteps for selectedComponentIds was not same")
 

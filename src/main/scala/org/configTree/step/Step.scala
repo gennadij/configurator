@@ -6,13 +6,14 @@ import org.configTree.component._
 /**
   * Created by gennadi on 29.04.16.
   * 
+  * ID for step => S000000 - S999999
+  * ID for component => S000000C000000 - S999999C999999
   * 
   */
 
-//abstract class AbstractStep extends ConfigTree
 
 abstract class Step extends ConfigTree {
-  def id: String
+  val id: String
   def nameToShow: String = ""
 //  DefaultStep, FirstStep, LastStep
   def nextStep: Seq[NextStep] = Seq.empty
@@ -30,14 +31,13 @@ abstract class Step extends ConfigTree {
 }
 
 abstract class ConfigSettingsStep extends Step {
-  def id: String
   override def nameToShow: String = ""
   override def nextStep: Seq[NextStep] = Seq.empty
   override def selectionCriterium: SelectionCriterium = null
   override def from: Source = null
   override def components: Seq[Component] = null
   //NextStep
-   override def byComponent: String = ""
+  override def byComponent: String = ""
   override def step: String = ""
   
 }
@@ -61,7 +61,7 @@ case class DefaultStep  (
                               override val components: Seq[Component]
                         ) extends ConfigSettingsStep {
   require(id != "000", "id must not bi 000")
-  require(id.size <= 3, "id size must be greater as 3")
+  require(id.size <= 7, "id size must be greater as 3")
   require(!nextStep.isEmpty, "nextStep must not be empty")
   require(selectionCriterium != null, "must not be null")
   require(from != null, "must not be null")
@@ -81,7 +81,7 @@ case class FirstStep    (
                               override val components: Seq[Component]
                         ) extends ConfigSettingsStep {
   require(id != "000", "id must not bi 000")
-  require(id.size <= 3, "id size must be greater as 3")
+  require(id.size <= 7, "id size must be greater as ")
   require(!nextStep.isEmpty, "nextStep must not be empty")
   require(selectionCriterium != null, "must not be null")
   require(from != null, "must not be null")
@@ -101,8 +101,8 @@ case class LastStep     (
                               override val components: Seq[Component]
                         ) extends ConfigSettingsStep {
   require(id != "000", "id must not bi 000")
-  require(id.size <= 3, "id size must be greater as 3")
-  require(!nextStep.isEmpty, "nextStep must not be empty")
+  require(id.size <= 7, "id size must be greater as 3")
+  require(nextStep.isEmpty, "nextStep must be empty")
   require(selectionCriterium != null, "must not be null")
   require(from != null, "must not be null")
   require(!components.isEmpty, "components list should not be empty")
@@ -114,6 +114,10 @@ case class LastStep     (
 
 /**
  * Final step hat immer id 0
+ * 
+ * FinalStep definiert das Ende vom Konfigurationsbaum
+ * FinalStep hat keine Parameter
+ * FinalStep ID = FS000000
  */
 case class FinalStep(id: String) extends ConfigSettingsStep {
 //  require(id == "0", "id must be 0")
