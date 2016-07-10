@@ -15,37 +15,34 @@ import org.errorHandling.ErrorStrings
 object ConfigMgr{
   val configMgr = new ConfigMgr
 
-  def currentConfig = {
+  def currentConfig(client: org.client.ConfigClient) = {
     configMgr.container.currentConfig
   }
   
-  def startConfig: Step = {
-    configMgr.startConfig
+  def startConfig(client: org.client.ConfigClient): Step = {
+    configMgr.startConfig(client)
   }
   
-  def getNextStep(selectedComponentIds: Set[SelectedComponent]): Step = {
-    configMgr.getNextStep(selectedComponentIds)
+  def getNextStep(client: org.client.ConfigClient, selectedComponentIds: Set[SelectedComponent]): Step = {
+    configMgr.getNextStep(client, selectedComponentIds)
   }
-  
-  def init = ???
 }
 
 class ConfigMgr {
   
-  println(this.hashCode())
-  
   val container: Container = ConfigSettings.configSettings
 
   /**
-    * - durch den Typunterscheidung mit match herausfiltern
-    * - ErrorStep als Fehler difenieren
-    * @return
+    * gibt den ersten Schritt in der Konfiguration
+    * 
+    * @return FirstStep
+    * @error ErrorStep
     */
   
-  def startConfig = {
-    
-    val firstStep = container.configSettings filter(_.isInstanceOf[FirstStep])
-    if(firstStep.size == 1) firstStep.head else new ErrorStep("7", ErrorStrings.existigOfMoreStep, Nil)
+  def startConfig(client: org.client.ConfigClient) = {
+    ConfigSettings.firstStep(client)
+//    val firstStep = container.configSettings filter(_.isInstanceOf[FirstStep])
+//    if(firstStep.size == 1) firstStep.head else new ErrorStep("7", ErrorStrings.existigOfMoreStep, Nil)
   }
   
   /**
@@ -53,10 +50,12 @@ class ConfigMgr {
    * - nextStep Id bei der Multichoose Component muss bei allen componentId mit Step Id übereinstimmen 
    * - currentConfig für den Multichoose Komponent erweitern
    */
-  def getNextStep(selectedComponents: Set[SelectedComponent]): Step = {
+  def getNextStep(client: org.client.ConfigClient, selectedComponents: Set[SelectedComponent]): Step = {
     
-    val step: Step = getStepOfComponents(selectedComponents)
+//    val step: Step = getStepOfComponents(selectedComponents)
     
+    val step: Step = ConfigSettings.stepOfComponents(client, selectedComponents)
+      
     val selectCrit: AnnounceStep = checkSelectionCriterium(step, selectedComponents)
     
     val selectValue: AnnounceStep = checkParameterOfSelectedComponents(step, selectedComponents)
@@ -74,11 +73,11 @@ class ConfigMgr {
         }
         case step: DefaultStep => {
           addStepToCurrentConfig(step, selectedComponents)
-          checkNextSteps(step, selectedComponents)
+          checkNextSteps(client, step, selectedComponents)
         }
         case step: FirstStep => {
           addStepToCurrentConfig(step, selectedComponents)
-          checkNextSteps(step, selectedComponents)
+          checkNextSteps(client, step, selectedComponents)
         }
       }
     }
@@ -252,7 +251,7 @@ class ConfigMgr {
    * Bei der Multichoose werden die difenierte next Steps verglichen. Es darf nicht bei 
    * der verschiedenen selectedComponentsIds verscheidene nextSteps difeniert werden
    */
-  private def checkNextSteps(step: Step, selectedComponents: Set[SelectedComponent]): Step = {
+  private def checkNextSteps(client: org.client.ConfigClient, step: Step, selectedComponents: Set[SelectedComponent]): Step = {
     val selectedComponentIds = selectedComponents map (_.id)
     val nextStep: Seq[NextStep] = for{
       nextStep <- step.nextStep
@@ -262,7 +261,7 @@ class ConfigMgr {
     checkElem(nextStep filter (_.isInstanceOf[NextStep]) map (_.step)) match {
       case true => {
         val nextStep = step.nextStep filter(_.byComponent == selectedComponentIds.head)
-        (container.configSettings filter (_.id == nextStep(0).step))(0)
+        (ConfigSettings.configSettings(client) filter (_.id == nextStep(0).step))(0)
       }
       case false => new ErrorStep("7", ErrorStrings.notFoundNextStep, Nil)
     }

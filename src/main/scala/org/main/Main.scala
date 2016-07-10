@@ -4,6 +4,8 @@ import org.configMgr.ConfigMgr
 import org.configSettings.ConfigSettings
 import org.test._
 import org.admin._
+import org.client.Client
+import org.configTree.component.SelectedComponent
 
 /**
   * 
@@ -14,11 +16,22 @@ object Main {
     println("Generic configurator started")
     println("Run Test Scenarios")
     
-    new TestScenario1().scenario1
+    Admin.setConnectPathForConfigClient("C0000002", "http://configuration/clientZumTest")
     
-    new TestScenario2().scenario2
+    val client: org.client.ConfigClient = Client.setClient("http://configuration/clientZumTest")
     
-    new TestScenario4().scenario4
+    println(client.configFile)
+    
+    val firstStep = ConfigSettings.firstStep(client)
+
+    val nextStep = ConfigSettings.stepOfComponents(client, Set(new SelectedComponent("S000003C000001")))
+    
+    
+//    new TestScenario1().scenario1
+//    
+//    new TestScenario2().scenario2
+//    
+//    new TestScenario4().scenario4
     
     println("END")
   }
