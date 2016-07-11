@@ -27,3 +27,4 @@
 --    1. Administrator erzeugt eine Configuration.
       2. Administrator erzeugt eine Connection Pfad für die Client.
       3. Der Client durch diesen Connection-Pfad connected mit dem Configuration.
+      4. Wenn XMLClient Datei vorhanden,  die Erzeugung neuen Clint nicht notwendig
