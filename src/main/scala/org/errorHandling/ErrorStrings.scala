@@ -6,7 +6,7 @@ object ErrorStrings {
   
   def minMaxValue = "minValue is smaller or maxValue is greater as definition in configSttings"
   
-  def existigOfMoreStep = "exist more as one step"
+  def existigOfMoreFirstStep = "exist more as one FirstStep"
   
   def valueForImmutableComponent = "ImmutableComponent allowed not parameter for value"
   

@@ -1,4 +1,4 @@
-package org.main
+  package org.main
 
 import org.configTree.component._
 import org.configMgr._
@@ -12,6 +12,7 @@ class TestScenario4 {
     Admin.setConnectPathForConfigClient("C0000001", "http://configuration/config_1")
     
     val client: org.client.ConfigClient = Client.setClient("http://configuration/config_1")
+    
   def scenario4 = {
     
     
@@ -33,6 +34,8 @@ class TestScenario4 {
     error6
     
     error7
+    
+    error8
   }
   
   def startConfig = {
@@ -129,6 +132,18 @@ class TestScenario4 {
   
   
   def error5 = {
+    
+    Admin.setConnectPathForConfigClient("C0000001", "http://configuration/config_2")
+    
+    val client: org.client.ConfigClient = Client.setClient("http://configuration/config_2")
+    
+    val step = ConfigMgr.startConfig(client)
+    
+    require(step.isInstanceOf[ErrorStep] == true, step.toString())
+    
+    require(step.id == "7")
+    require(step.errorMessage == ErrorStrings.existigOfMoreFirstStep, step.errorMessage)
+    require(step.errorComponent.size == 0, step.errorComponent.size)
   }
   
   def error6 = {
@@ -156,4 +171,28 @@ class TestScenario4 {
     require(step.errorMessage == ErrorStrings.selectionMatchComponents, step.errorMessage)
     require(step.errorComponent.size == 0, step.errorComponent.size)
   }
+  
+  def error8 = {
+    val step = ConfigMgr.getNextStep(client, Set(new SelectedComponent("S000010C000002")))
+                                                 
+    require(step.isInstanceOf[ErrorStep] == true, step.toString())
+    
+    require(step.id == "7")
+    require(step.errorMessage == ErrorStrings.notFoundSteps, step.errorMessage)
+    require(step.errorComponent.size == 0, step.errorComponent.size)
+  }
+  
+  def error9 = {
+    
+    val step = ConfigMgr.getNextStep(client, Set(new SelectedComponent("S000004C000002"), 
+                                                 new SelectedComponent("S000004C000003")))
+    
+    require(step.isInstanceOf[ErrorStep] == true, step.toString())
+    
+    require(step.id == "7")
+    require(step.errorMessage == ErrorStrings.notFoundNextStep, step.errorMessage)
+    require(step.errorComponent.size == 0, step.errorComponent.size)
+  }
+  
+  
 }

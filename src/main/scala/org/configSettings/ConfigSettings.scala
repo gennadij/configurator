@@ -45,7 +45,7 @@ class ConfigSettings {
     val config = xml \ "step" map(s => toStep(s))
     
     val firstStep = config filter(_.isInstanceOf[FirstStep])
-    if(firstStep.size == 1) firstStep.head else new ErrorStep("7", ErrorStrings.existigOfMoreStep, Nil)
+    if(firstStep.size == 1) firstStep.head else new ErrorStep("7", ErrorStrings.existigOfMoreFirstStep, Nil)
   }
   
   private def nextStep(client: org.client.ConfigClient, 
