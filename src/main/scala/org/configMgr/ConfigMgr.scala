@@ -7,6 +7,8 @@ import org.container.Container
 import org.configSettings.ConfigSettings
 import org.configTree.step._
 import org.errorHandling.ErrorStrings
+import org.client.Client
+import org.client.ConfigClient
 
 /**
  *  Managment of whole general Configurator
@@ -16,7 +18,10 @@ object ConfigMgr{
   val configMgr = new ConfigMgr
 
   def currentConfig(client: org.client.ConfigClient) = {
-    configMgr.container.currentConfig
+//    configMgr.container.currentConfig
+    
+    
+    
   }
   
   def startConfig(client: org.client.ConfigClient): Step = {
@@ -30,7 +35,7 @@ object ConfigMgr{
 
 class ConfigMgr {
   
-  val container: Container = ConfigSettings.configSettings
+//  val container: Container = ConfigSettings.configSettings
 
   /**
     * gibt den ersten Schritt in der Konfiguration
@@ -41,8 +46,6 @@ class ConfigMgr {
   
   def startConfig(client: org.client.ConfigClient) = {
     ConfigSettings.firstStep(client)
-//    val firstStep = container.configSettings filter(_.isInstanceOf[FirstStep])
-//    if(firstStep.size == 1) firstStep.head else new ErrorStep("7", ErrorStrings.existigOfMoreStep, Nil)
   }
   
   /**
@@ -51,8 +54,6 @@ class ConfigMgr {
    * - currentConfig für den Multichoose Komponent erweitern
    */
   def getNextStep(client: org.client.ConfigClient, selectedComponents: Set[SelectedComponent]): Step = {
-    
-//    val step: Step = getStepOfComponents(selectedComponents)
     
     val step: Step = ConfigSettings.stepOfComponents(client, selectedComponents)
       
@@ -68,15 +69,15 @@ class ConfigMgr {
       step match {
         case errorStep: ErrorStep => errorStep
         case lastStep: LastStep => {
-          addStepToCurrentConfig(lastStep, selectedComponents)
+          addStepToCurrentConfig(client, lastStep, selectedComponents)
           new FinalStep("FS000000")
         }
         case step: DefaultStep => {
-          addStepToCurrentConfig(step, selectedComponents)
+//          addStepToCurrentConfig(step, selectedComponents)
           checkNextSteps(client, step, selectedComponents)
         }
         case step: FirstStep => {
-          addStepToCurrentConfig(step, selectedComponents)
+//          addStepToCurrentConfig(step, selectedComponents)
           checkNextSteps(client, step, selectedComponents)
         }
       }
@@ -84,20 +85,23 @@ class ConfigMgr {
   }
   
   /**
+   * TODO
    * neue step für CurrentConfig
    */
-  def addStepToCurrentConfig(step: ConfigSettingsStep, selectedComponents: Set[SelectedComponent]) = {
+  def addStepToCurrentConfig(client: ConfigClient, step: ConfigSettingsStep, selectedComponents: Set[SelectedComponent]) = {
     
     val stepForCurrentConfig: CurrentConfigStep = new CurrentConfigStep(step.id, step.nameToShow, 
                                getComponent(step, selectedComponents))
+    
+    val currentConfig = stepForCurrentConfig
         
-    val index = container.currentConfig.indexWhere(s => stepForCurrentConfig.id == s.id)
-
-    val currentConfigSize = container.currentConfig.size
-
-    if(index != -1) container.currentConfig.remove(index, currentConfigSize - index)
-
-    container.currentConfig += stepForCurrentConfig
+//    val index = container.currentConfig.indexWhere(s => stepForCurrentConfig.id == s.id)
+//
+//    val currentConfigSize = container.currentConfig.size
+//
+//    if(index != -1) container.currentConfig.remove(index, currentConfigSize - index)
+//
+//    container.currentConfig += stepForCurrentConfig
   }
   //TODO TEST
   private def getComponent(step: ConfigSettingsStep, selectedComponents: Set[SelectedComponent]): Seq[Component] = {
@@ -223,26 +227,26 @@ class ConfigMgr {
    * @return Step mit dem Components
    */
   
-  private def getStepOfComponents(selectedComponents: Set[SelectedComponent]): Step = {
-    val steps = for{
-      step <- container.configSettings
-    }yield {
-      val ids = step.components map (_.id)
-      val selectedComponentIds = selectedComponents map (_.id)
-      if(ids.exists { selectedComponentIds.contains _ }){
-        step
-      }else{
-        null
-      }
-    }
-    val filterdSteps = steps filter (_ != null)
-    
-    if(filterdSteps.size == 1){
-      filterdSteps(0)
-    }else{
-      new ErrorStep("7", ErrorStrings.notFoundSteps, Nil)
-    }
-  }
+//  private def getStepOfComponents(selectedComponents: Set[SelectedComponent]): Step = {
+//    val steps = for{
+//      step <- container.configSettings
+//    }yield {
+//      val ids = step.components map (_.id)
+//      val selectedComponentIds = selectedComponents map (_.id)
+//      if(ids.exists { selectedComponentIds.contains _ }){
+//        step
+//      }else{
+//        null
+//      }
+//    }
+//    val filterdSteps = steps filter (_ != null)
+//    
+//    if(filterdSteps.size == 1){
+//      filterdSteps(0)
+//    }else{
+//      new ErrorStep("7", ErrorStrings.notFoundSteps, Nil)
+//    }
+//  }
   
   /**
    * Vergleicht in currentStep.nextStep die difenierten componentIds mit 

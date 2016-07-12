@@ -25,7 +25,7 @@ object ConfigSettings {
   
   def configSettings: Container = {
     val configSet = new ConfigSettings
-    new Container(configSet.getXML \ "step" map(s => configSet.toStep(s)))
+    new Container(configSet.getXML \ "step" map(s => configSet.toStep(s)), null, Nil)
   }
   
   def configSettings(client: org.client.ConfigClient): Seq[Step] = {

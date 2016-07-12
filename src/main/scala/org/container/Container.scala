@@ -18,5 +18,6 @@ import org.configSettings.ConfigSettings
 
 case class Container (
                        configSettings: Seq[Step],
-                       currentConfig: ListBuffer[CurrentConfigStep] = ListBuffer.empty
+                       currentConfig: ListBuffer[CurrentConfigStep] = ListBuffer.empty,
+                       currentConfig_1: List[List[CurrentConfigStep]]
                      )

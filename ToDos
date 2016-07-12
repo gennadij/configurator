@@ -3,11 +3,11 @@
 ** Selection criterium checken, wenn 2 meherere Components ausgewaehlt werden koennen
 ** selectionCriteriumMax darf nicht grösser als Anzahl der Components sein und Umgekehrt
 ** Pruefen von ImmutableComponent nicht funktioniert
+** Lösung zu der zentrallen Stelle aller Fehler in dem Configurator
+** nur bei MutableComponent kann der value übergeben werden
 
 -- Die Reihenfolge der Schritten prüfen -> sorted eisetzen
--- Lösung zu der zentrallen Stelle aller Fehler in dem Configurator
 -- Lösung zu der Immutable CurrentConfig suchen
--- nur bei MutableComponent kann der value übergeben werden
 -- alle Überprüfungen in eine Methode zusammenführen
 -- Spec für minValues und maxValues schreiben
 -- Fehler -> wenn Immutable Component value gesetzt wird (Test dazu)
