@@ -4,8 +4,6 @@ object Client {
 
   def setClient(client: String) = {
     
-    
-    
     val xmlClientFiles = (new java.io.File("xmlClients")).listFiles()
     
     val clientSeparated = "client_" + client.split("/").last + ".xml"
@@ -21,8 +19,5 @@ object Client {
       //es exestiert mehr als ein Client mit dieser fileName
       null
     }
-    
-    
-    
   }
 }

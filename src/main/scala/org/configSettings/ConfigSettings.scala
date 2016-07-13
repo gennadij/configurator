@@ -20,12 +20,12 @@ object ConfigSettings {
   
   def stepOfComponents(client: org.client.ConfigClient, 
       selectedComponents: Set[SelectedComponent]): Step = {
-    new ConfigSettings().nextStep(client, selectedComponents)
+    new ConfigSettings().stepOfComponents(client, selectedComponents)
   }
   
   def configSettings: Container = {
     val configSet = new ConfigSettings
-    new Container(configSet.getXML \ "step" map(s => configSet.toStep(s)), null, Nil)
+    new Container(configSet.getXML \ "step" map(s => configSet.toStep(s)))
   }
   
   def configSettings(client: org.client.ConfigClient): Seq[Step] = {
@@ -48,7 +48,7 @@ class ConfigSettings {
     if(firstStep.size == 1) firstStep.head else new ErrorStep("7", ErrorStrings.existigOfMoreFirstStep, Nil)
   }
   
-  private def nextStep(client: org.client.ConfigClient, 
+  private def stepOfComponents(client: org.client.ConfigClient, 
       selectedComponents: Set[SelectedComponent]) = {
     val xml = scala.xml.XML.loadFile("config/" + client.configFile)
     val config = xml \ "step" map(s => toStep(s))

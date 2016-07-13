@@ -9,6 +9,7 @@ import org.configTree.step._
 import org.errorHandling.ErrorStrings
 import org.client.Client
 import org.client.ConfigClient
+import org.currentConfig.CurrentConfig
 
 /**
  *  Managment of whole general Configurator
@@ -16,13 +17,6 @@ import org.client.ConfigClient
 
 object ConfigMgr{
   val configMgr = new ConfigMgr
-
-  def currentConfig(client: org.client.ConfigClient) = {
-//    configMgr.container.currentConfig
-    
-    
-    
-  }
   
   def startConfig(client: org.client.ConfigClient): Step = {
     configMgr.startConfig(client)
@@ -73,11 +67,11 @@ class ConfigMgr {
           new FinalStep("FS000000")
         }
         case step: DefaultStep => {
-//          addStepToCurrentConfig(step, selectedComponents)
+          addStepToCurrentConfig(client, step, selectedComponents)
           checkNextSteps(client, step, selectedComponents)
         }
         case step: FirstStep => {
-//          addStepToCurrentConfig(step, selectedComponents)
+          addStepToCurrentConfig(client, step, selectedComponents)
           checkNextSteps(client, step, selectedComponents)
         }
       }
@@ -93,15 +87,19 @@ class ConfigMgr {
     val stepForCurrentConfig: CurrentConfigStep = new CurrentConfigStep(step.id, step.nameToShow, 
                                getComponent(step, selectedComponents))
     
-    val currentConfig = stepForCurrentConfig
-        
-//    val index = container.currentConfig.indexWhere(s => stepForCurrentConfig.id == s.id)
-//
-//    val currentConfigSize = container.currentConfig.size
-//
-//    if(index != -1) container.currentConfig.remove(index, currentConfigSize - index)
-//
-//    container.currentConfig += stepForCurrentConfig
+    val currentConfig: List[CurrentConfigStep] = if (client.currentConfig.size != 0) client.currentConfig.last else Nil
+    
+    val index: Int = currentConfig.indexWhere(s => stepForCurrentConfig.id == s.id)
+    
+    val currentConfigSize: Int = currentConfig.size
+    
+    val currentConfiguration: List[CurrentConfigStep] = 
+      if(index != -1) currentConfig.dropRight(currentConfigSize - index) 
+      else currentConfig
+    
+    val endcurrentConfig = currentConfiguration.:+(stepForCurrentConfig)
+    
+    client.currentConfig += endcurrentConfig
   }
   //TODO TEST
   private def getComponent(step: ConfigSettingsStep, selectedComponents: Set[SelectedComponent]): Seq[Component] = {

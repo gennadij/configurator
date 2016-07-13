@@ -25,8 +25,6 @@ class TestScenario1 {
     
     step4
     
-    step4
-    
     step5
     
     step6
@@ -58,7 +56,7 @@ class TestScenario1 {
         require(step.components(2).nameToShow == "Component 3")
         require(step.components(2).isInstanceOf[ImmutableComponent] == true)
         
-//        require(ConfigMgr.currentConfig.size == 0, "CurrentConfig size is 0")
+        require(client.currentConfig.size == 0, "CurrentConfig size is 0")
     }
     
     def step1 = {
@@ -84,12 +82,14 @@ class TestScenario1 {
       require(step.components(1).nameToShow == "Component 2")
       require(step.components(1).isInstanceOf[ImmutableComponent] == true)
       
-//      require(ConfigMgr.currentConfig.size == 1, "CurrentConfig size is 1")
-//      require(ConfigMgr.currentConfig(0).id == "S000001")
-//      require(ConfigMgr.currentConfig(0).nameToShow == "Step 1")
-//      require(ConfigMgr.currentConfig(0).components.size == 1)
-//      require(ConfigMgr.currentConfig(0).components(0).id == "S000001C000001")
-//      require(ConfigMgr.currentConfig(0).components(0).nameToShow == "Component 1")
+      
+      require(client.currentConfig.size == 1, "CurrentConfig size is 1")
+      require(client.currentConfig.last.size == 1, "CurrentConfig size is 1")
+      require(client.currentConfig.last(0).id == "S000001")
+      require(client.currentConfig.last(0).nameToShow == "Step 1")
+      require(client.currentConfig.last(0).components.size == 1)
+      require(client.currentConfig.last(0).components(0).id == "S000001C000001")
+      require(client.currentConfig.last(0).components(0).nameToShow == "Component 1")
     }
     
     def step2 = {
@@ -140,12 +140,13 @@ class TestScenario1 {
       require(step.components(3).interval == 1)
       require(step.components(3).intervals == List.empty)
       
-//      require(ConfigMgr.currentConfig.size == 2, "CurrentConfig size is 2")
-//      require(ConfigMgr.currentConfig(1).id == "S000002")
-//      require(ConfigMgr.currentConfig(1).nameToShow == "Step 2")
-//      require(ConfigMgr.currentConfig(1).components.size == 1)
-//      require(ConfigMgr.currentConfig(1).components(0).id == "S000002C000001")
-//      require(ConfigMgr.currentConfig(1).components(0).nameToShow == "Component 1")
+      require(client.currentConfig.size == 2, client.currentConfig.size)
+      require(client.currentConfig.last.size == 2, client.currentConfig.last.size)
+      require(client.currentConfig.last(1).id == "S000002", client.currentConfig.last(1).id)
+      require(client.currentConfig.last(1).nameToShow == "Step 2")
+      require(client.currentConfig.last(1).components.size == 1)
+      require(client.currentConfig.last(1).components(0).id == "S000002C000001")
+      require(client.currentConfig.last(1).components(0).nameToShow == "Component 1")
     }
     
     def step3 = {
@@ -181,15 +182,15 @@ class TestScenario1 {
       require(step.components(2).nameToShow == "Component 3")
       require(step.components(2).isInstanceOf[ImmutableComponent] == true)
   
-      
-//      require(ConfigMgr.currentConfig.size == 3, "CurrentConfig size is 3")
-//      require(ConfigMgr.currentConfig(2).id == "S000003")
-//      require(ConfigMgr.currentConfig(2).nameToShow == "Step 3")
-//      require(ConfigMgr.currentConfig(2).components.size == 2)
-//      require(ConfigMgr.currentConfig(2).components(0).id == "S000003C000001")
-//      require(ConfigMgr.currentConfig(2).components(0).nameToShow == "Component 1")
-//      require(ConfigMgr.currentConfig(2).components(1).id == "S000003C000002")
-//      require(ConfigMgr.currentConfig(2).components(1).nameToShow == "Component 2")
+      require(client.currentConfig.size == 3, "CurrentConfig size is 3")
+      require(client.currentConfig.last.size == 3, "CurrentConfig size is 3")
+      require(client.currentConfig.last(2).id == "S000003")
+      require(client.currentConfig.last(2).nameToShow == "Step 3")
+      require(client.currentConfig.last(2).components.size == 2)
+      require(client.currentConfig.last(2).components(0).id == "S000003C000001")
+      require(client.currentConfig.last(2).components(0).nameToShow == "Component 1")
+      require(client.currentConfig.last(2).components(1).id == "S000003C000002")
+      require(client.currentConfig.last(2).components(1).nameToShow == "Component 2")
     }
     
     def step4 = {
@@ -236,13 +237,13 @@ class TestScenario1 {
       require(step.components(4).nameToShow == "Component 5")
       require(step.components(4).isInstanceOf[ImmutableComponent] == true)
   
-      
-//      require(ConfigMgr.currentConfig.size == 4, "CurrentConfig size is 4")
-//      require(ConfigMgr.currentConfig(3).id == "S000004")
-//      require(ConfigMgr.currentConfig(3).nameToShow == "Step 4")
-//      require(ConfigMgr.currentConfig(3).components.size == 1)
-//      require(ConfigMgr.currentConfig(3).components(0).id == "S000004C000001")
-//      require(ConfigMgr.currentConfig(3).components(0).nameToShow == "Component 1")
+      require(client.currentConfig.size == 4, client.currentConfig.size)
+      require(client.currentConfig.last.size == 4, "CurrentConfig size is 4")
+      require(client.currentConfig.last(3).id == "S000004")
+      require(client.currentConfig.last(3).nameToShow == "Step 4")
+      require(client.currentConfig.last(3).components.size == 1)
+      require(client.currentConfig.last(3).components(0).id == "S000004C000001")
+      require(client.currentConfig.last(3).components(0).nameToShow == "Component 1")
     }
     
     def step5 = {
@@ -271,14 +272,15 @@ class TestScenario1 {
       require(step.components(2).nameToShow == "Component 3")
       require(step.components(2).isInstanceOf[ImmutableComponent] == true)
       
-//      require(ConfigMgr.currentConfig.size == 5, "CurrentConfig size is 5")
-//      require(ConfigMgr.currentConfig(4).id == "S000005")
-//      require(ConfigMgr.currentConfig(4).nameToShow == "Step 5")
-//      require(ConfigMgr.currentConfig(4).components.size == 2)
-//      require(ConfigMgr.currentConfig(4).components(0).id == "S000005C000001")
-//      require(ConfigMgr.currentConfig(4).components(0).nameToShow == "Component 1")
-//      require(ConfigMgr.currentConfig(4).components(1).id == "S000005C000002")
-//      require(ConfigMgr.currentConfig(4).components(1).nameToShow == "Component 2")
+      require(client.currentConfig.size == 5, client.currentConfig.size)
+      require(client.currentConfig.last.size == 5, "CurrentConfig size is 5")
+      require(client.currentConfig.last(4).id == "S000005")
+      require(client.currentConfig.last(4).nameToShow == "Step 5")
+      require(client.currentConfig.last(4).components.size == 2)
+      require(client.currentConfig.last(4).components(0).id == "S000005C000001")
+      require(client.currentConfig.last(4).components(0).nameToShow == "Component 1")
+      require(client.currentConfig.last(4).components(1).id == "S000005C000002")
+      require(client.currentConfig.last(4).components(1).nameToShow == "Component 2")
     }
     
     def step6 = {
@@ -291,12 +293,13 @@ class TestScenario1 {
       
       require(step.id == "FS000000")
       
-//      require(ConfigMgr.currentConfig.size == 6, "CurrentConfig size is 6")
-//      require(ConfigMgr.currentConfig(5).id == "S000007")
-//      require(ConfigMgr.currentConfig(5).nameToShow == "Step 7")
-//      require(ConfigMgr.currentConfig(5).components.size == 1)
-//      require(ConfigMgr.currentConfig(5).components(0).id == "S000007C000001")
-//      require(ConfigMgr.currentConfig(5).components(0).nameToShow == "Component 1")
+      require(client.currentConfig.size == 6, "CurrentConfig size is 6")
+      require(client.currentConfig.last.size == 6, "CurrentConfig size is 6")
+      require(client.currentConfig.last(5).id == "S000007")
+      require(client.currentConfig.last(5).nameToShow == "Step 7")
+      require(client.currentConfig.last(5).components.size == 1)
+      require(client.currentConfig.last(5).components(0).id == "S000007C000001")
+      require(client.currentConfig.last(5).components(0).nameToShow == "Component 1")
     }
   }
 }
