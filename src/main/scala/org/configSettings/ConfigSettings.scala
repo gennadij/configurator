@@ -50,13 +50,17 @@ class ConfigSettings {
   
   private def stepOfComponents(client: org.client.ConfigClient, 
       selectedComponents: Set[SelectedComponent]) = {
+    //lese komplette Konfiguration aus Config file
     val xml = scala.xml.XML.loadFile("config/" + client.configFile)
+    
     val config = xml \ "step" map(s => toStep(s))
     
     val steps = for{
       step <- config
     }yield {
+      //hole stepId aus allen Steps in der Config
       val ids = step.components map (_.id)
+       //hole Id aus selectedComponents
       val selectedComponentIds = selectedComponents map (_.id)
       if(ids.exists { selectedComponentIds.contains _ }){
         step

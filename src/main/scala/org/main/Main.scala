@@ -20,7 +20,11 @@ object Main {
     
     new TestScenario2().scenario2
     
+    new TestScenario3().scenario3
+    
     new TestScenario4().scenario4
+    
+    new TestScenario5().scenario5
     
     println("END")
     

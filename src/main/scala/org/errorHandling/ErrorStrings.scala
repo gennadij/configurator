@@ -18,6 +18,8 @@ object ErrorStrings {
   
   def notFoundNextStep = "nextSteps for selectedComponentIds was not same"
   
+  def selectedComponentNotExistInCurrentConfig = "Component existiert nicht in der CurrentConfig"
+  
   
 }
 

@@ -55,10 +55,14 @@ class ConfigMgr {
     
     val selectValue: AnnounceStep = checkParameterOfSelectedComponents(step, selectedComponents)
     
+    val checkCurrentConfig: AnnounceStep = checkStepsFromCurrentConfig(client, step, selectedComponents)
+    
     if(selectCrit.isInstanceOf[ErrorStep]){
       selectCrit
     }else if (selectValue.isInstanceOf[ErrorStep]){
       selectValue
+    }else if (checkCurrentConfig.isInstanceOf[ErrorStep]){
+      checkCurrentConfig
     }else{
       step match {
         case errorStep: ErrorStep => errorStep
@@ -77,6 +81,21 @@ class ConfigMgr {
       }
     }
   }
+  
+  def checkStepsFromCurrentConfig(client: org.client.ConfigClient ,
+      step: Step, selectedComponents: Set[SelectedComponent]): AnnounceStep = {
+    
+    val currentConfigStepIds: List[String] = client.currentConfig.last map (_.id)
+    val configStepId: String = step.id
+    
+    val existStepInCurrentConfig: Boolean = currentConfigStepIds exists { _ == configStepId }
+    
+    if (existStepInCurrentConfig) 
+      new SuccessStep("3", "success step") 
+    else 
+      ErrorStep("7", ErrorStrings.selectedComponentNotExistInCurrentConfig, Nil)
+  }
+  
   
   /**
    * TODO
@@ -101,6 +120,7 @@ class ConfigMgr {
     
     client.currentConfig += endcurrentConfig
   }
+  
   //TODO TEST
   private def getComponent(step: ConfigSettingsStep, selectedComponents: Set[SelectedComponent]): Seq[Component] = {
     

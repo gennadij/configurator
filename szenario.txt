@@ -1,11 +1,11 @@
 Szenario 1
 
-Step 1 | 001001 		-> (002001), (002002)
-Step 2 | 002001 		-> (003001), (003002), (003003), (003004)
-Step 3 | 003001, 003002 -> (004001), (004002), (004003)
-Step 4 | 004001 		-> (005001), (005002), (005003), (005004), (005005)
-Step 5 | 005001 		-> (007001), (007002), (007003)
-Step 6 | 007001			-> 
+Step 1 | 001001             -> (002001), (002002)
+Step 2 | 002001             -> (003001), (003002), (003003), (003004)
+Step 3 | 003001, 003002     -> (004001), (004002), (004003)
+Step 4 | 004001             -> (005001), (005002), (005003), (005004), (005005)
+Step 5 | 005001             -> (007001), (007002), (007003)
+Step 6 | 007001             -> FS000000
 
 Szenario 2
 
@@ -13,21 +13,30 @@ Step 1 | 001003 				-> (003001), (003002), (003003), (003004)
 Step 2 | 003003|4, 003004|5 	-> (004001), (004002), (004003)
 Step 3 | 004002 				-> (005001), (005002), (005003), (005004), (005005)
 Step 4 | 005005 				-> (008001), (008002)
-Step 5 | 008002					->
+Step 5 | 008002					-> FS00000000
 
 Szenario 3
 
-Step 1 | 001003 				          -> (003001), (003002), (003003), (003004)
-Step 2 | 003003|4, 003004|5 	    -> (004001), (004002), (004003)
-Step 3 | 004002 				          -> (005001), (005002), (005003), (005004), (005005)
-Step 4 | 005005 				          -> (008001), (008002)
-Step 5 | 008002					          ->
-Step 6 | 002002					          -> Error = Component existiert nicht in der CurrentConfig
+Step 1 | S1C3                 -> (003001), (003002), (003003), (003004)
+Step 2 | S3C3|4, S3C4|5     -> (004001), (004002), (004003)
+Step 3 | S4C2                 -> (005001), (005002), (005003), (005004), (005005)
+Step 4 | S5C5                 -> (008001), (008002)
+Step 5 | S8C2                 -> FS000000
+Step 6 | S4C2                 -> 
 
 Szenario 4
 
-error 1 | S3C3|-1, S3C4|12	     	-> ErrorComponent("7", "minValue is smaller or naxValue is greater as definition in configSttings")
-																		 ErrorComponent("7", "minValue is smaller or naxValue is greater as definition in configSttings")
+Step 1 | 001003                 -> (003001), (003002), (003003), (003004)
+Step 2 | 003003|4, 003004|5     -> (004001), (004002), (004003)
+Step 3 | 004002                 -> (005001), (005002), (005003), (005004), (005005)
+Step 4 | 005005                 -> (008001), (008002)
+Step 5 | 008002                 -> FS000000
+Step 6 | 002002                 -> Error = Component existiert nicht in der CurrentConfig
+
+Szenario 5
+
+error 1 | S3C3|-1, S3C4|12          -> ErrorComponent("7", "minValue is smaller or naxValue is greater as definition in configSttings")
+                                        ErrorComponent("7", "minValue is smaller or naxValue is greater as definition in configSttings")
 error 2 | S3C3|2,  S3C4|12    		-> ErrorComponent("7", "minValue is smaller or naxValue is greater as definition in configSttings")
 error 3 | S3C3|-1, S3C4|9     		-> ErrorComponent("7", "minValue is smaller or naxValue is greater as definition in configSttings")
 error 4 | 003002|2,  003003|8			-> ###not implemented### ErrorComponent("7", "ImmutableComponent allowed not parameter for value")
