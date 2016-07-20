@@ -57,27 +57,29 @@ class ConfigMgr {
     // TODO Step muss zuerst hinzugefügt werden und danach geprüft
 //    val checkCurrentConfig: AnnounceStep = checkStepsFromCurrentConfig(client, step, selectedComponents)
     
-    val checkCurrentConfig: AnnounceStep = addStepToCurrentConfig(client, step, selectedComponents)
+//    val checkCurrentConfig: AnnounceStep = addStepToCurrentConfig(client, step, selectedComponents)
     
     if(selectCrit.isInstanceOf[ErrorStep]){
       selectCrit
     }else if (selectValue.isInstanceOf[ErrorStep]){
       selectValue
-    }else if (checkCurrentConfig.isInstanceOf[ErrorStep]){
-      checkCurrentConfig
-    }else{
+    }
+//      else if (checkCurrentConfig.isInstanceOf[ErrorStep]){
+//      checkCurrentConfig
+//    }
+    else{
       step match {
         case errorStep: ErrorStep => errorStep
         case lastStep: LastStep => {
-//          addStepToCurrentConfig(client, lastStep, selectedComponents)
+          addStepToCurrentConfig(client, lastStep, selectedComponents)
           new FinalStep("FS000000")
         }
         case step: DefaultStep => {
-//          addStepToCurrentConfig(client, step, selectedComponents)
+          addStepToCurrentConfig(client, step, selectedComponents)
           checkNextSteps(client, step, selectedComponents)
         }
         case step: FirstStep => {
-//          addStepToCurrentConfig(client, step, selectedComponents)
+          addStepToCurrentConfig(client, step, selectedComponents)
           checkNextSteps(client, step, selectedComponents)
         }
       }
@@ -117,11 +119,11 @@ class ConfigMgr {
    * neue step für CurrentConfig
    */
   def addStepToCurrentConfig(client: ConfigClient, step: Step, 
-      selectedComponents: Set[SelectedComponent]): AnnounceStep = {
+      selectedComponents: Set[SelectedComponent]) = {
     
-    if(step.isInstanceOf[ErrorStep]){
-      new ErrorStep("7", step.errorMessage, step.errorComponent)
-    }else{
+//    if(step.isInstanceOf[ErrorStep]){
+//      new ErrorStep("7", step.errorMessage, step.errorComponent)
+//    }else{
       val stepForCurrentConfig: CurrentConfigStep = new CurrentConfigStep(step.id, step.nameToShow, 
                                  getComponent(step, selectedComponents))
       
@@ -140,13 +142,13 @@ class ConfigMgr {
       //TODO das Problem noch mal ueberlegen
       client.currentConfig += endcurrentConfig
       
-      checkStepsFromCurrentConfig(client, step, selectedComponents) match {
-          case successStep: SuccessStep => {
-            new SuccessStep("3","Im CurrentConfig ist keinen Fehler aufgetretten")
-          }
-          case errorStep: ErrorStep => errorStep
-      }
-    }
+//      checkStepsFromCurrentConfig(client, step, selectedComponents) match {
+//          case successStep: SuccessStep => {
+//            new SuccessStep("3","Im CurrentConfig ist keinen Fehler aufgetretten")
+//          }
+//          case errorStep: ErrorStep => errorStep
+//      }
+//    }
   }
   
   //TODO TEST

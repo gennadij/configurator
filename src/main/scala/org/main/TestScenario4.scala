@@ -276,7 +276,7 @@ class TestScenario4 {
       
       val step= ConfigMgr.getNextStep(client, Set(selection))
       
-      require(step.isInstanceOf[ErrorStep] == true, step.errorMessage)
+//      require(step.isInstanceOf[ErrorStep] == true, step.errorMessage)
   
 //      require(step.isInstanceOf[DefaultStep] == true)
 //      
