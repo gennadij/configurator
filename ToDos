@@ -28,3 +28,4 @@
       2. Administrator erzeugt eine Connection Pfad für die Client.
       3. Der Client durch diesen Connection-Pfad connected mit dem Configuration.
       4. Wenn XMLClient Datei vorhanden,  die Erzeugung neuen Clint nicht notwendig
+-- Apache-Weiterleitung auf Activator Info: https://thomas-leister.de/mit-apache-http-proxy-auf-speziellen-port-weiterleiten-z-b-bei-etherpad-ghost-searx/

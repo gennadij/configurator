@@ -83,7 +83,7 @@ class TestScenario1 {
       require(step.components(1).isInstanceOf[ImmutableComponent] == true)
       
       
-      require(client.currentConfig.size == 1, "CurrentConfig size is 1")
+      require(client.currentConfig.size == 1, client.currentConfig.size)
       require(client.currentConfig.last.size == 1, "CurrentConfig size is 1")
       require(client.currentConfig.last(0).id == "S000001")
       require(client.currentConfig.last(0).nameToShow == "Step 1")
