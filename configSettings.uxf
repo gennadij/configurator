@@ -66,11 +66,11 @@ bg=green
     <coordinates>
       <x>240</x>
       <y>160</y>
-      <w>90</w>
+      <w>60</w>
       <h>160</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>70.0;140.0;10.0;10.0</additional_attributes>
+    <additional_attributes>40.0;140.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -112,28 +112,13 @@ bg=green</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>350</x>
+      <x>360</x>
       <y>160</y>
-      <w>100</w>
+      <w>90</w>
       <h>160</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;140.0;80.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>230</x>
-      <y>300</y>
-      <w>180</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>Step
-id = 002
-selectionCriteriumMin = 1
-selectionCriteriumMin = 2
-</panel_attributes>
-    <additional_attributes/>
+    <additional_attributes>10.0;140.0;70.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
