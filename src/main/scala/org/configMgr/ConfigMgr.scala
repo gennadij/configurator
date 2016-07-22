@@ -91,6 +91,32 @@ class ConfigMgr {
   def checkStepsFromCurrentConfig(client: org.client.ConfigClient ,
       step: Step, selectedComponents: Set[SelectedComponent]): AnnounceStep = {
     
+    /**
+     * finde Step mit selectedComponent
+     * Gehe zu der FatherStep und holle alle Component -> NextStep
+     * holle selectedComponent bei der FatherComponent in der CurrentConfig
+     *          wenn FatherStep nicht in der CurrentConfig zu finden ist
+     *                dann konnte in der Konfiguration dieser Komponent ausgewählt weden (client Fehler)
+     *          wenn FatherStep in der CurrentConfig zu finden ist 
+     *                dann holle selektedComponents aus der CurrentConfig und 
+     *                vergleiche Component -> NextStep in der Config mit der SelectedComponent in der CurrentConfig
+     *                gleche Componets sollen auf der Step zeigen
+     *                     
+     * 
+     * 
+     * 
+     * 
+     * 
+     */
+    
+    //
+    
+    
+    
+    
+    
+    
+    
     if(client.currentConfig.size == 0){
       // es exestiert noch keinen Step in der Konfiguration
       
