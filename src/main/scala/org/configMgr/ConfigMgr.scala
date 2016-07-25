@@ -102,20 +102,20 @@ class ConfigMgr {
      *                vergleiche Component -> NextStep in der Config mit der SelectedComponent in der CurrentConfig
      *                gleche Componets sollen auf der Step zeigen
      *                     
-     * 
-     * 
-     * 
-     * 
-     * 
      */
     
-    //
+    val fatherStepFromConfig: Seq[ConfigSettingsStep] = ConfigSettings.configSettings(client) filter (_.id == step.fatherStep)
     
+    val nextStepsFromFatherStepFromConfig = if(fatherStepFromConfig.size == 1) fatherStepFromConfig(0).nextStep else new ErrorStep("7", "", Nil)
     
+    val fatherStepFromCurrentConfig = client.currentConfig.last filter(_.id == fatherStepFromConfig)
     
-    
-    
-    
+    if(nextStepsFromFatherStepFromConfig.isInstanceOf[ErrorStep]){
+      nextStepsFromFatherStepFromConfig
+    }else{
+      
+      
+    }
     
     if(client.currentConfig.size == 0){
       // es exestiert noch keinen Step in der Konfiguration
