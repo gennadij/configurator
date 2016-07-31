@@ -15,6 +15,7 @@ import org.configTree.component._
 abstract class Step extends ConfigTree {
   val id: String
   def nameToShow: String = ""
+  def fatherStep: String = ""
 //  DefaultStep, FirstStep, LastStep
   def nextStep: Seq[NextStep] = Seq.empty
   def selectionCriterium: SelectionCriterium = null
@@ -25,13 +26,14 @@ abstract class Step extends ConfigTree {
   def errorMessage: String = ""
 //  SaccessStep
   def succsessMessage: String = ""
-  NextStep
+  //NextStep
   def byComponent: String = ""
   def step: String = ""
 }
 
 abstract class ConfigSettingsStep extends Step {
   override def nameToShow: String = ""
+  override def fatherStep: String = ""
   override def nextStep: Seq[NextStep] = Seq.empty
   override def selectionCriterium: SelectionCriterium = null
   override def from: Source = null
@@ -54,7 +56,8 @@ abstract class AnnounceStep extends Step{
 
 case class DefaultStep  (
                               id: String,
-                              override val nameToShow: String = "",
+                              override val nameToShow: String,
+                              override val fatherStep: String,
                               override val nextStep: Seq[NextStep],
                               override val selectionCriterium: SelectionCriterium,
                               override val from: Source,
@@ -75,6 +78,7 @@ case class DefaultStep  (
 case class FirstStep    (
                               id: String,
                               override val nameToShow: String = "",
+                              override val fatherStep: String = "",
                               override val nextStep: Seq[NextStep],
                               override val selectionCriterium: SelectionCriterium = null,
                               override val from: Source,
@@ -95,6 +99,7 @@ case class FirstStep    (
 case class LastStep     (
                               id: String,
                               override val nameToShow: String = "",
+                              override val fatherStep: String = "",
                               override val nextStep: Seq[NextStep],
                               override val selectionCriterium: SelectionCriterium = null,
                               override val from: Source,

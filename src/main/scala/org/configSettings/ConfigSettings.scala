@@ -23,12 +23,12 @@ object ConfigSettings {
     new ConfigSettings().stepOfComponents(client, selectedComponents)
   }
   
-  def configSettings: Container = {
-    val configSet = new ConfigSettings
-    new Container(configSet.getXML \ "step" map(s => configSet.toStep(s)))
-  }
+//  def configSettings: Container = {
+//    val configSet = new ConfigSettings
+//    new Container(configSet.getXML \ "step" map(s => configSet.toStep(s)))
+//  }
   
-  def configSettings(client: org.client.ConfigClient): Seq[Step] = {
+  def configSettings(client: org.client.ConfigClient): Seq[ConfigSettingsStep] = {
     new ConfigSettings().configSettings(client)
   }
 }
@@ -77,7 +77,7 @@ class ConfigSettings {
     }
   }
   
-  private def configSettings(client: org.client.ConfigClient): Seq[Step] = {
+  private def configSettings(client: org.client.ConfigClient): Seq[ConfigSettingsStep] = {
     val xml = scala.xml.XML.loadFile("config/" + client.configFile)
     xml \ "step" map(s => toStep(s))
   }
@@ -136,6 +136,7 @@ class ConfigSettings {
   private def toStep(step: scala.xml.Node) = {
     val id = (step \ "id").text
     val nameToShow = (step \ "nameToShow").text
+    val fatherStep = (step \ "fatherStep").text
     val nextSteps = (step \ "nextSteps" \ "nextStep") map (ns => toNextStep(ns))
     val kind = (step \ "kind").text
     val selectionCriterium = toSelectionCriterium  (step \ "selectionCriterium")
@@ -143,11 +144,11 @@ class ConfigSettings {
     val components = (step \ "components" \ "component") map (c => toComponent(c))
 
     kind match {
-      case "first" => new FirstStep(id, nameToShow, nextSteps,
+      case "first" => new FirstStep(id, nameToShow, fatherStep, nextSteps,
                                     selectionCriterium, from, components)
-      case "default" => new DefaultStep(id, nameToShow, nextSteps,
+      case "default" => new DefaultStep(id, nameToShow, fatherStep, nextSteps,
                                         selectionCriterium, from, components)
-      case "last" => new LastStep(id, nameToShow, nextSteps, 
+      case "last" => new LastStep(id, nameToShow, fatherStep, nextSteps, 
                                   selectionCriterium, from, components)
     }
   }
