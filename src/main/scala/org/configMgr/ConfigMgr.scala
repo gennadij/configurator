@@ -94,7 +94,6 @@ class ConfigMgr {
       step: Step, selectedComponents: Set[SelectedComponent]): AnnounceStep = {
     
     /**
-     * finde Step mit selectedComponent
      * Gehe zu der FatherStep und holle alle Component -> NextStep
      * holle selectedComponent bei der FatherComponent in der CurrentConfig
      *          wenn FatherStep nicht in der CurrentConfig zu finden ist
@@ -113,7 +112,8 @@ class ConfigMgr {
     val fatherStepFromCurrentConfig = client.currentConfig.last filter(_.id == fatherStepFromConfig)
     
     if(nextStepsFromFatherStepFromConfig.isInstanceOf[ErrorStep]){
-      nextStepsFromFatherStepFromConfig
+      //Fehler kommt von Client, es ist nicht möglich ein nicht exestierende 
+      // Komponent auszuwählen
     }else{
       
       
