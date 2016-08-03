@@ -97,12 +97,35 @@ class ConfigMgr {
      * Gehe zu der FatherStep und holle alle Component -> NextStep
      * holle selectedComponent bei der FatherComponent in der CurrentConfig
      *          wenn FatherStep nicht in der CurrentConfig zu finden ist
-     *                dann konnte in der Konfiguration dieser Komponent ausgewählt weden (client Fehler)
+     *                dann konnte nicht in der Konfiguration dieser Komponent ausgewählt weden (client Fehler)
      *          wenn FatherStep in der CurrentConfig zu finden ist 
-     *                dann holle selektedComponents aus der CurrentConfig und 
+     *                dann holle selectedComponents aus der CurrentConfig und 
      *                vergleiche Component -> NextStep in der Config mit der SelectedComponent in der CurrentConfig
      *                gleche Componets sollen auf der Step zeigen
      *                     
+     *                     
+     *                     
+     *                     
+     * 1. gehe zu FatherStep in dem Config und holle alle Component und dazugehärige Steps in dem Object NextStep
+     * 
+     * 2. holle alle selectedComponents in dem CurrentConfig bei der FatherStep
+     * 
+     * ***wenn*** FatherStep nich in der CurrentConfig zu finden ist.
+             ***dann*** suche recursiv bis ein FatherStep 
+                  in der CurrentConfig zu finden ist
+                  Dem Client wird dieser FatherStep angeboten 
+                  um die Konfiguration aus der gültiger Step weitermachen
+                  oder Fehler an der Client senden da der SelectedComponent 
+                  duerfte nicht ausgewaelt weden.
+       ***wenn*** FatherStep beim erstem Durchlauf zu finden ist
+                ***dann*** suche in dem Config selectedComponent und deren NextStep.
+                ***wenn*** gefundene NextStepId != stepId des selectedComponents
+                	***dann*** Fehler an der Client senden da der SelectedComponent 
+                              duerfte nicht ausgewaelt weden.
+     		***wenn*** FatherStep eine MultiChooseSelection erlaubt
+     		***dann*** kann die Konfiguration in zwei verschiedene Richtungen laufen. 
+     * 
+     * 
      */
     
     val fatherStepFromConfig: Seq[ConfigSettingsStep] = ConfigSettings.configSettings(client) filter (_.id == step.fatherStep)
@@ -114,6 +137,7 @@ class ConfigMgr {
     if(nextStepsFromFatherStepFromConfig.isInstanceOf[ErrorStep]){
       //Fehler kommt von Client, es ist nicht möglich ein nicht exestierende 
       // Komponent auszuwählen
+      new ErrorStep("7", "Fehler kommt von Client, es ist nicht möglich ein nicht exestierende", Nil)
     }else{
       
       
