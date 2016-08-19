@@ -1,3 +1,48 @@
+-kurzfristige ToDos
+-- alle Überprüfungen in eine Methode zusammenführen
+-- Fehler -> wenn Immutable Component value gesetzt wird (Test dazu)
+-- Test min max Value funktioniert nicht
+-- weitere Parameter bei der MutableComponent prüfen und testen
+-- scenarios fertigschreiben
+-- Error for inkompotible oder nicht gefundene Strings in SelectionsComponent
+-- Veränderung der der Konfigutration kann nur Admin machen.
+-- Die ErrorStep ID stellt sich aus der E Buchstabe und Step ID (nur Ziffern), 
+     in dem Fehler passiert wurde, zusammen. Genauso auch beim ErrorComponent.
+-- Die Steps werden einzeln aus der xmlFile augelesen.
+-- Lösung zu der Aktualisierung der xmlFile.
+-- Definition von verschiedenen Clients die seine Configuration laden.
+-- Admin definiert einen Client Connection zu dem entschprechendem Configuration.
+		1. Administrator erzeugt eine Configuration.
+		2. Administrator erzeugt eine Connection Pfad für die Client.
+		3. Der Client durch diesen Connection-Pfad connected mit dem Configuration.
+		4. Wenn XMLClient Datei vorhanden,  die Erzeugung neuen Clint nicht notwendig
+-spätere ToDos
+-- Die Reihenfolge der Schritten prüfen -> sorted eisetzen
+-- Lösung zu der Immutable CurrentConfig suchen
+-- Spec für minValues und maxValues schreiben
+-- Die Überprüfung von der CurrentConfig auf später verschieben.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ** Selection Criterium to Int konvertieren-- Logger einrichten
 ** definition von dem mutable Components (Slide, variable Massen)
 ** Selection criterium checken, wenn 2 meherere Components ausgewaehlt werden koennen
@@ -5,28 +50,18 @@
 ** Pruefen von ImmutableComponent nicht funktioniert
 ** Lösung zu der zentrallen Stelle aller Fehler in dem Configurator
 ** nur bei MutableComponent kann der value übergeben werden
+** ErrorStrings in der zentralle Stelle definieren
+** Die ID Des Steps S000000 ID COmponents S000000C000000
+** Apache-Weiterleitung auf Activator Info: https://thomas-leister.de/mit-apache-http-proxy-auf-speziellen-port-weiterleiten-z-b-bei-etherpad-ghost-searx/
+** Definition der FatherStep
+ 
 
--- Die Reihenfolge der Schritten prüfen -> sorted eisetzen
--- Lösung zu der Immutable CurrentConfig suchen
--- alle Überprüfungen in eine Methode zusammenführen
--- Spec für minValues und maxValues schreiben
--- Fehler -> wenn Immutable Component value gesetzt wird (Test dazu)
--- Test min max Value funktioniert nicht
--- ErrorStrings in der zentralle Stelle definieren
--- weitere Parameter bei der MutableComponent prüfen und testen
--- Error for inkompotible oder nicht gefundene Strings in SelectionsComponent 
--- Veränderung der der Konfigutration kann nur Admin machen.
--- Die ID Des Steps S000000 ID COmponents S000000C000000
--- Die ErrorStep ID stellt sich aus der E Buchstabe und Step ID (nur Ziffern), 
-     in dem Fehler passiert wurde, zusammen. Genauso auch beim ErrorComponent.
--- Die Steps werden einzeln aus der xmlFile augelesen.
--- Lösung zu der Aktualisierung der xmlFile.
--- Definition von verschiedenen Clients die seine Configuration laden.
--- Admin definiert einen Client Connection zu dem entschprechendem Configuration.
--- Jeder Client hat eigene Configuration.
---    1. Administrator erzeugt eine Configuration.
-      2. Administrator erzeugt eine Connection Pfad für die Client.
-      3. Der Client durch diesen Connection-Pfad connected mit dem Configuration.
-      4. Wenn XMLClient Datei vorhanden,  die Erzeugung neuen Clint nicht notwendig
--- Apache-Weiterleitung auf Activator Info: https://thomas-leister.de/mit-apache-http-proxy-auf-speziellen-port-weiterleiten-z-b-bei-etherpad-ghost-searx/
--- Definition der FatherStep
+
+
+
+
+
+
+
+
+

@@ -519,13 +519,13 @@ bg=green</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>690</x>
+      <x>500</x>
       <y>280</y>
-      <w>180</w>
-      <h>340</h>
+      <w>370</w>
+      <h>220</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>160.0;10.0;10.0;320.0</additional_attributes>
+    <additional_attributes>350.0;10.0;10.0;200.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -909,8 +909,8 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>620</x>
-      <y>450</y>
+      <x>430</x>
+      <y>330</y>
       <w>500</w>
       <h>150</h>
     </coordinates>
@@ -919,8 +919,10 @@ bg=blue</panel_attributes>
                   in der CurrentConfig zu finden ist
                   Dem Client wird dieser FatherStep angeboten 
                   um die Konfiguration aus der gültiger Step weitermachen
+                  oder Fehler an der Client senden da der SelectedComponent 
+                  duerfte nicht ausgewaelt weden.
     ***wenn*** FatherStep beim erstem Durchlauf zu finden ist
-                ***dann***
+                ***dann*** 
 </panel_attributes>
     <additional_attributes/>
   </element>
