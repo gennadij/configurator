@@ -1,4 +1,5 @@
 -kurzfristige ToDos
+-- Selection Criterium to Int konvertieren
 -- alle Überprüfungen in eine Methode zusammenführen
 -- Fehler -> wenn Immutable Component value gesetzt wird (Test dazu)
 -- Test min max Value funktioniert nicht
@@ -17,6 +18,7 @@
 		3. Der Client durch diesen Connection-Pfad connected mit dem Configuration.
 		4. Wenn XMLClient Datei vorhanden,  die Erzeugung neuen Clint nicht notwendig
 -spätere ToDos
+-- Logger einrichten
 -- Die Reihenfolge der Schritten prüfen -> sorted eisetzen
 -- Lösung zu der Immutable CurrentConfig suchen
 -- Spec für minValues und maxValues schreiben
@@ -24,26 +26,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-** Selection Criterium to Int konvertieren-- Logger einrichten
+-erledigte ToDos
 ** definition von dem mutable Components (Slide, variable Massen)
 ** Selection criterium checken, wenn 2 meherere Components ausgewaehlt werden koennen
 ** selectionCriteriumMax darf nicht grösser als Anzahl der Components sein und Umgekehrt
