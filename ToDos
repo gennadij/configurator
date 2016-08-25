@@ -1,4 +1,5 @@
 -kurzfristige ToDos
+-- Definition einer Schnittstelle zu der DB aber keine Implementierung von DB.
 -- Selection Criterium to Int konvertieren
 -- alle Überprüfungen in eine Methode zusammenführen
 -- Fehler -> wenn Immutable Component value gesetzt wird (Test dazu)

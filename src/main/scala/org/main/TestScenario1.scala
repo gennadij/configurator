@@ -8,7 +8,7 @@ import org.client.Client
 
 class TestScenario1 {
   def scenario1 = {
-    
+
     Admin.setConnectPathForConfigClient("C0000001", "http://configuration/config_1")
     
     val client: org.client.ConfigClient = Client.setClient("http://configuration/config_1")

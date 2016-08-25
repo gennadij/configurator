@@ -1,6 +1,6 @@
-package org.admin
+package org.admin.persistence.xml
 
-class ConfigClient (id: String, configPath: String, configXML: String) {
+class ConfigID (id: String, configPath: String, configXML: String) {
   
   
   def toXML = {
