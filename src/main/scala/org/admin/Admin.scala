@@ -21,6 +21,9 @@ object Admin {
      * ---- erstellen.
      * 3. Die Konfiguration besteht aus der ConfigStep und Components.
      * ---- 
+     * 4. Der Admin braucht der Produktendatenbank fuer die Konfiguration,
+     * ---- deswegen er braucht eine Verknüpfung zwischen Konfiguration und
+     * ---- Produktendatenbank (Componenten).
      * 
      * 
      */
