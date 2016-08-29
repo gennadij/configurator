@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<admins>
+  <admin>
+    <id>test1</id>
+    <password>5A105E8B9D40E1329780D62EA2265D8A</password>
+  </admin>
+  <admin>
+    <id>test2</id>
+    <password>AD0234829205B9033196BA818F7A872B</password>
+  </admin>
+</admins>

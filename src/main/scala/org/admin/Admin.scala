@@ -4,6 +4,7 @@ import org.configSettings.ConfigSettings
 import scala.xml._
 import org.admin.persistence.xml.ConfigID
 import org.admin.persistence.InterfaceAdminPersistence
+import org.admin.persistence.AdminId
 
 
 
@@ -26,13 +27,50 @@ object Admin {
      * ---- Produktendatenbank (Componenten).
      * 
      * 
+     * 
+     * 
+     * 
      */
-  def register(adminId: String, password: String) = {
+  
+  /**
+   * Rigestrierung
+   * 
+   * Client -> Regestrierung mit adminId und password
+   * Server -> true/false Bestätigung
+   * 
+   * 
+   */
+  
+  def register(adminId: String, password: String): Boolean = {
     // Implement later (not so important for this time)
     InterfaceAdminPersistence.registerAdmin
   }
   
-  def connect(adminID: String, password: String) = ???
+  /**
+   * Anmeldung von Admin
+   * 
+   * Cleint -> Anmeldung mit regestrierten Daten (adminId, password)
+   * 
+   * Server -> true
+   *        -> false --> adminId existiert nicht, Falsches Password
+   */
+  
+  def connect(adminId: String, password: String): Boolean = {
+    
+    val admins: Seq[AdminId] = InterfaceAdminPersistence.admin(adminId, password)
+    
+    if(findAndCheckAdmin(adminId, password, admins)){
+      true
+    }else{
+      //TODO implements Error message
+      false
+    }
+  }
+  
+  def findAndCheckAdmin(adminId: String, password: String, admins: Seq[AdminId]): Boolean = {
+    
+    admins.exists { admin => admin.adminId == adminId && admin.password == password }
+  }
   
   def setConnectPathForConfigClient(clientId: String, configPath: String) = {
     
