@@ -26,6 +26,8 @@ object Main {
     
     new TestScenario5().scenario5
     
+    new TestScenario6().scenario6
+    
     println("END")
     
     

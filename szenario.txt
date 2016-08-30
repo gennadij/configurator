@@ -47,3 +47,6 @@ error 7 | S5C1, S5C2, S5C3, S5C4,
 error 8 | 												-> ErrorStep("7", "The selected components has not been found in any configuration steps")
 error 9 | 												-> ErrorStep("7", "nextSteps for selectedComponentIds was not same")
 
+Szenario 6
+Administrator testen
+

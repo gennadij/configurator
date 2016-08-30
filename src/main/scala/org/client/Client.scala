@@ -4,7 +4,7 @@ object Client {
 
   def setClient(client: String) = {
     
-    val xmlClientFiles = (new java.io.File("xmlClients")).listFiles()
+    val xmlClientFiles = (new java.io.File("config_ids")).listFiles()
     
     val clientSeparated = "client_" + client.split("/").last + ".xml"
     

@@ -5,6 +5,9 @@ import scala.xml._
 import org.admin.persistence.xml.ConfigID
 import org.admin.persistence.InterfaceAdminPersistence
 import org.admin.persistence.AdminId
+import org.status.Status
+import org.status.SuccessfulStatus
+import org.status.ErrorStatus
 
 
 
@@ -55,21 +58,19 @@ object Admin {
    *        -> false --> adminId existiert nicht, Falsches Password
    */
   
-  def connect(adminId: String, password: String): Boolean = {
+  def connect(adminId: String, password: String): Status = {
     
     val admins: Seq[AdminId] = InterfaceAdminPersistence.admin(adminId, password)
     
-    if(findAndCheckAdmin(adminId, password, admins)){
-      true
-    }else{
-      //TODO implements Error message
-      false
-    }
+    findAndCheckAdmin(adminId, password, admins)
   }
   
-  def findAndCheckAdmin(adminId: String, password: String, admins: Seq[AdminId]): Boolean = {
+  def findAndCheckAdmin(adminId: String, password: String, admins: Seq[AdminId]): Status = {
     
-    admins.exists { admin => admin.adminId == adminId && admin.password == password }
+    if(admins.exists { admin => admin.adminId == adminId && admin.password == password })
+      SuccessfulStatus("Anmeldung ist erfolgreich")
+    else
+      ErrorStatus("Administrator Id oder Passwort falsch")
   }
   
   def setConnectPathForConfigClient(clientId: String, configPath: String) = {
