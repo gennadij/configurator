@@ -137,6 +137,7 @@ class ConfigSettings {
     val id = (step \ "id").text
     val nameToShow = (step \ "nameToShow").text
     val fatherStep = (step \ "fatherStep").text
+    val dependencies = (step \ "dependencies").text
     val nextSteps = (step \ "nextSteps" \ "nextStep") map (ns => toNextStep(ns))
     val kind = (step \ "kind").text
     val selectionCriterium = toSelectionCriterium  (step \ "selectionCriterium")

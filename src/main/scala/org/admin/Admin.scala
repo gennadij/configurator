@@ -8,6 +8,7 @@ import org.admin.persistence.AdminId
 import org.status.Status
 import org.status.SuccessfulStatus
 import org.status.ErrorStatus
+import org.configTree.step.Step
 
 
 
@@ -72,6 +73,17 @@ object Admin {
     else
       ErrorStatus("Administrator Id oder Passwort falsch")
   }
+  
+  def setStep(user: String, isConnected: Boolean, step: Step): Status = {
+    
+    
+    
+    
+    
+    null
+  }
+  
+  
   
   def setConnectPathForConfigClient(clientId: String, configPath: String) = {
     

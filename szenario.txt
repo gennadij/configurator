@@ -50,3 +50,7 @@ error 9 | 												-> ErrorStep("7", "nextSteps for selectedComponentIds was 
 Szenario 6
 Administrator testen
 
+Szenario 7
+
+Dependencies testen
+
