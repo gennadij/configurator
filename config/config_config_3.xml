@@ -10,18 +10,18 @@
     <dependencies>
       <dependency>
         <ifComponents>
-          <component>S000001C000001</component>
-          <component>S000001C000001</component>
+          <component id="S000001C000001" />
+          <component id="S000001C000001" />
         </ifComponents>
         <!-- single, or, and, xor -->
-        <ifOperator></ifOperator>
+        <ifOperator>single</ifOperator>
         <thenComponents>
-          <component>S000001C000001</component>
+          <component id="S000001C000001"/>
         </thenComponents>
         <!-- single, or, and, xor -->
-        <thenOperator></thenOperator>
+        <thenOperator>single</thenOperator>
         <!-- exclude, require -->
-        <ruletype></ruletype>
+        <ruletype>require</ruletype>
       </dependency>
     </dependencies>
     <presentation>

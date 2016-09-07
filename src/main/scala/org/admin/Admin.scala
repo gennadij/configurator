@@ -75,11 +75,6 @@ object Admin {
   }
   
   def setStep(user: String, isConnected: Boolean, step: Step): Status = {
-    
-    
-    
-    
-    
     null
   }
   

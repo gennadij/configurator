@@ -54,3 +54,7 @@ Szenario 7
 
 Dependencies testen
 
+Scenario 8
+
+Persistence testen
+

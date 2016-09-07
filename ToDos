@@ -1,17 +1,14 @@
 -kurzfristige ToDos
+-- OrientDB einrichten und API installieren. Docu lesen
+-- Eine Konfiguration mit Dependencies definieren
+-- Presentation von Dependencies
 -- Definition einer Schnittstelle zu der DB aber keine Implementierung von DB.
 -- Selection Criterium to Int konvertieren
--- alle Überprüfungen in eine Methode zusammenführen
 -- Fehler -> wenn Immutable Component value gesetzt wird (Test dazu)
--- Test min max Value funktioniert nicht
 -- weitere Parameter bei der MutableComponent prüfen und testen
--- scenarios fertigschreiben
 -- Error for inkompotible oder nicht gefundene Strings in SelectionsComponent
--- Veränderung der der Konfigutration kann nur Admin machen.
 -- Die ErrorStep ID stellt sich aus der E Buchstabe und Step ID (nur Ziffern), 
      in dem Fehler passiert wurde, zusammen. Genauso auch beim ErrorComponent.
--- Die Steps werden einzeln aus der xmlFile augelesen.
--- Lösung zu der Aktualisierung der xmlFile.
 -- Definition von verschiedenen Clients die seine Configuration laden.
 -- Admin definiert einen Client Connection zu dem entschprechendem Configuration.
 		1. Administrator erzeugt eine Configuration.
@@ -19,6 +16,7 @@
 		3. Der Client durch diesen Connection-Pfad connected mit dem Configuration.
 		4. Wenn XMLClient Datei vorhanden,  die Erzeugung neuen Clint nicht notwendig
 -spätere ToDos
+-- alle Überprüfungen in eine Methode zusammenführen
 -- Logger einrichten
 -- Die Reihenfolge der Schritten prüfen -> sorted eisetzen
 -- Lösung zu der Immutable CurrentConfig suchen
@@ -38,6 +36,8 @@
 ** Die ID Des Steps S000000 ID COmponents S000000C000000
 ** Apache-Weiterleitung auf Activator Info: https://thomas-leister.de/mit-apache-http-proxy-auf-speziellen-port-weiterleiten-z-b-bei-etherpad-ghost-searx/
 ** Definition der FatherStep
+** Lösung zu der Aktualisierung der xmlFile. => Datenbank einrichten
+** Die Steps werden einzeln aus der xmlFile augelesen.=> Datenbank einrichten
  
 
 

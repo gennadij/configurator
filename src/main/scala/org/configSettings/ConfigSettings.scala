@@ -109,6 +109,14 @@ class ConfigSettings {
     }
   }
   
+  private def toDependency(dependency:scala.xml.Node): Dependency = {
+    new Dependency((dependency \ "dependency" \ "ifComponents" \ "component") map (id => (id \ "@id").text), 
+                   (dependency \ "dependency" \ "ifOperator").text.toString(),
+                   (dependency \ "dependency" \ "thenComponents" \ "component") map (id => (id \ "@id").text),
+                   (dependency \ "dependency" \ "thenOperator").text.toString(),
+                   (dependency \ "dependency" \ "ruletype").text.toString())
+  }
+  
   private def mutableComponent(c: scala.xml.Node) = {
     new MutableComponent(
       (c \ "id").text,
@@ -137,7 +145,7 @@ class ConfigSettings {
     val id = (step \ "id").text
     val nameToShow = (step \ "nameToShow").text
     val fatherStep = (step \ "fatherStep").text
-    val dependencies = (step \ "dependencies").text
+    val dependencies = (step \ "dependencies") map (dependency => toDependency(dependency))
     val nextSteps = (step \ "nextSteps" \ "nextStep") map (ns => toNextStep(ns))
     val kind = (step \ "kind").text
     val selectionCriterium = toSelectionCriterium  (step \ "selectionCriterium")
@@ -146,11 +154,11 @@ class ConfigSettings {
 
     kind match {
       case "first" => new FirstStep(id, nameToShow, fatherStep, nextSteps,
-                                    selectionCriterium, from, components)
+                                    selectionCriterium, from, components, dependencies.toList)
       case "default" => new DefaultStep(id, nameToShow, fatherStep, nextSteps,
-                                        selectionCriterium, from, components)
+                                        selectionCriterium, from, components, null)
       case "last" => new LastStep(id, nameToShow, fatherStep, nextSteps, 
-                                  selectionCriterium, from, components)
+                                  selectionCriterium, from, components, null)
     }
   }
 }

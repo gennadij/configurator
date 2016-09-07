@@ -29,6 +29,7 @@ abstract class Step extends ConfigTree {
   //NextStep
   def byComponent: String = ""
   def step: String = ""
+  def dependencies: List[Dependency] = null
 }
 
 abstract class ConfigSettingsStep extends Step {
@@ -41,7 +42,7 @@ abstract class ConfigSettingsStep extends Step {
   //NextStep
   override def byComponent: String = ""
   override def step: String = ""
-  
+  override def dependencies: List[Dependency] = null
 }
 
 abstract class AnnounceStep extends Step{
@@ -61,7 +62,8 @@ case class DefaultStep  (
                               override val nextStep: Seq[NextStep],
                               override val selectionCriterium: SelectionCriterium,
                               override val from: Source,
-                              override val components: Seq[Component]
+                              override val components: Seq[Component],
+                              override val dependencies: List[Dependency]
                         ) extends ConfigSettingsStep {
   require(id != "000", "id must not bi 000")
   require(id.size <= 7, "id size must be greater as 3")
@@ -82,7 +84,8 @@ case class FirstStep    (
                               override val nextStep: Seq[NextStep],
                               override val selectionCriterium: SelectionCriterium = null,
                               override val from: Source,
-                              override val components: Seq[Component]
+                              override val components: Seq[Component],
+                              override val dependencies: List[Dependency]
                         ) extends ConfigSettingsStep {
   require(id != "000", "id must not bi 000")
   require(id.size <= 7, "id size must be greater as ")
@@ -103,7 +106,8 @@ case class LastStep     (
                               override val nextStep: Seq[NextStep],
                               override val selectionCriterium: SelectionCriterium = null,
                               override val from: Source,
-                              override val components: Seq[Component]
+                              override val components: Seq[Component],
+                              override val dependencies: List[Dependency]
                         ) extends ConfigSettingsStep {
   require(id != "000", "id must not bi 000")
   require(id.size <= 7, "id size must be greater as 3")

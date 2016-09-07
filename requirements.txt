@@ -1,5 +1,7 @@
 Anforderungen
 
+Cleint
+
  - Client darf die Konfiguration jederzeit abändern. 
 
  - Der Client kann jederzeit in die Vorherige Steps springen und der 
@@ -12,3 +14,8 @@ Anforderungen
    Component ab.  
  - Die Konfiguration kann willkürlich Verlaufen. Der User kann zu der 
    vorherigen Schritten zurückkehren aber er kann nicht die Schritte überspringen.
+
+Admin
+
+-- Veränderung der Konfigutration kann nur Admin machen.
+   
