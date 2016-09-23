@@ -4,7 +4,7 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
+      <x>100</x>
       <y>0</y>
       <w>180</w>
       <h>110</h>
@@ -22,23 +22,25 @@ Step
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>370</x>
+      <x>470</x>
       <y>170</y>
       <w>190</w>
-      <h>100</h>
+      <h>110</h>
     </coordinates>
     <panel_attributes>Vertex
 --
 Step
 --
-id=S000001
-kind=first</panel_attributes>
+id=S1
+kind=first
+sCMin=1
+sCNax=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>190</x>
+      <x>290</x>
       <y>0</y>
       <w>180</w>
       <h>80</h>
@@ -53,24 +55,23 @@ id</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>550</x>
+      <x>650</x>
       <y>370</y>
       <w>150</w>
-      <h>100</h>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Vertex
 --
 Component
 --
 id=S1C3
-kind=immutable
-nameToShow=S1C3</panel_attributes>
+kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>380</x>
+      <x>480</x>
       <y>0</y>
       <w>180</w>
       <h>100</h>
@@ -87,7 +88,7 @@ Component
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>550</x>
+      <x>650</x>
       <y>190</y>
       <w>160</w>
       <h>200</h>
@@ -99,36 +100,35 @@ hasComponents</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>250</x>
+      <x>350</x>
       <y>370</y>
       <w>140</w>
-      <h>100</h>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Vertex
 --
 Component
 --
 id=S1C1
-kind=immutable
-nameToShow=S1C1</panel_attributes>
+kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>450</x>
-      <y>260</y>
+      <x>550</x>
+      <y>270</y>
       <w>130</w>
-      <h>130</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 hasComponents</panel_attributes>
-    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>310</x>
+      <x>410</x>
       <y>190</y>
       <w>150</w>
       <h>190</h>
@@ -140,40 +140,41 @@ hasComponents</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>400</x>
+      <x>500</x>
       <y>370</y>
       <w>140</w>
-      <h>100</h>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Vertex
 --
 Component
 --
 id=S1C2
-kind=immutable
-nameToShow=S1C2</panel_attributes>
+kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>290</x>
+      <x>390</x>
       <y>550</y>
       <w>120</w>
-      <h>100</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>Vertex
 --
 Step
 --
 id=S2
-kind=default</panel_attributes>
+kind=default
+sCMin=1
+sCNax=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>570</x>
+      <x>670</x>
       <y>0</y>
       <w>180</w>
       <h>80</h>
@@ -188,31 +189,31 @@ id</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>310</x>
-      <y>460</y>
+      <x>410</x>
+      <y>450</y>
       <w>90</w>
-      <h>110</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 nextStep</panel_attributes>
-    <additional_attributes>10.0;90.0;20.0;10.0</additional_attributes>
+    <additional_attributes>10.0;100.0;20.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>370</x>
-      <y>460</y>
+      <x>470</x>
+      <y>450</y>
       <w>120</w>
-      <h>110</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 nextStep</panel_attributes>
-    <additional_attributes>10.0;90.0;90.0;10.0</additional_attributes>
+    <additional_attributes>10.0;100.0;90.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>470</x>
+      <x>570</x>
       <y>820</y>
       <w>160</w>
       <h>120</h>
@@ -230,41 +231,39 @@ sCNax=4</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>200</x>
+      <x>300</x>
       <y>700</y>
       <w>140</w>
-      <h>100</h>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Vertex
 --
 Component
 --
 id=S2C1
-kind=immutable
-nameToShow=S2C1</panel_attributes>
+kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>350</x>
+      <x>450</x>
       <y>700</y>
       <w>140</w>
-      <h>100</h>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Vertex
 --
 Component
 --
 id=S2C2
-kind=immutable
-nameToShow=S2C2</panel_attributes>
+kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>400</x>
+      <x>500</x>
       <y>570</y>
       <w>140</w>
       <h>150</h>
@@ -276,7 +275,7 @@ hasComponents</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>240</x>
+      <x>340</x>
       <y>570</y>
       <w>130</w>
       <h>150</h>
@@ -288,19 +287,19 @@ m1=hasComponents</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>540</x>
-      <y>460</y>
+      <x>640</x>
+      <y>450</y>
       <w>120</w>
-      <h>380</h>
+      <h>390</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 nextStep</panel_attributes>
-    <additional_attributes>10.0;360.0;80.0;10.0</additional_attributes>
+    <additional_attributes>10.0;370.0;80.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>660</x>
+      <x>760</x>
       <y>1050</y>
       <w>110</w>
       <h>130</h>
@@ -310,7 +309,7 @@ nextStep</panel_attributes>
 Component
 --
 id=S3C3
-kind=immutable
+kind=mutable
 minValue = 0
 maxValue = 10
 defaultValue = 5</panel_attributes>
@@ -319,7 +318,7 @@ defaultValue = 5</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>540</x>
+      <x>640</x>
       <y>1050</y>
       <w>110</w>
       <h>130</h>
@@ -329,7 +328,7 @@ defaultValue = 5</panel_attributes>
 Component
 --
 id=S3C4
-kind=immutable
+kind=mutable
 minValue = 0
 maxValue = 10
 defaultValue = 5</panel_attributes>
@@ -338,7 +337,7 @@ defaultValue = 5</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>420</x>
+      <x>520</x>
       <y>1050</y>
       <w>110</w>
       <h>80</h>
@@ -354,7 +353,7 @@ kind=immutable</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>310</x>
+      <x>410</x>
       <y>1050</y>
       <w>110</w>
       <h>80</h>
@@ -370,7 +369,7 @@ kind=immutable</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>580</x>
+      <x>680</x>
       <y>930</y>
       <w>160</w>
       <h>140</h>
@@ -382,7 +381,7 @@ hC</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>540</x>
+      <x>640</x>
       <y>930</y>
       <w>90</w>
       <h>140</h>
@@ -394,7 +393,7 @@ hC</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>490</x>
+      <x>590</x>
       <y>930</y>
       <w>60</w>
       <h>140</h>
@@ -406,7 +405,7 @@ hC</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>360</x>
+      <x>460</x>
       <y>930</y>
       <w>160</w>
       <h>140</h>
@@ -418,7 +417,7 @@ hC</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>500</x>
+      <x>600</x>
       <y>1270</y>
       <w>90</w>
       <h>120</h>
@@ -436,31 +435,31 @@ sCMax=2</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>260</x>
-      <y>790</y>
+      <x>360</x>
+      <y>780</y>
       <w>230</w>
-      <h>160</h>
+      <h>170</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 nS</panel_attributes>
-    <additional_attributes>210.0;140.0;10.0;10.0</additional_attributes>
+    <additional_attributes>210.0;150.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>410</x>
-      <y>790</y>
+      <x>510</x>
+      <y>780</y>
       <w>80</w>
-      <h>130</h>
+      <h>140</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 nS</panel_attributes>
-    <additional_attributes>60.0;110.0;10.0;10.0</additional_attributes>
+    <additional_attributes>60.0;120.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>350</x>
+      <x>450</x>
       <y>1120</y>
       <w>200</w>
       <h>170</h>
@@ -472,7 +471,7 @@ nS</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>460</x>
+      <x>560</x>
       <y>1120</y>
       <w>110</w>
       <h>170</h>
@@ -484,7 +483,7 @@ nS</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>550</x>
+      <x>650</x>
       <y>1170</y>
       <w>70</w>
       <h>120</h>
@@ -496,7 +495,7 @@ nS</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>580</x>
+      <x>680</x>
       <y>1170</y>
       <w>150</w>
       <h>130</h>
@@ -508,7 +507,7 @@ nS</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>360</x>
+      <x>460</x>
       <y>1470</y>
       <w>110</w>
       <h>80</h>
@@ -524,7 +523,7 @@ kind=immutable</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>480</x>
+      <x>580</x>
       <y>1470</y>
       <w>110</w>
       <h>80</h>
@@ -540,7 +539,7 @@ kind=immutable</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>600</x>
+      <x>700</x>
       <y>1470</y>
       <w>110</w>
       <h>80</h>
@@ -556,7 +555,7 @@ kind=immutable</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>410</x>
+      <x>510</x>
       <y>1380</y>
       <w>120</w>
       <h>110</h>
@@ -568,7 +567,7 @@ hC</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>520</x>
+      <x>620</x>
       <y>1380</y>
       <w>50</w>
       <h>110</h>
@@ -580,7 +579,7 @@ hC</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>550</x>
+      <x>650</x>
       <y>1380</y>
       <w>120</w>
       <h>110</h>
@@ -592,7 +591,7 @@ hC</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
+      <x>540</x>
       <y>1630</y>
       <w>90</w>
       <h>120</h>
@@ -610,7 +609,7 @@ sCMax=4</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>190</x>
+      <x>290</x>
       <y>1860</y>
       <w>110</w>
       <h>80</h>
@@ -619,14 +618,14 @@ sCMax=4</panel_attributes>
 --
 Component
 --
-id=S4C1
+id=S5C1
 kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>310</x>
+      <x>410</x>
       <y>1860</y>
       <w>110</w>
       <h>80</h>
@@ -635,14 +634,14 @@ kind=immutable</panel_attributes>
 --
 Component
 --
-id=S4C2
+id=S5C2
 kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>430</x>
+      <x>530</x>
       <y>1860</y>
       <w>110</w>
       <h>80</h>
@@ -651,14 +650,14 @@ kind=immutable</panel_attributes>
 --
 Component
 --
-id=S4C3
+id=S5C3
 kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>400</x>
+      <x>500</x>
       <y>1540</y>
       <w>80</w>
       <h>110</h>
@@ -670,7 +669,7 @@ nS</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>490</x>
+      <x>590</x>
       <y>1540</y>
       <w>70</w>
       <h>110</h>
@@ -682,7 +681,7 @@ nS</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>550</x>
+      <x>650</x>
       <y>1860</y>
       <w>110</w>
       <h>80</h>
@@ -691,14 +690,14 @@ nS</panel_attributes>
 --
 Component
 --
-id=S4C4
+id=S5C4
 kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>670</x>
+      <x>770</x>
       <y>1860</y>
       <w>110</w>
       <h>80</h>
@@ -707,14 +706,14 @@ kind=immutable</panel_attributes>
 --
 Component
 --
-id=S4C5
+id=S5C5
 kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>800</x>
+      <x>900</x>
       <y>1860</y>
       <w>90</w>
       <h>120</h>
@@ -732,7 +731,7 @@ sCMax=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>640</x>
+      <x>740</x>
       <y>1540</y>
       <w>220</w>
       <h>340</h>
@@ -744,7 +743,7 @@ nS</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>230</x>
+      <x>330</x>
       <y>1740</y>
       <w>240</w>
       <h>140</h>
@@ -756,7 +755,7 @@ hC</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>350</x>
+      <x>450</x>
       <y>1740</y>
       <w>130</w>
       <h>140</h>
@@ -768,7 +767,7 @@ hC</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>460</x>
+      <x>560</x>
       <y>1740</y>
       <w>40</w>
       <h>140</h>
@@ -780,7 +779,7 @@ hC</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>480</x>
+      <x>580</x>
       <y>1740</y>
       <w>150</w>
       <h>140</h>
@@ -792,7 +791,7 @@ hC</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>500</x>
+      <x>600</x>
       <y>1740</y>
       <w>250</w>
       <h>140</h>
@@ -804,7 +803,7 @@ hC</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>610</x>
+      <x>710</x>
       <y>2050</y>
       <w>90</w>
       <h>120</h>
@@ -813,7 +812,7 @@ hC</panel_attributes>
 --
 Step
 --
-id=S6
+id=S8
 kind=last
 sCMin=1
 sCMax=1</panel_attributes>
@@ -822,7 +821,7 @@ sCMax=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>320</x>
+      <x>420</x>
       <y>2050</y>
       <w>90</w>
       <h>120</h>
@@ -840,7 +839,7 @@ sCMax=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>240</x>
+      <x>340</x>
       <y>1930</y>
       <w>120</w>
       <h>140</h>
@@ -852,7 +851,7 @@ nS</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>350</x>
+      <x>450</x>
       <y>1930</y>
       <w>50</w>
       <h>140</h>
@@ -864,7 +863,7 @@ nS</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
+      <x>480</x>
       <y>1930</y>
       <w>120</w>
       <h>140</h>
@@ -876,7 +875,7 @@ nS</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>590</x>
+      <x>690</x>
       <y>1930</y>
       <w>70</w>
       <h>140</h>
@@ -888,7 +887,7 @@ nS</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>660</x>
+      <x>760</x>
       <y>1930</y>
       <w>80</w>
       <h>140</h>
@@ -900,8 +899,8 @@ nS</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>180</x>
-      <y>2190</y>
+      <x>280</x>
+      <y>2260</y>
       <w>110</w>
       <h>80</h>
     </coordinates>
@@ -909,15 +908,15 @@ nS</panel_attributes>
 --
 Component
 --
-id=S4C1
+id=S7C1
 kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>300</x>
-      <y>2190</y>
+      <x>400</x>
+      <y>2260</y>
       <w>110</w>
       <h>80</h>
     </coordinates>
@@ -925,15 +924,15 @@ kind=immutable</panel_attributes>
 --
 Component
 --
-id=S4C1
+id=S7C1
 kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>540</x>
-      <y>2190</y>
+      <x>640</x>
+      <y>2260</y>
       <w>110</w>
       <h>80</h>
     </coordinates>
@@ -941,15 +940,15 @@ kind=immutable</panel_attributes>
 --
 Component
 --
-id=S4C1
+id=S8C1
 kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>420</x>
-      <y>2190</y>
+      <x>520</x>
+      <y>2260</y>
       <w>110</w>
       <h>80</h>
     </coordinates>
@@ -957,15 +956,15 @@ kind=immutable</panel_attributes>
 --
 Component
 --
-id=S4C1
+id=S7C1
 kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>710</x>
-      <y>2290</y>
+      <x>810</x>
+      <y>2360</y>
       <w>110</w>
       <h>80</h>
     </coordinates>
@@ -973,15 +972,15 @@ kind=immutable</panel_attributes>
 --
 Component
 --
-id=S4C1
+id=S6C1
 kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>830</x>
-      <y>2290</y>
+      <x>930</x>
+      <y>2360</y>
       <w>110</w>
       <h>80</h>
     </coordinates>
@@ -989,15 +988,15 @@ kind=immutable</panel_attributes>
 --
 Component
 --
-id=S4C1
+id=S6C1
 kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>660</x>
-      <y>2190</y>
+      <x>760</x>
+      <y>2260</y>
       <w>110</w>
       <h>80</h>
     </coordinates>
@@ -1005,24 +1004,120 @@ kind=immutable</panel_attributes>
 --
 Component
 --
-id=S4C1
+id=S8C1
 kind=immutable</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
+    <coordinates>
+      <x>1050</x>
+      <y>2360</y>
+      <w>110</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Vertex
+--
+Component
+--
+id=S6C1
+kind=immutable</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>2160</y>
+      <w>120</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+hC</panel_attributes>
+    <additional_attributes>10.0;100.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>2160</y>
+      <w>40</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+hC</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>470</x>
+      <y>2160</y>
+      <w>120</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+hC</panel_attributes>
+    <additional_attributes>100.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>680</x>
+      <y>2160</y>
+      <w>70</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+hC</panel_attributes>
+    <additional_attributes>10.0;100.0;50.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>760</x>
+      <y>2160</y>
+      <w>70</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+hC</panel_attributes>
+    <additional_attributes>50.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>860</x>
+      <y>1970</y>
+      <w>80</w>
+      <h>410</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+hC</panel_attributes>
+    <additional_attributes>10.0;390.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>930</x>
+      <y>1970</y>
+      <w>80</w>
+      <h>410</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+hC</panel_attributes>
+    <additional_attributes>60.0;390.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
     <coordinates>
       <x>950</x>
-      <y>2290</y>
-      <w>110</w>
-      <h>80</h>
+      <y>1970</y>
+      <w>180</w>
+      <h>410</h>
     </coordinates>
-    <panel_attributes>Vertex
---
-Component
---
-id=S4C1
-kind=immutable</panel_attributes>
-    <additional_attributes/>
+    <panel_attributes>lt=&lt;-
+hC</panel_attributes>
+    <additional_attributes>160.0;390.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
