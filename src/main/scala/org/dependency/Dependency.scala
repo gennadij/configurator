@@ -5,7 +5,6 @@ import org.configTree.component.Component
 import org.configTree.step.Step
 import org.configTree.step.AnnounceStep
 import org.configTree.step.SuccessStep
-import org.configTree.step.Dependency
 
 trait Dependency {
   

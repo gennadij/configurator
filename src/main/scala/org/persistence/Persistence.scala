@@ -1,5 +1,6 @@
 package org.persistence
 
+
 import org.configSettings.ConfigSetting
 
 object Persistence {
@@ -19,5 +20,7 @@ object Persistence {
     
     new ConfigSetting("", configTree.text.toString(), rule.text.toString(), "presentation")
   }
+}
+class Persistence {
   
 }
