@@ -64,7 +64,7 @@ object Admin {
     val admins: Seq[AdminId] = InterfaceAdminPersistence.admin(adminId, password)
     
     findAndCheckAdmin(adminId, password, admins)
-  }
+  }  
   
   def findAndCheckAdmin(adminId: String, password: String, admins: Seq[AdminId]): Status = {
     
