@@ -18,8 +18,8 @@ class TestScenario8 {
     
     require(step.dependencies(0).ifComponents(0) == "S000001C000001", step.dependencies(0).ifComponents(0))
     require(step.dependencies(0).ifOperator == "single", step.dependencies(0).ifOperator)
-    require(step.dependencies(0).thenComponents(0) == "S000001C000001", step.dependencies(0).thenComponents(0))
+    require(step.dependencies(0).thenComponents(0) == "S000002C000002", step.dependencies(0).thenComponents(0))
     require(step.dependencies(0).thenOperator == "single", step.dependencies(0).thenOperator)
-    require(step.dependencies(0).ruletype == "require", step.dependencies(0).ruletype)
+    require(step.dependencies(0).ruletype == "exclude", step.dependencies(0).ruletype)
   }
 }

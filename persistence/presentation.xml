@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <presentation>
+      <exclude>
+        <!-- manual -> dialog (with exclude components or to choose exclude/other Config)  -->
+        <!-- auto -> graying, takeOut, untouched -->
+        <kind></kind>
+      </exclude>
+      <require>
+        <!-- dialog (dialog window with required components) -->
+        <!--  -->
+        <kind></kind>
+      </require>
+    </presentation>

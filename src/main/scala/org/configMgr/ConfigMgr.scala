@@ -10,6 +10,7 @@ import org.errorHandling.ErrorStrings
 import org.client.Client
 import org.client.ConfigClient
 import org.currentConfig.CurrentConfig
+import org.dependency.Dependency
 
 /**
  *  Managment of whole general Configurator
@@ -27,7 +28,7 @@ object ConfigMgr{
   }
 }
 
-class ConfigMgr {
+class ConfigMgr extends Dependency{
   
 //  val container: Container = ConfigSettings.configSettings
 
@@ -50,6 +51,8 @@ class ConfigMgr {
   def getNextStep(client: org.client.ConfigClient, selectedComponents: Set[SelectedComponent]): Step = {
     
     val step: Step = ConfigSettings.stepOfComponents(client, selectedComponents)
+    
+    val dependency: AnnounceStep = checkDependency(client, step)
       
     val selectCrit: AnnounceStep = checkSelectionCriterium(step, selectedComponents)
     

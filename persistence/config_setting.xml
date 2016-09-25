@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<setting>
+  <adminId></adminId>
+  <persisitence>
+    <persistenceKind>
+      <forConfigTree>xml</forConfigTree>
+      <forRule>xml</forRule>
+      <forPresentation></forPresentation>
+    </persistenceKind>
+    <databases>
+    </databases>
+    <xml>
+      <rule>persistence/rule.xml</rule>
+      <config>persistence/config_tree.xml</config>
+      <presentation>persistence/presentation.xml</presentation>
+    </xml>
+  </persisitence>
+</setting>

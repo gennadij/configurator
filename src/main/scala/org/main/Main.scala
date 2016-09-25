@@ -28,6 +28,8 @@ object Main {
     
     new TestScenario6().scenario6
     
+    new TestScenario7().scenario7
+    
     new TestScenario8().scenario8
     
     println("END")

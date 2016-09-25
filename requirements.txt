@@ -18,4 +18,9 @@ Cleint
 Admin
 
 -- Veränderung der Konfigutration kann nur Admin machen.
+
+Config
+
+-- Die Abhaengigkeit wird durch die Regeln, die in einer separater Datei abgelegt 
+   sind, gesteuert.
    
