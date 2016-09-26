@@ -5,6 +5,7 @@ import org.configSettings.ConfigSettings
 import org.admin._
 import org.client.Client
 import org.configTree.component.SelectedComponent
+import org.persistence.db.orientdb.TestOrientdb
 
 /**
   * 
@@ -14,6 +15,8 @@ object Main {
     println("I am generic configurator")
     println("Generic configurator started")
     println("Run Test Scenarios")
+    
+    new TestOrientdb
     
     new TestScenario1().scenario1
     
