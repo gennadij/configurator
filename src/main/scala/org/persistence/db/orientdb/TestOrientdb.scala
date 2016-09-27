@@ -5,22 +5,31 @@ import com.tinkerpop.blueprints.impls.orient.OrientGraph
 import com.tinkerpop.blueprints.impls.orient.OrientVertexType
 import com.orientechnologies.orient.core.metadata.schema.OType
 import orientdb.App
+import com.orientechnologies.orient.core.sql.OCommandSQL
+import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
 
 class TestOrientdb {
   
   val app = new App
   
+  app.createServer()
+  
   app.startServer()
 
-   val uri: String = "remote:localhost/test"
+//   val uri: String = "remote:localhost/test"
 //   val uri: String = "plocal:C:/Users/heimann/scala/sbt_projects/configurator/databases/test"
-  
-  val factory:  OrientGraphFactory = new OrientGraphFactory(uri, "root", "root")
+    
+  val uri: String = "plocal:/home/gennadi/development/projects/configurator/databases/test1"
+//  val factory:  OrientGraphFactory = new OrientGraphFactory(uri, "root", "root")
+  val factory:  OrientGraphFactory = new OrientGraphFactory(uri)
   val graph: OrientGraph = factory.getTx()
-  
-//  val person: OrientVertexType = graph.createVertexType("Person2")
-//      person.createProperty("firstName", OType.STRING)
-//      person.createProperty("lastName", OType.STRING)
-  
-  println("Graph" + graph)
+  try{
+    val res: OrientDynaElementIterable = graph.command(new OCommandSQL(s"SELECT FROM Person2")).execute()
+    val person: OrientVertexType = graph.createVertexType("Person2")
+    println(person)
+    person.createProperty("firstName", OType.STRING)
+    person.createProperty("lastName", OType.STRING)
+  } finally {
+    app.shutdownServer()
+  }
 }
