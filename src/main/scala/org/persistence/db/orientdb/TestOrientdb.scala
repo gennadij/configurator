@@ -7,6 +7,7 @@ import com.orientechnologies.orient.core.metadata.schema.OType
 import orientdb.App
 import com.orientechnologies.orient.core.sql.OCommandSQL
 import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
+import sun.security.provider.certpath.Vertex
 
 class TestOrientdb {
   
@@ -21,14 +22,16 @@ class TestOrientdb {
     
   val uri: String = "plocal:/home/gennadi/development/projects/configurator/databases/test1"
 //  val factory:  OrientGraphFactory = new OrientGraphFactory(uri, "root", "root")
-  val factory:  OrientGraphFactory = new OrientGraphFactory(uri)
-  val graph: OrientGraph = factory.getTx()
+//  val factory:  OrientGraphFactory = new OrientGraphFactory(uri)
+//  val graph: OrientGraph = factory.getTx()
+  val graph: OrientGraph = app.connectDB(uri)
   try{
-    val res: OrientDynaElementIterable = graph.command(new OCommandSQL(s"SELECT FROM Person2")).execute()
-    val person: OrientVertexType = graph.createVertexType("Person2")
-    println(person)
-    person.createProperty("firstName", OType.STRING)
-    person.createProperty("lastName", OType.STRING)
+    app.readPerson(graph)
+//    val res: OrientDynaElementIterable = graph.command(new OCommandSQL(s"SELECT FROM Person2")).execute()
+//    val person: OrientVertexType = graph.createVertexType("Person2")
+//    println(person)
+//    person.createProperty("firstName", OType.STRING)
+//    person.createProperty("lastName", OType.STRING)
   } finally {
     app.shutdownServer()
   }

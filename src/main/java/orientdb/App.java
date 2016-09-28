@@ -1,7 +1,13 @@
 package orientdb;
 
+import com.orientechnologies.orient.core.metadata.schema.OType;
+import com.orientechnologies.orient.core.sql.OCommandSQL;
 import com.orientechnologies.orient.server.OServer;
 import com.orientechnologies.orient.server.OServerMain;
+import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
+import com.tinkerpop.blueprints.impls.orient.OrientGraphFactory;
+import com.tinkerpop.blueprints.impls.orient.OrientVertexType;
 
 public class App {
 
@@ -27,5 +33,25 @@ public class App {
 	
 	public OServer getServer(){
 		return server;
+	}
+	
+	public void readPerson(OrientGraph graph){
+//		OrientVertexType  person = graph.createVertexType("Person2");
+//		person.createProperty("firstName", OType.STRING);
+//		person.createProperty("lastName", OType.STRING);
+		graph.addVertex("class:Person2");
+		
+		System.out.println("start");
+		for (Vertex v : (Iterable<Vertex>) graph.command(
+				new OCommandSQL("SELECT FROM Person2")).execute()){
+			System.out.println(v);
+		}
+	}
+	
+	public OrientGraph connectDB(String uri) {
+		
+		OrientGraphFactory faktory = new OrientGraphFactory(uri);
+		OrientGraph graph = faktory.getTx();
+		return graph;
 	}
 }
