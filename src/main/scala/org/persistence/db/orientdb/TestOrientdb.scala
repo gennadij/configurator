@@ -33,6 +33,6 @@ class TestOrientdb {
 //    person.createProperty("firstName", OType.STRING)
 //    person.createProperty("lastName", OType.STRING)
   } finally {
-    app.shutdownServer()
+//    app.shutdownServer()
   }
 }
