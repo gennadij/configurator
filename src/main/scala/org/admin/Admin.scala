@@ -9,6 +9,7 @@ import org.status.Status
 import org.status.SuccessfulStatus
 import org.status.ErrorStatus
 import org.configTree.step.Step
+import org.persistence.Persistence
 
 
 
@@ -75,7 +76,9 @@ object Admin {
   }
   
   def setStep(user: String, isConnected: Boolean, step: Step): Status = {
-    null
+    
+    
+    Persistence.setStep(user, isConnected, step)
   }
   
   
