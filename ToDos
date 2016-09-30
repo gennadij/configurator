@@ -1,6 +1,5 @@
 -kurzfristige ToDos
--- OrientDB einrichten und API installieren. Docu lesen
--- Eine Konfiguration mit Dependencies definieren
+-- SelectiumCriterium in OrientDB runterbringen
 -- Presentation von Dependencies
 -- Definition einer Schnittstelle zu der DB aber keine Implementierung von DB.
 -- Selection Criterium to Int konvertieren
@@ -15,6 +14,7 @@
 		2. Administrator erzeugt eine Connection Pfad für die Client.
 		3. Der Client durch diesen Connection-Pfad connected mit dem Configuration.
 		4. Wenn XMLClient Datei vorhanden,  die Erzeugung neuen Clint nicht notwendig
+
 -spätere ToDos
 -- alle Überprüfungen in eine Methode zusammenführen
 -- Logger einrichten
@@ -23,9 +23,9 @@
 -- Spec für minValues und maxValues schreiben
 -- Die Überprüfung von der CurrentConfig auf später verschieben.
 
-
-
 -erledigte ToDos
+** Eine Konfiguration mit Dependencies definieren
+** OrientDB einrichten und API installieren. Docu lesen
 ** definition von dem mutable Components (Slide, variable Massen)
 ** Selection criterium checken, wenn 2 meherere Components ausgewaehlt werden koennen
 ** selectionCriteriumMax darf nicht grösser als Anzahl der Components sein und Umgekehrt

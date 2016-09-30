@@ -10,6 +10,7 @@ import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
 
 import scala.collection.JavaConversions._
 import com.orientechnologies.orient.core.sql.OCommandSQL
+import org.persistence.db.orientdb.VertexStep
 
 object Persistence {
   
@@ -24,10 +25,11 @@ object Persistence {
     val factory:  OrientGraphFactory = new OrientGraphFactory(uri, "root", "root")
     val graph: OrientGraph = factory.getTx()
     
-    println(graph.getVertexType("Person"))
-    val res: OrientDynaElementIterable = graph.command(new OCommandSQL(s"SELECT FROM Person WHERE firstName='Gennadi'")).execute()
+    val vStep = new VertexStep(
+        step.id, step.nameToShow, step.fatherStep, step.nextStep,
+        step.components, step.dependencies)
     
-    res.foreach(v => {println(v)})
+    vStep.persistStep(graph)
     
     new SuccessfulStatus("")
   }

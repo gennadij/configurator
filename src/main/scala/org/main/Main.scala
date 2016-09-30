@@ -16,7 +16,7 @@ object Main {
     println("Generic configurator started")
     println("Run Test Scenarios")
     
-    new TestOrientdb
+//    new TestOrientdb
     
     new TestScenario1().scenario1
     
@@ -33,6 +33,8 @@ object Main {
     new TestScenario7().scenario7
     
     new TestScenario8().scenario8
+    
+    new TestScenario9().scenario9
     
     println("END")
   }
