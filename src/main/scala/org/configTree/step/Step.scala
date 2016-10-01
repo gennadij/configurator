@@ -149,8 +149,8 @@ case class NextStep     (
                               override val byComponent: String,
                               override val step: String
                         ) extends ConfigSettingsStep{
-  require(id == "1", "id must be 1")
-  require(id.size == 1, "id size must be 1")
+//  TODO require(id == "1", "id must be 1")
+//  TODO require(id.size == 1, "id size must be 1")
 //  require(nextStep.isEmpty, "nextStep must be empty")
   require(selectionCriterium == null, "must be null")
   require(from == null, "must be null")

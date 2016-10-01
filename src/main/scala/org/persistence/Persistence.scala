@@ -20,7 +20,8 @@ object Persistence {
   
   def setStep(user: String, isConnected: Boolean, step: Step) = {
     
-    val uri: String = "remote:localhost/" + user
+//    val uri: String = "remote:localhost/" + user
+    val uri: String = "remote:generic-config.dnshome.de/" + user
     
     val factory:  OrientGraphFactory = new OrientGraphFactory(uri, "root", "root")
     val graph: OrientGraph = factory.getTx()

@@ -22,10 +22,10 @@ Step
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>470</x>
-      <y>170</y>
+      <x>500</x>
+      <y>130</y>
       <w>190</w>
-      <h>110</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>Vertex
 --
@@ -88,14 +88,14 @@ Component
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>650</x>
-      <y>190</y>
+      <x>680</x>
+      <y>150</y>
       <w>160</w>
-      <h>200</h>
+      <h>240</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 hasComponents</panel_attributes>
-    <additional_attributes>80.0;180.0;10.0;10.0</additional_attributes>
+    <additional_attributes>50.0;220.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -117,25 +117,25 @@ kind=immutable</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>550</x>
-      <y>270</y>
-      <w>130</w>
-      <h>120</h>
+      <y>240</y>
+      <w>150</w>
+      <h>150</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 hasComponents</panel_attributes>
-    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;130.0;40.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>410</x>
-      <y>190</y>
-      <w>150</w>
-      <h>190</h>
+      <y>150</y>
+      <w>180</w>
+      <h>230</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 hasComponents</panel_attributes>
-    <additional_attributes>10.0;170.0;60.0;10.0</additional_attributes>
+    <additional_attributes>10.0;210.0;90.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -203,7 +203,7 @@ nextStep</panel_attributes>
     <coordinates>
       <x>470</x>
       <y>450</y>
-      <w>120</w>
+      <w>130</w>
       <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
@@ -265,7 +265,7 @@ kind=immutable</panel_attributes>
     <coordinates>
       <x>500</x>
       <y>570</y>
-      <w>140</w>
+      <w>150</w>
       <h>150</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
@@ -277,7 +277,7 @@ hasComponents</panel_attributes>
     <coordinates>
       <x>340</x>
       <y>570</y>
-      <w>130</w>
+      <w>140</w>
       <h>150</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
@@ -769,7 +769,7 @@ hC</panel_attributes>
     <coordinates>
       <x>560</x>
       <y>1740</y>
-      <w>40</w>
+      <w>50</w>
       <h>140</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
@@ -1041,7 +1041,7 @@ hC</panel_attributes>
     <coordinates>
       <x>440</x>
       <y>2160</y>
-      <w>40</w>
+      <w>50</w>
       <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
