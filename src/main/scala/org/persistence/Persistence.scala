@@ -26,9 +26,9 @@ object Persistence {
     val factory:  OrientGraphFactory = new OrientGraphFactory(uri, "root", "root")
     val graph: OrientGraph = factory.getTx()
     
-    val vStep = new VertexStep(
-        step.id, step.nameToShow, step.fatherStep, step.nextStep,
-        step.components, step.dependencies)
+//    val vStep = new VertexStep(
+//        step.id, step.nameToShow, step.fatherStep, step.nextStep,
+//        step.components, step.dependencies)
     
     /**
      * 1. Erstelle die Schema 
@@ -55,7 +55,7 @@ object Persistence {
      */
     
     
-    vStep.persistStep(graph)
+//    vStep.persistStep(graph)
     
     new SuccessfulStatus("")
   }
