@@ -25,7 +25,7 @@ class TestScenario9 {
     )
     
     val step = new DefaultStep("S000001", "nameToShow", "", nextStep, null, null, components, Nil)
-    Admin.setStep("config1", true, step)
+    Admin.setStep("config2", true, step)
   }
   
   

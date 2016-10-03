@@ -30,6 +30,31 @@ object Persistence {
         step.id, step.nameToShow, step.fatherStep, step.nextStep,
         step.components, step.dependencies)
     
+    /**
+     * 1. Erstelle die Schema 
+     * 		Vertex -> Step, Component 
+     * 		Edge -> hasComponent, nextStep
+     * 
+     * 
+     * 2. befühle die Classes mit objects
+     * 
+     * 4. update objects
+     * 
+     * 5. Step besteht aus der 
+     * 		1. HauptStep und deren Components
+     * 		2. Components mit deren NextSteps
+     * 
+     * 6. NextStep werden bei der erzeugzng von der HauptStep erzeugt
+     * 
+     * 7. Zuerst wird Config erstellt. Der Config bildet nur das Ablauf der Konfiguration ab.
+     * 
+     * 8. Wenn config erstellt wurde, nachher werden die Regeln hinzugefuegt in der config Graph
+     * 
+     * 9. Die Rules bestehen aus:
+     * 		Edge -> dependency
+     */
+    
+    
     vStep.persistStep(graph)
     
     new SuccessfulStatus("")
