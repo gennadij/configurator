@@ -11,12 +11,38 @@ import com.tinkerpop.blueprints.Vertex
 
 
 object VertexStep{
-  def create(graph: OrientGraph, stepId: String){
-    val vStep = new VertexStep(stepId)
+  val propClassName = "Step"
+  val propKeyForId = "stepId"
+  
+//  def create(graph: OrientGraph, propKeys: List[String]){
+//    val vStep = new VertexStep()
+//    vStep.create(graph, propKeys)
+//  }
+  
+  def create(graph: OrientGraph, props: Map[String, String]){
+    if(graph.getVertices(propKeyForId, props("id")).size == 0){
+        graph.addVertex("class:Step", propKeyForId, props("id"))
+        graph.commit
+        new SuccessfulStatus("object Step with " + props("id") + " was created")
+    }else{
+      new WarningStatus("object Step with " + props("id") + "already exist")
+    }
   }
+  
+  def createSchema(graph: OrientGraph){
+    if(graph.getVertexType(propClassName) == null){
+      val vStep: OrientVertexType = graph.createVertexType("Step")
+      vStep.createProperty(propKeyForId, OType.STRING)
+      graph.commit
+      new SuccessfulStatus("class Step was created")
+    }else {
+      new WarningStatus("class Step already exist")
+    }
+  }
+  
 }
 
-class VertexStep (stepId: String){
+class VertexStep {
   
   val propStep = "Step"
   val propStepId = "stepId"

@@ -48,7 +48,13 @@ object Admin {
   
   def register(adminId: String, password: String): Boolean = {
     // Implement later (not so important for this time)
+    // Alle Resourcen einstellen (AdminID, Datenbankverbindung usw.)
+    
+    
+    
     InterfaceAdminPersistence.registerAdmin
+    
+    
   }
   
   /**
@@ -65,6 +71,8 @@ object Admin {
     val admins: Seq[AdminId] = InterfaceAdminPersistence.admin(adminId, password)
     
     findAndCheckAdmin(adminId, password, admins)
+    
+    //TODO Datenbank Connection setzen
   }  
   
   def findAndCheckAdmin(adminId: String, password: String, admins: Seq[AdminId]): Status = {
