@@ -7,6 +7,7 @@ import com.tinkerpop.blueprints.impls.orient.OrientEdgeType
 import com.orientechnologies.orient.core.metadata.schema.OType
 import org.status.SuccessfulStatus
 import org.status.WarningStatus
+import org.configTree.step.NextStep
 
 
 object EdgeNextStep {
@@ -16,11 +17,11 @@ object EdgeNextStep {
   val propKeyAdminId = "adminId"
   
   def createSchema(){
-    val graph: OrientGraph = OrientDB.getGraph()
+    val graph: OrientGraph = OrientDB.getGraph
     if(graph.getEdgeType("NextStep") == null){
   	  val eNextStep: OrientEdgeType = graph.createEdgeType(classname)
-  	  eNextStep.createProperty(propKeyNextStepId, OType.STRING)
-  	  eNextStep.createProperty(propKeyAdminId, OType.STRING)
+//  	  eNextStep.createProperty(propKeyNextStepId, OType.STRING)
+//  	  eNextStep.createProperty(propKeyAdminId, OType.STRING)
   	  graph.commit
   	  new SuccessfulStatus("")
     }else{
@@ -28,16 +29,18 @@ object EdgeNextStep {
     }
   }
   
-  
-//  nextStep.foreach ( nS => {
-//      if(graph.getVertices("stepId", nS.step).size == 0){
-//        val vStep: Vertex = graph.addVertex("class:Step", "stepId", nS.step)
-//        val vComponent: Vertex = graph.getVertices("componentId", nS.byComponent).head
-//        
-//        graph.commit()
-//      }else{
-//        println(s"step with id $nS exist")
-//      }
-//    })
+  def create(nextSteps: List[NextStep]) = {
+    val graph: OrientGraph = OrientDB.getGraph
+    nextSteps.foreach ( nS => {
+      if(graph.getVertices("stepId", nS.step).size == 0){
+        val vStep: Vertex = graph.addVertex("class:Step", "stepId", nS.step)
+        val vComponent: Vertex = graph.getVertices("componentId", nS.byComponent).head
+        graph.commit()
+      }else{
+        println(s"step with id $nS exist")
+      }
+    })
+  }
+
   
 }
