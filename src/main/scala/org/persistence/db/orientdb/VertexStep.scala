@@ -12,7 +12,8 @@ import com.tinkerpop.blueprints.Vertex
 
 object VertexStep{
   val propClassName = "Step"
-  val propKeyForId = "stepId"
+  val propKeyId = "stepId"
+  val propKeyAdminId = "adminId"
   
 //  def create(graph: OrientGraph, propKeys: List[String]){
 //    val vStep = new VertexStep()
@@ -20,19 +21,20 @@ object VertexStep{
 //  }
   
   def create(graph: OrientGraph, props: Map[String, String]) = {
-    if(graph.getVertices(propKeyForId, props("id")).size == 0){
-        graph.addVertex("class:Step", propKeyForId, props("id"))
+    if(graph.getVertices(propKeyId, props("id")).size == 0){
+        graph.addVertex("class:Step", propKeyId, props(propKeyId), propKeyAdminId, props(propKeyAdminId))
         graph.commit
-        new SuccessfulStatus("object Step with " + props("id") + " was created")
+        new SuccessfulStatus("object Step with " + props(propKeyId) + " was created")
     }else{
-      new WarningStatus("object Step with " + props("id") + "already exist")
+      new WarningStatus("object Step with " + props(propKeyId) + "already exist")
     }
   }
   
   def createSchema(graph: OrientGraph) = {
     if(graph.getVertexType(propClassName) == null){
       val vStep: OrientVertexType = graph.createVertexType("Step")
-      vStep.createProperty(propKeyForId, OType.STRING)
+      vStep.createProperty(propKeyId, OType.STRING)
+      vStep.createProperty(propKeyAdminId, OType.STRING)
       graph.commit
       new SuccessfulStatus("class Step was created")
     }else {
