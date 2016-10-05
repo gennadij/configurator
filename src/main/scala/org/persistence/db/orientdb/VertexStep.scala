@@ -19,7 +19,7 @@ object VertexStep{
 //    vStep.create(graph, propKeys)
 //  }
   
-  def create(graph: OrientGraph, props: Map[String, String]){
+  def create(graph: OrientGraph, props: Map[String, String]) = {
     if(graph.getVertices(propKeyForId, props("id")).size == 0){
         graph.addVertex("class:Step", propKeyForId, props("id"))
         graph.commit
@@ -29,7 +29,7 @@ object VertexStep{
     }
   }
   
-  def createSchema(graph: OrientGraph){
+  def createSchema(graph: OrientGraph) = {
     if(graph.getVertexType(propClassName) == null){
       val vStep: OrientVertexType = graph.createVertexType("Step")
       vStep.createProperty(propKeyForId, OType.STRING)
@@ -40,35 +40,7 @@ object VertexStep{
     }
   }
   
-}
-
-class VertexStep {
-  
-  val propStep = "Step"
-  val propStepId = "stepId"
-  
-  private def create(graph: OrientGraph, props: Map[String, String]){
-    if(graph.getVertices("stepId", props("id")).size == 0){
-        graph.addVertex("class:Step", "stepId", props("id"))
-        graph.commit
-        new SuccessfulStatus("object Step with " + props("id") + " was created")
-    }else{
-      new WarningStatus("object Step with " + props("id") + "already exist")
-    }
-  }
-  
-  private def createSchema(graph: OrientGraph){
-    if(graph.getVertexType(propStep) == null){
-      val vStep: OrientVertexType = graph.createVertexType("Step")
-      vStep.createProperty(propStepId, OType.STRING)
-      graph.commit
-      new SuccessfulStatus("class Step was created")
-    }else {
-      new WarningStatus("class Step already exist")
-    }
-  }
-  
-  private def update(graph: OrientGraph, props: Map[String, String]){
+   def update(graph: OrientGraph, props: Map[String, String]){
     //TODO bessere such Methode
     if(graph.getVertices("stepId", props("id")).size == 0){
 //        graph.addVertex("class:Step", "stepId", props("id"))
@@ -79,4 +51,44 @@ class VertexStep {
      
     }
   }
+  
+  def get() = ???
 }
+//class VertexStep {
+//  
+//  val propStep = "Step"
+//  val propStepId = "stepId"
+//  
+//  private def create(graph: OrientGraph, props: Map[String, String]){
+//    if(graph.getVertices("stepId", props("id")).size == 0){
+//        graph.addVertex("class:Step", "stepId", props("id"))
+//        graph.commit
+//        new SuccessfulStatus("object Step with " + props("id") + " was created")
+//    }else{
+//      new WarningStatus("object Step with " + props("id") + "already exist")
+//    }
+//  }
+//  
+//  private def createSchema(graph: OrientGraph){
+//    if(graph.getVertexType(propStep) == null){
+//      val vStep: OrientVertexType = graph.createVertexType("Step")
+//      vStep.createProperty(propStepId, OType.STRING)
+//      graph.commit
+//      new SuccessfulStatus("class Step was created")
+//    }else {
+//      new WarningStatus("class Step already exist")
+//    }
+//  }
+//  
+//  private def update(graph: OrientGraph, props: Map[String, String]){
+//    //TODO bessere such Methode
+//    if(graph.getVertices("stepId", props("id")).size == 0){
+////        graph.addVertex("class:Step", "stepId", props("id"))
+////        graph.commit
+//      new WarningStatus("object Step with " + props("id") + "cannot update because not exist")
+//    }else{
+//      new SuccessfulStatus("object Step with " + props("id") + " was updated")
+//     
+//    }
+//  }
+//}
