@@ -10,7 +10,7 @@ import org.status.WarningStatus
 import com.tinkerpop.blueprints.Vertex
 
 
-object VertexStep{
+object StepVertex {
   val propClassName = "Step"
   val propKeyId = "stepId"
   val propKeyAdminId = "adminId"

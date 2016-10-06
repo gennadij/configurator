@@ -23,4 +23,6 @@ Config
 
 -- Die Abhaengigkeit wird durch die Regeln, die in einer separater Datei abgelegt 
    sind, gesteuert.
-   
+-- Globale Einstellungen zur Konfigurator OrientDB separate Datenbank
+    -Datenbank
+    -

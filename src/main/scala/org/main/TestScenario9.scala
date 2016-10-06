@@ -28,5 +28,14 @@ class TestScenario9 {
     Admin.setStep("config2", true, step)
   }
   
+  def scenario9_1() = {
+    
+    val adminId: String = "AD000001"
+    val adminUsename : String = "test1"
+    val adminPassword: String = "test"
+    
+    
+    Admin.register(adminId, adminUsename, adminPassword)
+  }
   
 }

@@ -8,7 +8,7 @@ import org.status.WarningStatus
 import com.tinkerpop.blueprints.impls.orient.OrientVertexType
 import com.orientechnologies.orient.core.metadata.schema.OType
 
-object VertexComponent {
+object ComponentVertex {
   
   val propClassName = "Component"
   val propKeyId = "componentId"

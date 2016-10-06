@@ -10,6 +10,7 @@ import org.status.SuccessfulStatus
 import org.status.ErrorStatus
 import org.configTree.step.Step
 import org.persistence.Persistence
+import org.persistence.db.orientdb.AdminUserVertex
 
 
 
@@ -46,14 +47,12 @@ object Admin {
    * 
    */
   
-  def register(adminId: String, password: String): Boolean = {
+  def register(adminUserId: String, adminUsername: String,  adminUserPassword: String): Status = {
     // Implement later (not so important for this time)
     // Alle Resourcen einstellen (AdminID, Datenbankverbindung usw.)
     
-    
-    
-    InterfaceAdminPersistence.registerAdmin
-    
+    AdminUserVertex.createSchema
+    AdminUserVertex.create(adminUserId, adminUsername, adminUserPassword)
     
   }
   

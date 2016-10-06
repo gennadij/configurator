@@ -7,15 +7,16 @@ import com.tinkerpop.blueprints.impls.orient.OrientVertexType
 import org.status.SuccessfulStatus
 import org.status.WarningStatus
 import com.orientechnologies.orient.core.metadata.schema.OType
+import org.status.Status
 
-object VertexAdminUser {
+object AdminUserVertex {
   
   val propClassName = "AdminUser"
   val propKeyForId = "adminUserId"
   val propKeyAdminUsername = "username"
   val propKeyAdminUserPassword = "userPassword"
   
-  def create(adminUserId: String, adminUsername: String, adminUserPassword: String) {
+  def create(adminUserId: String, adminUsername: String, adminUserPassword: String): Status = {
     val graph: OrientGraph = OrientDB.getGraph()
     if(graph.getVertices(propKeyForId, adminUserId).size == 0){
         graph.addVertex("class:Step", propKeyForId, adminUserId, 
@@ -26,13 +27,13 @@ object VertexAdminUser {
       new WarningStatus("object AdminUser with " + adminUserId + "already exist")
     }
   }
-  def createSchema(graph: OrientGraph) = {
+  def createSchema = {
+    val graph: OrientGraph = OrientDB.getGraph
     if(graph.getVertexType(propClassName) == null){
       val vStep: OrientVertexType = graph.createVertexType("AdminUser")
       vStep.createProperty(propKeyForId, OType.STRING)
       vStep.createProperty(propKeyAdminUsername, OType.STRING)
       vStep.createProperty(propKeyAdminUserPassword, OType.STRING)
-      
       graph.commit
       new SuccessfulStatus("class AdminUser was created")
     }else {
