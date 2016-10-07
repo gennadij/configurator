@@ -8,18 +8,21 @@ import org.status.SuccessfulStatus
 import org.status.WarningStatus
 import com.orientechnologies.orient.core.metadata.schema.OType
 import org.status.Status
+import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
+import com.orientechnologies.orient.core.sql.OCommandSQL
+import com.tinkerpop.blueprints.impls.orient.OrientVertex
 
 object AdminUserVertex {
   
   val propClassName = "AdminUser"
-  val propKeyForId = "adminUserId"
+  val propKeyAdminId = "adminId"
   val propKeyAdminUsername = "username"
   val propKeyAdminUserPassword = "userPassword"
   
   def create(adminUserId: String, adminUsername: String, adminUserPassword: String): Status = {
     val graph: OrientGraph = OrientDB.getGraph()
-    if(graph.getVertices(propKeyForId, adminUserId).size == 0){
-        graph.addVertex("class:Step", propKeyForId, adminUserId, 
+    if(graph.getVertices(propKeyAdminId, adminUserId).size == 0){
+        graph.addVertex("class:Step", propKeyAdminId, adminUserId, 
         propKeyAdminUsername, adminUsername, propKeyAdminUserPassword, adminUserPassword)
         graph.commit
         new SuccessfulStatus("object AdminUser with " + adminUserId + " was created")
@@ -31,7 +34,7 @@ object AdminUserVertex {
     val graph: OrientGraph = OrientDB.getGraph
     if(graph.getVertexType(propClassName) == null){
       val vStep: OrientVertexType = graph.createVertexType("AdminUser")
-      vStep.createProperty(propKeyForId, OType.STRING)
+      vStep.createProperty(propKeyAdminId, OType.STRING)
       vStep.createProperty(propKeyAdminUsername, OType.STRING)
       vStep.createProperty(propKeyAdminUserPassword, OType.STRING)
       graph.commit
@@ -43,7 +46,24 @@ object AdminUserVertex {
   
   def update = ???
   
-  def get = ???
+  def getAll = {
+    
+  }
+  
+  def get(adminUsername: String, adminPassword: String) = {
+    val graph: OrientGraph = OrientDB.getGraph
+    
+    
+  }
+  
+  def adminId(username: String, adminPassword: String) = {
+    val graph: OrientGraph = OrientDB.getGraph
+    val res: OrientDynaElementIterable = graph.command(new OCommandSQL(s"SELECT FROM AdminUser WHERE username=$username and userPassword=$adminPassword")).execute()
+    val admins = res.foreach ( v => {
+      val vAdmin: OrientVertex = v.asInstanceOf[OrientVertex]
+      vAdmin.getProperty(propKeyAdminId)
+    })
+  }
 
 //  def create(adminUserId: String, adminUsername: String, adminUserPassword: String) = {
 //    val vAdminUser = new VertexAdminUser(adminUserId, adminUsername, adminUserPassword)

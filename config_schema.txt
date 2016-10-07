@@ -1,0 +1,24 @@
+connect remote:localhost/config_test_4 root root ;
+SET echo TRUE;
+CREATE CLASS Step EXTENDS V;
+CREATE PROPERTY Step.stepId STRING;
+CREATE PROPERTY Step.adminId STRING;
+
+CREATE CLASS Component EXTENDS V;
+CREATE PROPERTY Component.componentId STRING;
+CREATE PROPERTY Component.adminId STRING;
+
+CREATE CLASS hasComponent EXTENDS E;
+CREATE PROPERTY hasComponent.hasComponentId STRING;
+CREATE PROPERTY hasComponent.adminId STRING;
+
+CREATE CLASS nextStep EXTENDS E;
+CREATE PROPERTY nextStep.nextStepId STRING;
+CREATE PROPERTY nextStep.adminId STRING;
+
+CREATE CLASS GlobalSettings EXTENDS V;
+
+CREATE CLASS AdminUser EXTENDS V;
+CREATE PROPERTY AdminUser.adminId STRING;
+CREATE PROPERTY AdminUser.username STRING;
+CREATE PROPERTY AdminUser.userPassword STRING;
