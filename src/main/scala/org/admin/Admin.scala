@@ -50,7 +50,7 @@ object Admin {
   def register(adminUserId: String, adminUsername: String,  adminUserPassword: String): Status = {
     // TODO Alle Resourcen einstellen (AdminID, Datenbankverbindung usw.)
     // TODO Püfen ob der AdminUser schon exestiert
-    AdminUserVertex.createSchema
+//    AdminUserVertex.createSchema
     AdminUserVertex.create(adminUserId, adminUsername, adminUserPassword)
   }
   
@@ -63,12 +63,13 @@ object Admin {
    *        -> false --> adminId existiert nicht, Falsches Password
    */
   
-  def connect(adminUsername: String, password: String): Status = {
+  def connect(username: String, password: String): Status = {
     
 //    val admins: Seq[AdminId] = InterfaceAdminPersistence.admin(adminId, password)
 //    
 //    findAndCheckAdmin(adminId, password, admins)
-    new SuccessfulStatus("")
+    val adminId = AdminUserVertex.adminId(username, password)
+    new SuccessfulStatus(adminId)
   }
   
   def findAndCheckAdmin(adminId: String, password: String, admins: Seq[AdminId]): Status = {

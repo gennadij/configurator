@@ -1,4 +1,4 @@
-connect remote:localhost/config_test_4 root root ;
+connect remote:localhost/config_1 root root ;
 SET echo TRUE;
 CREATE CLASS Step EXTENDS V;
 CREATE PROPERTY Step.stepId STRING;

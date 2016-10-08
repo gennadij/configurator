@@ -14,7 +14,7 @@ import com.tinkerpop.blueprints.impls.orient.OrientVertex
 
 object AdminUserVertex {
   
-  val propClassName = "AdminUser"
+  val className = "AdminUser"
   val propKeyAdminId = "adminId"
   val propKeyAdminUsername = "username"
   val propKeyAdminUserPassword = "userPassword"
@@ -22,18 +22,18 @@ object AdminUserVertex {
   def create(adminUserId: String, adminUsername: String, adminUserPassword: String): Status = {
     val graph: OrientGraph = OrientDB.getGraph()
     if(graph.getVertices(propKeyAdminId, adminUserId).size == 0){
-        graph.addVertex("class:Step", propKeyAdminId, adminUserId, 
-        propKeyAdminUsername, adminUsername, propKeyAdminUserPassword, adminUserPassword)
-        graph.commit
-        new SuccessfulStatus("object AdminUser with " + adminUserId + " was created")
+      graph.addVertex(s"class:$className", propKeyAdminId, adminUserId, 
+      propKeyAdminUsername, adminUsername, propKeyAdminUserPassword, adminUserPassword)
+      graph.commit
+      new SuccessfulStatus("object AdminUser with " + adminUserId + " was created")
     }else{
-      new WarningStatus("object AdminUser with " + adminUserId + "already exist")
+      new WarningStatus("object AdminUser with " + adminUserId + " already exist")
     }
   }
   def createSchema = {
     val graph: OrientGraph = OrientDB.getGraph
-    if(graph.getVertexType(propClassName) == null){
-      val vStep: OrientVertexType = graph.createVertexType("AdminUser")
+    if(graph.getVertexType(className) == null){
+      val vStep: OrientVertexType = graph.createVertexType(className)
       vStep.createProperty(propKeyAdminId, OType.STRING)
       vStep.createProperty(propKeyAdminUsername, OType.STRING)
       vStep.createProperty(propKeyAdminUserPassword, OType.STRING)
@@ -58,11 +58,18 @@ object AdminUserVertex {
   
   def adminId(username: String, adminPassword: String) = {
     val graph: OrientGraph = OrientDB.getGraph
-    val res: OrientDynaElementIterable = graph.command(new OCommandSQL(s"SELECT FROM AdminUser WHERE username=$username and userPassword=$adminPassword")).execute()
-    val admins = res.foreach ( v => {
-      val vAdmin: OrientVertex = v.asInstanceOf[OrientVertex]
-      vAdmin.getProperty(propKeyAdminId)
-    })
+    val res: OrientDynaElementIterable = graph
+      .command(new OCommandSQL(s"SELECT adminId FROM AdminUser WHERE username='$username' and userPassword='$adminPassword'")).execute()
+//     var id = ""
+//      res.foreach ( v => {
+//      val vAdmin: OrientVertex = v.asInstanceOf[OrientVertex]
+//      id = vAdmin.getProperty(propKeyAdminId)
+//    })
+//    println(id)
+    
+    val array = res.toList
+    
+    (array.map(_.asInstanceOf[OrientVertex].getProperty("adminId").toString())).head
   }
 
 //  def create(adminUserId: String, adminUsername: String, adminUserPassword: String) = {

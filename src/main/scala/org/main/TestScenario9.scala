@@ -31,11 +31,14 @@ class TestScenario9 {
   def scenario9_1() = {
     
     val adminId: String = "AD000001"
-    val adminUsename : String = "test1"
+    val adminUsername : String = "test1"
     val adminPassword: String = "test"
     
     
-    Admin.register(adminId, adminUsename, adminPassword)
+//    val status = Admin.register(adminId, adminUsername, adminPassword)
+//    println(status.message)
+    val status = Admin.connect(adminUsername, adminPassword)
+    println(status.message)
   }
   
 }
