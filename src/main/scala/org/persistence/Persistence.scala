@@ -58,10 +58,11 @@ object Persistence {
      * content:
      * - stepId
      */
-    val propStep = Map("stepId" -> step.id, "adminId" -> adminId)
-    val status = StepVertex.create(propStep)
-    println(status)
-    
+    if(isConnected){
+      val propStep = Map("stepId" -> step.id, "adminId" -> adminId)
+      StepVertex.create(propStep)
+
+    }
     /*
      * create Components
      * content each Component
@@ -104,7 +105,7 @@ object Persistence {
     
     println(stComponentsToNextStep)
     
-    status
+    new SuccessfulStatus("Step created")
   }
   
   
