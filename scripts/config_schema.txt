@@ -1,5 +1,6 @@
 connect remote:localhost/config_1 root root ;
 SET echo TRUE;
+
 CREATE CLASS Step EXTENDS V;
 CREATE PROPERTY Step.stepId STRING;
 CREATE PROPERTY Step.adminId STRING;

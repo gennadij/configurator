@@ -20,8 +20,9 @@ object StepVertex {
 //    vStep.create(graph, propKeys)
 //  }
   
-  def create(graph: OrientGraph, props: Map[String, String]) = {
-    if(graph.getVertices(propKeyId, props("id")).size == 0){
+  def create(props: Map[String, String]) = {
+    val graph: OrientGraph = OrientDB.getGraph()
+    if(graph.getVertices(propKeyId, props(propKeyId)).size == 0){
         graph.addVertex("class:Step", propKeyId, props(propKeyId), propKeyAdminId, props(propKeyAdminId))
         graph.commit
         new SuccessfulStatus("object Step with " + props(propKeyId) + " was created")

@@ -10,7 +10,10 @@ import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
 
 import scala.collection.JavaConversions._
 import com.orientechnologies.orient.core.sql.OCommandSQL
-import org.persistence.db.orientdb.VertexStep
+import org.persistence.db.orientdb.StepVertex
+import org.persistence.db.orientdb.ComponentVertex
+import org.persistence.db.orientdb.HasComponentEdge
+import org.persistence.db.orientdb.NextStepEdge
 
 object Persistence {
   
@@ -18,13 +21,9 @@ object Persistence {
   
   def rules() = ???
   
-  def setStep(user: String, isConnected: Boolean, step: Step) = {
+  def setStep(adminId: String, isConnected: Boolean, step: Step) = {
     
-//    val uri: String = "remote:localhost/" + user
-    val uri: String = "remote:generic-config.dnshome.de/" + user
     
-    val factory:  OrientGraphFactory = new OrientGraphFactory(uri, "root", "root")
-    val graph: OrientGraph = factory.getTx()
     
 //    val vStep = new VertexStep(
 //        step.id, step.nameToShow, step.fatherStep, step.nextStep,
@@ -54,10 +53,58 @@ object Persistence {
      * 		Edge -> dependency
      */
     
+    /*
+     * create Step
+     * content:
+     * - stepId
+     */
+    val propStep = Map("stepId" -> step.id, "adminId" -> adminId)
+    val status = StepVertex.create(propStep)
+    println(status)
     
-//    vStep.persistStep(graph)
+    /*
+     * create Components
+     * content each Component
+     * - componentId
+     * - adminId
+     */
     
-    new SuccessfulStatus("")
+    step.components foreach ( c => {
+      val propComponent = Map("componentId" -> c.id, "adminId" -> adminId)
+      val st = ComponentVertex.create(propComponent)
+      println(st.message)
+    } )
+    
+    /*
+     * create nextSteps
+     * content each nextStep
+     * - stepId
+     * - adminId
+     */
+    
+    step.nextStep foreach ( nS => {
+      val propNextStep = Map("stepId" -> nS.step , "adminId" -> adminId)
+      val st = StepVertex.create(propNextStep)
+      println(st.message)
+    } )
+
+    /*
+     * connect Step with Components
+     * 
+     */
+    
+    val stStepToComponent = HasComponentEdge.connect(step.id, step.components)
+    
+    print(stStepToComponent)
+    /*
+     * create NextStep
+     */
+    
+    val stComponentsToNextStep = NextStepEdge.connect(step.nextStep)
+    
+    println(stComponentsToNextStep)
+    
+    status
   }
   
   

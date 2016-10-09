@@ -32,7 +32,7 @@ object NextStepEdge {
     }
   }
   
-  def connect(nextSteps: List[NextStep]) = {
+  def connect(nextSteps: Seq[NextStep]) = {
     val graph: OrientGraph = OrientDB.getGraph
     nextSteps.foreach(nS => {
       if(graph.getEdges("nextStepId", nS.byComponent + nS.step).size == 0){

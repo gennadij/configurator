@@ -11,6 +11,7 @@ import org.status.ErrorStatus
 import org.configTree.step.Step
 import org.persistence.Persistence
 import org.persistence.db.orientdb.AdminUserVertex
+import org.status.WarningStatus
 
 
 
@@ -69,7 +70,9 @@ object Admin {
 //    
 //    findAndCheckAdmin(adminId, password, admins)
     val adminId = AdminUserVertex.adminId(username, password)
-    new SuccessfulStatus(adminId)
+    
+    if (adminId == "") new WarningStatus("The User with thisusername and password not exist")
+      else new SuccessfulStatus(s"user with id = $adminId is logged")
   }
   
   def findAndCheckAdmin(adminId: String, password: String, admins: Seq[AdminId]): Status = {

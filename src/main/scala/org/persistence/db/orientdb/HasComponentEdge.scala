@@ -31,7 +31,7 @@ object HasComponentEdge {
     }
   }
   
-  def connect(stepId: String, components: List[Component]) = {
+  def connect(stepId: String, components: Seq[Component]) = {
     val graph: OrientGraph = OrientDB.getGraph
     components.foreach(c => {
       if(graph.getEdges("hasComponentId", c.id).size == 0){
