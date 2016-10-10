@@ -60,7 +60,7 @@ object Persistence {
      */
     if(isConnected){
       val propStep = Map("stepId" -> step.id, "adminId" -> adminId)
-      StepVertex.create(propStep)
+      println(StepVertex.create(propStep).message)
 
     }
     /*
@@ -72,8 +72,7 @@ object Persistence {
     
     step.components foreach ( c => {
       val propComponent = Map("componentId" -> c.id, "adminId" -> adminId)
-      val st = ComponentVertex.create(propComponent)
-      println(st.message)
+      println(ComponentVertex.create(propComponent).message)
     } )
     
     /*
@@ -84,9 +83,11 @@ object Persistence {
      */
     
     step.nextStep foreach ( nS => {
-      val propNextStep = Map("stepId" -> nS.step , "adminId" -> adminId)
-      val st = StepVertex.create(propNextStep)
-      println(st.message)
+      if(nS.step != "S00000"){
+        val propNextStep = Map("stepId" -> nS.step , "adminId" -> adminId)
+        println(StepVertex.create(propNextStep).message)
+      }
+      
     } )
 
     /*
@@ -96,14 +97,13 @@ object Persistence {
     
     val stStepToComponent = HasComponentEdge.connect(step.id, step.components)
     
-    print(stStepToComponent)
+    stStepToComponent.foreach { s => println(s.message) }
     /*
      * create NextStep
      */
     
     val stComponentsToNextStep = NextStepEdge.connect(step.nextStep)
-    
-    println(stComponentsToNextStep)
+    stComponentsToNextStep.foreach { s => println(s.message) }
     
     new SuccessfulStatus("Step created")
   }

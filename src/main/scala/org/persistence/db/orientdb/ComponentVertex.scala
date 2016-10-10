@@ -33,9 +33,9 @@ object ComponentVertex {
     if(graph.getVertices(propKeyId, props(propKeyId)).size == 0){
         graph.addVertex(s"class:$propClassName", propKeyId, props(propKeyId), propKeyAdminId, props(propKeyAdminId))
         graph.commit
-        new SuccessfulStatus("object Step with " + props(propKeyId) + " was created")
+        new SuccessfulStatus("object Component with " + props(propKeyId) + " was created")
     }else{
-      new WarningStatus("object Step with " + props(propKeyId) + "already exist")
+      new WarningStatus("object Component with " + props(propKeyId) + "already exist")
     }
   }
   

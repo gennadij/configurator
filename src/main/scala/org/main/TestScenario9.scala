@@ -44,10 +44,17 @@ class TestScenario9 {
      * Anmelden von AdminUser
      */
     
-    val status = Admin.connect(adminUsername, adminPassword)
-    println(status.message)
+//    val status = Admin.connect(adminUsername, adminPassword)
+//    println(status.message)
     
     println(step1(adminId).message)
+    println(step2(adminId).message)
+    println(step3(adminId).message)
+    println(step4(adminId).message)
+    println(step5(adminId).message)
+    println(step6(adminId).message)
+    println(step7(adminId).message)
+    println(step8(adminId).message)
     
     
   }
@@ -118,7 +125,7 @@ class TestScenario9 {
     val step = new DefaultStep("S000003", "nameToShow", "", nextStep, null, null, components, Nil)
     
     
-    Admin.setStep(adminId, true, step)
+    Admin.setStep(adminId, false, step)
   }
   
   def step4(adminId: String) = {
@@ -134,14 +141,14 @@ class TestScenario9 {
     
     val nextStep = List[NextStep] (
       new NextStep("", "S000004C000001", "S000005"),
-      new NextStep("", "S000004C000002", "S000006"),
+      new NextStep("", "S000004C000002", "S000005"),
       new NextStep("", "S000004C000003", "S000006")
     )
     
     val step = new DefaultStep("S000004", "nameToShow", "", nextStep, null, null, components, Nil)
     
     
-    Admin.setStep(adminId, true, step)
+    Admin.setStep(adminId, false, step)
   }
   
   def step5(adminId: String) = {
@@ -161,14 +168,14 @@ class TestScenario9 {
       new NextStep("", "S000005C000001", "S000007"),
       new NextStep("", "S000005C000002", "S000007"),
       new NextStep("", "S000005C000003", "S000007"),
-      new NextStep("", "S000005C000003", "S000008"),
-      new NextStep("", "S000005C000003", "S000008")
+      new NextStep("", "S000005C000004", "S000008"),
+      new NextStep("", "S000005C000005", "S000008")
     )
     
     val step = new DefaultStep("S000005", "nameToShow", "", nextStep, null, null, components, Nil)
     
     
-    Admin.setStep(adminId, true, step)
+    Admin.setStep(adminId, false, step)
   }
   
   def step6(adminId: String) = {
@@ -191,7 +198,7 @@ class TestScenario9 {
     val step = new DefaultStep("S000006", "nameToShow", "", nextStep, null, null, components, Nil)
     
     
-    Admin.setStep(adminId, true, step)
+    Admin.setStep(adminId, false, step)
   }
   
   def step7(adminId: String) = {
@@ -214,13 +221,13 @@ class TestScenario9 {
     val step = new DefaultStep("S000007", "nameToShow", "", nextStep, null, null, components, Nil)
     
     
-    Admin.setStep(adminId, true, step)
+    Admin.setStep(adminId, false, step)
   }
   
   def step8(adminId: String) = {
         
     /*
-     * create 6. Step
+     * create 8. Step
      */
     val components = List[Component](
         new ImmutableComponent("S000008C000001", ""),
@@ -235,6 +242,6 @@ class TestScenario9 {
     val step = new DefaultStep("S000008", "nameToShow", "", nextStep, null, null, components, Nil)
     
     
-    Admin.setStep(adminId, true, step)
+    Admin.setStep(adminId, false, step)
   }
 }

@@ -9,6 +9,7 @@ import org.status.SuccessfulStatus
 import org.status.WarningStatus
 import org.configTree.step.NextStep
 import com.tinkerpop.blueprints.impls.orient.OrientEdge
+import org.status.Status
 
 
 object NextStepEdge {
@@ -32,19 +33,23 @@ object NextStepEdge {
     }
   }
   
-  def connect(nextSteps: Seq[NextStep]) = {
+  def connect(nextSteps: Seq[NextStep]): List[Status] = {
     val graph: OrientGraph = OrientDB.getGraph
-    nextSteps.foreach(nS => {
-      if(graph.getEdges("nextStepId", nS.byComponent + nS.step).size == 0){
-    	  val eNextStep: OrientEdge = graph.addEdge(s"class:$classname", 
-    			  graph.getVertices(propKeyComponentId, nS.byComponent).head, 
-    			  graph.getVertices(propKeyStepId, nS.step).head, "nextStep")
-    		eNextStep.setProperty("nextStepId", nS.byComponent + nS.step)
-        graph.commit
-        new SuccessfulStatus("Edge with id = " + nS.byComponent + nS.step + " was created")
-      }else{
-        new WarningStatus("Edge with id = " + nS.byComponent + nS.step + " already exist")
+    val status: List[Status] = List.empty
+    val st = nextSteps.foreach(nS => {
+      if(nS.step != "S00000"){
+        if(graph.getEdges("nextStepId", nS.byComponent + nS.step).size == 0){
+      	  val eNextStep: OrientEdge = graph.addEdge(s"class:$classname", 
+      			  graph.getVertices(propKeyComponentId, nS.byComponent).head, 
+      			  graph.getVertices(propKeyStepId, nS.step).head, "nextStep")
+      		eNextStep.setProperty("nextStepId", nS.byComponent + nS.step)
+          graph.commit
+          status.::(new SuccessfulStatus("Edge with id = " + nS.byComponent + nS.step + " was created"))
+        }else{
+          status.::(new WarningStatus("Edge with id = " + nS.byComponent + nS.step + " already exist"))
+        }
       }
     })
+    status
   }
 }

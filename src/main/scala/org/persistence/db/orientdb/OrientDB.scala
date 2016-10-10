@@ -12,7 +12,7 @@ object OrientDB {
   
   def getGraph(): OrientGraph = {
 //    val uri: String = "remote:generic-config.dnshome.de/config2"
-    val uri: String = "remote:localhost/config_1"
+    val uri: String = "remote:localhost/config2"
     
     val factory:  OrientGraphFactory = new OrientGraphFactory(uri, "root", "root")
     factory.getTx()

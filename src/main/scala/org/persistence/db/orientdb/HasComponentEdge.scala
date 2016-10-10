@@ -9,6 +9,7 @@ import org.status.SuccessfulStatus
 import org.status.WarningStatus
 import org.configTree.component.Component
 import com.tinkerpop.blueprints.impls.orient.OrientEdge
+import org.status.Status
 
 object HasComponentEdge {
   
@@ -31,9 +32,10 @@ object HasComponentEdge {
     }
   }
   
-  def connect(stepId: String, components: Seq[Component]) = {
+  def connect(stepId: String, components: Seq[Component]): List[Status] = {
     val graph: OrientGraph = OrientDB.getGraph
-    components.foreach(c => {
+    val status: List[Status] = List.empty
+    val st = components.foreach(c => {
       if(graph.getEdges("hasComponentId", c.id).size == 0){
     	  val eHasComponent: OrientEdge = graph.addEdge(s"class:$classname", 
     			  graph.getVertices(propKeyStepId, stepId).head, 
@@ -41,10 +43,11 @@ object HasComponentEdge {
     			  classname)
     		eHasComponent.setProperty("hasComponentId", c.id)
     		graph.commit
-    		new SuccessfulStatus("Edge with id = " + c.id + " was created")
+    		status.::( new SuccessfulStatus("Edge with id = " + c.id + " was created"))
       }else{
-        new WarningStatus("Edge with id = " + c.id + " already exist")
+        status.::(new WarningStatus("Edge with id = " + c.id + " already exist"))
       }
     })
+    status
   }
 }
