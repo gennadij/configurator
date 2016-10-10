@@ -1,4 +1,4 @@
-connect remote:localhost/config2 root root ;
+connect remote:localhost/config3 root root ;
 SET echo TRUE;
 
 CREATE CLASS Step EXTENDS V;

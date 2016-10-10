@@ -119,7 +119,7 @@ class TestScenario9 {
       new NextStep("", "S000003C000001", "S000004"),
       new NextStep("", "S000003C000002", "S000004"),
       new NextStep("", "S000003C000003", "S000004"),
-      new NextStep("", "S000003C000003", "S000004")
+      new NextStep("", "S000003C000004", "S000004")
     )
     
     val step = new DefaultStep("S000003", "nameToShow", "", nextStep, null, null, components, Nil)
