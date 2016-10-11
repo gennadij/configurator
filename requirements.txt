@@ -14,6 +14,8 @@ Cleint
    Component ab.  
  - Die Konfiguration kann willkürlich Verlaufen. Der User kann zu der 
    vorherigen Schritten zurückkehren aber er kann nicht die Schritte überspringen.
+ - Der ConfigMgr sucht die Konfiguration anhand von der URL. Der AdminMgr legt 
+   zu jeder Konfiguration einen eindeutige URL.
 
 Admin
 

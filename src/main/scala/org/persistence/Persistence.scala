@@ -108,6 +108,11 @@ object Persistence {
     new SuccessfulStatus("Step created")
   }
   
+  def firstStep(): Step = {
+    ComponentVertex.components("")
+    null
+  }
+  
   
   def getPersisitence = {
     val configSetting = scala.xml.XML.loadFile("persistence/config_settings.xml")

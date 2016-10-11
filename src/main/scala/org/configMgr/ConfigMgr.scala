@@ -24,6 +24,8 @@ object ConfigMgr{
   }
   
   def getNextStep(client: org.client.ConfigClient, selectedComponentIds: Set[SelectedComponent]): Step = {
+    
+    
     configMgr.getNextStep(client, selectedComponentIds)
   }
 }
@@ -39,8 +41,14 @@ class ConfigMgr extends Dependency{
     * @error ErrorStep
     */
   
-  def startConfig(client: org.client.ConfigClient) = {
-    ConfigSettings.firstStep(client)
+  def startConfig(client: org.client.ConfigClient): Step = {
+    if(true){
+      ConfigSettings.firstStep(client)
+    }else{
+      
+      null
+    }
+    
   }
   
   /**

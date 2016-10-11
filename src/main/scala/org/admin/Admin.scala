@@ -51,7 +51,6 @@ object Admin {
   def register(adminUserId: String, adminUsername: String,  adminUserPassword: String): Status = {
     // TODO Alle Resourcen einstellen (AdminID, Datenbankverbindung usw.)
     // TODO Püfen ob der AdminUser schon exestiert
-//    AdminUserVertex.createSchema
     AdminUserVertex.create(adminUserId, adminUsername, adminUserPassword)
   }
   

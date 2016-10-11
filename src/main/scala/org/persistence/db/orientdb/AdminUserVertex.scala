@@ -60,13 +60,6 @@ object AdminUserVertex {
     val graph: OrientGraph = OrientDB.getGraph
     val res: OrientDynaElementIterable = graph
       .command(new OCommandSQL(s"SELECT adminId FROM AdminUser WHERE username='$username' and userPassword='$adminPassword'")).execute()
-//     var id = ""
-//      res.foreach ( v => {
-//      val vAdmin: OrientVertex = v.asInstanceOf[OrientVertex]
-//      id = vAdmin.getProperty(propKeyAdminId)
-//    })
-//    println(id)
-    
     val array = res.toList
     
     (array.map(_.asInstanceOf[OrientVertex].getProperty("adminId").toString())).head

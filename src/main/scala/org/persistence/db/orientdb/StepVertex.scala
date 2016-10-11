@@ -8,6 +8,7 @@ import com.orientechnologies.orient.core.metadata.schema.OType
 import org.status.SuccessfulStatus
 import org.status.WarningStatus
 import com.tinkerpop.blueprints.Vertex
+import com.tinkerpop.blueprints.impls.orient.OrientVertex
 
 
 object StepVertex {
@@ -23,9 +24,9 @@ object StepVertex {
   def create(props: Map[String, String]) = {
     val graph: OrientGraph = OrientDB.getGraph()
     if(graph.getVertices(propKeyId, props(propKeyId)).size == 0){
-        graph.addVertex("class:Step", propKeyId, props(propKeyId), propKeyAdminId, props(propKeyAdminId))
+        val vertex: OrientVertex = graph.addVertex("class:Step", propKeyId, props(propKeyId), propKeyAdminId, props(propKeyAdminId))
         graph.commit
-        new SuccessfulStatus("object Step with " + props(propKeyId) + " was created")
+        new SuccessfulStatus("object Step with " + vertex.getId + vertex.getProperties + " was created")
     }else{
       new WarningStatus("object Step with " + props(propKeyId) + "already exist")
     }

@@ -1,9 +1,10 @@
-connect remote:localhost/config3 root root ;
+connect remote:localhost/config6 root root ;
 SET echo TRUE;
 
 CREATE CLASS Step EXTENDS V;
 CREATE PROPERTY Step.stepId STRING;
 CREATE PROPERTY Step.adminId STRING;
+CREATE PROPORTY Step.kind STRING;
 
 CREATE CLASS Component EXTENDS V;
 CREATE PROPERTY Component.componentId STRING;
