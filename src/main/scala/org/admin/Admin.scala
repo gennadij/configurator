@@ -84,6 +84,7 @@ object Admin {
   
   def setStep(user: String, isConnected: Boolean, step: Step): Status = {
     
+    val stepId = List.empty
     
     Persistence.setStep(user, isConnected, step)
   }

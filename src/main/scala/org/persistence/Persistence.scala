@@ -17,9 +17,10 @@ import org.persistence.db.orientdb.NextStepEdge
 
 object Persistence {
   
-  def config() = ???
-  
   def rules() = ???
+  
+  def firstStep = {
+  }
   
   def setStep(adminId: String, isConnected: Boolean, step: Step) = {
     
@@ -106,11 +107,6 @@ object Persistence {
     stComponentsToNextStep.foreach { s => println(s.message) }
     
     new SuccessfulStatus("Step created")
-  }
-  
-  def firstStep(): Step = {
-    ComponentVertex.components("")
-    null
   }
   
   

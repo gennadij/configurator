@@ -45,8 +45,8 @@ class ConfigMgr extends Dependency{
     if(true){
       ConfigSettings.firstStep(client)
     }else{
-      
       null
+      
     }
     
   }
