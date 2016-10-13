@@ -14,6 +14,8 @@ import org.persistence.db.orientdb.StepVertex
 import org.persistence.db.orientdb.ComponentVertex
 import org.persistence.db.orientdb.HasComponentEdge
 import org.persistence.db.orientdb.NextStepEdge
+import org.admin.AdminUser
+import org.persistence.db.orientdb.AdminUserVertex
 
 object Persistence {
   
@@ -21,6 +23,20 @@ object Persistence {
   
   def firstStep = {
   }
+  
+  def registAdminUser(username: String, password: String) = {
+    
+    AdminUserVertex.create(username, password)
+    
+    
+    /*
+     * AdminUserId ist "AU" + rid
+     */
+    
+    new AdminUser("","","", "")
+  }
+  
+  
   
   def setStep(adminId: String, isConnected: Boolean, step: Step) = {
     

@@ -48,11 +48,68 @@ object Admin {
    * 
    */
   
-  def register(adminUserId: String, adminUsername: String,  adminUserPassword: String): Status = {
+  def register(adminUsername: String,  adminUserPassword: String): AdminUser = {
     // TODO Alle Resourcen einstellen (AdminID, Datenbankverbindung usw.)
     // TODO Püfen ob der AdminUser schon exestiert
-    AdminUserVertex.create(adminUserId, adminUsername, adminUserPassword)
+    Persistence.registAdminUser(adminUsername, adminUserPassword)
   }
+  
+  /**
+   * END
+   */
+  
+  
+  /**
+   * create ConfigTree
+   * 
+   * 
+   */
+  
+  
+  /*
+   * return UserId für den Client. Bei der nächsten Anfragen wird diese 
+   * UserId verwendet
+   * 
+   */
+  def authenticate(username: String, password: String): Boolean = ???
+  
+  def configTree(adminId: String): List[Step] = ???
+  
+  /*
+   * return aktualisierte Liste von Steps
+   * 
+   * action 
+   *  - add
+   *  - remove
+   *  - update
+   */
+  
+  def updateConfig(adminId: String, step: Step, action: String): List[Step] = ???
+  
+  def logout(adminId: String): Boolean = ???
+  
+  
+  /**
+   * END
+   */
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   /**
    * Anmeldung von Admin
@@ -88,6 +145,7 @@ object Admin {
     
     Persistence.setStep(user, isConnected, step)
   }
+  
   
   
   

@@ -126,7 +126,7 @@ trasportiere zum Client</panel_attributes>
       <w>430</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>authenticate(username: String, password:String): Booalen</panel_attributes>
+    <panel_attributes>authenticate(username: String, password:String): Boolean</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -148,7 +148,7 @@ trasportiere zum Client</panel_attributes>
       <w>160</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>config(): List[Step]</panel_attributes>
+    <panel_attributes>configTree(): List[Step]</panel_attributes>
     <additional_attributes/>
   </element>
   <element>

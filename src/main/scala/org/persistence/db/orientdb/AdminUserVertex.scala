@@ -19,15 +19,16 @@ object AdminUserVertex {
   val propKeyAdminUsername = "username"
   val propKeyAdminUserPassword = "userPassword"
   
-  def create(adminUserId: String, adminUsername: String, adminUserPassword: String): Status = {
+  def create(adminUsername: String, adminUserPassword: String): Status = {
     val graph: OrientGraph = OrientDB.getGraph()
-    if(graph.getVertices(propKeyAdminId, adminUserId).size == 0){
-      graph.addVertex(s"class:$className", propKeyAdminId, adminUserId, 
-      propKeyAdminUsername, adminUsername, propKeyAdminUserPassword, adminUserPassword)
+      if(graph.getVertices(propKeyAdminId, adminUsername).size == 0){
+      val vAdminUser: OrientVertex = graph.addVertex(s"class:$className",
+                      propKeyAdminUsername, adminUsername, 
+                      propKeyAdminUserPassword, adminUserPassword)
       graph.commit
-      new SuccessfulStatus("object AdminUser with " + adminUserId + " was created")
+      new SuccessfulStatus("object AdminUser with " + adminUsername + " was created")
     }else{
-      new WarningStatus("object AdminUser with " + adminUserId + " already exist")
+      new WarningStatus("object AdminUser with " + adminUsername + " already exist")
     }
   }
   def createSchema = {
