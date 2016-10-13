@@ -27,10 +27,10 @@ object Main {
 //    new TestScenario4().scenario4
 //    
 //    new TestScenario5().scenario5
-//
+      new TestScenario8().scenario8
 //    new TestScenario9().scenario9
 
-    new TestScenario9().scenario9_1
+//    new TestScenario9().scenario9_1
     
     println("END")
   }

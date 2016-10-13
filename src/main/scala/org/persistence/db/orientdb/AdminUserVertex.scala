@@ -11,6 +11,7 @@ import org.status.Status
 import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
 import com.orientechnologies.orient.core.sql.OCommandSQL
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
+import org.admin.AdminUser
 
 object AdminUserVertex {
   
@@ -19,16 +20,24 @@ object AdminUserVertex {
   val propKeyAdminUsername = "username"
   val propKeyAdminUserPassword = "userPassword"
   
-  def create(adminUsername: String, adminUserPassword: String): Status = {
+  def create(adminUsername: String, adminUserPassword: String): AdminUser = {
     val graph: OrientGraph = OrientDB.getGraph()
-      if(graph.getVertices(propKeyAdminId, adminUsername).size == 0){
+    if(graph.getVertices(propKeyAdminUsername, adminUsername).size == 0){
       val vAdminUser: OrientVertex = graph.addVertex(s"class:$className",
                       propKeyAdminUsername, adminUsername, 
                       propKeyAdminUserPassword, adminUserPassword)
       graph.commit
-      new SuccessfulStatus("object AdminUser with " + adminUsername + " was created")
+      new AdminUser("AU" + vAdminUser.getIdentity.toString(), 
+                    vAdminUser.getProperty(propKeyAdminUsername).toString(), 
+                    vAdminUser.getProperty(propKeyAdminUserPassword).toString(), 
+                    "object AdminUser with username " + 
+                    vAdminUser.getProperty(propKeyAdminUsername).toString() + 
+                    " und AdminUserId " + "AU" + vAdminUser.getIdentity.toString() +  
+                    " was created")
+//      new SuccessfulStatus("object AdminUser with " + adminUsername + " was created")
     }else{
-      new WarningStatus("object AdminUser with " + adminUsername + " already exist")
+      new AdminUser("", "", "", "object AdminUser with Username " + adminUsername + " already exist")
+//      new WarningStatus("object AdminUser with " + adminUsername + " already exist")
     }
   }
   def createSchema = {

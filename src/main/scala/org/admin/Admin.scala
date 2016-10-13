@@ -16,28 +16,21 @@ import org.status.WarningStatus
 
 
 object Admin {
-      /**
-     * Administrator definiert und zusammenstellt sein einegen Konfiguration.
-     * Auf der Webseite von Administrator werden alle notwendigen Einstellungen 
-     * zu dem ConfigServer, ConfigClient getätigt. Danach kann der User alle 
-     * Schritte der Konfiguration difenieren. 
-     * 
-     * 1. Administrator soll sich zuerst Registrieren mit einem adminID und Password. 
-     * ----(Implementierung einer Schnittstelle, Zuerst zu der XML-Persistenz später DB)
-     * 2. Nach den Regestrierung kann der Admin mit Username und Passwort sich in 
-     * ---- der Administrationsbereich anmelden und eine eigen Konfiguration 
-     * ---- erstellen.
-     * 3. Die Konfiguration besteht aus der ConfigStep und Components.
-     * ---- 
-     * 4. Der Admin braucht der Produktendatenbank fuer die Konfiguration,
-     * ---- deswegen er braucht eine Verknüpfung zwischen Konfiguration und
-     * ---- Produktendatenbank (Componenten).
-     * 
-     * 
-     * 
-     * 
-     * 
-     */
+  /**
+   * Administrator definiert und zusammenstellt sein einegen Konfiguration.
+   * Auf der Webseite von Administrator werden alle notwendigen Einstellungen 
+   * zu dem ConfigServer, ConfigClient getätigt. Danach kann der User alle 
+   * Schritte der Konfiguration difenieren. 
+   * 
+   * 1. Administrator soll sich zuerst Registrieren mit einem Username und Password. 
+   * 2. Nach der Regestrierung kann der Admin mit Username und Passwort sich in 
+   * ---- der Administrationsbereich anmelden und eine eigen Konfiguration 
+   * ---- erstellen.
+   * 3. Die Konfiguration besteht aus der ConfigStep und Components.
+   * ---- In jedem Step oder Component kann man die DB-Query difenieren um 
+   * ---- die gesamte Information zu der Step mit Components aus der fremden DB zu lesen
+   * 
+   */
   
   /**
    * Rigestrierung
@@ -45,6 +38,9 @@ object Admin {
    * Client -> Regestrierung mit adminId und password
    * Server -> true/false Bestätigung
    * 
+   * changeUsername(): AdminUser
+   * changePassword(): AdminUser
+   * deleteAccount(): AdminUser
    * 
    */
   

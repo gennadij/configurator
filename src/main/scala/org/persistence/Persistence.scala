@@ -24,16 +24,9 @@ object Persistence {
   def firstStep = {
   }
   
-  def registAdminUser(username: String, password: String) = {
+  def registAdminUser(username: String, password: String): AdminUser = {
     
     AdminUserVertex.create(username, password)
-    
-    
-    /*
-     * AdminUserId ist "AU" + rid
-     */
-    
-    new AdminUser("","","", "")
   }
   
   
