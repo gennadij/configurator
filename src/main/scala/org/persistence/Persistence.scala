@@ -29,6 +29,9 @@ object Persistence {
     AdminUserVertex.create(username, password)
   }
   
+  def authenticate(username: String, password: String): Boolean = {
+    if(AdminUserVertex.adminId(username, password) == "") false else true
+  }
   
   
   def setStep(adminId: String, isConnected: Boolean, step: Step) = {

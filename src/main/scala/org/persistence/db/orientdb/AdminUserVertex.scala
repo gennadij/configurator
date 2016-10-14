@@ -40,19 +40,7 @@ object AdminUserVertex {
 //      new WarningStatus("object AdminUser with " + adminUsername + " already exist")
     }
   }
-  def createSchema = {
-    val graph: OrientGraph = OrientDB.getGraph
-    if(graph.getVertexType(className) == null){
-      val vStep: OrientVertexType = graph.createVertexType(className)
-      vStep.createProperty(propKeyAdminId, OType.STRING)
-      vStep.createProperty(propKeyAdminUsername, OType.STRING)
-      vStep.createProperty(propKeyAdminUserPassword, OType.STRING)
-      graph.commit
-      new SuccessfulStatus("class AdminUser was created")
-    }else {
-      new WarningStatus("class AdminUser already exist")
-    }
-  }
+
   
   def update = ???
   
@@ -62,17 +50,14 @@ object AdminUserVertex {
   
   def get(adminUsername: String, adminPassword: String) = {
     val graph: OrientGraph = OrientDB.getGraph
-    
-    
   }
   
   def adminId(username: String, adminPassword: String) = {
     val graph: OrientGraph = OrientDB.getGraph
     val res: OrientDynaElementIterable = graph
-      .command(new OCommandSQL(s"SELECT adminId FROM AdminUser WHERE username='$username' and userPassword='$adminPassword'")).execute()
-    val array = res.toList
-    
-    (array.map(_.asInstanceOf[OrientVertex].getProperty("adminId").toString())).head
+      .command(new OCommandSQL(s"SELECT FROM AdminUser WHERE username='$username' and userPassword='$adminPassword'")).execute()
+    val adminId = res.toList.map(_.asInstanceOf[OrientVertex].getIdentity)
+    if(adminId.size == 1) adminId else "" 
   }
 
 //  def create(adminUserId: String, adminUsername: String, adminUserPassword: String) = {
@@ -100,3 +85,17 @@ object AdminUserVertex {
 //  }
 //
 //}
+//
+//  def createSchema = {
+//    val graph: OrientGraph = OrientDB.getGraph
+//    if(graph.getVertexType(className) == null){
+//      val vStep: OrientVertexType = graph.createVertexType(className)
+//      vStep.createProperty(propKeyAdminId, OType.STRING)
+//      vStep.createProperty(propKeyAdminUsername, OType.STRING)
+//      vStep.createProperty(propKeyAdminUserPassword, OType.STRING)
+//      graph.commit
+//      new SuccessfulStatus("class AdminUser was created")
+//    }else {
+//      new WarningStatus("class AdminUser already exist")
+//    }
+//  }

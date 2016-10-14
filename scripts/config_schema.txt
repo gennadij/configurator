@@ -1,4 +1,6 @@
-connect remote:localhost/config1 root root ;
+create database remote:localhost/config_1 root root plocal
+
+connect remote:localhost/config_1 root root ;
 SET echo TRUE;
 
 CREATE CLASS Step EXTENDS V;

@@ -67,7 +67,11 @@ object Admin {
    * UserId verwendet
    * 
    */
-  def authenticate(username: String, password: String): Boolean = ???
+  def authenticate(username: String, password: String): Boolean = {
+    Persistence.authenticate(username, password)
+  }
+  
+  
   
   def configTree(adminId: String): List[Step] = ???
   

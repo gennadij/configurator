@@ -22,12 +22,10 @@ class TestScenario8 {
 //    require(step.dependencies(0).thenOperator == "single", step.dependencies(0).thenOperator)
 //    require(step.dependencies(0).ruletype == "exclude", step.dependencies(0).ruletype)
     
-    val adminUser: AdminUser = Admin.register("test3", "test3")
+//    val adminUser: AdminUser = Admin.register("test3", "test3")
+//    println(adminUser.id)
+//    println(adminUser.status)
     
-//    require(adminUser.id == "", adminUser.id)
-    println(adminUser.id)
-    println(adminUser.status)
-//    require(adminUser.name == "test",adminUser.name )
-//    require(adminUser.password == "test", adminUser.password)
+    println(Admin.authenticate("test3", "test2"))
   }
 }
