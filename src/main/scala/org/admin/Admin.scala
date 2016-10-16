@@ -12,6 +12,8 @@ import org.configTree.step.Step
 import org.persistence.Persistence
 import org.persistence.db.orientdb.AdminUserVertex
 import org.status.WarningStatus
+import org.admin.configTree.AdminStep
+import org.admin.configTree.AdminComponent
 
 
 
@@ -67,10 +69,47 @@ object Admin {
    * UserId verwendet
    * 
    */
-  def authenticate(username: String, password: String): Boolean = {
+  def authenticate(username: String, password: String): String = {
     Persistence.authenticate(username, password)
   }
   
+  /**
+   * fuegt Vertex Step zu ConfigTree hinzu
+   */
+  
+  def addStep(step: AdminStep): String = {
+    ""
+  }
+  
+  /**
+   * fuegt Vertex Component zu ConfigTree hinzu
+   */
+  def addComponent(component: AdminComponent): String = {
+    ""
+  }
+  /**
+   * fuegt Edge hasComponent zu ConfigTree hinzu, dadurch wird Vertex Step mit 
+   * Vertex Component verbunden
+   */
+  def addHasComponent(in: String, out: String) = {
+    
+  }
+  
+  /**
+   * fuegt Edge NextStep zu ConfigTree hinzu, dadurch wird Vertex Component mit 
+   * Vertex Step erbunden
+   */
+  def addNextStep(in: String, out: String) = {
+    
+  }
+  
+  def setStep(user: String, isConnected: Boolean, step: Step, kind: String): Status = {
+    
+      val stepId = List.empty
+    
+      Persistence.setStep(user, isConnected, step, kind)
+  }
+
   
   
   def configTree(adminId: String): List[Step] = ???
@@ -138,16 +177,6 @@ object Admin {
     else
       ErrorStatus("Administrator Id oder Passwort falsch")
   }
-  
-  def setStep(user: String, isConnected: Boolean, step: Step): Status = {
-    
-    val stepId = List.empty
-    
-    Persistence.setStep(user, isConnected, step)
-  }
-  
-  
-  
   
   def setConnectPathForConfigClient(clientId: String, configPath: String) = {
     

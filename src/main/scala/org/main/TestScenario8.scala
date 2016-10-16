@@ -26,6 +26,6 @@ class TestScenario8 {
 //    println(adminUser.id)
 //    println(adminUser.status)
     
-    println(Admin.authenticate("test3", "test2"))
+    require(Admin.authenticate("test3", "test3") == "AU#38:1") 
   }
 }

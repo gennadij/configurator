@@ -29,12 +29,13 @@ object Persistence {
     AdminUserVertex.create(username, password)
   }
   
-  def authenticate(username: String, password: String): Boolean = {
-    if(AdminUserVertex.adminId(username, password) == "") false else true
+  def authenticate(username: String, password: String): String = {
+    val adminId: String = AdminUserVertex.adminId(username, password)
+    if(adminId.isEmpty()) "" else "AU" + adminId
   }
   
   
-  def setStep(adminId: String, isConnected: Boolean, step: Step) = {
+  def setStep(adminId: String, isConnected: Boolean, step: Step, kind: String) = {
     
     
     
@@ -70,6 +71,7 @@ object Persistence {
      * create Step
      * content:
      * - stepId
+     * - kind
      */
     if(isConnected){
       val propStep = Map("stepId" -> step.id, "adminId" -> adminId)

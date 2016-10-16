@@ -52,12 +52,12 @@ object AdminUserVertex {
     val graph: OrientGraph = OrientDB.getGraph
   }
   
-  def adminId(username: String, adminPassword: String) = {
+  def adminId(username: String, adminPassword: String): String = {
     val graph: OrientGraph = OrientDB.getGraph
     val res: OrientDynaElementIterable = graph
       .command(new OCommandSQL(s"SELECT FROM AdminUser WHERE username='$username' and userPassword='$adminPassword'")).execute()
     val adminId = res.toList.map(_.asInstanceOf[OrientVertex].getIdentity)
-    if(adminId.size == 1) adminId else "" 
+    if(adminId.size == 1) adminId.head.toString else ""
   }
 
 //  def create(adminUserId: String, adminUsername: String, adminUserPassword: String) = {
