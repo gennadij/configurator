@@ -26,7 +26,7 @@ class TestScenario9 {
 //    val status = Admin.connect(adminUsername, adminPassword)
 //    println(status.message)
     
-//    println(step1(adminId).message)
+      step1(adminId)
 //    println(step2(adminId).message)
 //    println(step3(adminId).message)
 //    println(step4(adminId).message)
@@ -44,21 +44,23 @@ class TestScenario9 {
      * create 1. Step
      */
     
-    val step = new AdminStep("first", new SelectionCriterium("1", "1"))
+    val step = new AdminStep("", adminId, "first", new SelectionCriterium("1", "1"))
     
     val stepId = Admin.addStep(step)
     
+    println(stepId)
+    
     val components = List[AdminComponent](
-          new AdminComponent(adminId, "immutable"),
-          new AdminComponent(adminId, "immutable"),
-          new AdminComponent(adminId, "immutable")
+          new AdminComponent("", adminId, "immutable"),
+          new AdminComponent("", adminId, "immutable"),
+          new AdminComponent("", adminId, "immutable")
     )
     
     val componentIds = components.map (c => {
       Admin.addComponent(c)
     })
     
-    
+    componentIds.foreach(println)
     
     
 //    val components = List[Component](

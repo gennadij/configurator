@@ -9,6 +9,7 @@ import org.status.SuccessfulStatus
 import org.status.WarningStatus
 import com.tinkerpop.blueprints.Vertex
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
+import org.admin.configTree.AdminStep
 
 
 object StepVertex {
@@ -21,6 +22,24 @@ object StepVertex {
 //    val vStep = new VertexStep()
 //    vStep.create(graph, propKeys)
 //  }
+  
+  // TODO if Einweisung mit stepId ausbessern
+  def addStep(step: AdminStep): String = {
+    val graph: OrientGraph = OrientDB.getGraph()
+    if(graph.getVertices(propKeyId, step.id).size == 0){
+        val vertex: OrientVertex = graph.addVertex("class:Step", 
+//            propKeyId, props(propKeyId), 
+            propKeyAdminId, step.adminId,
+            propKeyKind, step.kind)
+        graph.commit
+        vertex.setProperty(propKeyId, "S" + vertex.getIdentity.toString())
+        graph.commit
+        vertex.getIdentity.toString
+    }else{
+      ""
+    }
+  }
+  
   
   def create(props: Map[String, String]) = {
     val graph: OrientGraph = OrientDB.getGraph()

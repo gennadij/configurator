@@ -12,12 +12,28 @@ import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
 import com.orientechnologies.orient.core.sql.OCommandSQL
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import org.configTree.component.ImmutableComponent
+import org.admin.configTree.AdminComponent
 
 object ComponentVertex {
   
   val propClassName = "Component"
   val propKeyId = "componentId"
   val propKeyAdminId = "adminId"
+  
+  
+  def addComponent(component: AdminComponent): String = {
+    val graph: OrientGraph = OrientDB.getGraph()
+    if(graph.getVertices(propKeyId, component.id).size == 0){
+        val vertex: OrientVertex = graph.addVertex("class:Component", 
+            propKeyAdminId, component.adminId)
+        graph.commit
+        vertex.setProperty(propKeyId, "C" + vertex.getIdentity.toString())
+        graph.commit
+        vertex.getIdentity.toString
+    }else{
+      ""
+    }
+  }
   
   
   def createSchema(graph: OrientGraph) = {

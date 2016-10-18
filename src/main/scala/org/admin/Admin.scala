@@ -78,14 +78,14 @@ object Admin {
    */
   
   def addStep(step: AdminStep): String = {
-    ""
+    Persistence.addStep(step)
   }
   
   /**
    * fuegt Vertex Component zu ConfigTree hinzu
    */
   def addComponent(component: AdminComponent): String = {
-    ""
+    Persistence.addComponent(component)
   }
   /**
    * fuegt Edge hasComponent zu ConfigTree hinzu, dadurch wird Vertex Step mit 
@@ -112,7 +112,9 @@ object Admin {
 
   
   
-  def configTree(adminId: String): List[Step] = ???
+  def configTree(adminId: String) = {
+    
+  }
   
   /*
    * return aktualisierte Liste von Steps

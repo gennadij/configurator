@@ -16,6 +16,11 @@ import org.persistence.db.orientdb.HasComponentEdge
 import org.persistence.db.orientdb.NextStepEdge
 import org.admin.AdminUser
 import org.persistence.db.orientdb.AdminUserVertex
+import org.admin.configTree.AdminStep
+import org.admin.configTree.AdminComponent
+import org.persistence.db.orientdb.OrientDB
+import com.tinkerpop.blueprints.impls.orient.OrientVertex
+import com.tinkerpop.blueprints.Direction
 
 object Persistence {
   
@@ -34,6 +39,22 @@ object Persistence {
     if(adminId.isEmpty()) "" else "AU" + adminId
   }
   
+  def addStep(step: AdminStep): String = {
+    StepVertex.addStep(step)
+  }
+  
+  def addComponent(component: AdminComponent): String = {
+    ComponentVertex.addComponent(component)
+  }
+  
+  def getConfigTree(adminId: String) = {
+    val graph: OrientGraph = OrientDB.getGraph
+    val res: OrientDynaElementIterable = graph
+      .command(new OCommandSQL(s"SELECT FROM Step WHERE adminId='$adminId'")).execute()
+    val steps = res.toList.map(_.asInstanceOf[OrientVertex])
+    
+    steps.foreach(s => s.getEdges(Direction.OUT))
+  }
   
   def setStep(adminId: String, isConnected: Boolean, step: Step, kind: String) = {
     
