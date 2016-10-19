@@ -21,6 +21,12 @@ import org.admin.configTree.AdminComponent
 import org.persistence.db.orientdb.OrientDB
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import com.tinkerpop.blueprints.Direction
+import com.tinkerpop.blueprints.impls.orient.OrientEdge
+import com.tinkerpop.blueprints.Edge
+import com.tinkerpop.blueprints.Vertex
+import org.admin.configTree.AdminNextStep
+import org.admin.configTree.AdminConfigTreeStep
+import org.admin.configTree.AdminConfigTree
 
 object Persistence {
   
@@ -47,13 +53,35 @@ object Persistence {
     ComponentVertex.addComponent(component)
   }
   
-  def getConfigTree(adminId: String) = {
+  def getConfigTree(adminId: String): AdminConfigTree = {
     val graph: OrientGraph = OrientDB.getGraph
     val res: OrientDynaElementIterable = graph
       .command(new OCommandSQL(s"SELECT FROM Step WHERE adminId='$adminId'")).execute()
     val steps = res.toList.map(_.asInstanceOf[OrientVertex])
     
-    steps.foreach(s => s.getEdges(Direction.OUT))
+    val configTree: List[AdminConfigTreeStep] = steps.map(s => {
+      val eHasComponent: List[Edge] = s.getEdges(Direction.OUT).toList
+      val vComponents: List[Vertex] = eHasComponent.map { hC => hC.getVertex(Direction.IN) }
+      val eNextStep: List[List[Edge]] = vComponents.map(nS => nS.getEdges(Direction.OUT).toList)
+      val vNextStep: List[Vertex] = eNextStep.map(nS => nS.head.getVertex(Direction.IN))
+      
+      val components: List[AdminComponent] = vComponents.map(vC => {
+        new AdminComponent(vC.getProperty("componentId").toString(),
+            vC.getProperty("adminId").toString(),
+            vC.getProperty("kind").toString())
+      })
+      
+      val nextSteps: List[AdminNextStep] = vNextStep.map(vNS => {
+        new AdminNextStep(vNS.getProperty("").toString(), 
+            null, //AdminComponent
+            null // AdminStep
+            )
+      })
+      
+      new AdminConfigTreeStep(components, nextSteps)
+     })
+     
+     new AdminConfigTree(configTree)
   }
   
   def setStep(adminId: String, isConnected: Boolean, step: Step, kind: String) = {

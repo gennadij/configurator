@@ -113,7 +113,7 @@ object Admin {
   
   
   def configTree(adminId: String) = {
-    
+    Persistence.getConfigTree(adminId)
   }
   
   /*
