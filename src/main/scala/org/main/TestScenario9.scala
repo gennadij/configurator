@@ -4,6 +4,7 @@ import org.admin.Admin
 import org.configTree.step.SelectionCriterium
 import org.admin.configTree.AdminStep
 import org.admin.configTree.AdminComponent
+import org.admin.configTree.AdminConfigTree
 
 class TestScenario9 {
   
@@ -26,7 +27,7 @@ class TestScenario9 {
 //    val status = Admin.connect(adminUsername, adminPassword)
 //    println(status.message)
     
-      step1(adminId)
+//      step1(adminId)
 //    println(step2(adminId).message)
 //    println(step3(adminId).message)
 //    println(step4(adminId).message)
@@ -35,8 +36,18 @@ class TestScenario9 {
 //    println(step7(adminId).message)
 //    println(step8(adminId).message)
     
-    
+    configTree(adminId)
   }
+  
+  def configTree(adminId: String) = {
+    val configTree1: AdminConfigTree = Admin.configTree(adminId)
+    
+    configTree1.steps.foreach({s => 
+      println(s.components)
+      println(s.nextSteps)
+    })
+  }
+  
   
   def step1(adminId: String) = {
         
@@ -50,17 +61,17 @@ class TestScenario9 {
     
     println(stepId)
     
-    val components = List[AdminComponent](
-          new AdminComponent("", adminId, "immutable"),
-          new AdminComponent("", adminId, "immutable"),
-          new AdminComponent("", adminId, "immutable")
-    )
+//    val components = List[AdminComponent](
+//          new AdminComponent("", adminId, "immutable"),
+//          new AdminComponent("", adminId, "immutable"),
+//          new AdminComponent("", adminId, "immutable")
+//    )
     
-    val componentIds = components.map (c => {
-      Admin.addComponent(c)
-    })
-    
-    componentIds.foreach(println)
+//    val componentIds = components.map (c => {
+//      Admin.addComponent(c)
+//    })
+//    
+//    componentIds.foreach(println)
     
     
 //    val components = List[Component](

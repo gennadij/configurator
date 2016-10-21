@@ -62,23 +62,26 @@ object Persistence {
     val configTree: List[AdminConfigTreeStep] = steps.map(s => {
       val eHasComponent: List[Edge] = s.getEdges(Direction.OUT).toList
       val vComponents: List[Vertex] = eHasComponent.map { hC => hC.getVertex(Direction.IN) }
-      val eNextStep: List[List[Edge]] = vComponents.map(nS => nS.getEdges(Direction.OUT).toList)
+      val eNextStep: List[List[Edge]] = vComponents.map(nS => {
+        //TODO fuer jede VComponent einen AdminComponent mit AdminNextStep erzeugen
+        nS.getEdges(Direction.OUT).toList
+      
+      })
       val vNextStep: List[Vertex] = eNextStep.map(nS => nS.head.getVertex(Direction.IN))
       
-      val components: List[AdminComponent] = vComponents.map(vC => {
-        new AdminComponent(vC.getProperty("componentId").toString(),
-            vC.getProperty("adminId").toString(),
-            vC.getProperty("kind").toString())
-      })
+//      val components: List[AdminComponent] = vComponents.map(vC => {
+//        new AdminComponent(vC.getProperty("componentId").toString(),
+//            vC.getProperty("adminId").toString(),
+//            vC.getProperty("kind").toString())
+//      })
       
       val nextSteps: List[AdminNextStep] = vNextStep.map(vNS => {
-        new AdminNextStep(vNS.getProperty("").toString(), 
-            null, //AdminComponent
-            null // AdminStep
+        new AdminNextStep(vNS.getId.toString(), 
+                          adminId
             )
       })
       
-      new AdminConfigTreeStep(components, nextSteps)
+      new AdminConfigTreeStep(null, nextSteps)
      })
      
      new AdminConfigTree(configTree)

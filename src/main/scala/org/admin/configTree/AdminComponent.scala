@@ -4,5 +4,6 @@ case class AdminComponent(
                       id: String,
                       adminId: String,
                       //immutable, mutable
-                      kind: String
+                      kind: String,
+                      nextSteps: List[AdminNextStep]
                     )
