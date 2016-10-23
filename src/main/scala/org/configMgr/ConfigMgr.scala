@@ -216,7 +216,6 @@ class ConfigMgr extends Dependency{
   private def getComponent(step: Step, selectedComponents: Set[SelectedComponent]): Seq[Component] = {
     
     val mutableComponents = step.components filter (_.isInstanceOf[MutableComponent])
-    //TODO warum rot
     var immutableComponents = step.components filter (_.isInstanceOf[ImmutableComponent])
     
     val currentConfigMutableCommponents = for{

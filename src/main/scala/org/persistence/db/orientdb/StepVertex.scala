@@ -40,6 +40,19 @@ object StepVertex {
     }
   }
   
+  // TODO if Einweisung mit stepId ausbessern
+  def addStep(kind: String, adminId: String): AdminStep = {
+    val graph: OrientGraph = OrientDB.getGraph()
+    val vStep: OrientVertex = graph.addVertex("class:Step", 
+            "adminId", adminId,
+            "kind", kind)
+        graph.commit
+        vStep.setProperty("stepId", vStep.getIdentity.toString())
+        graph.commit
+        new AdminStep(vStep.getIdentity.toString(),
+            "", "", null)
+  }
+  
   
   def create(props: Map[String, String]) = {
     val graph: OrientGraph = OrientDB.getGraph()

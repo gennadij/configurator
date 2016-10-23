@@ -53,38 +53,62 @@ object Persistence {
     ComponentVertex.addComponent(component)
   }
   
+  /**
+   * TODO korrektur fue falsche IDs 
+   */
+  
   def getConfigTree(adminId: String): AdminConfigTree = {
     val graph: OrientGraph = OrientDB.getGraph
+    
     val res: OrientDynaElementIterable = graph
       .command(new OCommandSQL(s"SELECT FROM Step WHERE adminId='$adminId'")).execute()
-    val steps = res.toList.map(_.asInstanceOf[OrientVertex])
+      
+    val vSteps: List[OrientVertex] = res.toList.map(_.asInstanceOf[OrientVertex])
     
-    val configTree: List[AdminConfigTreeStep] = steps.map(s => {
-      val eHasComponent: List[Edge] = s.getEdges(Direction.OUT).toList
+    new AdminConfigTree(vSteps.map(getAdminStep(_, graph)))
+  }
+  
+  def getAdminStep(vStep: OrientVertex, graph: OrientGraph): AdminConfigTreeStep = {
+      val eHasComponent: List[Edge] = vStep.getEdges(Direction.OUT).toList
       val vComponents: List[Vertex] = eHasComponent.map { hC => hC.getVertex(Direction.IN) }
-      val eNextStep: List[List[Edge]] = vComponents.map(nS => {
-        //TODO fuer jede VComponent einen AdminComponent mit AdminNextStep erzeugen
-        nS.getEdges(Direction.OUT).toList
       
+      val stepId = if(vStep.getProperty("stepId").toString().substring(1) == vStep.getId.toString()){
+          vStep.getProperty("stepId").toString().substring(1)}
+        else {
+          vStep.setProperty("stepId", vStep.getId.toString())
+          graph.commit()
+          "S" + vStep.getProperty("stepId").toString
+        }
+      
+      new AdminConfigTreeStep(
+          vStep.getIdentity.toString,
+          stepId,
+          vStep.getProperty("adminId").toString,
+          vStep.getProperty("kind").toString(),
+          getAdminComponents(vComponents)
+      )
+  }
+  
+  def getNextStep(component: Vertex): String = {
+    val eNextStep: List[Edge] = component.getEdges(Direction.OUT).toList
+    val vNextStep: List[Vertex] = eNextStep.map ( { eNS => 
+      eNS.getVertex(Direction.IN)
+    })
+    println(vNextStep)
+    
+    "NS" + vNextStep.head.getId.toString()
+  }
+  
+  def getAdminComponents(vComponents: List[Vertex]): List[AdminComponent] = {
+    vComponents.map({ vC => 
+        new AdminComponent(
+            vC.getId.toString(),
+            vC.getProperty("componentId"),
+            vC.getProperty("adminId").toString,
+            vC.getProperty("kind").toString(),
+            getNextStep(vC)
+        )
       })
-      val vNextStep: List[Vertex] = eNextStep.map(nS => nS.head.getVertex(Direction.IN))
-      
-//      val components: List[AdminComponent] = vComponents.map(vC => {
-//        new AdminComponent(vC.getProperty("componentId").toString(),
-//            vC.getProperty("adminId").toString(),
-//            vC.getProperty("kind").toString())
-//      })
-      
-      val nextSteps: List[AdminNextStep] = vNextStep.map(vNS => {
-        new AdminNextStep(vNS.getId.toString(), 
-                          adminId
-            )
-      })
-      
-      new AdminConfigTreeStep(null, nextSteps)
-     })
-     
-     new AdminConfigTree(configTree)
   }
   
   def setStep(adminId: String, isConnected: Boolean, step: Step, kind: String) = {

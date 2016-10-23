@@ -40,12 +40,14 @@ class TestScenario9 {
   }
   
   def configTree(adminId: String) = {
-    val configTree1: AdminConfigTree = Admin.configTree(adminId)
+    val configTree: AdminConfigTree = Admin.configTree(adminId)
     
-    configTree1.steps.foreach({s => 
-      println(s.components)
-      println(s.nextSteps)
+    configTree.steps.foreach({
+      println
     })
+    
+    Admin.addStep(null)
+    
   }
   
   

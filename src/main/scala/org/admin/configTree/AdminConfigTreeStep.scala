@@ -1,6 +1,9 @@
 package org.admin.configTree
 
 case class AdminConfigTreeStep (
-  components: List[AdminComponent],
-  nextSteps: List[AdminNextStep]
+    id: String,
+    stepId: String,
+    adminId: String,
+    kind: String,
+    components: List[AdminComponent]
 )
