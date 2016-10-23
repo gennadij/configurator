@@ -45,12 +45,12 @@ object Persistence {
     if(adminId.isEmpty()) "" else "AU" + adminId
   }
   
-  def addStep(step: AdminStep): String = {
-    StepVertex.addStep(step)
+  def addStep(adminId: String, kind: String): AdminStep = {
+    StepVertex.addStep(adminId, kind)
   }
   
-  def addComponent(component: AdminComponent): String = {
-    ComponentVertex.addComponent(component)
+  def addComponent(adminId: String, kind: String): AdminComponent = {
+    ComponentVertex.addComponent(adminId, kind)
   }
   
   /**
@@ -65,12 +65,25 @@ object Persistence {
       
     val vSteps: List[OrientVertex] = res.toList.map(_.asInstanceOf[OrientVertex])
     
-    new AdminConfigTree(vSteps.map(getAdminStep(_, graph)))
+    
+    
+    new AdminConfigTree(vSteps.map(getAdminStep(_, graph, adminId)))
   }
   
-  def getAdminStep(vStep: OrientVertex, graph: OrientGraph): AdminConfigTreeStep = {
+  def getAdminStep(vStep: OrientVertex, graph: OrientGraph, adminId: String): AdminConfigTreeStep = {
       val eHasComponent: List[Edge] = vStep.getEdges(Direction.OUT).toList
       val vComponents: List[Vertex] = eHasComponent.map { hC => hC.getVertex(Direction.IN) }
+      
+//      val adminIdChecked = if(vStep.getProperty("adminId").toString().substring(2) == adminId){
+//          adminId
+//          }
+//        else {
+//          vStep.setProperty("adminId", adminId)
+//          graph.commit()
+//          adminId
+//        }
+      
+      
       
       val stepId = if(vStep.getProperty("stepId").toString().substring(1) == vStep.getId.toString()){
           vStep.getProperty("stepId").toString().substring(1)}
@@ -83,7 +96,7 @@ object Persistence {
       new AdminConfigTreeStep(
           vStep.getIdentity.toString,
           stepId,
-          vStep.getProperty("adminId").toString,
+          adminId,
           vStep.getProperty("kind").toString(),
           getAdminComponents(vComponents)
       )

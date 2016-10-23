@@ -57,6 +57,11 @@ object AdminUserVertex {
     val res: OrientDynaElementIterable = graph
       .command(new OCommandSQL(s"SELECT FROM AdminUser WHERE username='$username' and userPassword='$adminPassword'")).execute()
     val adminId = res.toList.map(_.asInstanceOf[OrientVertex].getIdentity)
+//      val vAdminUsers: List[OrientVertex] = res.toList.map(_.asInstanceOf[OrientVertex])
+//      if(vAdminUsers.length == 1) {
+//        if(vAdminUsers.head.getProperty(""))
+//      }
+      
     if(adminId.size == 1) adminId.head.toString else ""
   }
 

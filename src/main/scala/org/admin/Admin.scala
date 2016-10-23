@@ -77,15 +77,15 @@ object Admin {
    * fuegt Vertex Step zu ConfigTree hinzu
    */
   
-  def addStep(step: AdminStep): String = {
-    Persistence.addStep(step)
+  def addStep(adminId: String, kind: String): AdminStep = {
+    Persistence.addStep(adminId, kind)
   }
   
   /**
    * fuegt Vertex Component zu ConfigTree hinzu
    */
-  def addComponent(component: AdminComponent): String = {
-    Persistence.addComponent(component)
+  def addComponent(adminId: String, kind: String): AdminComponent = {
+    Persistence.addComponent(adminId, kind)
   }
   /**
    * fuegt Edge hasComponent zu ConfigTree hinzu, dadurch wird Vertex Step mit 

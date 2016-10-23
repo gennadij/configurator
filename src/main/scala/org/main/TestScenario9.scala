@@ -10,9 +10,7 @@ class TestScenario9 {
   
   def scenario9_1() = {
     
-    val adminId: String = "AU#38:1"
-    val adminUsername : String = "test1"
-    val adminPassword: String = "test"
+    
     
     /*
      * Regestrierung AdminUser
@@ -36,17 +34,30 @@ class TestScenario9 {
 //    println(step7(adminId).message)
 //    println(step8(adminId).message)
     
-    configTree(adminId)
+    configTree()
   }
   
-  def configTree(adminId: String) = {
+  def configTree() = {
+    
+    val adminId: String = Admin.authenticate("test3", "test3")
+    
+    println(adminId)
+    
     val configTree: AdminConfigTree = Admin.configTree(adminId)
     
     configTree.steps.foreach({
       println
     })
     
-    Admin.addStep(null)
+    val addedStep = Admin.addStep(adminId, "default")
+    println(addedStep)
+    
+    
+    val addedComponent1 = Admin.addComponent(adminId, "immutable")
+    val addedComponent2 = Admin.addComponent(adminId, "immutable")
+    val addedComponent3 = Admin.addComponent(adminId, "immutable")
+    
+    Admin.addHasComponent("", "")
     
   }
   
@@ -57,11 +68,11 @@ class TestScenario9 {
      * create 1. Step
      */
     
-    val step = new AdminStep("", adminId, "first", new SelectionCriterium("1", "1"))
+//    val step = new AdminStep("", adminId, "first", new SelectionCriterium("1", "1"))
+//    
+//    val stepId = Admin.addStep(step)
     
-    val stepId = Admin.addStep(step)
-    
-    println(stepId)
+//    println(stepId)
     
 //    val components = List[AdminComponent](
 //          new AdminComponent("", adminId, "immutable"),

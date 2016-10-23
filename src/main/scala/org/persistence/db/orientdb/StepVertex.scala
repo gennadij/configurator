@@ -10,6 +10,7 @@ import org.status.WarningStatus
 import com.tinkerpop.blueprints.Vertex
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import org.admin.configTree.AdminStep
+import org.admin.configTree.AdminConfigTreeStep
 
 
 object StepVertex {
@@ -41,7 +42,7 @@ object StepVertex {
   }
   
   // TODO if Einweisung mit stepId ausbessern
-  def addStep(kind: String, adminId: String): AdminStep = {
+  def addStep(adminId:String, kind: String): AdminStep = {
     val graph: OrientGraph = OrientDB.getGraph()
     val vStep: OrientVertex = graph.addVertex("class:Step", 
             "adminId", adminId,
@@ -49,8 +50,15 @@ object StepVertex {
         graph.commit
         vStep.setProperty("stepId", vStep.getIdentity.toString())
         graph.commit
-        new AdminStep(vStep.getIdentity.toString(),
-            "", "", null)
+        
+        
+        new AdminStep(
+            vStep.getIdentity.toString(),
+            "S" + vStep.getIdentity.toString(),
+            vStep.getProperty("adminId"),
+            vStep.getProperty("kind"), 
+            null
+        )
   }
   
   
