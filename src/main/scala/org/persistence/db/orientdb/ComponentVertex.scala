@@ -63,9 +63,9 @@ object ComponentVertex {
       vStep.createProperty(propKeyId, OType.STRING)
       vStep.createProperty(propKeyAdminId, OType.STRING)
       graph.commit
-      new SuccessfulStatus("class Component was created")
+      new SuccessfulStatus("class Component was created", "")
     }else {
-      new WarningStatus("class Component already exist")
+      new WarningStatus("class Component already exist", "")
     }
   }
   
@@ -74,9 +74,9 @@ object ComponentVertex {
     if(graph.getVertices(propKeyId, props(propKeyId)).size == 0){
         graph.addVertex(s"class:$propClassName", propKeyId, props(propKeyId), propKeyAdminId, props(propKeyAdminId))
         graph.commit
-        new SuccessfulStatus("object Component with " + props(propKeyId) + " was created")
+        new SuccessfulStatus("object Component with " + props(propKeyId) + " was created", "")
     }else{
-      new WarningStatus("object Component with " + props(propKeyId) + "already exist")
+      new WarningStatus("object Component with " + props(propKeyId) + "already exist", "")
     }
   }
   
@@ -85,9 +85,9 @@ object ComponentVertex {
     if(graph.getVertices("stepId", props("id")).size == 0){
 //        graph.addVertex("class:Step", "stepId", props("id"))
 //        graph.commit
-      new WarningStatus("object Step with " + props("id") + "cannot update because not exist")
+      new WarningStatus("object Step with " + props("id") + "cannot update because not exist", "")
     }else{
-      new SuccessfulStatus("object Step with " + props("id") + " was updated")
+      new SuccessfulStatus("object Step with " + props("id") + " was updated", "")
      
     }
   }

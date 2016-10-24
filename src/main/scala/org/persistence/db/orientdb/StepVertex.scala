@@ -11,6 +11,7 @@ import com.tinkerpop.blueprints.Vertex
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import org.admin.configTree.AdminStep
 import org.admin.configTree.AdminConfigTreeStep
+import org.status.Status
 
 
 object StepVertex {
@@ -25,40 +26,52 @@ object StepVertex {
 //  }
   
   // TODO if Einweisung mit stepId ausbessern
-  def addStep(step: AdminStep): String = {
-    val graph: OrientGraph = OrientDB.getGraph()
-    if(graph.getVertices(propKeyId, step.id).size == 0){
-        val vertex: OrientVertex = graph.addVertex("class:Step", 
-//            propKeyId, props(propKeyId), 
-            propKeyAdminId, step.adminId,
-            propKeyKind, step.kind)
-        graph.commit
-        vertex.setProperty(propKeyId, "S" + vertex.getIdentity.toString())
-        graph.commit
-        vertex.getIdentity.toString
-    }else{
-      ""
-    }
-  }
+//  def addStep(step: AdminStep): String = {
+//    val graph: OrientGraph = OrientDB.getGraph()
+//    if(graph.getVertices(propKeyId, step.id).size == 0){
+//        val vertex: OrientVertex = graph.addVertex("class:Step", 
+////            propKeyId, props(propKeyId), 
+//            propKeyAdminId, step.adminId,
+//            propKeyKind, step.kind)
+//        graph.commit
+//        vertex.setProperty(propKeyId, "S" + vertex.getIdentity.toString())
+//        graph.commit
+//        vertex.getIdentity.toString
+//    }else{
+//      ""
+//    }
+//  }
   
-  // TODO if Einweisung mit stepId ausbessern
-  def addStep(adminId:String, kind: String): AdminStep = {
+    /**
+   * 
+   * fuegt Vertex Step zu ConfigTree hinzu
+   * 
+   * @author Gennadi Heimann
+   * 
+   * @version 1.0
+   * 
+   * @param AdminStep
+   * 
+   * @return Status
+   */
+  
+  def addStep(adminStep: AdminStep): Status = {
     val graph: OrientGraph = OrientDB.getGraph()
     val vStep: OrientVertex = graph.addVertex("class:Step", 
-            "adminId", adminId,
-            "kind", kind)
+            "adminId", adminStep.adminId,
+            "kind", adminStep.kind)
         graph.commit
         vStep.setProperty("stepId", vStep.getIdentity.toString())
         graph.commit
         
-        
-        new AdminStep(
-            vStep.getIdentity.toString(),
-            "S" + vStep.getIdentity.toString(),
-            vStep.getProperty("adminId"),
-            vStep.getProperty("kind"), 
-            null
-        )
+        new SuccessfulStatus("", "S" + vStep.getIdentity.toString())
+//        new AdminStep(
+//            vStep.getIdentity.toString(),
+//            "S" + vStep.getIdentity.toString(),
+//            vStep.getProperty("adminId"),
+//            vStep.getProperty("kind"), 
+//            null
+//        )
   }
   
   
@@ -70,9 +83,9 @@ object StepVertex {
             propKeyAdminId, props(propKeyAdminId),
             propKeyKind, props(propKeyKind))
         graph.commit
-        new SuccessfulStatus("object Step with " + vertex.getId + vertex.getProperties + " was created")
+        new SuccessfulStatus("object Step with " + vertex.getId + vertex.getProperties + " was created", "")
     }else{
-      new WarningStatus("object Step with " + props(propKeyId) + "already exist")
+      new WarningStatus("object Step with " + props(propKeyId) + "already exist", "")
     }
   }
   
@@ -81,9 +94,9 @@ object StepVertex {
     if(graph.getVertices("stepId", props("id")).size == 0){
 //        graph.addVertex("class:Step", "stepId", props("id"))
 //        graph.commit
-      new WarningStatus("object Step with " + props("id") + "cannot update because not exist")
+      new WarningStatus("object Step with " + props("id") + "cannot update because not exist", "")
     }else{
-      new SuccessfulStatus("object Step with " + props("id") + " was updated")
+      new SuccessfulStatus("object Step with " + props("id") + " was updated", "")
      
     }
   }

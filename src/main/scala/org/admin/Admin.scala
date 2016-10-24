@@ -74,11 +74,20 @@ object Admin {
   }
   
   /**
+   * 
    * fuegt Vertex Step zu ConfigTree hinzu
+   * 
+   * @author Gennadi Heimann
+   * 
+   * @version 1.0
+   * 
+   * @param AdminStep
+   * 
+   * @return Status
    */
   
-  def addStep(adminId: String, kind: String): AdminStep = {
-    Persistence.addStep(adminId, kind)
+  def addStep(adminStep: AdminStep): Status = {
+    Persistence.addStep(adminStep)
   }
   
   /**
@@ -168,16 +177,16 @@ object Admin {
 //    findAndCheckAdmin(adminId, password, admins)
     val adminId = AdminUserVertex.adminId(username, password)
     
-    if (adminId == "") new WarningStatus("The User with thisusername and password not exist")
-      else new SuccessfulStatus(s"user with id = $adminId is logged")
+    if (adminId == "") new WarningStatus("The User with thisusername and password not exist", "")
+      else new SuccessfulStatus(s"user with id = $adminId is logged", "")
   }
   
   def findAndCheckAdmin(adminId: String, password: String, admins: Seq[AdminId]): Status = {
     
     if(admins.exists { admin => admin.adminId == adminId && admin.password == password })
-      SuccessfulStatus("Anmeldung ist erfolgreich")
+      SuccessfulStatus("Anmeldung ist erfolgreich", "")
     else
-      ErrorStatus("Administrator Id oder Passwort falsch")
+      ErrorStatus("Administrator Id oder Passwort falsch", "")
   }
   
   def setConnectPathForConfigClient(clientId: String, configPath: String) = {

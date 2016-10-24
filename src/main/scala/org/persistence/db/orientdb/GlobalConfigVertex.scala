@@ -15,9 +15,9 @@ object GlobalConfigVertex {
     if(graph.getVertices("", "").size == 0){
         graph.addVertex("class:Step", "", "")
         graph.commit
-        new SuccessfulStatus("object Step with " + "" + " was created")
+        new SuccessfulStatus("object Step with " + "" + " was created", "")
     }else{
-      new WarningStatus("object Step with " + "" + "already exist")
+      new WarningStatus("object Step with " + "" + "already exist", "")
     }
   }
   
@@ -28,9 +28,9 @@ object GlobalConfigVertex {
       vStep.createProperty("", OType.STRING)
       vStep.createProperty("", OType.STRING)
       graph.commit
-      new SuccessfulStatus("class Step was created")
+      new SuccessfulStatus("class Step was created", "")
     }else {
-      new WarningStatus("class Step already exist")
+      new WarningStatus("class Step already exist", "")
     }
   }
   

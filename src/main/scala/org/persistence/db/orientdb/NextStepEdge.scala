@@ -27,9 +27,9 @@ object NextStepEdge {
   	  eNextStep.createProperty(propKeyNextStepId, OType.STRING)
   	  eNextStep.createProperty(propKeyAdminId, OType.STRING)
   	  graph.commit
-  	  new SuccessfulStatus(s"Class $classname was created")
+  	  new SuccessfulStatus(s"Class $classname was created", "")
     }else{
-      WarningStatus(s"Class $classname was already created")
+      WarningStatus(s"Class $classname was already created", "")
     }
   }
   
@@ -44,9 +44,9 @@ object NextStepEdge {
       			  graph.getVertices(propKeyStepId, nS.step).head, "nextStep")
       		eNextStep.setProperty("nextStepId", nS.byComponent + nS.step)
           graph.commit
-          status.::(new SuccessfulStatus("Edge with id = " + nS.byComponent + nS.step + " was created"))
+          status.::(new SuccessfulStatus("Edge with id = " + nS.byComponent + nS.step + " was created", ""))
         }else{
-          status.::(new WarningStatus("Edge with id = " + nS.byComponent + nS.step + " already exist"))
+          status.::(new WarningStatus("Edge with id = " + nS.byComponent + nS.step + " already exist", ""))
         }
       }
     })

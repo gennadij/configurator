@@ -5,5 +5,5 @@ case class AdminConfigTreeStep (
     stepId: String,
     adminId: String,
     kind: String,
-    components: List[AdminComponent]
+    components: List[AdminConfigTreeComponent]
 )

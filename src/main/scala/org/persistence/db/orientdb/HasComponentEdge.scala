@@ -26,9 +26,9 @@ object HasComponentEdge {
       eHasComponent.createProperty(propKeyHasComponentId, OType.STRING)
       eHasComponent.createProperty(propKeyAdminId, OType.STRING)
       graph.commit
-  	  new SuccessfulStatus(s"Class $classname was created")
+  	  new SuccessfulStatus(s"Class $classname was created", "")
     }else{
-      new WarningStatus(s"Class $classname was already created")
+      new WarningStatus(s"Class $classname was already created", "")
     }
   }
   
@@ -43,9 +43,9 @@ object HasComponentEdge {
     			  classname)
     		eHasComponent.setProperty("hasComponentId", c.id)
     		graph.commit
-    		status.::( new SuccessfulStatus("Edge with id = " + c.id + " was created"))
+    		status.::( new SuccessfulStatus("Edge with id = " + c.id + " was created", ""))
       }else{
-        status.::(new WarningStatus("Edge with id = " + c.id + " already exist"))
+        status.::(new WarningStatus("Edge with id = " + c.id + " already exist", ""))
       }
     })
     status

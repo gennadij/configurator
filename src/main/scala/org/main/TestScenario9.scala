@@ -49,7 +49,9 @@ class TestScenario9 {
       println
     })
     
-    val addedStep = Admin.addStep(adminId, "default")
+    new AdminStep("","",adminId, "default", null)
+    
+    val addedStep = Admin.addStep(new AdminStep("","",adminId, "default", null))
     println(addedStep)
     
     

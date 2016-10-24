@@ -27,6 +27,8 @@ import com.tinkerpop.blueprints.Vertex
 import org.admin.configTree.AdminNextStep
 import org.admin.configTree.AdminConfigTreeStep
 import org.admin.configTree.AdminConfigTree
+import org.admin.configTree.AdminConfigTreeComponent
+import org.status.Status
 
 object Persistence {
   
@@ -45,8 +47,21 @@ object Persistence {
     if(adminId.isEmpty()) "" else "AU" + adminId
   }
   
-  def addStep(adminId: String, kind: String): AdminStep = {
-    StepVertex.addStep(adminId, kind)
+    /**
+   * 
+   * fuegt Vertex Step zu ConfigTree hinzu
+   * 
+   * @author Gennadi Heimann
+   * 
+   * @version 1.0
+   * 
+   * @param AdminStep
+   * 
+   * @return Status
+   */
+  
+  def addStep(adminStep: AdminStep): Status = {
+    StepVertex.addStep(adminStep)
   }
   
   def addComponent(adminId: String, kind: String): AdminComponent = {
@@ -112,9 +127,9 @@ object Persistence {
     "NS" + vNextStep.head.getId.toString()
   }
   
-  def getAdminComponents(vComponents: List[Vertex]): List[AdminComponent] = {
+  def getAdminComponents(vComponents: List[Vertex]): List[AdminConfigTreeComponent] = {
     vComponents.map({ vC => 
-        new AdminComponent(
+        new AdminConfigTreeComponent(
             vC.getId.toString(),
             vC.getProperty("componentId"),
             vC.getProperty("adminId").toString,
@@ -209,7 +224,7 @@ object Persistence {
     val stComponentsToNextStep = NextStepEdge.connect(step.nextStep)
     stComponentsToNextStep.foreach { s => println(s.message) }
     
-    new SuccessfulStatus("Step created")
+    new SuccessfulStatus("Step created", "")
   }
   
   
