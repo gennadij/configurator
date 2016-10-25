@@ -64,8 +64,8 @@ object Persistence {
     StepVertex.addStep(adminStep)
   }
   
-  def addComponent(adminId: String, kind: String): AdminComponent = {
-    ComponentVertex.addComponent(adminId, kind)
+  def addComponent(adminComponent: AdminComponent): Status = {
+    ComponentVertex.addComponent(adminComponent)
   }
   
   /**
@@ -80,25 +80,12 @@ object Persistence {
       
     val vSteps: List[OrientVertex] = res.toList.map(_.asInstanceOf[OrientVertex])
     
-    
-    
     new AdminConfigTree(vSteps.map(getAdminStep(_, graph, adminId)))
   }
   
   def getAdminStep(vStep: OrientVertex, graph: OrientGraph, adminId: String): AdminConfigTreeStep = {
       val eHasComponent: List[Edge] = vStep.getEdges(Direction.OUT).toList
       val vComponents: List[Vertex] = eHasComponent.map { hC => hC.getVertex(Direction.IN) }
-      
-//      val adminIdChecked = if(vStep.getProperty("adminId").toString().substring(2) == adminId){
-//          adminId
-//          }
-//        else {
-//          vStep.setProperty("adminId", adminId)
-//          graph.commit()
-//          adminId
-//        }
-      
-      
       
       val stepId = if(vStep.getProperty("stepId").toString().substring(1) == vStep.getId.toString()){
           vStep.getProperty("stepId").toString().substring(1)}
@@ -138,6 +125,12 @@ object Persistence {
         )
       })
   }
+  
+  def addHasComponent(outStep: String, inComponent: String) = {
+    HasComponentEdge.add(outStep, inComponent)
+  }
+  
+  
   
   def setStep(adminId: String, isConnected: Boolean, step: Step, kind: String) = {
     

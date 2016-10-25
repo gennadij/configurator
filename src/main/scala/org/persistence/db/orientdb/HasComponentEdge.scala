@@ -50,4 +50,6 @@ object HasComponentEdge {
     })
     status
   }
+  
+  def add(outStep: String, inComponent: String) = ???
 }

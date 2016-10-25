@@ -61,10 +61,10 @@ object StepVertex {
             "adminId", adminStep.adminId,
             "kind", adminStep.kind)
         graph.commit
-        vStep.setProperty("stepId", vStep.getIdentity.toString())
+        vStep.setProperty("stepId", "S" + vStep.getIdentity.toString())
         graph.commit
         
-        new SuccessfulStatus("", "S" + vStep.getIdentity.toString())
+        new SuccessfulStatus("added Step", "S" + vStep.getIdentity.toString())
 //        new AdminStep(
 //            vStep.getIdentity.toString(),
 //            "S" + vStep.getIdentity.toString(),

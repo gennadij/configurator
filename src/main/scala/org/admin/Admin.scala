@@ -93,15 +93,15 @@ object Admin {
   /**
    * fuegt Vertex Component zu ConfigTree hinzu
    */
-  def addComponent(adminId: String, kind: String): AdminComponent = {
-    Persistence.addComponent(adminId, kind)
+  def addComponent(adminComponent: AdminComponent): Status = {
+    Persistence.addComponent(adminComponent)
   }
   /**
    * fuegt Edge hasComponent zu ConfigTree hinzu, dadurch wird Vertex Step mit 
    * Vertex Component verbunden
    */
-  def addHasComponent(in: String, out: String) = {
-    
+  def addHasComponent(outStep: String, inComponent: String) = {
+    Persistence.addHasComponent(outStep, inComponent)
   }
   
   /**

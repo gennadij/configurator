@@ -49,17 +49,18 @@ class TestScenario9 {
       println
     })
     
-    new AdminStep("","",adminId, "default", null)
+//    new AdminStep("","",adminId, "default", null)
+//    
+//    val addedStep = Admin.addStep(new AdminStep("","",adminId, "default", null))
+//    println(addedStep)
     
-    val addedStep = Admin.addStep(new AdminStep("","",adminId, "default", null))
-    println(addedStep)
-    
-    
-    val addedComponent1 = Admin.addComponent(adminId, "immutable")
-    val addedComponent2 = Admin.addComponent(adminId, "immutable")
-    val addedComponent3 = Admin.addComponent(adminId, "immutable")
+//    val addedComponent1 = Admin.addComponent(new AdminComponent("", "", adminId, "immutable"))
+//    val addedComponent2 = Admin.addComponent(new AdminComponent("", "", adminId, "immutable"))
+//    val addedComponent3 = Admin.addComponent(new AdminComponent("", "", adminId, "immutable"))
     
     Admin.addHasComponent("", "")
+    
+    
     
   }
   
