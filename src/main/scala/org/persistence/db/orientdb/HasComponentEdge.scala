@@ -1,3 +1,7 @@
+/**
+ * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
+ */
+
 package org.persistence.db.orientdb
 
 import scala.collection.JavaConversions._
@@ -51,5 +55,19 @@ object HasComponentEdge {
     status
   }
   
-  def add(outStep: String, inComponent: String) = ???
+  def add(adminId: String, outStep: String, inComponents: List[String]): Status = {
+     val graph: OrientGraph = OrientDB.getGraph
+     val hasComponentIds = inComponents.map ({ iC =>
+       val eHasComponent: OrientEdge = graph.addEdge("class:hasComponent", 
+         graph.getVertex(outStep), 
+          graph.getVertex(iC), 
+         "hasComponent")
+       eHasComponent.setProperty("adminId", adminId)
+       eHasComponent.setProperty("hasComponentId", "S" + outStep + "C" + iC )
+    	 graph.commit
+    	 "S" + outStep + "C" + iC
+     })
+     
+     new SuccessfulStatus("added hasComponents",hasComponentIds.toString())
+  }
 }

@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
+ */
+
+
 package org.admin
 
 import org.configSettings.ConfigSettings
@@ -100,16 +105,16 @@ object Admin {
    * fuegt Edge hasComponent zu ConfigTree hinzu, dadurch wird Vertex Step mit 
    * Vertex Component verbunden
    */
-  def addHasComponent(outStep: String, inComponent: String) = {
-    Persistence.addHasComponent(outStep, inComponent)
+  def addHasComponent(adminId: String, outStep: String, inComponents: List[String]) = {
+    Persistence.addHasComponent(adminId, outStep, inComponents)
   }
   
   /**
    * fuegt Edge NextStep zu ConfigTree hinzu, dadurch wird Vertex Component mit 
    * Vertex Step erbunden
    */
-  def addNextStep(in: String, out: String) = {
-    
+  def addNextStep(adminId: String, outComponent: String, inStep: String) = {
+    Persistence.addNextStep(adminId, outComponent, inStep)
   }
   
   def setStep(user: String, isConnected: Boolean, step: Step, kind: String): Status = {
@@ -118,8 +123,6 @@ object Admin {
     
       Persistence.setStep(user, isConnected, step, kind)
   }
-
-  
   
   def configTree(adminId: String) = {
     Persistence.getConfigTree(adminId)

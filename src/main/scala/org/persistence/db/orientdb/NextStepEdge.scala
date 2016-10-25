@@ -52,4 +52,19 @@ object NextStepEdge {
     })
     status
   }
+  
+  def add(adminId: String, outComponent: String, inStep: String): Status = {
+    val graph: OrientGraph = OrientDB.getGraph
+    
+     val eNextStep: OrientEdge = graph.addEdge("class:nextStep", 
+       graph.getVertex(outComponent), 
+        graph.getVertex(inStep), 
+       "nextStep")
+     eNextStep.setProperty("adminId", adminId)
+     eNextStep.setProperty("nextStepId", "C" + outComponent + "S" + inStep )
+  	 graph.commit
+     
+     new SuccessfulStatus("added nextStep", "C" + outComponent + "S" + inStep)
+  }
+  
 }

@@ -1,10 +1,19 @@
+/**
+ * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
+ */
+
 package org.main
+
+import scala.collection.JavaConversions._
 
 import org.admin.Admin
 import org.configTree.step.SelectionCriterium
 import org.admin.configTree.AdminStep
 import org.admin.configTree.AdminComponent
 import org.admin.configTree.AdminConfigTree
+import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery
+import com.orientechnologies.orient.core.record.impl.ODocument
+
 
 class TestScenario9 {
   
@@ -42,11 +51,15 @@ class TestScenario9 {
     val adminId: String = Admin.authenticate("test3", "test3")
     
     println(adminId)
+
+   val configTree: AdminConfigTree = Admin.configTree(adminId)
     
-    val configTree: AdminConfigTree = Admin.configTree(adminId)
-    
-    configTree.steps.foreach({
-      println
+    configTree.steps.foreach(s =>{
+      println(s.stepId)
+      println(s.kind)
+      s.components.foreach (c => {
+        println(c)
+        })
     })
     
 //    new AdminStep("","",adminId, "default", null)
@@ -57,10 +70,18 @@ class TestScenario9 {
 //    val addedComponent1 = Admin.addComponent(new AdminComponent("", "", adminId, "immutable"))
 //    val addedComponent2 = Admin.addComponent(new AdminComponent("", "", adminId, "immutable"))
 //    val addedComponent3 = Admin.addComponent(new AdminComponent("", "", adminId, "immutable"))
+//    val components = List("#23:1", "#22:1", "#21:1")
+//    val addedComponents = Admin.addHasComponent(adminId, "#17:2", components)
+//    
+//    print(addedComponents)
     
-    Admin.addHasComponent("", "")
-    
-    
+//    val addedNextStep1 = Admin.addNextStep(adminId, "#21:1", "#18:2")
+//    val addedNextStep2 = Admin.addNextStep(adminId, "#22:1", "#18:2")
+//    val addedNextStep3 = Admin.addNextStep(adminId, "#23:1", "#18:2")
+//    
+//    println(addedNextStep1)
+//    println(addedNextStep2)
+//    println(addedNextStep3)
     
   }
   

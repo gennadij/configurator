@@ -1,3 +1,7 @@
+/**
+ * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
+ */
+
 package org.persistence
 
 
@@ -29,6 +33,7 @@ import org.admin.configTree.AdminConfigTreeStep
 import org.admin.configTree.AdminConfigTree
 import org.admin.configTree.AdminConfigTreeComponent
 import org.status.Status
+import org.configTree.ConfigTree
 
 object Persistence {
   
@@ -76,13 +81,17 @@ object Persistence {
     val graph: OrientGraph = OrientDB.getGraph
     
     val res: OrientDynaElementIterable = graph
-      .command(new OCommandSQL(s"SELECT FROM Step WHERE adminId='$adminId'")).execute()
+      .command(new OCommandSQL("select from " + 
+          "(SELECT FROM " + 
+                "(traverse out(hasComponent) from " + 
+                      "(select from Step where kind='first') STRATEGY BREADTH_FIRST)" + 
+                 s" where @class='Step') where adminId='$adminId'")).execute()
       
     val vSteps: List[OrientVertex] = res.toList.map(_.asInstanceOf[OrientVertex])
     
     new AdminConfigTree(vSteps.map(getAdminStep(_, graph, adminId)))
   }
-  
+
   def getAdminStep(vStep: OrientVertex, graph: OrientGraph, adminId: String): AdminConfigTreeStep = {
       val eHasComponent: List[Edge] = vStep.getEdges(Direction.OUT).toList
       val vComponents: List[Vertex] = eHasComponent.map { hC => hC.getVertex(Direction.IN) }
@@ -104,14 +113,17 @@ object Persistence {
       )
   }
   
+  /**
+   * TODO wenn keinen nextStep exestiert
+   * entweder Fehler oder Ende von ConfigTree
+   * bei NextStep einen StepObjekt hinzufügen
+   */
   def getNextStep(component: Vertex): String = {
     val eNextStep: List[Edge] = component.getEdges(Direction.OUT).toList
     val vNextStep: List[Vertex] = eNextStep.map ( { eNS => 
       eNS.getVertex(Direction.IN)
     })
-    println(vNextStep)
-    
-    "NS" + vNextStep.head.getId.toString()
+    if(vNextStep.size == 1) "NS" + vNextStep.head.getId.toString() else "no nextStep"
   }
   
   def getAdminComponents(vComponents: List[Vertex]): List[AdminConfigTreeComponent] = {
@@ -126,11 +138,26 @@ object Persistence {
       })
   }
   
-  def addHasComponent(outStep: String, inComponent: String) = {
-    HasComponentEdge.add(outStep, inComponent)
+  def addHasComponent(adminId: String, outStep: String, inComponents: List[String]): Status = {
+    HasComponentEdge.add(adminId, outStep, inComponents)
   }
   
+  /**
+   * 
+   * verbindet Step und Component in ConfigTree hinzu
+   * 
+   * @author Gennadi Heimann
+   * 
+   * @version 1.0
+   * 
+   * @param AdminStep
+   * 
+   * @return Status
+   */
   
+  def addNextStep(adminId: String, outComponent: String, inStep: String): Status = {
+    NextStepEdge.add(adminId, outComponent, inStep)
+  }
   
   def setStep(adminId: String, isConnected: Boolean, step: Step, kind: String) = {
     
@@ -219,6 +246,7 @@ object Persistence {
     
     new SuccessfulStatus("Step created", "")
   }
+  
   
   
   def getPersisitence = {
