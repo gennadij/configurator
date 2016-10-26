@@ -65,11 +65,11 @@ object Persistence {
    * @return Status
    */
   
-  def addStep(adminStep: AdminStep): Status = {
+  def addStep(adminStep: AdminStep): AdminStep = {
     StepVertex.addStep(adminStep)
   }
   
-  def addComponent(adminComponent: AdminComponent): Status = {
+  def addComponent(adminComponent: AdminComponent): AdminComponent = {
     ComponentVertex.addComponent(adminComponent)
   }
   

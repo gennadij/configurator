@@ -91,14 +91,14 @@ object Admin {
    * @return Status
    */
   
-  def addStep(adminStep: AdminStep): Status = {
+  def addStep(adminStep: AdminStep): AdminStep = {
     Persistence.addStep(adminStep)
   }
   
   /**
    * fuegt Vertex Component zu ConfigTree hinzu
    */
-  def addComponent(adminComponent: AdminComponent): Status = {
+  def addComponent(adminComponent: AdminComponent): AdminComponent = {
     Persistence.addComponent(adminComponent)
   }
   /**

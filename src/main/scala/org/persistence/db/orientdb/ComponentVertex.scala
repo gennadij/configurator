@@ -36,7 +36,7 @@ object ComponentVertex {
 //    }
 //  }
   
-  def addComponent(adminComponent: AdminComponent): Status = {
+  def addComponent(adminComponent: AdminComponent): AdminComponent = {
     val graph: OrientGraph = OrientDB.getGraph()
     
     val vComponent: OrientVertex = graph.addVertex(
@@ -47,7 +47,13 @@ object ComponentVertex {
     graph.commit
     vComponent.setProperty("componentId", "C" + vComponent.getIdentity.toString())
     graph.commit
-   new SuccessfulStatus("added Component", "C" + vComponent.getIdentity.toString())
+    new AdminComponent(
+        true,
+        vComponent.getIdentity.toString,
+        "C" + vComponent.getIdentity,
+        adminComponent.adminId,
+        adminComponent.kind
+    )
   }
   
   def createSchema(graph: OrientGraph) = {

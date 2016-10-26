@@ -55,7 +55,7 @@ object StepVertex {
    * @return Status
    */
   
-  def addStep(adminStep: AdminStep): Status = {
+  def addStep(adminStep: AdminStep): AdminStep = {
     val graph: OrientGraph = OrientDB.getGraph()
     val vStep: OrientVertex = graph.addVertex("class:Step", 
             "adminId", adminStep.adminId,
@@ -64,14 +64,14 @@ object StepVertex {
         vStep.setProperty("stepId", "S" + vStep.getIdentity.toString())
         graph.commit
         
-        new SuccessfulStatus("added Step", "S" + vStep.getIdentity.toString())
-//        new AdminStep(
-//            vStep.getIdentity.toString(),
-//            "S" + vStep.getIdentity.toString(),
-//            vStep.getProperty("adminId"),
-//            vStep.getProperty("kind"), 
-//            null
-//        )
+        new AdminStep(
+            true,
+            vStep.getIdentity.toString(),
+            "S" + vStep.getIdentity.toString(),
+            vStep.getProperty("adminId"),
+            vStep.getProperty("kind"), 
+            null
+        )
   }
   
   
