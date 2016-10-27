@@ -52,9 +52,12 @@ class TestScenario9 {
     
     val adminId: String = Admin.authenticate("test4", "test4")
     
-    println(adminId)
-
-     val configTree: AdminConfigTree = Admin.configTree(adminId)
+    println("AdminId : " + adminId)
+    
+    /*
+     * Server --> Client
+     */
+    val configTree: AdminConfigTree = Admin.configTree(adminId)
     
     configTree.steps.foreach(s =>{
       println(s.stepId)
@@ -64,16 +67,39 @@ class TestScenario9 {
       })
     })
     
-    val addedStep1 = Admin.addStep(new AdminStep(false, "","",adminId, "first", null))
+
+     //      Server <-- Client
+    val step1 = new AdminStep(false, "","",adminId, "first", null)
+     //      Server --> Client
+    val addedStep1 = Admin.addStep(step1)
+    // TODO einzelne Componente mit Step verbinden
+//    val addedComponents1 = Admin.addHasComponent(adminId, addedStep1.id, components1)
+     //      Server <-- Client
+    val c11 = new AdminComponent(false, "", "", adminId, "immutable")
+     //      Server --> Client
+    val addedComponent11 = Admin.addComponent(c11)
+     //      Server <-- Client
+    val c12 = new AdminComponent(false, "", "", adminId, "immutable")
+     //      Server --> Client
+    val addedComponent12 = Admin.addComponent(c12)
+     //      Server --> Client
+    val c13 = new AdminComponent(false, "", "", adminId, "immutable")
+     //      Server <-- Client
+    val addedComponent13 = Admin.addComponent(c13)
+    
+    
+    
+    
+    
+    
     val addedNextStep2 = Admin.addStep(new AdminStep(false, "","",adminId, "first", null))
     val addedNextStep3 = Admin.addStep(new AdminStep(false, "","",adminId, "first", null))
-    val addedComponent11 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val addedComponent12 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val addedComponent13 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
     
     val components1 = List(addedComponent11.id, addedComponent12.id, addedComponent13.id)
-    val addedComponents1 = Admin.addHasComponent(adminId, addedStep1.id, components1)
     
+    //TODO umstellen auf das einezelne Component
+    
+//    val addedComponents1 = Admin.addHasComponent(adminId, addedStep1.id, components1)
     
     val addedStep2 = Admin.addStep(new AdminStep(false, "","",adminId, "default", null))
     val addedComponent21 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))

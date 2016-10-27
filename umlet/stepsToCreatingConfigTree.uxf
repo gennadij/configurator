@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>450</x>
-      <y>80</y>
+      <x>500</x>
+      <y>120</y>
       <w>140</w>
       <h>30</h>
     </coordinates>
@@ -15,8 +15,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>510</x>
-      <y>100</y>
+      <x>560</x>
+      <y>140</y>
       <w>30</w>
       <h>800</h>
     </coordinates>
@@ -26,8 +26,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>880</x>
-      <y>80</y>
+      <x>930</x>
+      <y>120</y>
       <w>130</w>
       <h>30</h>
     </coordinates>
@@ -37,8 +37,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>930</x>
-      <y>100</y>
+      <x>980</x>
+      <y>140</y>
       <w>30</w>
       <h>810</h>
     </coordinates>
@@ -48,92 +48,98 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>510</x>
-      <y>110</y>
+      <x>560</x>
+      <y>150</y>
       <w>450</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
-AdminUser ruft die Webseite auf</panel_attributes>
+    <panel_attributes>lt=-
+AdminUser ruft ist angemeldet</panel_attributes>
     <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>510</x>
-      <y>160</y>
-      <w>450</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;
-Webseite zur Anmeldung aufbauen</panel_attributes>
-    <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>510</x>
-      <y>210</y>
-      <w>450</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-Eingabe von Username und Password</panel_attributes>
-    <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>510</x>
-      <y>260</y>
+      <x>560</x>
+      <y>200</y>
       <w>450</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
-Authentifizierung Ok</panel_attributes>
+Es gibt keine vorhande ConfigTree</panel_attributes>
     <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>510</x>
-      <y>310</y>
+      <x>560</x>
+      <y>250</y>
       <w>450</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-Config anfordern</panel_attributes>
+User erstellt ersten Step  </panel_attributes>
     <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>510</x>
-      <y>360</y>
+      <x>560</x>
+      <y>300</y>
+      <w>450</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+ConfigTree mit Ids</panel_attributes>
+    <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>560</x>
+      <y>350</y>
+      <w>450</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+User erstellt der Component
+m1=n Anzahl der Components</panel_attributes>
+    <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>560</x>
+      <y>400</y>
       <w>450</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
-Lese ConfigTree des Users aus DB und 
-trasportiere zum Client</panel_attributes>
+aktualisierte ConfigTree mit Ids
+m2=(n) je nach der Anzahl der Components </panel_attributes>
     <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>30</x>
-      <y>210</y>
-      <w>430</w>
-      <h>40</h>
+      <x>220</x>
+      <y>180</y>
+      <w>290</w>
+      <h>110</h>
     </coordinates>
-    <panel_attributes>authenticate(username: String, password:String): Boolean</panel_attributes>
+    <panel_attributes> - kind {first, default, final}
+ - selectionCriterium {min, max}
+ - der erste  Step -&gt; first
+ - der litzte Step -&gt; final (ConfigTree kann 
+   nur mit Step abgeschlossen werden)
+ - alle Steps zwischen first und final -&gt; default</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>450</x>
-      <y>220</y>
+      <x>500</x>
+      <y>260</y>
       <w>90</w>
       <h>30</h>
     </coordinates>
@@ -143,33 +149,47 @@ trasportiere zum Client</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>300</x>
+      <x>220</x>
       <y>310</y>
-      <w>160</w>
-      <h>40</h>
+      <w>290</w>
+      <h>70</h>
     </coordinates>
-    <panel_attributes>configTree(): List[Step]</panel_attributes>
+    <panel_attributes>In Step gibt es Action um die Component
+des Stepes zu erstellen. Die Componente 
+werden einzeln erstellt und aktualisiert
+in ConfigTree</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>510</x>
-      <y>410</y>
+      <x>560</x>
+      <y>450</y>
       <w>450</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-Konfiguriere Step 
-und transportiere zum Client</panel_attributes>
+User erstellt die NextSteps innerhab einer Component
+m1=1 für jedes Component</panel_attributes>
     <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>450</x>
+      <x>500</x>
       <y>320</y>
       <w>90</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>70.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>500</x>
+      <y>460</y>
+      <w>90</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
@@ -178,72 +198,49 @@ und transportiere zum Client</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>450</x>
-      <y>420</y>
-      <w>90</w>
-      <h>30</h>
+      <x>560</x>
+      <y>500</y>
+      <w>450</w>
+      <h>50</h>
     </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>70.0;10.0;10.0;10.0</additional_attributes>
+    <panel_attributes>lt=-&gt;
+aktualisierte ConfigTree mit Ids
+m2=1</panel_attributes>
+    <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>170</x>
-      <y>410</y>
+      <x>220</x>
+      <y>400</y>
       <w>290</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>updateConfig(step: Step): List[Step]</panel_attributes>
+    <panel_attributes>Client aktualisiert alle 
+Steps und Components mit Ids</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>510</x>
-      <y>470</y>
-      <w>450</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;
-Aktualisiere ConfigTree und 
-transportiere gesamten Configtree (nur Step) 
-zum Client</panel_attributes>
-    <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>510</x>
-      <y>530</y>
-      <w>450</w>
-      <h>50</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-User melde sich ab
-</panel_attributes>
-    <additional_attributes>10.0;20.0;430.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLNote</id>
-    <coordinates>
-      <x>300</x>
-      <y>530</y>
-      <w>160</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>logout(): Booalean</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>450</x>
-      <y>540</y>
+      <x>500</x>
+      <y>410</y>
       <w>90</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>70.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>220</x>
+      <y>450</y>
+      <w>290</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>In jedem Component wird der 
+NextStep (gewönliches Step) erstellt.</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
