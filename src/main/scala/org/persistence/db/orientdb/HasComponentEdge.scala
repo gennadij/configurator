@@ -70,4 +70,17 @@ object HasComponentEdge {
      
      new SuccessfulStatus("added hasComponents",hasComponentIds.toString())
   }
+  
+  def add(adminId: String, outStep: String, inComponent: String): Status = {
+     val graph: OrientGraph = OrientDB.getGraph
+     val eHasComponent: OrientEdge = graph.addEdge("class:hasComponent", 
+       graph.getVertex(outStep), 
+        graph.getVertex(inComponent), 
+       "hasComponent")
+     eHasComponent.setProperty("adminId", adminId)
+     eHasComponent.setProperty("hasComponentId", "S" + outStep + "C" + inComponent )
+  	 graph.commit
+     
+     new SuccessfulStatus("added hasComponents", "S" + outStep + "C" + inComponent)
+  }
 }

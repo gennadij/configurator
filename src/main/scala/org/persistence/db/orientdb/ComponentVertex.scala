@@ -36,6 +36,20 @@ object ComponentVertex {
 //    }
 //  }
   
+  
+  def get(id: String): AdminComponent = {
+    val graph: OrientGraph = OrientDB.getGraph()
+    val vComponent = graph.getVertex(id)
+    new AdminComponent(
+        true, 
+        vComponent.getIdentity. toString,
+        vComponent.getProperty(PropertyKey.COMPONENT_ID),
+        vComponent.getProperty(PropertyKey.ADMIN_ID),
+        vComponent.getProperty(PropertyKey.KIND)
+    )
+  }
+  
+  
   def addComponent(adminComponent: AdminComponent): AdminComponent = {
     val graph: OrientGraph = OrientDB.getGraph()
     
@@ -55,6 +69,7 @@ object ComponentVertex {
         adminComponent.kind
     )
   }
+  
   
   def createSchema(graph: OrientGraph) = {
     val graph: OrientGraph = OrientDB.getGraph()

@@ -13,6 +13,7 @@ import org.admin.configTree.AdminComponent
 import org.admin.configTree.AdminConfigTree
 import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery
 import com.orientechnologies.orient.core.record.impl.ODocument
+import org.admin.configTree.AdminNextStep
 
 
 class TestScenario9 {
@@ -67,39 +68,43 @@ class TestScenario9 {
       })
     })
     
+    //TODO überlegen ob der aktuelle Element aktualisiert wird oder gesamte ConfigTree
 
      //      Server <-- Client
     val step1 = new AdminStep(false, "","",adminId, "first", null)
      //      Server --> Client
     val addedStep1 = Admin.addStep(step1)
-    // TODO einzelne Componente mit Step verbinden
-//    val addedComponents1 = Admin.addHasComponent(adminId, addedStep1.id, components1)
      //      Server <-- Client
     val c11 = new AdminComponent(false, "", "", adminId, "immutable")
      //      Server --> Client
-    val addedComponent11 = Admin.addComponent(c11)
+    val vComponent11 = Admin.addComponent(c11)
+    val eStep1Component1 = Admin.addHasComponent(adminId, addedStep1.id, vComponent11.id)
+    println(vComponent11)
      //      Server <-- Client
     val c12 = new AdminComponent(false, "", "", adminId, "immutable")
-     //      Server --> Client
-    val addedComponent12 = Admin.addComponent(c12)
-     //      Server --> Client
+    //      Server --> Client
+    val vComponent12 = Admin.addComponent(c12)
+    val eStep1Component2 = Admin.addHasComponent(adminId, addedStep1.id, vComponent12.id)
+    println(vComponent12)
+    //      Server --> Client
     val c13 = new AdminComponent(false, "", "", adminId, "immutable")
-     //      Server <-- Client
-    val addedComponent13 = Admin.addComponent(c13)
+    //      Server <-- Client
+    val vComponent13 = Admin.addComponent(c13)
+    val eStep1Component3 = Admin.addHasComponent(adminId, addedStep1.id, vComponent13.id)
+    println(vComponent13)
+    //      Server <-- Client add NextStep
+    // neue Objekt für AdminNextStep mit der Componnet id der den NextStep erstellt
+    val nextStep2 = new AdminNextStep(false, vComponent11.id, "", "", adminId, "default", null)
+//    val step2 = new AdminStep(false, "","",adminId, "first", null)
+    //      Server --> Client
+//    val vStep2 = Admin.addStep(step2)
+    //
     
     
     
     
     
-    
-    val addedNextStep2 = Admin.addStep(new AdminStep(false, "","",adminId, "first", null))
     val addedNextStep3 = Admin.addStep(new AdminStep(false, "","",adminId, "first", null))
-    
-    val components1 = List(addedComponent11.id, addedComponent12.id, addedComponent13.id)
-    
-    //TODO umstellen auf das einezelne Component
-    
-//    val addedComponents1 = Admin.addHasComponent(adminId, addedStep1.id, components1)
     
     val addedStep2 = Admin.addStep(new AdminStep(false, "","",adminId, "default", null))
     val addedComponent21 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))

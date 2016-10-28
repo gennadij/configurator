@@ -142,6 +142,10 @@ object Persistence {
     HasComponentEdge.add(adminId, outStep, inComponents)
   }
   
+  def addHasComponent(adminId: String, outStep: String, inComponent: String): Status = {
+    HasComponentEdge.add(adminId, outStep, inComponent)
+  }
+  
   /**
    * 
    * verbindet Step und Component in ConfigTree hinzu
@@ -157,6 +161,11 @@ object Persistence {
   
   def addNextStep(adminId: String, outComponent: String, inStep: String): Status = {
     NextStepEdge.add(adminId, outComponent, inStep)
+  }
+  
+  
+  def component(id: String): AdminComponent = {
+    ComponentVertex.get(id)
   }
   
   def setStep(adminId: String, isConnected: Boolean, step: Step, kind: String) = {

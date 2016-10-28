@@ -4,7 +4,7 @@ import org.configTree.step.SelectionCriterium
 
 case class AdminStep (
                   status: Boolean,
-                   id:String,
+                  id:String,
                    stepId: String,
                    adminId: String,
                   //first, default, final

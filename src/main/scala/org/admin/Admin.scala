@@ -108,6 +108,9 @@ object Admin {
   def addHasComponent(adminId: String, outStep: String, inComponents: List[String]) = {
     Persistence.addHasComponent(adminId, outStep, inComponents)
   }
+  def addHasComponent(adminId: String, outStep: String, inComponent: String) = {
+    Persistence.addHasComponent(adminId, outStep, inComponent)
+  }
   
   /**
    * fuegt Edge NextStep zu ConfigTree hinzu, dadurch wird Vertex Component mit 
@@ -126,6 +129,10 @@ object Admin {
   
   def configTree(adminId: String) = {
     Persistence.getConfigTree(adminId)
+  }
+  
+  def component(id: String): AdminComponent = {
+    Persistence.component(id)
   }
   
   /*
