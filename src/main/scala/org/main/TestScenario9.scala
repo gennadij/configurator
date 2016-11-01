@@ -49,16 +49,17 @@ class TestScenario9 {
   
   def configTree() = {
     
-//    val register = Admin.register("test4", "test4")
+    val idPassword = "test8"
+//    val register = Admin.register(idPassword, idPassword)
     
-    val adminId: String = Admin.authenticate("test4", "test4")
+    val adminId: String = Admin.authenticate(idPassword, idPassword)
     
     println("AdminId : " + adminId)
     
     /*
      * Server --> Client
      */
-    val configTree: AdminConfigTree = Admin.configTree(adminId)
+    val configTree: AdminConfigTree = Admin.configTree("AU#40:0")
     
     configTree.steps.foreach(s =>{
       println(s.stepId)
@@ -70,96 +71,126 @@ class TestScenario9 {
     
     //TODO überlegen ob der aktuelle Element aktualisiert wird oder gesamte ConfigTree
 
-     //      Server <-- Client
-    val step1 = new AdminStep(false, "","",adminId, "first", null)
-     //      Server --> Client
-    val addedStep1 = Admin.addStep(step1)
-     //      Server <-- Client
-    val c11 = new AdminComponent(false, "", "", adminId, "immutable")
-     //      Server --> Client
-    val vComponent11 = Admin.addComponent(c11)
-    val eStep1Component1 = Admin.addHasComponent(adminId, addedStep1.id, vComponent11.id)
-    println(vComponent11)
-     //      Server <-- Client
-    val c12 = new AdminComponent(false, "", "", adminId, "immutable")
-    //      Server --> Client
-    val vComponent12 = Admin.addComponent(c12)
-    val eStep1Component2 = Admin.addHasComponent(adminId, addedStep1.id, vComponent12.id)
-    println(vComponent12)
-    //      Server --> Client
-    val c13 = new AdminComponent(false, "", "", adminId, "immutable")
-    //      Server <-- Client
-    val vComponent13 = Admin.addComponent(c13)
-    val eStep1Component3 = Admin.addHasComponent(adminId, addedStep1.id, vComponent13.id)
-    println(vComponent13)
-    //      Server <-- Client add NextStep
-    // neue Objekt für AdminNextStep mit der Componnet id der den NextStep erstellt
-    val nextStep2 = new AdminNextStep(false, vComponent11.id, "", "", adminId, "default", null)
-//    val step2 = new AdminStep(false, "","",adminId, "first", null)
-    //      Server --> Client
-//    val vStep2 = Admin.addStep(step2)
-    //
+//     //      Server <-- Client
+//    val step1 = new AdminStep(false, "","",adminId, "first", null)
+//     //      Server --> Client
+//    val vStep1 = Admin.addStep(step1)
+//    println(vStep1)
+//     //      Server <-- Client
+//    val c11 = new AdminComponent(false, "", "", adminId, "immutable")
+//     //      Server --> Client
+//    val vComponent11 = Admin.addComponent(c11)
+//    val eStep1Component1 = Admin.addHasComponent(adminId, vStep1.id, vComponent11.id)
+//    println(vComponent11)
+//     //      Server <-- Client
+//    val c12 = new AdminComponent(false, "", "", adminId, "immutable")
+//    //      Server --> Client
+//    val vComponent12 = Admin.addComponent(c12)
+//    val eStep1Component2 = Admin.addHasComponent(adminId, vStep1.id, vComponent12.id)
+//    println(vComponent12)
+//    //      Server --> Client
+//    val c13 = new AdminComponent(false, "", "", adminId, "immutable")
+//    //      Server <-- Client
+//    val vComponent13 = Admin.addComponent(c13)
+//    val eStep1Component3 = Admin.addHasComponent(adminId, vStep1.id, vComponent13.id)
+//    println(vComponent13)
+//    
+//    
+//    //      Server <-- Client (add NextStep)
+//    val nextStep1 = new AdminStep(false, "", "", adminId, "default", null)
+//    println(nextStep1)
+//    val componentId1 = vComponent11.id
+//    println(nextStep1 + "  " + componentId1)
+//    //      Server --> Client
+//    val vNextStep1 = Admin.addStep(nextStep1)
+//    val eNextStep1 = Admin.addNextStep(adminId, componentId1, vNextStep1.id)
+//    println(vNextStep1)
+//    //      Server <-- Client (add NextStep)
+//    val nextStep2 = new AdminStep(false, vNextStep1.id, vNextStep1.adminId, adminId, "default", null)
+//    val componentId2 = vComponent12.id
+//    println(nextStep2 + "  " + componentId2)
+//    //      Server --> Client
+//    if(nextStep2.id != "" && nextStep2.stepId != ""){
+//      val eNextStep2 = Admin.addNextStep(adminId, componentId2, nextStep2.id)
+//      println(eNextStep2)
+//    }else{
+//      println("add new Step")
+//      val vNextStep2 = Admin.addStep(nextStep2)
+//      val eNextStep2 = Admin.addNextStep(adminId, componentId2, vNextStep2.id)
+//      println(vNextStep2 + "   " + eNextStep2)
+//    }
+//    //      Server <-- Client (add NextStep)
+//    val nextStep3 = new AdminStep(false, "", "", adminId, "default", null)
+//    val componentId3 = vComponent13.id
+//    println(nextStep3 + "  " + componentId3)
+//    //      Server --> Client
+//    if(nextStep3.id != "" && nextStep3.adminId != ""){
+//      val eNextStep3 = Admin.addNextStep(adminId, componentId3, vNextStep1.id)
+//      println(eNextStep3)
+//    }else{
+//      println("add new Step")
+//      val vNextStep3 = Admin.addStep(nextStep3)
+//      val eNextStep3 = Admin.addNextStep(adminId, componentId3, vNextStep3.id)
+//      println(vNextStep3 + "   " + eNextStep3)
+//    }
     
     
-    
-    
-    
-    val addedNextStep3 = Admin.addStep(new AdminStep(false, "","",adminId, "first", null))
-    
-    val addedStep2 = Admin.addStep(new AdminStep(false, "","",adminId, "default", null))
-    val addedComponent21 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val addedComponent22 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val components2 = List(addedComponent21.id, addedComponent22.id)
-    val addedComponents2 = Admin.addHasComponent(adminId, addedStep2.id, components2)
-    
-    
-    val addedStep3 = Admin.addStep(new AdminStep(false, "","",adminId, "default", null))
-    val addedComponent31 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val addedComponent32 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val addedComponent33 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "mutable"))
-    val addedComponent34 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "mutable"))
-    val components3 = List(addedComponent31.id, addedComponent32.id, addedComponent33.id, addedComponent34.id)
-    val addedComponents3 = Admin.addHasComponent(adminId, addedStep3.id, components3)
-    
-    
-    val addedStep4 = Admin.addStep(new AdminStep(false, "","",adminId, "default", null))
-    val addedComponent41 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val addedComponent42 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val addedComponent43 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val components4 = List(addedComponent41.id, addedComponent42.id, addedComponent43.id)
-    val addedComponents4 = Admin.addHasComponent(adminId, addedStep4.id, components4)
-    
-    
-    val addedStep5 = Admin.addStep(new AdminStep(false, "","",adminId, "default", null))
-    val addedComponent51 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val addedComponent52 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val addedComponent53 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val addedComponent54 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val addedComponent55 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val components5 = List(addedComponent51.id, addedComponent52.id, addedComponent53.id, addedComponent54.id, addedComponent55.id)
-    val addedComponents5 = Admin.addHasComponent(adminId, addedStep5.id, components5)
-    
-    
-    val addedStep6 = Admin.addStep(new AdminStep(false, "","",adminId, "default", null))
-    val addedComponent61 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val addedComponent62 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val addedComponent63 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val components6 = List(addedComponent61.id, addedComponent62.id, addedComponent63.id)
-    val addedComponents6 = Admin.addHasComponent(adminId, addedStep6.id, components6)
-    
-    val addedStep7 = Admin.addStep(new AdminStep(false, "","",adminId, "default", null))
-    val addedComponent71 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val addedComponent72 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val addedComponent73 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val components7 = List(addedComponent71.id, addedComponent72.id, addedComponent73.id)
-    val addedComponents7 = Admin.addHasComponent(adminId, addedStep7.id, components7)
-    
-    
-    val addedStep8 = Admin.addStep(new AdminStep(false, "","",adminId, "default", null))
-    val addedComponent81 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val addedComponent82 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
-    val components8 = List(addedComponent81.id, addedComponent82.id)
-    val addedComponents8 = Admin.addHasComponent(adminId, addedStep8.id, components8)
+//    val addedNextStep3 = Admin.addStep(new AdminStep(false, "","",adminId, "first", null))
+//    
+//    val addedStep2 = Admin.addStep(new AdminStep(false, "","",adminId, "default", null))
+//    val addedComponent21 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val addedComponent22 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val components2 = List(addedComponent21.id, addedComponent22.id)
+//    val addedComponents2 = Admin.addHasComponent(adminId, addedStep2.id, components2)
+//    
+//    
+//    val addedStep3 = Admin.addStep(new AdminStep(false, "","",adminId, "default", null))
+//    val addedComponent31 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val addedComponent32 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val addedComponent33 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "mutable"))
+//    val addedComponent34 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "mutable"))
+//    val components3 = List(addedComponent31.id, addedComponent32.id, addedComponent33.id, addedComponent34.id)
+//    val addedComponents3 = Admin.addHasComponent(adminId, addedStep3.id, components3)
+//    
+//    
+//    val addedStep4 = Admin.addStep(new AdminStep(false, "","",adminId, "default", null))
+//    val addedComponent41 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val addedComponent42 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val addedComponent43 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val components4 = List(addedComponent41.id, addedComponent42.id, addedComponent43.id)
+//    val addedComponents4 = Admin.addHasComponent(adminId, addedStep4.id, components4)
+//    
+//    
+//    val addedStep5 = Admin.addStep(new AdminStep(false, "","",adminId, "default", null))
+//    val addedComponent51 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val addedComponent52 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val addedComponent53 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val addedComponent54 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val addedComponent55 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val components5 = List(addedComponent51.id, addedComponent52.id, addedComponent53.id, addedComponent54.id, addedComponent55.id)
+//    val addedComponents5 = Admin.addHasComponent(adminId, addedStep5.id, components5)
+//    
+//    
+//    val addedStep6 = Admin.addStep(new AdminStep(false, "","",adminId, "default", null))
+//    val addedComponent61 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val addedComponent62 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val addedComponent63 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val components6 = List(addedComponent61.id, addedComponent62.id, addedComponent63.id)
+//    val addedComponents6 = Admin.addHasComponent(adminId, addedStep6.id, components6)
+//    
+//    val addedStep7 = Admin.addStep(new AdminStep(false, "","",adminId, "default", null))
+//    val addedComponent71 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val addedComponent72 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val addedComponent73 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val components7 = List(addedComponent71.id, addedComponent72.id, addedComponent73.id)
+//    val addedComponents7 = Admin.addHasComponent(adminId, addedStep7.id, components7)
+//    
+//    
+//    val addedStep8 = Admin.addStep(new AdminStep(false, "","",adminId, "default", null))
+//    val addedComponent81 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val addedComponent82 = Admin.addComponent(new AdminComponent(false, "", "", adminId, "immutable"))
+//    val components8 = List(addedComponent81.id, addedComponent82.id)
+//    val addedComponents8 = Admin.addHasComponent(adminId, addedStep8.id, components8)
     
 //    val configTree2: AdminConfigTree = Admin.configTree(adminId)
 //    

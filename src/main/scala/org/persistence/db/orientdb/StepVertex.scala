@@ -12,6 +12,7 @@ import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import org.admin.configTree.AdminStep
 import org.admin.configTree.AdminConfigTreeStep
 import org.status.Status
+import org.admin.configTree.AdminNextStep
 
 
 object StepVertex {
@@ -71,6 +72,26 @@ object StepVertex {
             vStep.getProperty("adminId"),
             vStep.getProperty("kind"), 
             null
+        )
+  }
+  
+    def addStep(adminStep: AdminNextStep): AdminNextStep = {
+    val graph: OrientGraph = OrientDB.getGraph()
+    val vStep: OrientVertex = graph.addVertex("class:Step", 
+            "adminId", adminStep.adminId,
+            "kind", adminStep.kind)
+        graph.commit
+        vStep.setProperty("stepId", "S" + vStep.getIdentity.toString())
+        graph.commit
+        
+        new AdminNextStep(
+            true,
+            vStep.getIdentity.toString(),
+            "S" + vStep.getIdentity.toString(),
+            vStep.getProperty("adminId"),
+            vStep.getProperty("kind"), 
+            null,
+            ""
         )
   }
   

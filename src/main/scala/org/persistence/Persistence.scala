@@ -69,6 +69,22 @@ object Persistence {
     StepVertex.addStep(adminStep)
   }
   
+   /**
+   * 
+   * fuegt Vertex Step zu ConfigTree hinzu
+   * 
+   * @author Gennadi Heimann
+   * 
+   * @version 1.0
+   * 
+   * @param AdminStep
+   * 
+   * @return Status
+   */
+  
+  def addStep(adminStep: AdminNextStep): AdminNextStep = {
+    StepVertex.addStep(adminStep)
+  }
   def addComponent(adminComponent: AdminComponent): AdminComponent = {
     ComponentVertex.addComponent(adminComponent)
   }

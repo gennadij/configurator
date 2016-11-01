@@ -19,6 +19,7 @@ import org.persistence.db.orientdb.AdminUserVertex
 import org.status.WarningStatus
 import org.admin.configTree.AdminStep
 import org.admin.configTree.AdminComponent
+import org.admin.configTree.AdminNextStep
 
 
 
@@ -50,6 +51,11 @@ object Admin {
    * deleteAccount(): AdminUser
    * 
    */
+  
+  def testJavaCall(arg: String) = {
+    println("test")
+    println(arg)
+  }
   
   def register(adminUsername: String,  adminUserPassword: String): AdminUser = {
     // TODO Alle Resourcen einstellen (AdminID, Datenbankverbindung usw.)
@@ -92,6 +98,23 @@ object Admin {
    */
   
   def addStep(adminStep: AdminStep): AdminStep = {
+    Persistence.addStep(adminStep)
+  }
+  
+  /**
+   * 
+   * fuegt Vertex Step zu ConfigTree hinzu
+   * 
+   * @author Gennadi Heimann
+   * 
+   * @version 1.0
+   * 
+   * @param AdminStep
+   * 
+   * @return Status
+   */
+  
+  def addStep(adminStep: AdminNextStep): AdminNextStep = {
     Persistence.addStep(adminStep)
   }
   
