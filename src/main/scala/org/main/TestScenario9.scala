@@ -14,7 +14,7 @@ import org.admin.configTree.AdminConfigTree
 import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery
 import com.orientechnologies.orient.core.record.impl.ODocument
 import org.admin.configTree.AdminNextStep
-
+import play.api.libs.json._
 
 class TestScenario9 {
   
@@ -44,7 +44,14 @@ class TestScenario9 {
 //    println(step7(adminId).message)
 //    println(step8(adminId).message)
     
-    configTree()
+    val rowJson = """{"hello": "world", "age": 42}"""
+    println(rowJson)
+    val parsedJson = Json.parse(rowJson)
+    println(parsedJson)
+    println((parsedJson \ "hello").as[String])
+    
+    
+//    configTree()
   }
   
   def configTree() = {
