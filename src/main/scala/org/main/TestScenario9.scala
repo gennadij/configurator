@@ -44,11 +44,11 @@ class TestScenario9 {
 //    println(step7(adminId).message)
 //    println(step8(adminId).message)
     
-    val rowJson = """{"hello": "world", "age": 42}"""
-    println(rowJson)
-    val parsedJson = Json.parse(rowJson)
-    println(parsedJson)
-    println((parsedJson \ "hello").as[String])
+//    val rowJson = """{"hello": "world", "age": 42}"""
+//    println(rowJson)
+//    val parsedJson = Json.parse(rowJson)
+//    println(parsedJson)
+//    println((parsedJson \ "hello").as[String])
     
     
 //    configTree()
