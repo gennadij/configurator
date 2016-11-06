@@ -20,6 +20,8 @@ import org.status.WarningStatus
 import org.admin.configTree.AdminStep
 import org.admin.configTree.AdminComponent
 import org.admin.configTree.AdminNextStep
+import play.api.libs.json.Writes
+import play.api.libs.json.Json
 
 
 
@@ -131,7 +133,7 @@ object Admin {
   def addHasComponent(adminId: String, outStep: String, inComponents: List[String]) = {
     Persistence.addHasComponent(adminId, outStep, inComponents)
   }
-  def addHasComponent(adminId: String, outStep: String, inComponent: String) = {
+  def addHasComponent(adminId: String, outStep: String, inComponent: String): Status = {
     Persistence.addHasComponent(adminId, outStep, inComponent)
   }
   

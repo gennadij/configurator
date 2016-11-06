@@ -41,7 +41,6 @@ object ComponentVertex {
     val graph: OrientGraph = OrientDB.getGraph()
     val vComponent = graph.getVertex(id)
     new AdminComponent(
-        true, 
         vComponent.getIdentity. toString,
         vComponent.getProperty(PropertyKey.COMPONENT_ID),
         vComponent.getProperty(PropertyKey.ADMIN_ID),
@@ -62,7 +61,6 @@ object ComponentVertex {
     vComponent.setProperty("componentId", "C" + vComponent.getIdentity.toString())
     graph.commit
     new AdminComponent(
-        true,
         vComponent.getIdentity.toString,
         "C" + vComponent.getIdentity,
         adminComponent.adminId,

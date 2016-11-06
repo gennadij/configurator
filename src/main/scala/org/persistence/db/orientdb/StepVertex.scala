@@ -66,12 +66,10 @@ object StepVertex {
         graph.commit
         
         new AdminStep(
-            true,
             vStep.getIdentity.toString(),
             "S" + vStep.getIdentity.toString(),
             vStep.getProperty("adminId"),
-            vStep.getProperty("kind"), 
-            null
+            vStep.getProperty("kind")
         )
   }
   
