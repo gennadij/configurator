@@ -44,9 +44,9 @@ class TestScenario9 {
 //    println(step7(adminId).message)
 //    println(step8(adminId).message)
     
-//    val json = Json.obj("hello" -> "world", "age" -> 42)
-//    println(json)
-//    println((json \ "hello").as[String])
+    val json = Json.obj("hello" -> "world", "age" -> 42)
+    println(json)
+    println((json \ "hello").as[String])
     
     
     configTree()

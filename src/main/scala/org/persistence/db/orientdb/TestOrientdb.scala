@@ -4,7 +4,6 @@ import com.tinkerpop.blueprints.impls.orient.OrientGraphFactory
 import com.tinkerpop.blueprints.impls.orient.OrientGraph
 import com.tinkerpop.blueprints.impls.orient.OrientVertexType
 import com.orientechnologies.orient.core.metadata.schema.OType
-import orientdb.App
 import com.orientechnologies.orient.core.sql.OCommandSQL
 import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
 import sun.security.provider.certpath.Vertex
