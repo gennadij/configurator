@@ -2,6 +2,7 @@ package org.persistence.db.orientdb
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraphFactory
 import com.tinkerpop.blueprints.impls.orient.OrientGraph
+import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal
 
 object OrientDB {
   

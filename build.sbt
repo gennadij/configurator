@@ -12,7 +12,7 @@ val orientdbTools = "com.orientechnologies" % "orientdb-tools" % "2.2.+"
 val orientdbCore = "com.orientechnologies" % "orientdb-core" % "2.2.3"
 val orientdbClient = "com.orientechnologies" % "orientdb-client" % "2.2.+"
 val orientdbObject = "com.orientechnologies" % "orientdb-object" % "2.2.3"
-// https://mvnrepository.com/artifact/com.typesafe.play/play-json_2.10
+val bluprintsCore = "com.tinkerpop.blueprints" % "blueprints-core" % "2.6.+"
 val jsonFromPLay = "com.typesafe.play" % "play-json_2.10" % "2.4.8"
 
 
@@ -30,15 +30,12 @@ lazy val root = (project in file(".")).
 		name := "configurator",
 		resolvers ++= Seq("Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"),
 		libraryDependencies ++= Seq(
-		  json4s, 
 		  xml, 
-		  specs2, 
-		  mockito, 
-		  junit, 
-		  specs2Junit, 
-		  orientdbServer, 
-		  orientdbEnterprise,
-		  orientdbGraph, 
+		  specs2,
+      orientdbCore,
+			bluprintsCore,
+		  orientdbGraph,
+			orientdbEnterprise,
 		  orientdbClient,
 		  jsonFromPLay
 		),

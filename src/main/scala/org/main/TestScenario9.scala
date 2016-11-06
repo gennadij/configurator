@@ -44,14 +44,12 @@ class TestScenario9 {
 //    println(step7(adminId).message)
 //    println(step8(adminId).message)
     
-    val rowJson = """{"hello": "world", "age": 42}"""
-    println(rowJson)
-    val parsedJson = Json.parse(rowJson)
-    println(parsedJson)
-    println((parsedJson \ "hello").as[String])
+//    val json = Json.obj("hello" -> "world", "age" -> 42)
+//    println(json)
+//    println((json \ "hello").as[String])
     
     
-//    configTree()
+    configTree()
   }
   
   def configTree() = {
@@ -66,7 +64,7 @@ class TestScenario9 {
     /*
      * Server --> Client
      */
-    val configTree: AdminConfigTree = Admin.configTree("AU#40:0")
+    val configTree: AdminConfigTree = Admin.configTree(adminId)
     
     configTree.steps.foreach(s =>{
       println(s.stepId)
