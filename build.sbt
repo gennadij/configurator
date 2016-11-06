@@ -51,6 +51,7 @@ lazy val root = (project in file(".")).
 		  ,orientdbGraph
 			,orientdbEnterprise
 		  ,orientdbClient
+			,orientdbTools
 //		  ,jsonFromPLay
 		)
 	)
