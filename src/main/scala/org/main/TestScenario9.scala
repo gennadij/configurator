@@ -20,33 +20,13 @@ class TestScenario9 {
   
   def scenario9_1() = {
     
+    val json = Json.obj("hello" -> "world", "age" -> 42)
+    println(json)
+    println((json \ "hello").as[String])
     
     
-    /*
-     * Regestrierung AdminUser
-     */
-//    val status = Admin.register(adminId, adminUsername, adminPassword)
-//    println(status.message)
+//    val formatToJson = Json.format[AdminStep]
     
-    /*
-     * Anmelden von AdminUser
-     */
-    
-//    val status = Admin.connect(adminUsername, adminPassword)
-//    println(status.message)
-    
-//      step1(adminId)
-//    println(step2(adminId).message)
-//    println(step3(adminId).message)
-//    println(step4(adminId).message)
-//    println(step5(adminId).message)
-//    println(step6(adminId).message)
-//    println(step7(adminId).message)
-//    println(step8(adminId).message)
-    
-//    val json = Json.obj("hello" -> "world", "age" -> 42)
-//    println(json)
-//    println((json \ "hello").as[String])
     
     
     configTree()
