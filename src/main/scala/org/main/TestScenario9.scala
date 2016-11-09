@@ -24,7 +24,7 @@ class TestScenario9 extends AdminWeb{
   def scenario9_1() = {
     
     //Server ---->> Client
-    //Server liefert die Webseite zum Anmelden
+    //Server liefert die Webseite zum Anmelden oder Registrieren
     
     //Server <<---- Client
     //Client liefert Username und Password
@@ -34,20 +34,36 @@ class TestScenario9 extends AdminWeb{
         ,"params" -> Json.obj(
              "username" -> "test8", 
              "password" -> "test8"))
-             
-    val usernamePassword = "test8"
     
-    val adminId: String = Admin.authenticate(usernamePassword, usernamePassword)
-    if(adminId == ""){
-      val register = Admin.register(usernamePassword, usernamePassword)
-    }
+    //Server ---->> Client
+    val userAdminJson: JsValue = handelMessage(userNamePasswordJson)
     
-    val configTree1 = Admin.configTree(adminId)
+    //Server <<---- Client
+    // get current ConfigTree
     
-    //configTree to Json
-    
-//    configTree()
+    val configTreeJsonClient1 = Json.obj(
+        "jsonId" -> 3,
+        "method" -> "configTree"
+        ,"params"-> Json.obj(
+            "adminId" -> "AU#40:0", 
+            "authentication" -> true))
+
+     //Server ---->> Client
+     val configTreeJsonServer1 = handelMessage(configTreeJsonClient1)    
   }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   def configTree() = {
     

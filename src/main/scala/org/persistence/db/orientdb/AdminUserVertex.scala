@@ -21,6 +21,7 @@ object AdminUserVertex {
   val propKeyAdminUserPassword = "userPassword"
   
   def create(adminUsername: String, adminUserPassword: String): AdminUser = {
+    // TODO impl status autentifications
     val graph: OrientGraph = OrientDB.getGraph()
     if(graph.getVertices(propKeyAdminUsername, adminUsername).size == 0){
       val vAdminUser: OrientVertex = graph.addVertex(s"class:$className",
@@ -29,14 +30,17 @@ object AdminUserVertex {
       graph.commit
       new AdminUser("AU" + vAdminUser.getIdentity.toString(), 
                     vAdminUser.getProperty(propKeyAdminUsername).toString(), 
-                    vAdminUser.getProperty(propKeyAdminUserPassword).toString(), 
-                    "object AdminUser with username " + 
-                    vAdminUser.getProperty(propKeyAdminUsername).toString() + 
-                    " und AdminUserId " + "AU" + vAdminUser.getIdentity.toString() +  
-                    " was created")
+                    vAdminUser.getProperty(propKeyAdminUserPassword).toString(),
+                    true
+//                    "object AdminUser with username " + 
+//                    vAdminUser.getProperty(propKeyAdminUsername).toString() + 
+//                    " und AdminUserId " + "AU" + vAdminUser.getIdentity.toString() +  
+//                    " was created"
+                    )
 //      new SuccessfulStatus("object AdminUser with " + adminUsername + " was created")
     }else{
-      new AdminUser("", "", "", "object AdminUser with Username " + adminUsername + " already exist")
+      new AdminUser("", "", "", true)
+//      new AdminUser("", "", "", "object AdminUser with Username " + adminUsername + " already exist")
 //      new WarningStatus("object AdminUser with " + adminUsername + " already exist")
     }
   }

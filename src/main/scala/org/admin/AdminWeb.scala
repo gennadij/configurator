@@ -5,6 +5,7 @@ import org.admin.configTree.AdminStep
 import play.api.libs.json.Json
 import play.api.libs.json.Writes
 import org.admin.configTree.AdminComponent
+import org.persistence.db.orientdb.AdminUserVertex
 
 trait AdminWeb {
   
@@ -19,10 +20,11 @@ trait AdminWeb {
    *   Server <- Client
    *   {"jsonId": 2, "method": "autheticate", params: {"username": "test", "password": "test"}}
    *   Server -> Client
-   *   {"jsonId": 2, "method": "autheticate", result: {"authentication": true, "username": "test", "password": "test"}}
+   *   {"jsonId": 2, "method": "autheticate", 
+   *       result: {"id": "AU#40:0", "username": "test", "password": "test", "authentication": true}}
    * 3. => configTree
    *   Server <- Client
-   *   {"jsonId": 3, "method": "configTree", params: {}}
+   *   {"jsonId": 3, "method": "configTree", params: {"adminId": "AU#40:0", "authentication": true}}
    *   Server -> Client
    *   {"jsonId": 3, "method": "configTree", result: { TODO definieren}}
    * 4. => addFirstStep
@@ -62,7 +64,12 @@ trait AdminWeb {
     val username = (receivedMessage \ "username").toString()
     val password = (receivedMessage \ "password").toString()
     val adminId = Admin.authenticate(username, password)
-    Json.toJson(Json.obj(""->""))
+    //TODO impl autentification
+    val adminUser = new AdminUser(adminId, username, password, true)
+    Json.obj(
+        "jsonId"-> 2, 
+        "method" -> "autheticate"
+        ,"result" -> Json.toJson(adminUser))
   }
   private def addFirstStep(receivedMessage: JsValue): JsValue = {
     //TODO impl Reads with validation show 
@@ -106,6 +113,15 @@ trait AdminWeb {
         "componentId" -> adminComponent.componentId
         ,"adminId" -> adminComponent.adminId
         ,"kind" -> adminComponent.kind
+      )
+  }
+  
+  implicit val adminUserWrites = new Writes[AdminUser] {
+    def writes(adminUser: AdminUser) = Json.obj(
+        "id" -> adminUser.id,
+        "username" -> adminUser.name
+        ,"password" -> adminUser.password
+        ,"status" -> adminUser.authentication
       )
   }
 }
