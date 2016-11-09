@@ -15,21 +15,38 @@ import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery
 import com.orientechnologies.orient.core.record.impl.ODocument
 import org.admin.configTree.AdminNextStep
 import play.api.libs.json._
+import org.admin.AdminWeb
 
-class TestScenario9 {
+class TestScenario9 extends AdminWeb{
+  
+  
   
   def scenario9_1() = {
     
-    val json = Json.obj("hello" -> "world", "age" -> 42)
-    println(json)
-    println((json \ "hello").as[String])
+    //Server ---->> Client
+    //Server liefert die Webseite zum Anmelden
     
+    //Server <<---- Client
+    //Client liefert Username und Password
+    val userNamePasswordJson = Json.obj(
+        "jsonId" -> 2, 
+        "method" -> "autheticate"
+        ,"params" -> Json.obj(
+             "username" -> "test8", 
+             "password" -> "test8"))
+             
+    val usernamePassword = "test8"
     
-//    val formatToJson = Json.format[AdminStep]
+    val adminId: String = Admin.authenticate(usernamePassword, usernamePassword)
+    if(adminId == ""){
+      val register = Admin.register(usernamePassword, usernamePassword)
+    }
     
+    val configTree1 = Admin.configTree(adminId)
     
+    //configTree to Json
     
-    configTree()
+//    configTree()
   }
   
   def configTree() = {

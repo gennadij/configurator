@@ -51,13 +51,19 @@ trait AdminWeb {
   
   def handelMessage(receivedMessage: JsValue): JsValue = {
     (receivedMessage \ "method").toString() match {
+      case "autheticate" => autheticate(receivedMessage)
       case "addFirstStep" => addFirstStep(receivedMessage)
       case "addComponent" => addComponent(receivedMessage)
       case "addNextStep" => addNextStep(receivedMessage)
     }
   }
   
-  
+  private def autheticate(receivedMessage: JsValue): JsValue = {
+    val username = (receivedMessage \ "username").toString()
+    val password = (receivedMessage \ "password").toString()
+    val adminId = Admin.authenticate(username, password)
+    Json.toJson(Json.obj(""->""))
+  }
   private def addFirstStep(receivedMessage: JsValue): JsValue = {
     //TODO impl Reads with validation show 
     // https://www.playframework.com/documentation/2.4.x/ScalaJsonCombinators
