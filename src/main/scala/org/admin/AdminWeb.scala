@@ -1,11 +1,13 @@
 package org.admin
 
-import play.api.libs.json.JsValue
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
 import org.admin.configTree.AdminStep
-import play.api.libs.json.Json
-import play.api.libs.json.Writes
 import org.admin.configTree.AdminComponent
 import org.persistence.db.orientdb.AdminUserVertex
+import org.admin.configTree.AdminConfigTree
+import org.admin.configTree.AdminConfigTreeStep
+import scala.collection.immutable.Seq
 
 trait AdminWeb {
   
@@ -26,7 +28,40 @@ trait AdminWeb {
    *   Server <- Client
    *   {"jsonId": 3, "method": "configTree", params: {"adminId": "AU#40:0", "authentication": true}}
    *   Server -> Client
-   *   {"jsonId": 3, "method": "configTree", result: { TODO definieren}}
+   *   {"jsonId": 3, "method": "configTree", result: {"steps":
+                  	[
+                  		{
+                  			"id":"#19:1","stepId":"#19:1","adminId":"AU#37:0","kind":"first",
+                  			"components":
+                  				[
+                  					{
+                  						"id":"#21:0","componentId":"C#21:0","adminId":"AU#37:0","kind":"immutable","nextSteps":"NS#17:2"
+                  					},
+                  					{
+                  						"id":"#22:0","componentId":"C#22:0","adminId":"AU#37:0","kind":"immutable","nextSteps":"NS#17:2"
+                  					},
+                  					{
+                  						"id":"#23:0","componentId":"C#23:0","adminId":"AU#37:0","kind":"immutable","nextSteps":"NS#17:2"
+                  					}
+                  				]
+                  		},
+                  		{
+                  			"id":"#17:2","stepId":"#17:2","adminId":"AU#37:0","kind":"default",
+                  			"components":
+                  				[
+                  					{
+                  						"id":"#23:1","componentId":"C#23:1","adminId":"AU#37:0","kind":"immutable","nextSteps":"NS#18:2"
+                  					},
+                  					{
+                  						"id":"#22:1","componentId":"C#22:1","adminId":"AU#37:0","kind":"immutable","nextSteps":"NS#18:2"
+                  					},
+                  					{
+                  						"id":"#21:1","componentId":"C#21:1","adminId":"AU#37:0","kind":"immutable","nextSteps":"NS#18:2"
+                  					}
+                  				]
+                  		}
+                  	]
+                  }}
    * 4. => addFirstStep
    *   Server <- Client
    *   {"jsonId": 4, "method": "addFirstStep", "params": {"adminId": "AU#40:0", "kind": "immutable"}}
@@ -55,6 +90,7 @@ trait AdminWeb {
     (receivedMessage \ "method").toString() match {
       case "autheticate" => autheticate(receivedMessage)
       case "addFirstStep" => addFirstStep(receivedMessage)
+      case "configTree" => configTree(receivedMessage)
       case "addComponent" => addComponent(receivedMessage)
       case "addNextStep" => addNextStep(receivedMessage)
     }
@@ -98,30 +134,37 @@ trait AdminWeb {
     Json.toJson(step)
   }
   
-  implicit val adminStepWrites = new Writes[AdminStep] {
-    def writes(adminStep: AdminStep) = Json.obj(
-        "id" -> adminStep.id,
-        "stepId" -> adminStep.stepId
-        ,"adminId" -> adminStep.adminId
-        ,"kind" -> adminStep.kind
-      )
+  private def configTree(receivedMessage: JsValue): JsValue = {
+    val adminId = (receivedMessage \ "params" \ "adminId").toString()
+    val authentication = (receivedMessage \ "params" \ "authentication").toBoolean
+    val steps = Admin.configTree(adminId)
+    Json.toJson(steps)
   }
   
-  implicit val adminComponentWrites = new Writes[AdminComponent] {
-    def writes(adminComponent: AdminComponent) = Json.obj(
-        "id" -> adminComponent.id,
-        "componentId" -> adminComponent.componentId
-        ,"adminId" -> adminComponent.adminId
-        ,"kind" -> adminComponent.kind
-      )
-  }
+//  implicit val adminStepWrites = new Writes[AdminStep] {
+//    def writes(adminStep: AdminStep) = Json.obj(
+//        "id" -> adminStep.id,
+//        "stepId" -> adminStep.stepId
+//        ,"adminId" -> adminStep.adminId
+//        ,"kind" -> adminStep.kind
+//      )
+//  }
   
-  implicit val adminUserWrites = new Writes[AdminUser] {
-    def writes(adminUser: AdminUser) = Json.obj(
-        "id" -> adminUser.id,
-        "username" -> adminUser.name
-        ,"password" -> adminUser.password
-        ,"status" -> adminUser.authentication
-      )
-  }
-}
+//  implicit val adminComponentWrites = new Writes[AdminComponent] {
+//    def writes(adminComponent: AdminComponent) = Json.obj(
+//        "id" -> adminComponent.id,
+//        "componentId" -> adminComponent.componentId
+//        ,"adminId" -> adminComponent.adminId
+//        ,"kind" -> adminComponent.kind
+//      )
+//  }
+  
+//  implicit val adminUserWrites = new Writes[AdminUser] {
+//    def writes(adminUser: AdminUser) = Json.obj(
+//        "id" -> adminUser.id,
+//        "username" -> adminUser.name
+//        ,"password" -> adminUser.password
+//        ,"status" -> adminUser.authentication
+//      )
+//  }
+//}

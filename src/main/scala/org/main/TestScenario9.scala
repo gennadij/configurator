@@ -53,21 +53,17 @@ class TestScenario9 extends AdminWeb{
   }
   
   
+  def scenario9_2() = {
+    configTree()
+  }
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
+
   
   def configTree() = {
     
-    val idPassword = "test8"
+    val idPassword = "test3"
 //    val register = Admin.register(idPassword, idPassword)
     
     val adminId: String = Admin.authenticate(idPassword, idPassword)
@@ -86,6 +82,8 @@ class TestScenario9 extends AdminWeb{
         println(c)
       })
     })
+    
+    println(Json.toJson(configTree))
     
     //TODO überlegen ob der aktuelle Element aktualisiert wird oder gesamte ConfigTree
 

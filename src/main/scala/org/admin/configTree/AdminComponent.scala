@@ -4,6 +4,8 @@
 
 package org.admin.configTree
 
+import play.api.libs.json.Json
+
 case class AdminComponent(
                       id: String,
                       componentId: String,
@@ -11,3 +13,7 @@ case class AdminComponent(
                       //immutable, mutable
                       kind: String
                     )
+                    
+object AdminComponent {
+  implicit val format = Json.format[AdminComponent]
+}

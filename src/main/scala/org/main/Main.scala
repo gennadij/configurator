@@ -28,7 +28,8 @@ object Main {
     
 //    new TestScenario8().scenario8
 
-    new TestScenario9().scenario9_1
+//    new TestScenario9().scenario9_1
+    new TestScenario9().scenario9_2()
     
     println("END")
   }

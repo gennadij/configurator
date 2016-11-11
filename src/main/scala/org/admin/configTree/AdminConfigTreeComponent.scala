@@ -1,5 +1,7 @@
 package org.admin.configTree
 
+import play.api.libs.json.Json
+
 case class AdminConfigTreeComponent (
                       id: String,
                       componentId: String,
@@ -8,3 +10,7 @@ case class AdminConfigTreeComponent (
                       kind: String,
                       nextSteps: String
 )
+
+object AdminConfigTreeComponent {
+  implicit val format = Json.format[AdminConfigTreeComponent]
+}
