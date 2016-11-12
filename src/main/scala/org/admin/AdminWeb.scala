@@ -113,7 +113,11 @@ trait AdminWeb {
     val adminId = (receivedMessage \ "adminId").toString()
     val kind = (receivedMessage \ "kind").toString()
     val step = Admin.addStep(new AdminStep("", "", adminId, kind))
-    Json.toJson(step)
+    Json.obj(
+        "jsonId"-> 2, 
+        "method" -> "autheticate"
+        ,"result" -> Json.toJson(step)
+        )
   }
   
   private def addComponent(receivedMessage: JsValue): JsValue = {
@@ -136,7 +140,7 @@ trait AdminWeb {
   
   private def configTree(receivedMessage: JsValue): JsValue = {
     val adminId = (receivedMessage \ "params" \ "adminId").toString()
-    val authentication = (receivedMessage \ "params" \ "authentication").toBoolean
+    val authentication = (receivedMessage \ "params" \ "authentication").toString().toBoolean
     val steps = Admin.configTree(adminId)
     Json.toJson(steps)
   }
@@ -167,4 +171,4 @@ trait AdminWeb {
 //        ,"status" -> adminUser.authentication
 //      )
 //  }
-//}
+}

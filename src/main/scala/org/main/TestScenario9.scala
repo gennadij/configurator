@@ -37,6 +37,7 @@ class TestScenario9 extends AdminWeb{
     
     //Server ---->> Client
     val userAdminJson: JsValue = handelMessage(userNamePasswordJson)
+    println("Server ---->> Client == " + userAdminJson)
     
     //Server <<---- Client
     // get current ConfigTree
@@ -45,7 +46,7 @@ class TestScenario9 extends AdminWeb{
         "jsonId" -> 3,
         "method" -> "configTree"
         ,"params"-> Json.obj(
-            "adminId" -> "AU#40:0", 
+            "adminId" -> (userAdminJson \ "result" \ "id").toString(), 
             "authentication" -> true))
 
      //Server ---->> Client
