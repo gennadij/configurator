@@ -7,8 +7,6 @@ import org.container.Container
 import org.configSettings.ConfigSettings
 import org.configTree.step._
 import org.errorHandling.ErrorStrings
-import org.client.Client
-import org.client.ConfigClient
 import org.currentConfig.CurrentConfig
 import org.dependency.Dependency
 
@@ -19,15 +17,15 @@ import org.dependency.Dependency
 object ConfigMgr{
   val configMgr = new ConfigMgr
   
-  def startConfig(client: org.client.ConfigClient): Step = {
-    configMgr.startConfig(client)
-  }
+//  def startConfig(client: org.client.ConfigClient): Step = {
+//    configMgr.startConfig(client)
+//  }
   
-  def getNextStep(client: org.client.ConfigClient, selectedComponentIds: Set[SelectedComponent]): Step = {
-    
-    
-    configMgr.getNextStep(client, selectedComponentIds)
-  }
+//  def getNextStep(client: org.client.ConfigClient, selectedComponentIds: Set[SelectedComponent]): Step = {
+//    
+//    
+//    configMgr.getNextStep(client, selectedComponentIds)
+//  }
 }
 
 class ConfigMgr extends Dependency{
@@ -41,15 +39,15 @@ class ConfigMgr extends Dependency{
     * @error ErrorStep
     */
   
-  def startConfig(client: org.client.ConfigClient): Step = {
-    if(true){
-      ConfigSettings.firstStep(client)
-    }else{
-      null
-      
-    }
-    
-  }
+//  def startConfig(client: org.client.ConfigClient): Step = {
+//    if(true){
+//      ConfigSettings.firstStep(client)
+//    }else{
+//      null
+//      
+//    }
+//    
+//  }
   
   /**
    * - addStepToCurrentConfig(selectedComponentIds(0)) vor List vorbereiten
