@@ -3,7 +3,6 @@ package org.container
 import org.configTree.step._
 
 import scala.collection.mutable.ListBuffer
-import org.configSettings.ConfigSettings
 
 /**
   * Created by gennadi on 29.04.16.
