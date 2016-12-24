@@ -10,6 +10,7 @@ import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import org.dto.startConfig.StartConfigCS
 import org.dto.startConfig.StartConfigSC
+import org.configMgr.ConfigMgr
 
 trait ConfigWeb {
   /**
@@ -41,7 +42,7 @@ trait ConfigWeb {
   
   private def startConfig(receivedMessage: JsValue): JsValue = {
     val startConfigCS: StartConfigCS = Json.fromJson[StartConfigCS](receivedMessage).get
-    val startConfigSC: StartConfigSC = ???
+    val startConfigSC: StartConfigSC = ConfigMgr.startConfig(startConfigCS)
     null
   }
 }

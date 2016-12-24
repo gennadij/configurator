@@ -27,12 +27,18 @@ import com.tinkerpop.blueprints.Edge
 import com.tinkerpop.blueprints.Vertex
 import org.status.Status
 import org.configTree.ConfigTree
+import org.dto.startConfig.StartConfigCS
+import org.dto.startConfig.StartConfigSC
 
 object Persistence {
   
   def rules() = ???
   
-  def firstStep = {
+  def configId(configUri: String) = {
+    AdminUserVertex.getConfigId(configUri)
+  }
+  def firstStep(adminId: String): StartConfigSC = {
+    StepVertex.firstStep(adminId)
   }
   
 //  def registAdminUser(username: String, password: String): AdminUser = {

@@ -9,6 +9,7 @@ import org.errorHandling.ErrorStrings
 import org.currentConfig.CurrentConfig
 import org.dto.startConfig.StartConfigCS
 import org.dto.startConfig.StartConfigSC
+import org.persistence.Persistence
 
 /**
  *  Managment of whole general Configurator
@@ -39,13 +40,16 @@ class ConfigMgr {
     * @error ErrorStep
     */
   
-  def startConfig(startConfig: StartConfigCS): StartConfigSC = {
+  def startConfig(startConfigCS: StartConfigCS): StartConfigSC = {
 //    if(true){
 //      ConfigSettings.firstStep(client)
 //    }else{
 //      null
 //      
 //    }
+    val adminId: String = Persistence.configId(startConfigCS.params.configUri)
+    
+    Persistence.firstStep(adminId)
     null
     
     

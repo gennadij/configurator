@@ -15,10 +15,10 @@ import org.dto.startConfig.StartConfigSC
 
 object StepVertex {
   
-  def firstStep(startConfigCS: StartConfigCS): StartConfigSC = {
+  def firstStep(adminId: String): StartConfigSC = {
     val graph: OrientGraph = OrientDB.getGraph()
     
-    val firstStepV: OrientVertex = graph.getVertex(startConfigCS.params.configUri)
+//    val firstStepV: OrientVertex = graph.getVertex(startConfigCS.params.configUri)
     
     
     null
