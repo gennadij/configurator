@@ -11,18 +11,55 @@ import com.tinkerpop.blueprints.Vertex
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import org.dto.startConfig.StartConfigCS
 import org.dto.startConfig.StartConfigSC
+import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
+import com.orientechnologies.orient.core.sql.OCommandSQL
+import org.dto.startConfig.StartConfigResult
+import org.dto.startConfig.Step
+import com.tinkerpop.blueprints.Edge
+import com.tinkerpop.blueprints.Direction
+import org.dto.startConfig.Component
 
 
 object StepVertex {
   
-  def firstStep(adminId: String): StartConfigSC = {
+  def firstStep(configId: String): StartConfigSC = {
     val graph: OrientGraph = OrientDB.getGraph()
     
-//    val firstStepV: OrientVertex = graph.getVertex(startConfigCS.params.configUri)
+    val resFirstStep: OrientDynaElementIterable = graph
+      .command(new OCommandSQL(s"select from Step where adminId='$configId' and kind='first'")).execute()
+    val firstStep = resFirstStep.toList.map(_.asInstanceOf[OrientVertex])
     
-    
-    null
+    new StartConfigSC(
+        result = new StartConfigResult(
+            new Step(
+                firstStep(0).getIdentity.toString,
+                firstStep(0).getProperty("kind"),
+                components(firstStep(0))
+            )
+        )
+    )
   }
+  
+  def components(step: OrientVertex): List[Component] = {
+    val eHasComponents: List[Edge] = step.getEdges(Direction.OUT).toList
+    val vComponents: List[Vertex] = eHasComponents.map(_.getVertex(Direction.IN))
+    vComponents.map(vC => {
+      new Component(
+          vC.getId.toString,
+          vC.getProperty("kind"),
+          getNextStep(vC)
+      )
+    })
+  }
+  
+  private def getNextStep(component: Vertex): String = {
+    val eNextStep: List[Edge] = component.getEdges(Direction.OUT).toList
+    val vNextStep: List[Vertex] = eNextStep.map ( { eNS => 
+      eNS.getVertex(Direction.IN)
+    })
+    if(vNextStep.size == 1) vNextStep.head.getId.toString() else "no nextStep"
+  }
+  
   
 //  def create(graph: OrientGraph, propKeys: List[String]){
 //    val vStep = new VertexStep()

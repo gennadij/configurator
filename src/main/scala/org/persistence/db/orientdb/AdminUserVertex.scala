@@ -27,12 +27,9 @@ object AdminUserVertex {
   def getConfigId(configUri: String): String = {
     val graph: OrientGraph = OrientDB.getGraph()
     
-//    val configIdV: Iterable[OrientVertex] = graph.getVertices("configUri", configUri)
-    
-    
     val resConfigId: OrientDynaElementIterable = graph
-      .command(new OCommandSQL(s"select @rid from AdminUser where configUri='$configUri'")).execute()
-    val configIds = resConfigId.toList
+      .command(new OCommandSQL(s"select from AdminUser where configUri='$configUri'")).execute()
+    val configIds = resConfigId.toList.map(_.asInstanceOf[OrientVertex].getIdentity)
     
     if(configIds.size == 1) configIds(0).toString() else ""
   }

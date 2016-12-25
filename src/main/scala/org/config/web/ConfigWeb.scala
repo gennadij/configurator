@@ -43,6 +43,6 @@ trait ConfigWeb {
   private def startConfig(receivedMessage: JsValue): JsValue = {
     val startConfigCS: StartConfigCS = Json.fromJson[StartConfigCS](receivedMessage).get
     val startConfigSC: StartConfigSC = ConfigMgr.startConfig(startConfigCS)
-    null
+    Json.toJson(startConfigSC)
   }
 }

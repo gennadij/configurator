@@ -41,18 +41,7 @@ class ConfigMgr {
     */
   
   def startConfig(startConfigCS: StartConfigCS): StartConfigSC = {
-//    if(true){
-//      ConfigSettings.firstStep(client)
-//    }else{
-//      null
-//      
-//    }
-    val adminId: String = Persistence.configId(startConfigCS.params.configUri)
-    
-    Persistence.firstStep(adminId)
-    null
-    
-    
+    Persistence.firstStep(Persistence.configId(startConfigCS.params.configUri))
   }
   
   /**

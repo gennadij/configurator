@@ -16,7 +16,7 @@ import play.api.libs.json.Json
 case class StartConfigSC (
     dtoId: Int = DTOIds.startConfig,
     dto: String = DTONames.startConfig,
-    params: StartConfigResult
+    result: StartConfigResult
 )
 
 object StartConfigSC {

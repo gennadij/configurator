@@ -34,11 +34,12 @@ object Persistence {
   
   def rules() = ???
   
-  def configId(configUri: String) = {
+  def configId(configUri: String): String = {
     AdminUserVertex.getConfigId(configUri)
   }
-  def firstStep(adminId: String): StartConfigSC = {
-    StepVertex.firstStep(adminId)
+  
+  def firstStep(configId: String): StartConfigSC = {
+    StepVertex.firstStep(configId)
   }
   
 //  def registAdminUser(username: String, password: String): AdminUser = {
