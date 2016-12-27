@@ -10,4 +10,5 @@ package org.dto
 
 object DTOIds {
   val startConfig: Int = 1
+  val nextStep: Int = 2
 }

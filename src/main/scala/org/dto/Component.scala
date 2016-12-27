@@ -1,4 +1,4 @@
-package org.dto.startConfig
+package org.dto
 
 import play.api.libs.json.Json
 

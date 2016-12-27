@@ -4,6 +4,7 @@
 package org.dto.startConfig
 
 import play.api.libs.json.Json
+import org.dto.Step
 
 /**
  * Created by Gennadi Heimann 23.12.2016

@@ -1,13 +1,14 @@
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
  */
-package org.dto.startConfig
+package org.dto
 
 /**
  * Created by Gennadi Heimann 23.12.2016
  */
 
 import play.api.libs.json.Json
+import org.dto.Component
 
 /**
  * Created by Gennadi Heimann 23.12.2016

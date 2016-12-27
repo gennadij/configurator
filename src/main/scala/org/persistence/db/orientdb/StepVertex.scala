@@ -14,10 +14,10 @@ import org.dto.startConfig.StartConfigSC
 import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
 import com.orientechnologies.orient.core.sql.OCommandSQL
 import org.dto.startConfig.StartConfigResult
-import org.dto.startConfig.Step
+import org.dto.Step
 import com.tinkerpop.blueprints.Edge
 import com.tinkerpop.blueprints.Direction
-import org.dto.startConfig.Component
+import org.dto.Component
 
 
 object StepVertex {
