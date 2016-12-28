@@ -10,6 +10,8 @@ import org.currentConfig.CurrentConfig
 import org.dto.startConfig.StartConfigCS
 import org.dto.startConfig.StartConfigSC
 import org.persistence.Persistence
+import org.dto.nextStep.NextStepCS
+import org.dto.nextStep.NextStepSC
 
 /**
  *  Managment of whole general Configurator
@@ -22,11 +24,9 @@ object ConfigMgr{
     configMgr.startConfig(startConfigCS)
   }
   
-//  def getNextStep(client: org.client.ConfigClient, selectedComponentIds: Set[SelectedComponent]): Step = {
-//    
-//    
-//    configMgr.getNextStep(client, selectedComponentIds)
-//  }
+  def nextStep(nextStepCS: NextStepCS): NextStepSC = {
+    configMgr.nextStep(nextStepCS)
+  }
 }
 
 class ConfigMgr {
@@ -49,6 +49,9 @@ class ConfigMgr {
    * - nextStep Id bei der Multichoose Component muss bei allen componentId mit Step Id übereinstimmen 
    * - currentConfig für den Multichoose Komponent erweitern
    */
+  def nextStep(nextStepCS: NextStepCS): NextStepSC = {
+    Persistence.nextStep(nextStepCS)
+  }
 //  def getNextStep(client: org.client.ConfigClient, selectedComponents: Set[SelectedComponent]): Step = {
 //    
 //    val step: Step = ConfigSettings.stepOfComponents(client, selectedComponents)

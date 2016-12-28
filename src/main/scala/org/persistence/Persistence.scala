@@ -29,6 +29,8 @@ import org.status.Status
 import org.configTree.ConfigTree
 import org.dto.startConfig.StartConfigCS
 import org.dto.startConfig.StartConfigSC
+import org.dto.nextStep.NextStepSC
+import org.dto.nextStep.NextStepCS
 
 object Persistence {
   
@@ -40,6 +42,10 @@ object Persistence {
   
   def firstStep(configId: String): StartConfigSC = {
     StepVertex.firstStep(configId)
+  }
+  
+  def nextStep(nextStepCS: NextStepCS): NextStepSC = {
+    StepVertex.nextStep(nextStepCS)
   }
   
 //  def registAdminUser(username: String, password: String): AdminUser = {

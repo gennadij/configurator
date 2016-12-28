@@ -11,6 +11,8 @@ import play.api.libs.json.Json
 import org.dto.startConfig.StartConfigCS
 import org.dto.startConfig.StartConfigSC
 import org.configMgr.ConfigMgr
+import org.dto.nextStep.NextStepCS
+import org.dto.nextStep.NextStepSC
 
 trait ConfigWeb {
   /**
@@ -19,14 +21,21 @@ trait ConfigWeb {
    *   Server <- Client
    *      {dtoId : 1, dto : StartConfig, params : {configUri: http://config/test}}
    *   Server -> Client
-   *      {dtoId : 1, dto : StartConfig, result : {step: {id: #21:9, kind: "first", components:
-   *      [{id: #22:9, kind: immutable, nextStep: #27:11}, ...]}}}
+   *      {dtoId : 1, dto : StartConfig, result : {
+   *         configId: #21:23, 
+   *         step: {id: #21:9, kind: "first", 
+   *         TODO noch mal die Notwendigkeit von NextStep überlegen
+   *            components: [{id: #22:9, kind: immutable, nextStep: #27:11}, ...]}}}
    *  NextStep
    *   Client -> Server
-   *      {dtoId: 2, dto: "NextStep", params: {componentIds: [#21:2, ... ]}}
+   *      {dtoId: 2, dto: "NextStep", params: {
+   *         configId: #21:23, 
+   *         componentIds: [#21:2, ... ]}}
    *   Server -> Client
-   *      {dtoId: 2, dto: "NextStep", result: {step :{id: #21:3, kind: "default",
-   *      components: [{id: #45:2, kind: immutable}, ...]}}
+   *      {dtoId: 2, dto: "NextStep", result: {
+   *         configId: #21:23, 
+   *         step :{id: #21:3, kind: "default",
+   *            components: [{id: #45:2, kind: immutable}, ...]}}
    */
   
   
@@ -34,13 +43,6 @@ trait ConfigWeb {
     (receivedMessage \ "dto").asOpt[String] match {
       case Some("StartConfig") => startConfig(receivedMessage)
       case Some("NextStep") => nextStep(receivedMessage)
-//      case Some("ConfigUri") => configUri(receivedMessage)
-//      case Some("FirstStep") => firstStep(receivedMessage)
-//      case Some("ConfigTree") => configTree(receivedMessage)
-//      case Some("Component") => component(receivedMessage)
-//      case Some("ConnStepToComponent") => connStepToComponent(receivedMessage)
-//      case Some("Step") => step(receivedMessage)
-//      case Some("ConnComponentToStep") => connComponentToStep(receivedMessage)
       case _ => Json.obj("error" -> "keinen Treffer")
     }
   }
@@ -52,7 +54,8 @@ trait ConfigWeb {
   }
   
   private def nextStep(receiveMessage: JsValue): JsValue = {
-//    val nextStep = Json.fromJson[](receiveMessage)
-  Json.toJson("")
+    val nextStepCS: NextStepCS = Json.fromJson[NextStepCS](receiveMessage).get
+    val nextStepSC: NextStepSC = ConfigMgr.nextStep(nextStepCS)
+    Json.toJson(nextStepSC)
   }
 }

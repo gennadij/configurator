@@ -18,6 +18,9 @@ import org.dto.Step
 import com.tinkerpop.blueprints.Edge
 import com.tinkerpop.blueprints.Direction
 import org.dto.Component
+import org.dto.nextStep.NextStepCS
+import org.dto.nextStep.NextStepSC
+import org.dto.nextStep.NextStepResult
 
 
 object StepVertex {
@@ -31,11 +34,43 @@ object StepVertex {
     
     new StartConfigSC(
         result = new StartConfigResult(
+            configId,
             new Step(
                 firstStep(0).getIdentity.toString,
                 firstStep(0).getProperty("kind"),
                 components(firstStep(0))
             )
+        )
+    )
+  }
+  
+  def nextStep(nextStepCS: NextStepCS): NextStepSC = {
+    val graph: OrientGraph = OrientDB.getGraph()
+    
+    val configId: String = nextStepCS.params.configId
+    
+    //select Component where adminId=''
+    
+    val vComponents: List[OrientVertex] = nextStepCS.params.componentIds.map(compId => {
+      graph.getVertex(compId)
+    })
+    
+    //TODO lese die nextStep und vergleiche miteinander. Die StepIds sollen gleich sein.
+    // das sollte man befor first Step geschickt wird geprüft. Andere Möglichkeit dass beim Admin zu prüfen.
+    
+    val resNextStep: OrientDynaElementIterable = graph
+      .command(new OCommandSQL(s"select from Step where adminId='$configId' and kind='first'")).execute()
+    val nextStep = resNextStep.toList.map(_.asInstanceOf[OrientVertex])
+    
+    new NextStepSC(
+        result = new NextStepResult(
+            configId,
+            new Step(
+                "",
+                "",
+                List(new Component("","",""))
+            )
+            
         )
     )
   }

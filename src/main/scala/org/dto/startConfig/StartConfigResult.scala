@@ -12,6 +12,7 @@ import org.dto.Step
  * result : {step: ...}
  */
 case class StartConfigResult (
+    configId: String,
     step: Step
 )
 

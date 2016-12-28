@@ -11,6 +11,7 @@ import play.api.libs.json.Json
  */
 
 case class NextStepResult (
+    configId: String,
     step: Step
 )
 
