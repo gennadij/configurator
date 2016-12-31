@@ -10,8 +10,7 @@ import play.api.libs.json.Json
 
 case class Component (
     id: String,
-    kind: String,
-    nextStep: String
+    kind: String
 )
 
 object Component {

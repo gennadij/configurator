@@ -1,4 +1,5 @@
 -kurzfristige ToDos
+-- beim Mutable Components in einem Step der naechste Step ist eins für alle 
 -- SelectiumCriterium in OrientDB runterbringen
 -- Presentation von Dependencies
 -- Definition einer Schnittstelle zu der DB aber keine Implementierung von DB.

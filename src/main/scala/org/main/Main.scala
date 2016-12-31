@@ -13,6 +13,10 @@ object Main {
     println("Generic configurator started")
     println("Run Test Scenarios")
     
+    val list = List("test6", "test6", "test6", "test")
+    
+    println(checkElem(list))
+    
 //    new TestScenario1().scenario1
     
 //    new TestScenario2().scenario2
@@ -30,7 +34,15 @@ object Main {
     
     println("END")
   }
+  def checkElem(list: Seq[String]) = {
+    list match {
+      case x :: rest => {
+        println(x + " " + rest)
+        rest forall (_ == x)}
+    }
+  }
 }
+
 
 
 //    val currentConfig = new TestMutableCurrentConfig

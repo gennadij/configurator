@@ -21,6 +21,7 @@ import org.dto.Component
 import org.dto.nextStep.NextStepCS
 import org.dto.nextStep.NextStepSC
 import org.dto.nextStep.NextStepResult
+import org.dto.Status
 
 
 object StepVertex {
@@ -51,38 +52,86 @@ object StepVertex {
     
     //select Component where adminId=''
     
+    /*
+     * -- Pruefe selectionCriterium wenn Component kind=mutable
+     * -- 
+     */
+    
+    
     val vComponents: List[OrientVertex] = nextStepCS.params.componentIds.map(compId => {
       graph.getVertex(compId)
     })
     
-    //TODO lese die nextStep und vergleiche miteinander. Die StepIds sollen gleich sein.
-    // das sollte man befor first Step geschickt wird geprüft. Andere Möglichkeit dass beim Admin zu prüfen.
+    val nextStepIds: List[String] = vComponents.map(vC => {
+      vC.getProperty("nextStep").toString
+    })
     
-    val resNextStep: OrientDynaElementIterable = graph
-      .command(new OCommandSQL(s"select from Step where adminId='$configId' and kind='first'")).execute()
-    val nextStep = resNextStep.toList.map(_.asInstanceOf[OrientVertex])
-    
-    new NextStepSC(
+    if(compareElemInList(nextStepIds)){
+      
+      val vComponent: OrientVertex = graph.getVertex(vComponents(0).getProperty("componentId").toString)
+      
+      val eNextStep: List[Edge] = vComponent.getEdges(Direction.OUT).toList
+      
+      val vStep: List[Vertex] = eNextStep.map(_.getVertex(Direction.IN)).toList
+      
+      val eHasComponent: List[Edge] = if(vStep.size == 1) vStep(0).getEdges(Direction.OUT).toList else List.empty
+      
+      val vComponentsForNextStep: List[Vertex] = if(eHasComponent.nonEmpty) 
+        eHasComponent.map(_.getVertex(Direction.OUT)).toList
+      else List.empty
+      
+      
+      
+     new NextStepSC(
+        status = new Status(
+            "ok",
+            0,
+            ""
+        ),
         result = new NextStepResult(
             configId,
             new Step(
                 "",
-                "",
-                List(new Component("","",""))
+                ""
+                ,List(new Component("",""))
             )
-            
         )
-    )
+     )
+    }else{
+      new NextStepSC(
+        status = new Status(
+            "error",
+            1,
+            ""
+        ),
+        result = new NextStepResult(
+            configId,
+            null
+        )
+      )
+    }
+    //TODO lese die nextStep und vergleiche miteinander. Die StepIds sollen gleich sein.
+    // das sollte man befor first Step geschickt wird geprüft. Andere Möglichkeit dass beim Admin zu prüfen.
+    
+//    val resNextStep: OrientDynaElementIterable = graph
+//      .command(new OCommandSQL(s"select from Step where adminId='$configId' and kind='first'")).execute()
+//    val nextStep = resNextStep.toList.map(_.asInstanceOf[OrientVertex])
+    
+    
   }
   
+  def compareElemInList(list: Seq[String]) = {
+    list match {
+      case x :: rest => rest forall (_ == x)
+    }
+  }
   def components(step: OrientVertex): List[Component] = {
     val eHasComponents: List[Edge] = step.getEdges(Direction.OUT).toList
     val vComponents: List[Vertex] = eHasComponents.map(_.getVertex(Direction.IN))
     vComponents.map(vC => {
       new Component(
           vC.getId.toString,
-          vC.getProperty("kind"),
-          getNextStep(vC)
+          vC.getProperty("kind")
       )
     })
   }

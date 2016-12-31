@@ -21,11 +21,10 @@ trait ConfigWeb {
    *   Server <- Client
    *      {dtoId : 1, dto : StartConfig, params : {configUri: http://config/test}}
    *   Server -> Client
-   *      {dtoId : 1, dto : StartConfig, result : {
+   *      {dtoId : 1, dto : StartConfig, status: {kind: error, id: 12, message: Nachricht} result : {
    *         configId: #21:23, 
    *         step: {id: #21:9, kind: "first", 
-   *         TODO noch mal die Notwendigkeit von NextStep überlegen
-   *            components: [{id: #22:9, kind: immutable, nextStep: #27:11}, ...]}}}
+   *            components: [{id: #22:9, kind: immutable}, ...]}}}
    *  NextStep
    *   Client -> Server
    *      {dtoId: 2, dto: "NextStep", params: {
