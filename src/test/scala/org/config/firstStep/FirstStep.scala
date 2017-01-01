@@ -22,7 +22,7 @@ class FirstStep extends Specification with ConfigWeb{
     val startConfigSC: JsValue = handleMessage(startConfigCS)
     
 //    FirstStep {"dtoId":1,"dto":"StartConfig","result":{"step":{"id":"#25:29","kind":"first","components":[{"id":"#29:22","kind":"immutable","nextStep":"#26:26"},{"id":"#30:20","kind":"immutable","nextStep":"#26:26"},{"id":"#31:20","kind":"immutable","nextStep":"#27:23"}]}}}
-//    println("FirstStep " + startConfigSC)
+    println("FirstStep " + startConfigSC)
     "FirstStep" >> {
     	(startConfigSC \ "dtoId").asOpt[Int].get === DTOIds.startConfig
     	(startConfigSC \ "dtoId").asOpt[Int].get === DTOIds.startConfig
@@ -35,20 +35,11 @@ class FirstStep extends Specification with ConfigWeb{
       "result \\ step \\ components(0) \\ kind" >> {
         (((startConfigSC \ "result" \ "step" \ "components")(0)) \ "kind").asOpt[String].get == "immutable"
       }
-      "result \\ step \\ components(0) \\ nextstep" >> {
-        (((startConfigSC \ "result" \ "step" \ "components")(0)) \ "nextStep").asOpt[String].get.size == 6
-      }
       "result \\ step \\ components(1) \\ kind" >> {
         (((startConfigSC \ "result" \ "step" \ "components")(1)) \ "kind").asOpt[String].get == "immutable"
       }
-      "result \\ step \\ components(1) \\ nextstep" >> {
-        (((startConfigSC \ "result" \ "step" \ "components")(1)) \ "nextStep").asOpt[String].get.size == 6
-      }
       "result \\ step \\ components(2) \\ kind" >> {
         (((startConfigSC \ "result" \ "step" \ "components")(2)) \ "kind").asOpt[String].get == "immutable"
-      }
-      "result \\ step \\ components(2) \\ nextstep" >> {
-        (((startConfigSC \ "result" \ "step" \ "components")(2)) \ "nextStep").asOpt[String].get.size == 6
       }
     }
   }

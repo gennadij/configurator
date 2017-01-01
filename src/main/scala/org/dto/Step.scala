@@ -8,7 +8,6 @@ package org.dto
  */
 
 import play.api.libs.json.Json
-import org.dto.Component
 
 /**
  * Created by Gennadi Heimann 23.12.2016

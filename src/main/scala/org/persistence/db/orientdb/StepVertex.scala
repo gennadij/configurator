@@ -1,3 +1,6 @@
+/**
+ * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
+ */
 package org.persistence.db.orientdb
 
 import scala.collection.JavaConversions._
@@ -23,6 +26,9 @@ import org.dto.nextStep.NextStepSC
 import org.dto.nextStep.NextStepResult
 import org.dto.Status
 
+/**
+ * Created by Gennadi Heimann on 31.12.2016
+ */
 
 object StepVertex {
   
@@ -57,43 +63,98 @@ object StepVertex {
      * -- 
      */
     
+          // Component -> [NextStep]
     
-    val vComponents: List[OrientVertex] = nextStepCS.params.componentIds.map(compId => {
-      graph.getVertex(compId)
+    val vNextSteps: List[OrientVertex] = nextStepCS.params.componentIds.map(cId => {
+      val sqlNextStep: String = 
+        s"select expand(out('nextStep')) from Component where adminId='$configId' and @rid='$cId'"
+      
+      val resNextStep: OrientDynaElementIterable = graph
+      .command(new OCommandSQL(sqlNextStep)).execute()
+      val nextSteps: List[OrientVertex] = resNextStep.toList.map(_.asInstanceOf[OrientVertex])
+      if(nextSteps.size == 1) nextSteps(0) else null
     })
     
-    val nextStepIds: List[String] = vComponents.map(vC => {
-      vC.getProperty("nextStep").toString
-    })
+    
+    
+    
+
+//    val vSelectedComponents: List[OrientVertex] = nextStepCS.params.componentIds.map(compId => {
+//      graph.getVertex(compId)
+//    })
+    
+//    val eNextSteps: List[Edge] = vSelectedComponents.map(vSC => {
+//      val eNSs = vSC.getEdges(Direction.OUT, "nextStep").toList
+//      if(eNSs.size == 1) eNSs(0) else null
+//    })
+    
+//    val vNextSteps = eNextSteps.map(eNSs => {
+//      eNSs.getVertex(Direction.IN)
+//    })
+    
+    val nextStepIds = vNextSteps.map(_.getId.toString)
+//    val nextStepIds: List[String] = vSelectedComponents.map(vC => {
+//      vC.getProperty("nextStep").toString
+//    })
     
     if(compareElemInList(nextStepIds)){
       
-      val vComponent: OrientVertex = graph.getVertex(vComponents(0).getProperty("componentId").toString)
+//      val componentId: String = vSelectedComponents(0).getProperty("componentId")
       
-      val eNextStep: List[Edge] = vComponent.getEdges(Direction.OUT).toList
+//      // Component -> NextStep
+//      val eNextStep: List[Edge] = vComponent.getEdges(Direction.OUT).toList
+//      
+//      // Component -> [NextStep]
+//      val vStep: List[Vertex] = eNextStep.map(_.getVertex(Direction.IN)).toList
+//      
+//      // NextStep [->] Components
+//      val eHasComponent: List[Edge] = if(vStep.size == 1) vStep(0).getEdges(Direction.OUT).toList else List.empty
+//      
+////      select expand(out('nextStep').out('hasComponent')) from Component where adminId='#21:13' and @rid='#29:22'
+//      val vComponentsForNextStep: List[Vertex] = if(eHasComponent.nonEmpty) 
+//        eHasComponent.map(_.getVertex(Direction.OUT)).toList
+//      else List.empty
       
-      val vStep: List[Vertex] = eNextStep.map(_.getVertex(Direction.IN)).toList
+      // Component -> [NextStep]
+//      val sqlNextStep: String = 
+//        s"select expand(out('nextStep')) from Component where adminId='$configId' and @rid='$componentId'"
+//      
+//      val resNextStep: OrientDynaElementIterable = graph
+//      .command(new OCommandSQL(sqlNextStep)).execute()
+//      val nextSteps: List[OrientVertex] = resNextStep.toList.map(_.asInstanceOf[OrientVertex])
+//      
+//      val nextStep: OrientVertex = if(nextSteps.size == 1) nextSteps(0) else null
       
-      val eHasComponent: List[Edge] = if(vStep.size == 1) vStep(0).getEdges(Direction.OUT).toList else List.empty
+      //Component -> NextStep -> [Components]
+//      val sqlComponents: String = 
+//        s"select expand(out('nextStep').out('hasComponent')) from Component where adminId='$configId' and @rid='$componentId'"
       
-      val vComponentsForNextStep: List[Vertex] = if(eHasComponent.nonEmpty) 
-        eHasComponent.map(_.getVertex(Direction.OUT)).toList
-      else List.empty
+      val nextStepId: String = vNextSteps(0).getId.toString
+      val sqlComponents: String = s"select expand(out('hasComponent')) from Step where adminId='$configId' and @rid='$nextStepId'"
+      val resComponents: OrientDynaElementIterable = graph
+      .command(new OCommandSQL(sqlComponents)).execute()
       
+      val vComponents: List[OrientVertex] = resComponents.toList.map(_.asInstanceOf[OrientVertex])
       
+      val components: List[Component] = vComponents.map(vC => {
+        new Component(
+            vC.getIdentity.toString,
+            vC.getProperty("kind")
+        )
+      })
       
-     new NextStepSC(
+      new NextStepSC(
         status = new Status(
             "ok",
             0,
-            ""
+            "Der naechste Schrit mit Komponenten wurde erfolgreich geladen"
         ),
         result = new NextStepResult(
             configId,
             new Step(
-                "",
-                ""
-                ,List(new Component("",""))
+                vNextSteps(0).getId.toString,
+                vNextSteps(0).getProperty("kind"),
+                components
             )
         )
      )
@@ -102,7 +163,7 @@ object StepVertex {
         status = new Status(
             "error",
             1,
-            ""
+            "Es exestiert verschiedene NextSteps fuer ausgewaehlte Komponente"
         ),
         result = new NextStepResult(
             configId,
@@ -120,11 +181,12 @@ object StepVertex {
     
   }
   
-  def compareElemInList(list: Seq[String]) = {
+  private def compareElemInList(list: Seq[String]) = {
     list match {
       case x :: rest => rest forall (_ == x)
     }
   }
+  
   def components(step: OrientVertex): List[Component] = {
     val eHasComponents: List[Edge] = step.getEdges(Direction.OUT).toList
     val vComponents: List[Vertex] = eHasComponents.map(_.getVertex(Direction.IN))
