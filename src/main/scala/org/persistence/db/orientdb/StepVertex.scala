@@ -91,13 +91,14 @@ object StepVertex {
     val vNextSteps: List[OrientVertex] = nextStepCS.params.componentIds.map(cId => {
       val sqlNextStep: String = 
         s"select expand(out('nextStep')) from Component where adminId='$configId' and @rid='$cId'"
-      
+      println(sqlNextStep)
       val resNextStep: OrientDynaElementIterable = graph
       .command(new OCommandSQL(sqlNextStep)).execute()
       val nextSteps: List[OrientVertex] = resNextStep.toList.map(_.asInstanceOf[OrientVertex])
+      println(nextSteps)
       if(nextSteps.size == 1) nextSteps(0) else null
     })
-
+    println(vNextSteps)
     val nextStepIds = vNextSteps.map(_.getId.toString)
     
     if(compareElemInList(nextStepIds)){
@@ -140,7 +141,11 @@ object StepVertex {
         ),
         result = new NextStepResult(
             configId,
-            null
+            new Step(
+                "",
+                "",
+                List.empty
+            )
         )
       )
     }

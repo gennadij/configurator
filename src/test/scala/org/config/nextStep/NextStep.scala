@@ -8,7 +8,7 @@ import org.dto.DTONames
 import play.api.libs.json.JsValue
 
 class NextStep extends Specification with ConfigWeb{
-  "Specs spezifiziert der Start der Konfiguration" >> {
+  "Specs spezifiziert der Auswahl der Komponente und folgenden NextStep mit Komponente " >> {
     val nextStepCS = Json.obj(
         "dtoId" -> DTOIds.nextStep,
         "dto" -> DTONames.nextSTep,
@@ -17,13 +17,21 @@ class NextStep extends Specification with ConfigWeb{
             "componentIds" -> Json.arr("#29:22")
         )
     )
-//    {dtoId : 1, dto : StartConfig, params : {configUri: http://config/test}}
     val nextStepSC: JsValue = handleMessage(nextStepCS)
     
-    println("NextStep " + nextStepSC)
-    "FirstStep" >> {
+    "NextStep" >> {
     	(nextStepSC \ "dtoId").asOpt[Int].get === DTOIds.nextStep
-    	(nextStepSC \ "dtoId").asOpt[Int].get === DTOIds.nextStep
+    	(nextStepSC \ "dto").asOpt[String].get === DTONames.nextSTep
+    	"staus \\ kind" >> {
+    	  (nextStepSC \ "status" \ "kind").asOpt[String].get === "ok"
+    	}
+    	"staus \\ id" >> {
+    	  (nextStepSC \ "status" \ "id").asOpt[Int].get === 0
+    	}
+    	"status \\ message" >> {
+    	  (nextStepSC \ "status" \ "message").asOpt[String].get === 
+    	    "Der naechste Schrit mit Komponenten wurde erfolgreich geladen"
+    	}
       "result \\ step \\ kind" >> {
         (nextStepSC \ "result" \ "step" \ "kind").asOpt[String].get === "default"
       }
