@@ -20,15 +20,22 @@ import scala.collection.immutable.Iterable
 object AdminUserVertex {
 
   /**
-   * @param 
+   * detect configId from ConfigUri
    * 
-   * @return Admin Id
+   * @author Gennadi Heimann
+   * 
+   * @version 1.0
+   * 
+   * @param configUri
+   * 
+   * @return configId
    */
   def getConfigId(configUri: String): String = {
     val graph: OrientGraph = OrientDB.getGraph()
-    
+    val adminUser = PropertyKey.ADMIN_USER
     val resConfigId: OrientDynaElementIterable = graph
-      .command(new OCommandSQL(s"select from AdminUser where configUri='$configUri'")).execute()
+      .command(new OCommandSQL(s"select from $adminUser where configUri='$configUri'")).execute()
+    
     val configIds = resConfigId.toList.map(_.asInstanceOf[OrientVertex].getIdentity)
     
     if(configIds.size == 1) configIds(0).toString() else ""

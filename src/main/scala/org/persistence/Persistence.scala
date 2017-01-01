@@ -95,10 +95,6 @@ object Persistence {
 //    ComponentVertex.addComponent(adminComponent)
 //  }
   
-  /**
-   * TODO korrektur fue falsche IDs 
-   */
-  
 //  def getConfigTree(adminId: String): AdminConfigTree = {
 //    val graph: OrientGraph = OrientDB.getGraph
 //    
@@ -135,11 +131,6 @@ object Persistence {
 //      )
 //  }
   
-  /**
-   * TODO wenn keinen nextStep exestiert
-   * entweder Fehler oder Ende von ConfigTree
-   * bei NextStep einen StepObjekt hinzufügen
-   */
 //  def getNextStep(component: Vertex): String = {
 //    val eNextStep: List[Edge] = component.getEdges(Direction.OUT).toList
 //    val vNextStep: List[Vertex] = eNextStep.map ( { eNS => 

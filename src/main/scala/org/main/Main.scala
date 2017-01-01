@@ -2,7 +2,6 @@ package org.main
 
 import org.configMgr.ConfigMgr
 import org.configTree.component.SelectedComponent
-import org.persistence.db.orientdb.TestOrientdb
 
 /**
   * 

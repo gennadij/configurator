@@ -21,53 +21,6 @@ object ComponentVertex {
   val propKeyAdminId = "adminId"
   
   
-//  def addComponent(adminComponent: AdminComponent): Status = {
-//    val graph: OrientGraph = OrientDB.getGraph()
-//    if(graph.getVertices(propKeyId, component.id).size == 0){
-//        val vertex: OrientVertex = graph.addVertex("class:Component", 
-//            propKeyAdminId, component.adminId)
-//        graph.commit
-//        vertex.setProperty(propKeyId, "C" + vertex.getIdentity.toString())
-//        graph.commit
-//        vertex.getIdentity.toString
-//    }else{
-//      ""
-//    }
-//  }
-  
-  
-//  def get(id: String): AdminComponent = {
-//    val graph: OrientGraph = OrientDB.getGraph()
-//    val vComponent = graph.getVertex(id)
-//    new AdminComponent(
-//        vComponent.getIdentity. toString,
-//        vComponent.getProperty(PropertyKey.COMPONENT_ID),
-//        vComponent.getProperty(PropertyKey.ADMIN_ID),
-//        vComponent.getProperty(PropertyKey.KIND)
-//    )
-//  }
-  
-  
-//  def addComponent(adminComponent: AdminComponent): AdminComponent = {
-//    val graph: OrientGraph = OrientDB.getGraph()
-//    
-//    val vComponent: OrientVertex = graph.addVertex(
-//        "class:Component", 
-//        "kind", adminComponent.kind,
-//        "adminId", adminComponent.adminId
-//    )
-//    graph.commit
-//    vComponent.setProperty("componentId", "C" + vComponent.getIdentity.toString())
-//    graph.commit
-//    new AdminComponent(
-//        vComponent.getIdentity.toString,
-//        "C" + vComponent.getIdentity,
-//        adminComponent.adminId,
-//        adminComponent.kind
-//    )
-//  }
-  
-  
   def createSchema(graph: OrientGraph) = {
     val graph: OrientGraph = OrientDB.getGraph()
     if(graph.getVertexType(propClassName) == null){
@@ -93,7 +46,6 @@ object ComponentVertex {
   }
   
    def update(graph: OrientGraph, props: Map[String, String]){
-    //TODO bessere such Methode
     if(graph.getVertices("stepId", props("id")).size == 0){
 //        graph.addVertex("class:Step", "stepId", props("id"))
 //        graph.commit

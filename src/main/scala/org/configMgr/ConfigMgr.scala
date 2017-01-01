@@ -153,7 +153,6 @@ class ConfigMgr {
 //    if(client.currentConfig.size == 0){
 //      // es exestiert noch keinen Step in der Konfiguration
 //      
-//      //TODO bessere Loesung ueberlegen
 //       new SuccessStep("3", "success step")
 //      
 //    }else{
@@ -172,7 +171,6 @@ class ConfigMgr {
   
   
   /**
-   * TODO
    * neue step für CurrentConfig
    */
 //  def addStepToCurrentConfig(client: ConfigClient, step: Step, 

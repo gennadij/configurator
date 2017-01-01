@@ -80,8 +80,6 @@
 //    
 //    println(Json.toJson(configTree))
 //    
-//    //TODO überlegen ob der aktuelle Element aktualisiert wird oder gesamte ConfigTree
-//
 ////     //      Server <-- Client
 ////    val step1 = new AdminStep(false, "","",adminId, "first", null)
 ////     //      Server --> Client
