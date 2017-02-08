@@ -1,6 +1,5 @@
 package org.main
 
-import org.configMgr.ConfigMgr
 import org.configTree.component.SelectedComponent
 
 /**

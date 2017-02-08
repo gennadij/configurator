@@ -10,7 +10,6 @@ import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import org.dto.startConfig.StartConfigCS
 import org.dto.startConfig.StartConfigSC
-import org.configMgr.ConfigMgr
 import org.dto.nextStep.NextStepCS
 import org.dto.nextStep.NextStepSC
 
@@ -48,13 +47,15 @@ trait Config {
   
   private def startConfig(receivedMessage: JsValue): JsValue = {
     val startConfigCS: StartConfigCS = Json.fromJson[StartConfigCS](receivedMessage).get
-    val startConfigSC: StartConfigSC = ConfigMgr.startConfig(startConfigCS)
-    Json.toJson(startConfigSC)
+//    val startConfigSC: StartConfigSC = ConfigMgr.startConfig(startConfigCS)
+//    Json.toJson(startConfigSC)
+    ???
   }
   
   private def nextStep(receiveMessage: JsValue): JsValue = {
     val nextStepCS: NextStepCS = Json.fromJson[NextStepCS](receiveMessage).get
-    val nextStepSC: NextStepSC = ConfigMgr.nextStep(nextStepCS)
-    Json.toJson(nextStepSC)
+//    val nextStepSC: NextStepSC = ConfigMgr.nextStep(nextStepCS)
+//    Json.toJson(nextStepSC)
+    ???
   }
 }

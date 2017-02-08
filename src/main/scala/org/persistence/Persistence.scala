@@ -5,7 +5,6 @@
 package org.persistence
 
 
-import org.configSettings.ConfigSetting
 import org.status.SuccessfulStatus
 import org.configTree.step.Step
 import com.tinkerpop.blueprints.impls.orient.OrientGraphFactory
@@ -280,7 +279,8 @@ object Persistence {
     val configTree = configSetting \ "persistence" \ "xml" \ "config"
     val rule = configSetting \ "persistence" \ "xml" \ "rule"
     
-    new ConfigSetting("", configTree.text.toString(), rule.text.toString(), "presentation")
+//    new ConfigSetting("", configTree.text.toString(), rule.text.toString(), "presentation")
+    ???
   }
 }
 
