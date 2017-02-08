@@ -14,7 +14,7 @@ import org.configMgr.ConfigMgr
 import org.dto.nextStep.NextStepCS
 import org.dto.nextStep.NextStepSC
 
-trait ConfigWeb {
+trait Config {
   /**
    * DTOs
    * StartConfig
