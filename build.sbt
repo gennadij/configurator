@@ -47,7 +47,8 @@ val scalaTools = "org.scala-tools" % "maven-scala-plugin" % "2.15.2"
 lazy val commonSettings = Seq(
 	organization := "org.generic_configurator", 	
 	version := "0.1.0",
-	scalaVersion := "2.11.8"
+	scalaVersion := "2.11.8",
+	publishMavenStyle := true
 )
 
 lazy val root = (project in file(".")).

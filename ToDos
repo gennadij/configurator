@@ -1,0 +1,51 @@
+-kurzfristige ToDos
+-- SelectiumCriterium in OrientDB runterbringen
+-- Presentation von Dependencies
+-- Definition einer Schnittstelle zu der DB aber keine Implementierung von DB.
+-- Selection Criterium to Int konvertieren
+-- Fehler -> wenn Immutable Component value gesetzt wird (Test dazu)
+-- weitere Parameter bei der MutableComponent prüfen und testen
+-- Error for inkompotible oder nicht gefundene Strings in SelectionsComponent
+-- Die ErrorStep ID stellt sich aus der E Buchstabe und Step ID (nur Ziffern), 
+     in dem Fehler passiert wurde, zusammen. Genauso auch beim ErrorComponent.
+-- Definition von verschiedenen Clients die seine Configuration laden.
+-- Admin definiert einen Client Connection zu dem entschprechendem Configuration.
+		1. Administrator erzeugt eine Configuration.
+		2. Administrator erzeugt eine Connection Pfad für die Client.
+		3. Der Client durch diesen Connection-Pfad connected mit dem Configuration.
+		4. Wenn XMLClient Datei vorhanden,  die Erzeugung neuen Clint nicht notwendig
+
+-spätere ToDos
+-- alle Überprüfungen in eine Methode zusammenführen
+-- Logger einrichten
+-- Die Reihenfolge der Schritten prüfen -> sorted eisetzen
+-- Lösung zu der Immutable CurrentConfig suchen
+-- Spec für minValues und maxValues schreiben
+-- Die Überprüfung von der CurrentConfig auf später verschieben.
+
+-erledigte ToDos
+** Eine Konfiguration mit Dependencies definieren
+** OrientDB einrichten und API installieren. Docu lesen
+** definition von dem mutable Components (Slide, variable Massen)
+** Selection criterium checken, wenn 2 meherere Components ausgewaehlt werden koennen
+** selectionCriteriumMax darf nicht grösser als Anzahl der Components sein und Umgekehrt
+** Pruefen von ImmutableComponent nicht funktioniert
+** Lösung zu der zentrallen Stelle aller Fehler in dem Configurator
+** nur bei MutableComponent kann der value übergeben werden
+** ErrorStrings in der zentralle Stelle definieren
+** Die ID Des Steps S000000 ID COmponents S000000C000000
+** Apache-Weiterleitung auf Activator Info: https://thomas-leister.de/mit-apache-http-proxy-auf-speziellen-port-weiterleiten-z-b-bei-etherpad-ghost-searx/
+** Definition der FatherStep
+** Lösung zu der Aktualisierung der xmlFile. => Datenbank einrichten
+** Die Steps werden einzeln aus der xmlFile augelesen.=> Datenbank einrichten
+ 
+
+
+
+
+
+
+
+
+
+

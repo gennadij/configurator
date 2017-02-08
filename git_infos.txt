@@ -1,0 +1,12 @@
+git remote -v -> view all connections
+git remote add <name> <url>
+
+https://github.com/gennadij/configurator.git
+git@github.com:gennadij/configurator.git
+
+git remote rm <name>
+git remote rename <old-name> <new-name>
+
+
+
+remote add configOnUbuntu ubuntu@generic-config.dnshome.de:/home/ubuntu/projects/config.git
