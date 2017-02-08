@@ -1,6 +1,5 @@
 package org.admin
 
-import org.configSettings.ConfigSettings
 import scala.xml._
 import org.admin.persistence.xml.ConfigID
 import org.admin.persistence.InterfaceAdminPersistence
@@ -51,7 +50,8 @@ object Admin {
     // TODO Alle Resourcen einstellen (AdminID, Datenbankverbindung usw.)
     // TODO Püfen ob der AdminUser schon exestiert
 //    AdminUserVertex.createSchema
-    AdminUserVertex.create(adminUserId, adminUsername, adminUserPassword)
+//    AdminUserVertex.create(adminUserId, adminUsername, adminUserPassword)
+    ???
   }
   
   /**
@@ -68,22 +68,22 @@ object Admin {
 //    val admins: Seq[AdminId] = InterfaceAdminPersistence.admin(adminId, password)
 //    
 //    findAndCheckAdmin(adminId, password, admins)
-    AdminUserVertex.adminId(username, password)
-    new SuccessfulStatus("")
+//    AdminUserVertex.adminId(username, password)
+    new SuccessfulStatus("", "")
   }
   
   def findAndCheckAdmin(adminId: String, password: String, admins: Seq[AdminId]): Status = {
     
     if(admins.exists { admin => admin.adminId == adminId && admin.password == password })
-      SuccessfulStatus("Anmeldung ist erfolgreich")
+      SuccessfulStatus("Anmeldung ist erfolgreich", "")
     else
-      ErrorStatus("Administrator Id oder Passwort falsch")
+      ErrorStatus("Administrator Id oder Passwort falsch", "")
   }
   
   def setStep(user: String, isConnected: Boolean, step: Step): Status = {
     
-    
-    Persistence.setStep(user, isConnected, step)
+    ???
+//    Persistence.setStep(user, isConnected, step)
   }
   
   
