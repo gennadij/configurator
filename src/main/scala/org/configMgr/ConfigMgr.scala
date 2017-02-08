@@ -61,7 +61,6 @@ class ConfigMgr {
 //    val selectCrit: AnnounceStep = checkSelectionCriterium(step, selectedComponents)
 //    
 //    val selectValue: AnnounceStep = checkParameterOfSelectedComponents(step, selectedComponents)
-//    // TODO Step muss zuerst hinzugefügt werden und danach geprüft
 ////    val checkCurrentConfig: AnnounceStep = checkStepsFromCurrentConfig(client, step, selectedComponents)
 //    
 ////    val checkCurrentConfig: AnnounceStep = addStepToCurrentConfig(client, step, selectedComponents)
@@ -206,7 +205,6 @@ class ConfigMgr {
 ////    }
 //  }
 //  
-//  //TODO TEST
 //  private def getComponent(step: Step, selectedComponents: Set[SelectedComponent]): Seq[Component] = {
 //    
 //    val mutableComponents = step.components filter (_.isInstanceOf[MutableComponent])

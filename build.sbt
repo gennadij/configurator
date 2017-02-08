@@ -42,7 +42,7 @@ val junit = "junit" % "junit" % "4.12" % "test"
 val scalaTools = "org.scala-tools" % "maven-scala-plugin" % "2.15.2"
 
 // https://mvnrepository.com/artifact/org.specs2/specs2-junit_2.11
-//val specs2JUnit = "org.specs2" % "specs2-junit_2.11" % "3.8.6"
+val specs2JUnit = "org.specs2" % "specs2-junit_2.11" % "3.8.6"
 
 lazy val commonSettings = Seq(
 	organization := "org.generic_configurator", 	
@@ -64,9 +64,9 @@ lazy val root = (project in file(".")).
 		,orientdbClient
 		,orientdbTools
 		,jsonFromPLay
-		,specs2
-		,junit
-		//,specs2JUnit
+		//,specs2
+		//,junit
+		,specs2JUnit
 		),
 		fork := true
 	)
