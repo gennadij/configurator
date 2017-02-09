@@ -1,7 +1,7 @@
 package org.config.nextStep
 
 import org.specs2.mutable.Specification
-import org.config.web.ConfigWeb
+import org.config.web.Config
 import play.api.libs.json.Json
 import org.dto.DTOIds
 import org.dto.DTONames
@@ -9,7 +9,7 @@ import play.api.libs.json.JsValue
 import org.status.ErrorIds
 import org.status.ErrorStrings
 
-class VariosNextStep extends Specification with ConfigWeb{
+class VariosNextStep extends Specification with Config{
   "Specs spezifiziert zwei asgewaehlte Komponente die zu zwei verschiedenen Steps fuehren" >> {
     val nextStepCS = Json.obj(
         "dtoId" -> DTOIds.nextStep,

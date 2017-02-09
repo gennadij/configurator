@@ -1,13 +1,13 @@
 package org.config.nextStep
 
 import org.specs2.mutable.Specification
-import org.config.web.ConfigWeb
+import org.config.web.Config
 import play.api.libs.json.Json
 import org.dto.DTOIds
 import org.dto.DTONames
 import play.api.libs.json.JsValue
 
-class NextStep extends Specification with ConfigWeb{
+class NextStep extends Specification with Config{
   "Specs spezifiziert der Auswahl der Komponente und folgenden NextStep mit Komponente " >> {
     val nextStepCS = Json.obj(
         "dtoId" -> DTOIds.nextStep,

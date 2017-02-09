@@ -47,6 +47,10 @@ object Persistence {
     StepVertex.nextStep(nextStepCS)
   }
   
+  def startConfig(startConfigCS: StartConfigCS) : StartConfigSC = {
+    ???
+  }
+  
 //  def registAdminUser(username: String, password: String): AdminUser = {
 //    
 //    AdminUserVertex.create(username, password)

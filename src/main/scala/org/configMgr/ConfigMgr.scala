@@ -40,7 +40,7 @@ class ConfigMgr {
     */
   
   def startConfig(startConfigCS: StartConfigCS): StartConfigSC = {
-    Persistence.firstStep(Persistence.configId(startConfigCS.params.configUri))
+    Persistence.firstStep(Persistence.configId(startConfigCS.params.configUrl))
   }
   
   /**

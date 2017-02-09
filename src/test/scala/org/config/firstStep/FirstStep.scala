@@ -1,21 +1,21 @@
 package org.config.firstStep
 
 import org.specs2.mutable.Specification
-import org.config.web.ConfigWeb
+import org.config.web.Config
 import play.api.libs.json.Json
 import org.dto.DTOIds
 import org.dto.DTONames
 import org.dto.startConfig.StartConfigSC
 import play.api.libs.json.JsValue
 
-class FirstStep extends Specification with ConfigWeb{
+class FirstStep extends Specification with Config{
   
   "Specs spezifiziert der Start der Konfiguration" >> {
     val startConfigCS = Json.obj(
         "dtoId" -> DTOIds.startConfig,
         "dto" -> DTONames.startConfig,
         "params" -> Json.obj(
-            "configUri" -> "http://contig/test_4"
+            "configUri" -> "http://contig/user10"
         )
     )
 //    {dtoId : 1, dto : StartConfig, params : {configUri: http://config/test}}

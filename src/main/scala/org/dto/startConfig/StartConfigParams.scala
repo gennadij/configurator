@@ -12,7 +12,7 @@ import play.api.libs.json.Json
  */
 
 case class StartConfigParams (
-    configUri: String
+    configUrl: String
 )
 
 object StartConfigParams {

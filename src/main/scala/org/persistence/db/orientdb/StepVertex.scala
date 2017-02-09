@@ -43,19 +43,31 @@ object StepVertex {
    * 
    * @return
    */
-  def firstStep(configId: String): StartConfigSC = {
+  def firstStep(startConfigCS: StartConfigCS): StartConfigSC = {
     val graph: OrientGraph = OrientDB.getGraph()
     
-    val resFirstStep: OrientDynaElementIterable = graph
-      .command(new OCommandSQL(s"select from Step where adminId='$configId' and kind='first'")).execute()
-    val firstStep = resFirstStep.toList.map(_.asInstanceOf[OrientVertex])
+    val configUrl: String = startConfigCS.params.configUrl
+    
+    val sql: String = s"select from Config where configUrl='$configUrl'"
+    val resConfigs: OrientDynaElementIterable = graph
+      .command(new OCommandSQL(sql)).execute()
+    val vConfigs: List[OrientVertex] = resConfigs.toList.map(_.asInstanceOf[OrientVertex])
+    //TODO error bei der schon exestierenden configUrl, wenn db mehrere configs findet.
+    val vConfig: OrientVertex = vConfigs(0)
+    
+    val eHasConfig: List[Edge] = vConfig.getEdges(Direction.OUT, "hasConfig").toList
+    //TODO error wenn mehrere Edges gefunden werden. DB seitig speren. Mur einen Edge an den Config erlaubt. 
+    
+    val vFirstStep: OrientVertex = eHasConfig(0).getVertex(Direction.IN).asInstanceOf[OrientVertex]
+    
+    
     
     new StartConfigSC(
         result = new StartConfigResult(
-            configId,
-            new Step(
-                firstStep(0).getIdentity.toString,
-                firstStep(0).getProperty("kind"),
+            true,
+            "FirstStep"
+            Step(
+                "FirstStep"
                 components(firstStep(0))
             )
         )

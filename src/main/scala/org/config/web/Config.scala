@@ -12,13 +12,14 @@ import org.dto.startConfig.StartConfigCS
 import org.dto.startConfig.StartConfigSC
 import org.dto.nextStep.NextStepCS
 import org.dto.nextStep.NextStepSC
+import org.persistence.Persistence
 
 trait Config {
   /**
    * DTOs
    * StartConfig
    *   Server <- Client
-   *      {dtoId : 1, dto : StartConfig, params : {configUri: http://config/test}}
+   *      {dtoId : 1, dto : StartConfig, params : {configUrl: http://config/test}}
    *   Server -> Client
    *      {dtoId : 1, dto : StartConfig, status: {kind: error, id: 12, message: Nachricht} result : {
    *         configId: #21:23, 
@@ -47,9 +48,8 @@ trait Config {
   
   private def startConfig(receivedMessage: JsValue): JsValue = {
     val startConfigCS: StartConfigCS = Json.fromJson[StartConfigCS](receivedMessage).get
-//    val startConfigSC: StartConfigSC = ConfigMgr.startConfig(startConfigCS)
-//    Json.toJson(startConfigSC)
-    ???
+    val startConfigSC: StartConfigSC = Persistence.startConfig(startConfigCS)
+    Json.toJson(startConfigSC)
   }
   
   private def nextStep(receiveMessage: JsValue): JsValue = {
