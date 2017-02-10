@@ -7,15 +7,24 @@ import org.dto.DTOIds
 import org.dto.DTONames
 import org.dto.startConfig.StartConfigSC
 import play.api.libs.json.JsValue
+import org.junit.runner.RunWith
+import org.specs2.runner.JUnitRunner
 
-class FirstStep extends Specification with Config{
+/**
+ * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
+ * 
+ * Created by Gennadi Heimann on 25.12.2016
+ */
+
+@RunWith(classOf[JUnitRunner])
+class SpecsFirstStep extends Specification with Config{
   
   "Specs spezifiziert der Start der Konfiguration" >> {
     val startConfigCS = Json.obj(
         "dtoId" -> DTOIds.startConfig,
         "dto" -> DTONames.startConfig,
         "params" -> Json.obj(
-            "configUri" -> "http://contig/user10"
+            "configUrl" -> "http://contig/user10"
         )
     )
 //    {dtoId : 1, dto : StartConfig, params : {configUri: http://config/test}}

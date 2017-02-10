@@ -1,10 +1,6 @@
-/**
- * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
- */
 package org.persistence.db.orientdb
 
 import scala.collection.JavaConversions._
-
 import com.tinkerpop.blueprints.impls.orient.OrientGraph
 import com.tinkerpop.blueprints.impls.orient.OrientVertexType
 import com.orientechnologies.orient.core.metadata.schema.OType
@@ -29,7 +25,9 @@ import org.status.ErrorIds
 import org.status.ErrorStrings
 
 /**
- * Created by Gennadi Heimann on 31.12.2016
+ * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
+ * 
+ * Created by Gennadi Heimann on 06.10.2016
  */
 
 object StepVertex {
@@ -37,7 +35,7 @@ object StepVertex {
   /**
    * @author Gennadi Heimann
    * 
-   * @version 1.0
+   * @version 0.1.0
    * 
    * @param
    * 
@@ -56,112 +54,111 @@ object StepVertex {
     val vConfig: OrientVertex = vConfigs(0)
     
     val eHasConfig: List[Edge] = vConfig.getEdges(Direction.OUT, "hasConfig").toList
-    //TODO error wenn mehrere Edges gefunden werden. DB seitig speren. Mur einen Edge an den Config erlaubt. 
     
+    //TODO error wenn mehrere Edges gefunden werden. DB seitig speren. Mur einen Edge an den Config erlaubt. 
     val vFirstStep: OrientVertex = eHasConfig(0).getVertex(Direction.IN).asInstanceOf[OrientVertex]
     
-    
-    
-    new StartConfigSC(
-        result = new StartConfigResult(
+    StartConfigSC(
+        result = StartConfigResult(
             true,
-            "FirstStep"
+            "FirstStep",
             Step(
-                "FirstStep"
-                components(firstStep(0))
+                "First Step",
+                components(vFirstStep)
             )
         )
     )
+    
   }
   
   /**
    * @author Gennadi Heimann
    * 
-   * @version 1.0
+   * @version 0.1.0
    * 
    * @param
    * 
    * @return
    */
-  def nextStep(nextStepCS: NextStepCS): NextStepSC = {
-    val graph: OrientGraph = OrientDB.getGraph()
-    
-    val configId: String = nextStepCS.params.configId
-    
-    /*
-     * -- Pruefe selectionCriterium wenn Component kind=mutable
-     * -- 
-     */
-    
-    
-     /*
-      * Component -> [NextStep]
-      * 
-      * hole NextStep Vertex von db
-      */
-    
-    val vNextSteps: List[OrientVertex] = nextStepCS.params.componentIds.map(cId => {
-      val sqlNextStep: String = 
-        s"select expand(out('nextStep')) from Component where adminId='$configId' and @rid='$cId'"
-      println(sqlNextStep)
-      val resNextStep: OrientDynaElementIterable = graph
-      .command(new OCommandSQL(sqlNextStep)).execute()
-      val nextSteps: List[OrientVertex] = resNextStep.toList.map(_.asInstanceOf[OrientVertex])
-      println(nextSteps)
-      if(nextSteps.size == 1) nextSteps(0) else null
-    })
-    println(vNextSteps)
-    val nextStepIds = vNextSteps.map(_.getId.toString)
-    
-    if(compareElemInList(nextStepIds)){
-      val nextStepId: String = vNextSteps(0).getId.toString
-      val sqlComponents: String = 
-        s"select expand(out('hasComponent')) from Step where adminId='$configId' and @rid='$nextStepId'"
-      val resComponents: OrientDynaElementIterable = graph
-      .command(new OCommandSQL(sqlComponents)).execute()
-      
-      val vComponents: List[OrientVertex] = resComponents.toList.map(_.asInstanceOf[OrientVertex])
-      
-      val components: List[Component] = vComponents.map(vC => {
-        new Component(
-            vC.getIdentity.toString,
-            vC.getProperty("kind")
-        )
-      })
-      
-      new NextStepSC(
-        status = new Status(
-            "ok",
-            0,
-            "Der naechste Schrit mit Komponenten wurde erfolgreich geladen"
-        ),
-        result = new NextStepResult(
-            configId,
-            new Step(
-                vNextSteps(0).getId.toString,
-                vNextSteps(0).getProperty("kind"),
-                components
-            )
-        )
-     )
-    }else{
-      new NextStepSC(
-        status = new Status(
-            "error",
-            ErrorIds.selectedComponentsHasVariosNextStep,
-            ErrorStrings.selectedComponentsHasVariosNextStep
-        ),
-        result = new NextStepResult(
-            configId,
-            new Step(
-                "",
-                "",
-                List.empty
-            )
-        )
-      )
-    }
-  }
+//  def nextStep(nextStepCS: NextStepCS): NextStepSC = {
+//    val graph: OrientGraph = OrientDB.getGraph()
+//    
+//    val configId: String = nextStepCS.params.configId
+//    
+//    /*
+//     * -- Pruefe selectionCriterium wenn Component kind=mutable
+//     * -- 
+//     */
+//    
+//    
+//     /*
+//      * Component -> [NextStep]
+//      * 
+//      * hole NextStep Vertex von db
+//      */
+//    
+//    val vNextSteps: List[OrientVertex] = nextStepCS.params.componentIds.map(cId => {
+//      val sqlNextStep: String = 
+//        s"select expand(out('nextStep')) from Component where adminId='$configId' and @rid='$cId'"
+//      println(sqlNextStep)
+//      val resNextStep: OrientDynaElementIterable = graph
+//      .command(new OCommandSQL(sqlNextStep)).execute()
+//      val nextSteps: List[OrientVertex] = resNextStep.toList.map(_.asInstanceOf[OrientVertex])
+//      println(nextSteps)
+//      if(nextSteps.size == 1) nextSteps(0) else null
+//    })
+//    println(vNextSteps)
+//    val nextStepIds = vNextSteps.map(_.getId.toString)
+//    
+//    if(compareElemInList(nextStepIds)){
+//      val nextStepId: String = vNextSteps(0).getId.toString
+//      val sqlComponents: String = 
+//        s"select expand(out('hasComponent')) from Step where adminId='$configId' and @rid='$nextStepId'"
+//      val resComponents: OrientDynaElementIterable = graph
+//      .command(new OCommandSQL(sqlComponents)).execute()
+//      
+//      val vComponents: List[OrientVertex] = resComponents.toList.map(_.asInstanceOf[OrientVertex])
+//      
+//      val components: List[Component] = vComponents.map(vC => {
+//        new Component(
+//            vC.getIdentity.toString,
+//            vC.getProperty("kind")
+//        )
+//      })
+//      
+//      new NextStepSC(
+//        status = new Status(
+//            "ok",
+//            0,
+//            "Der naechste Schrit mit Komponenten wurde erfolgreich geladen"
+//        ),
+//        result = new NextStepResult(
+//            configId,
+//            new Step(
+//                vNextSteps(0).getId.toString,
+//                vNextSteps(0).getProperty("kind"),
+//                components
+//            )
+//        )
+//     )
+//    }else{
+//      new NextStepSC(
+//        status = new Status(
+//            "error",
+//            ErrorIds.selectedComponentsHasVariosNextStep,
+//            ErrorStrings.selectedComponentsHasVariosNextStep
+//        ),
+//        result = new NextStepResult(
+//            configId,
+//            new Step(
+//                "",
+//                "",
+//                List.empty
+//            )
+//        )
+//      )
+//    }
+//  }
 
   /**
    * @author Gennadi Heimann
@@ -172,11 +169,11 @@ object StepVertex {
    * 
    * @return
    */
-  private def compareElemInList(list: Seq[String]) = {
-    list match {
-      case x :: rest => rest forall (_ == x)
-    }
-  }
+//  private def compareElemInList(list: Seq[String]) = {
+//    list match {
+//      case x :: rest => rest forall (_ == x)
+//    }
+//  }
 
   /**
    * @author Gennadi Heimann
@@ -192,8 +189,7 @@ object StepVertex {
     val vComponents: List[Vertex] = eHasComponents.map(_.getVertex(Direction.IN))
     vComponents.map(vC => {
       new Component(
-          vC.getId.toString,
-          vC.getProperty("kind")
+          "Component"
       )
     })
   }

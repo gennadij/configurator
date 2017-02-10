@@ -1,9 +1,4 @@
-/**
- * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
- */
-
 package org.persistence
-
 
 import org.status.SuccessfulStatus
 import org.configTree.step.Step
@@ -31,7 +26,29 @@ import org.dto.startConfig.StartConfigSC
 import org.dto.nextStep.NextStepSC
 import org.dto.nextStep.NextStepCS
 
+/**
+ * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
+ * 
+ * Created by Gennadi Heimann on 22.09.2016
+ */
+
 object Persistence {
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.1.0
+   * 
+   * @param
+   * 
+   * @return
+   */
+  def startConfig(startConfigCS: StartConfigCS) : StartConfigSC = {
+     StepVertex.firstStep(startConfigCS)
+  }
+  
+  
+  
   
   def rules() = ???
   
@@ -40,16 +57,16 @@ object Persistence {
   }
   
   def firstStep(configId: String): StartConfigSC = {
-    StepVertex.firstStep(configId)
+//    StepVertex.firstStep(configId)
+    ???
   }
   
   def nextStep(nextStepCS: NextStepCS): NextStepSC = {
-    StepVertex.nextStep(nextStepCS)
-  }
-  
-  def startConfig(startConfigCS: StartConfigCS) : StartConfigSC = {
+//    StepVertex.nextStep(nextStepCS)
     ???
   }
+  
+  
   
 //  def registAdminUser(username: String, password: String): AdminUser = {
 //    

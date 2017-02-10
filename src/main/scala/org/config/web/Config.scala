@@ -1,11 +1,5 @@
-/**
- * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
- */
 package org.config.web
 
-/**
- * Created by Gennadi Heimann 23.12.2016
- */
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import org.dto.startConfig.StartConfigCS
@@ -13,6 +7,12 @@ import org.dto.startConfig.StartConfigSC
 import org.dto.nextStep.NextStepCS
 import org.dto.nextStep.NextStepSC
 import org.persistence.Persistence
+
+/**
+ * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
+ * 
+ * Created by Gennadi Heimann 23.12.2016
+ */
 
 trait Config {
   /**
