@@ -23,6 +23,7 @@ import org.dto.nextStep.NextStepResult
 import org.dto.Status
 import org.status.ErrorIds
 import org.status.ErrorStrings
+import com.tinkerpop.blueprints.impls.orient.OrientEdge
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -53,7 +54,7 @@ object StepVertex {
     //TODO error bei der schon exestierenden configUrl, wenn db mehrere configs findet.
     val vConfig: OrientVertex = vConfigs(0)
     
-    val eHasConfig: List[Edge] = vConfig.getEdges(Direction.OUT, "hasConfig").toList
+    val eHasConfig: List[Edge] = vConfig.getEdges(Direction.OUT, "hasFirstStep").toList
     
     //TODO error wenn mehrere Edges gefunden werden. DB seitig speren. Mur einen Edge an den Config erlaubt. 
     val vFirstStep: OrientVertex = eHasConfig(0).getVertex(Direction.IN).asInstanceOf[OrientVertex]
@@ -63,6 +64,7 @@ object StepVertex {
             true,
             "FirstStep",
             Step(
+                vFirstStep.getIdentity.toString,
                 "First Step",
                 components(vFirstStep)
             )
@@ -80,85 +82,55 @@ object StepVertex {
    * 
    * @return
    */
-//  def nextStep(nextStepCS: NextStepCS): NextStepSC = {
-//    val graph: OrientGraph = OrientDB.getGraph()
-//    
-//    val configId: String = nextStepCS.params.configId
-//    
-//    /*
-//     * -- Pruefe selectionCriterium wenn Component kind=mutable
-//     * -- 
-//     */
-//    
-//    
-//     /*
-//      * Component -> [NextStep]
-//      * 
-//      * hole NextStep Vertex von db
-//      */
-//    
-//    val vNextSteps: List[OrientVertex] = nextStepCS.params.componentIds.map(cId => {
-//      val sqlNextStep: String = 
-//        s"select expand(out('nextStep')) from Component where adminId='$configId' and @rid='$cId'"
-//      println(sqlNextStep)
-//      val resNextStep: OrientDynaElementIterable = graph
-//      .command(new OCommandSQL(sqlNextStep)).execute()
-//      val nextSteps: List[OrientVertex] = resNextStep.toList.map(_.asInstanceOf[OrientVertex])
-//      println(nextSteps)
-//      if(nextSteps.size == 1) nextSteps(0) else null
-//    })
-//    println(vNextSteps)
-//    val nextStepIds = vNextSteps.map(_.getId.toString)
-//    
-//    if(compareElemInList(nextStepIds)){
-//      val nextStepId: String = vNextSteps(0).getId.toString
-//      val sqlComponents: String = 
-//        s"select expand(out('hasComponent')) from Step where adminId='$configId' and @rid='$nextStepId'"
-//      val resComponents: OrientDynaElementIterable = graph
-//      .command(new OCommandSQL(sqlComponents)).execute()
-//      
-//      val vComponents: List[OrientVertex] = resComponents.toList.map(_.asInstanceOf[OrientVertex])
-//      
-//      val components: List[Component] = vComponents.map(vC => {
-//        new Component(
-//            vC.getIdentity.toString,
-//            vC.getProperty("kind")
-//        )
-//      })
-//      
-//      new NextStepSC(
-//        status = new Status(
-//            "ok",
-//            0,
-//            "Der naechste Schrit mit Komponenten wurde erfolgreich geladen"
-//        ),
-//        result = new NextStepResult(
-//            configId,
-//            new Step(
-//                vNextSteps(0).getId.toString,
-//                vNextSteps(0).getProperty("kind"),
-//                components
-//            )
-//        )
-//     )
-//    }else{
-//      new NextStepSC(
-//        status = new Status(
-//            "error",
-//            ErrorIds.selectedComponentsHasVariosNextStep,
-//            ErrorStrings.selectedComponentsHasVariosNextStep
-//        ),
-//        result = new NextStepResult(
-//            configId,
-//            new Step(
-//                "",
-//                "",
-//                List.empty
-//            )
-//        )
-//      )
+  def nextStep(nextStepCS: NextStepCS): NextStepSC = {
+    val graph: OrientGraph = OrientDB.getGraph()
+
+    val vSelectedComponents: List[OrientVertex] = nextStepCS.params.componentIds map {
+      componentId => {
+        graph.getVertex(componentId)
+      }
+    }
+    
+    val eHasStep: List[OrientEdge] = vSelectedComponents flatMap {
+      vComponent => {
+        vComponent.getEdges(Direction.OUT, "hasStep") map {
+          _.asInstanceOf[OrientEdge]
+        }
+      }
+    }
+    println(eHasStep)
+    
+    val vNextSteps = eHasStep map {
+      _.getVertex(Direction.IN)
+    }
+    
+    //TODO pruefe ob in der vNextStep gleiche Steps -> verwende compareOneWithAll(list: Seq[OrientVertex]): Boolean
+    
+//    val eHasComponents: List[OrientEdge] = vNextSteps(0).getEdges(Direction.OUT, "hasComponent").toList map {
+//      _.asInstanceOf[OrientEdge]
 //    }
-//  }
+//    
+//    val vComponentsOfNextStep: List[OrientVertex] = eHasComponents map {
+//      eHasComponent => {
+//        eHasComponent.getVertex(Direction.IN).asInstanceOf[OrientVertex]
+//      }
+//    }
+    
+    NextStepSC(
+        status = Status(
+            "ok",
+            1,
+            "Der naechste Schrit mit Komponenten wurde erfolgreich geladen"
+        ),
+        result = NextStepResult(
+            Step(
+                vNextSteps(0).getIdentity.toString,
+                "Next Step",
+                components(vNextSteps(0))
+            )
+        )
+    )
+  }
 
   /**
    * @author Gennadi Heimann
@@ -174,6 +146,12 @@ object StepVertex {
 //      case x :: rest => rest forall (_ == x)
 //    }
 //  }
+  
+    private def compareOneWithAll(list: Seq[OrientVertex]): Boolean = {
+    list match {
+      case firstVertex :: rest => rest forall (_ == firstVertex)
+    }
+  }
 
   /**
    * @author Gennadi Heimann
@@ -186,9 +164,10 @@ object StepVertex {
    */
   def components(step: OrientVertex): List[Component] = {
     val eHasComponents: List[Edge] = step.getEdges(Direction.OUT).toList
-    val vComponents: List[Vertex] = eHasComponents.map(_.getVertex(Direction.IN))
+    val vComponents: List[OrientVertex] = eHasComponents.map(_.getVertex(Direction.IN).asInstanceOf[OrientVertex])
     vComponents.map(vC => {
       new Component(
+          vC.getIdentity.toString,
           "Component"
       )
     })

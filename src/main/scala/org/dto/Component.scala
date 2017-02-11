@@ -9,6 +9,7 @@ import play.api.libs.json.Json
  */
 
 case class Component (
+    componentId: String,
     nameToShow: String
 )
 

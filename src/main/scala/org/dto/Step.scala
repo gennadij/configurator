@@ -17,6 +17,7 @@ import play.api.libs.json.Json
  */
 
 case class Step (
+    stepId: String,
     nameToShow: String,
     components: List[Component]
 )

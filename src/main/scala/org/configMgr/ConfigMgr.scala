@@ -23,9 +23,9 @@ object ConfigMgr{
     configMgr.startConfig(startConfigCS)
   }
   
-  def nextStep(nextStepCS: NextStepCS): NextStepSC = {
-    configMgr.nextStep(nextStepCS)
-  }
+//  def nextStep(nextStepCS: NextStepCS): NextStepSC = {
+//    configMgr.nextStep(nextStepCS)
+//  }
 }
 
 class ConfigMgr {
@@ -48,9 +48,9 @@ class ConfigMgr {
    * - nextStep Id bei der Multichoose Component muss bei allen componentId mit Step Id übereinstimmen 
    * - currentConfig für den Multichoose Komponent erweitern
    */
-  def nextStep(nextStepCS: NextStepCS): NextStepSC = {
-    Persistence.nextStep(nextStepCS)
-  }
+//  def nextStep(nextStepCS: NextStepCS): NextStepSC = {
+//    Persistence.nextStep(nextStepCS)
+//  }
 //  def getNextStep(client: org.client.ConfigClient, selectedComponents: Set[SelectedComponent]): Step = {
 //    
 //    val step: Step = ConfigSettings.stepOfComponents(client, selectedComponents)
@@ -371,7 +371,7 @@ class ConfigMgr {
 //  }
   
   
-  private def checkElem(list: Seq[String]) = {
+  private def checkElem(list: Seq[String]): Boolean = {
     list match {
       case x :: rest => rest forall (_ == x)
     }

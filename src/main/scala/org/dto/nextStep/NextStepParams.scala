@@ -10,7 +10,6 @@ import play.api.libs.json.Json
  */
 
 case class NextStepParams (
-    configId: String,
     componentIds: List[String]
 )
 

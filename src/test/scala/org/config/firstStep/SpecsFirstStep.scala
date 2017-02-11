@@ -35,20 +35,26 @@ class SpecsFirstStep extends Specification with Config{
     "FirstStep" >> {
     	(startConfigSC \ "dtoId").asOpt[Int].get === DTOIds.startConfig
     	(startConfigSC \ "dtoId").asOpt[Int].get === DTOIds.startConfig
-      "result \\ step \\ kind" >> {
-        (startConfigSC \ "result" \ "step" \ "kind").asOpt[String].get === "first"
+      "result \\ status" >> {
+        (startConfigSC \ "result" \ "status").asOpt[Boolean].get === true
+      }
+      "result \\ message" >> {
+        (startConfigSC \ "result" \ "message").asOpt[String].get === "FirstStep"
+      }
+      "result \\ step \\ nameToShow" >> {
+        (startConfigSC \ "result" \ "step" \ "nameToShow" ).asOpt[String].get === "First Step"
       }
       "result \\ step \\ components-> size" >> {
         (startConfigSC \ "result" \ "step" \ "components").asOpt[List[JsValue]].get.size == 3
       }
-      "result \\ step \\ components(0) \\ kind" >> {
-        (((startConfigSC \ "result" \ "step" \ "components")(0)) \ "kind").asOpt[String].get == "immutable"
+      "result \\ step \\ components(0) \\ nameToShow" >> {
+        (((startConfigSC \ "result" \ "step" \ "components")(0)) \ "nameToShow").asOpt[String].get == "Component"
       }
-      "result \\ step \\ components(1) \\ kind" >> {
-        (((startConfigSC \ "result" \ "step" \ "components")(1)) \ "kind").asOpt[String].get == "immutable"
+      "result \\ step \\ components(1) \\ nameToShow" >> {
+        (((startConfigSC \ "result" \ "step" \ "components")(1)) \ "nameToShow").asOpt[String].get == "Component"
       }
-      "result \\ step \\ components(2) \\ kind" >> {
-        (((startConfigSC \ "result" \ "step" \ "components")(2)) \ "kind").asOpt[String].get == "immutable"
+      "result \\ step \\ components(2) \\ nameToShow" >> {
+        (((startConfigSC \ "result" \ "step" \ "components")(2)) \ "nameToShow").asOpt[String].get == "Component"
       }
     }
   }

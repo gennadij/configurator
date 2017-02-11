@@ -44,4 +44,9 @@ class VariosNextStep extends Specification with Config{
       }
     }
   }
+  
+  def getComponentIds: List[String] = {
+    
+    ???
+  }
 }

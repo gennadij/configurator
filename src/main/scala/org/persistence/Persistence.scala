@@ -47,6 +47,18 @@ object Persistence {
      StepVertex.firstStep(startConfigCS)
   }
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.1.0
+   * 
+   * @param
+   * 
+   * @return
+   */
+  def nestStep(nextStepCS: NextStepCS): NextStepSC = {
+    StepVertex.nextStep(nextStepCS)
+  }
   
   
   
@@ -61,10 +73,6 @@ object Persistence {
     ???
   }
   
-  def nextStep(nextStepCS: NextStepCS): NextStepSC = {
-//    StepVertex.nextStep(nextStepCS)
-    ???
-  }
   
   
   

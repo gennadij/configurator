@@ -54,8 +54,7 @@ trait Config {
   
   private def nextStep(receiveMessage: JsValue): JsValue = {
     val nextStepCS: NextStepCS = Json.fromJson[NextStepCS](receiveMessage).get
-//    val nextStepSC: NextStepSC = ConfigMgr.nextStep(nextStepCS)
-//    Json.toJson(nextStepSC)
-    ???
+    val nextStepSC: NextStepSC = Persistence.nestStep(nextStepCS)
+    Json.toJson(nextStepSC)
   }
 }
