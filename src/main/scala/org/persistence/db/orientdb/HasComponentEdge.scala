@@ -11,7 +11,6 @@ import com.tinkerpop.blueprints.impls.orient.OrientEdgeType
 import com.orientechnologies.orient.core.metadata.schema.OType
 import org.status.SuccessfulStatus
 import org.status.WarningStatus
-import org.configTree.component.Component
 import com.tinkerpop.blueprints.impls.orient.OrientEdge
 import org.status.Status
 
@@ -36,24 +35,24 @@ object HasComponentEdge {
     }
   }
   
-  def connect(stepId: String, components: Seq[Component]): List[Status] = {
-    val graph: OrientGraph = OrientDB.getGraph
-    val status: List[Status] = List.empty
-    val st = components.foreach(c => {
-      if(graph.getEdges("hasComponentId", c.id).size == 0){
-    	  val eHasComponent: OrientEdge = graph.addEdge(s"class:$classname", 
-    			  graph.getVertices(propKeyStepId, stepId).head, 
-    			  graph.getVertices(propKeyComponentId, c.id).head, 
-    			  classname)
-    		eHasComponent.setProperty("hasComponentId", c.id)
-    		graph.commit
-    		status.::( new SuccessfulStatus("Edge with id = " + c.id + " was created", ""))
-      }else{
-        status.::(new WarningStatus("Edge with id = " + c.id + " already exist", ""))
-      }
-    })
-    status
-  }
+//  def connect(stepId: String, components: Seq[Component]): List[Status] = {
+//    val graph: OrientGraph = OrientDB.getGraph
+//    val status: List[Status] = List.empty
+//    val st = components.foreach(c => {
+//      if(graph.getEdges("hasComponentId", c.id).size == 0){
+//    	  val eHasComponent: OrientEdge = graph.addEdge(s"class:$classname", 
+//    			  graph.getVertices(propKeyStepId, stepId).head, 
+//    			  graph.getVertices(propKeyComponentId, c.id).head, 
+//    			  classname)
+//    		eHasComponent.setProperty("hasComponentId", c.id)
+//    		graph.commit
+//    		status.::( new SuccessfulStatus("Edge with id = " + c.id + " was created", ""))
+//      }else{
+//        status.::(new WarningStatus("Edge with id = " + c.id + " already exist", ""))
+//      }
+//    })
+//    status
+//  }
   
   def add(adminId: String, outStep: String, inComponents: List[String]): Status = {
      val graph: OrientGraph = OrientDB.getGraph

@@ -7,11 +7,9 @@ import org.status.SuccessfulStatus
 import org.status.WarningStatus
 import com.tinkerpop.blueprints.impls.orient.OrientVertexType
 import com.orientechnologies.orient.core.metadata.schema.OType
-import org.configTree.component.Component
 import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
 import com.orientechnologies.orient.core.sql.OCommandSQL
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
-import org.configTree.component.ImmutableComponent
 import org.status.Status
 
 object ComponentVertex {
@@ -58,11 +56,11 @@ object ComponentVertex {
   
   def get() = ???
   
-  def components(stepId: String): List[Component] = {
-    val graph: OrientGraph = OrientDB.getGraph
-    val res: OrientDynaElementIterable = graph
-      .command(new OCommandSQL(s"select expand(out()) from Step where stepId='%stepId'")).execute()
-    res.toList.map(c => { new ImmutableComponent(c.asInstanceOf[OrientVertex].getProperty("componentId").toString(), "") })
-  }
+//  def components(stepId: String): List[Component] = {
+//    val graph: OrientGraph = OrientDB.getGraph
+//    val res: OrientDynaElementIterable = graph
+//      .command(new OCommandSQL(s"select expand(out()) from Step where stepId='%stepId'")).execute()
+//    res.toList.map(c => { new ImmutableComponent(c.asInstanceOf[OrientVertex].getProperty("componentId").toString(), "") })
+//  }
   
 }
