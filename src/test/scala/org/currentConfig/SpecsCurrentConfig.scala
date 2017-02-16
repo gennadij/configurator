@@ -7,7 +7,16 @@ import play.api.libs.json.Json
 import org.dto.DTOIds
 import org.dto.DTONames
 import play.api.libs.json.JsValue
+import org.junit.runner.RunWith
+import org.specs2.runner.JUnitRunner
 
+/**
+ * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
+ * 
+ * Created by Gennadi Heimann on 16.02.2017
+ */
+
+@RunWith(classOf[JUnitRunner])
 class SpecsCurrentConfig extends Specification with BeforeAfterAll with Config{
   
   def afterAll(): Unit = {}
@@ -23,10 +32,16 @@ class SpecsCurrentConfig extends Specification with BeforeAfterAll with Config{
     )
     val startConfigSC: JsValue = handleMessage(startConfigCS)
     
-    println(startConfigCS)
+    println(startConfigSC)
     
-    "result \\ currentConfig" >> {
+    "result \\ currentConfig.size" >> {
         (startConfigSC \ "result" \ "currentConfig" ).asOpt[Seq[JsValue]].get.size === 1
+    }
+    "result \\ currentConfig(0) \\ nameToShow" >> {
+      (((startConfigSC \ "result" \ "currentConfig")(0)) \ "nameToShow").asOpt[String].get === "First Step"
+    }
+    "result \\ currentConfig(0) \\ components.size" >> {
+      (((startConfigSC \ "result" \ "currentConfig")(0)) \ "components").asOpt[Seq[JsValue]].get.size === 0
     }
   }
   

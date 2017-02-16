@@ -16,7 +16,7 @@ case class StartConfigResult (
     status: Boolean,
     message: String,
     step: Step,
-    currentConfig: CurrentConfig
+    currentConfig: Set[Step]
 )
 
 object StartConfigResult {

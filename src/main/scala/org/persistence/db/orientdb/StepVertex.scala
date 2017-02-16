@@ -69,14 +69,11 @@ object StepVertex {
                 "First Step",
                 components(vFirstStep)
             ),
-            CurrentConfig(
-                Set(
-                    Step(
-                        vFirstStep.getIdentity.toString,
-                        "First Step",
-                        List.empty[Component]
-                    )
-                    
+            Set(
+                Step(
+                    vFirstStep.getIdentity.toString,
+                    "First Step",
+                    List.empty[Component]
                 )
             )
         )
