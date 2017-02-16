@@ -5,6 +5,7 @@ package org.dto.startConfig
 
 import play.api.libs.json.Json
 import org.dto.Step
+import org.dto.CurrentConfig
 
 /**
  * Created by Gennadi Heimann 23.12.2016
@@ -14,7 +15,8 @@ import org.dto.Step
 case class StartConfigResult (
     status: Boolean,
     message: String,
-    step: Step
+    step: Step,
+    currentConfig: CurrentConfig
 )
 
 object StartConfigResult {

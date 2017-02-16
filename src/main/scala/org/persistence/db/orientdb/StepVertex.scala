@@ -24,6 +24,7 @@ import org.dto.Status
 import org.status.ErrorIds
 import org.status.ErrorStrings
 import com.tinkerpop.blueprints.impls.orient.OrientEdge
+import org.dto.CurrentConfig
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -67,6 +68,16 @@ object StepVertex {
                 vFirstStep.getIdentity.toString,
                 "First Step",
                 components(vFirstStep)
+            ),
+            CurrentConfig(
+                Set(
+                    Step(
+                        vFirstStep.getIdentity.toString,
+                        "First Step",
+                        List.empty[Component]
+                    )
+                    
+                )
             )
         )
     )
@@ -90,6 +101,13 @@ object StepVertex {
         graph.getVertex(componentId)
       }
     }
+    
+    val eHasStepFromSelectedComponents: List[OrientEdge] = 
+      vSelectedComponents(0).getEdges(Direction.IN, "hasComponent").toList map {_.asInstanceOf[OrientEdge]}
+    
+    val vSelectedStep: OrientVertex = eHasStepFromSelectedComponents(0)
+      .getVertex(Direction.OUT).asInstanceOf[OrientVertex]
+    
     
     val eHasStep: List[OrientEdge] = vSelectedComponents flatMap {
       vComponent => {
@@ -127,7 +145,8 @@ object StepVertex {
                 vNextSteps(0).getIdentity.toString,
                 "Next Step",
                 components(vNextSteps(0))
-            )
+            ),
+            ???
         )
     )
   }

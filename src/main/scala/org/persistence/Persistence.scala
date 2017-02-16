@@ -42,7 +42,8 @@ object Persistence {
    * @return
    */
   def startConfig(startConfigCS: StartConfigCS) : StartConfigSC = {
-     StepVertex.firstStep(startConfigCS)
+     val startConfigSC: StartConfigSC = StepVertex.firstStep(startConfigCS)
+     startConfigSC
   }
   
   /**
