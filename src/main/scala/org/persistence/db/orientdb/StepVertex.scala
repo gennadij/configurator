@@ -131,6 +131,13 @@ object StepVertex {
 //      }
 //    }
     
+    //CURRENT_CONFIG
+    
+    // Statefull connection 
+    // in DB ablegen
+    // über Client Schleifen lassen (bei stateless connection)
+    
+    
     NextStepSC(
         status = Status(
             "ok",

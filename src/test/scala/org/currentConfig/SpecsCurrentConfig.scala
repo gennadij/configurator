@@ -74,7 +74,7 @@ class SpecsCurrentConfig extends Specification with BeforeAfterAll with Config{
             "Component"
         }
         "result \\ currentConfig(1) \\ nameToShow" >> {
-          (((startConfigSC \ "result" \ "currentConfig")(1)) \ "nameToShow").asOpt[String].get === "First Step"
+          (((startConfigSC \ "result" \ "currentConfig")(1)) \ "nameToShow").asOpt[String].get === "Next Step"
         }
         "result \\ currentConfig(1) \\ components.size" >> {
           (((startConfigSC \ "result" \ "currentConfig")(1)) \ "components").asOpt[Seq[JsValue]].get.size === 0
