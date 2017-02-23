@@ -1,7 +1,7 @@
 package org.currentConfig
 
 
-object CurrentConfig {
-  
-  
-}
+case class CurrentConfig (
+    sessionId: String,
+    steps: List[Step]
+)
