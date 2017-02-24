@@ -10,4 +10,5 @@ package org.dto
 object DTONames {
   val startConfig: String = "StartConfig"
   val nextSTep: String = "NextStep"
+  val CURRENT_CONFIG: String = "CurrentConfig"
 }

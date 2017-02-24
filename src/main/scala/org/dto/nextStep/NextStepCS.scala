@@ -1,6 +1,3 @@
-/**
- * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
- */
 package org.dto.nextStep
 
 import org.dto.DTOIds
@@ -9,7 +6,7 @@ import play.api.libs.json.Json
 /**
  * Created by Gennadi Heimann on 27.12.2016
  * 
- * 
+ * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
  */
 case class NextStepCS (
     dtoId: Int = DTOIds.nextStep,

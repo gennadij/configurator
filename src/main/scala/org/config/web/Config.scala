@@ -38,23 +38,28 @@ trait Config {
    */
   
   
-  def handleMessage(receivedMessage: JsValue, sessionId: String): JsValue = {
+  def handleMessage(receivedMessage: JsValue): JsValue = {
     (receivedMessage \ "dto").asOpt[String] match {
-      case Some("StartConfig") => startConfig(receivedMessage,sessionId)
-      case Some("NextStep") => nextStep(receivedMessage, sessionId)
+      case Some("StartConfig") => startConfig(receivedMessage)
+      case Some("NextStep") => nextStep(receivedMessage)
+      case Some("CurrentConfig") => currentConfig(receivedMessage)
       case _ => Json.obj("error" -> "keinen Treffer")
     }
   }
   
-  private def startConfig(receivedMessage: JsValue, sessionId: String): JsValue = {
+  private def startConfig(receivedMessage: JsValue): JsValue = {
     val startConfigCS: StartConfigCS = Json.fromJson[StartConfigCS](receivedMessage).get
     val startConfigSC: StartConfigSC = Persistence.startConfig(startConfigCS)
     Json.toJson(startConfigSC)
   }
   
-  private def nextStep(receiveMessage: JsValue, sessionId: String): JsValue = {
+  private def nextStep(receiveMessage: JsValue): JsValue = {
     val nextStepCS: NextStepCS = Json.fromJson[NextStepCS](receiveMessage).get
     val nextStepSC: NextStepSC = Persistence.nestStep(nextStepCS)
     Json.toJson(nextStepSC)
+  }
+  
+  private def currentConfig(receivedMessage: JsValue): JsValue = {
+    ???
   }
 }
