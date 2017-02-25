@@ -68,13 +68,6 @@ object StepVertex {
                 vFirstStep.getIdentity.toString,
                 "First Step",
                 components(vFirstStep)
-            ),
-            Set(
-                Step(
-                    vFirstStep.getIdentity.toString,
-                    "First Step",
-                    List.empty[Component]
-                )
             )
         )
     )
@@ -148,8 +141,7 @@ object StepVertex {
                 vNextSteps(0).getIdentity.toString,
                 "Next Step",
                 components(vNextSteps(0))
-            ),
-            ???
+            )
         )
     )
   }

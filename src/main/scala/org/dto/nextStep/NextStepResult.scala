@@ -11,8 +11,7 @@ import org.dto.CurrentConfig
  */
 
 case class NextStepResult (
-    step: Step,
-    currentConfig: CurrentConfig
+    step: Step
 )
 
 object NextStepResult {

@@ -15,8 +15,7 @@ import org.dto.CurrentConfig
 case class StartConfigResult (
     status: Boolean,
     message: String,
-    step: Step,
-    currentConfig: Set[Step]
+    step: Step
 )
 
 object StartConfigResult {
