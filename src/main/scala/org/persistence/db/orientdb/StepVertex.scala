@@ -203,4 +203,17 @@ object StepVertex {
     })
     if(vNextStep.size == 1) vNextStep.head.getId.toString() else "no nextStep"
   }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 1.0
+   * 
+   * @param
+   * 
+   * @return
+   */
+  private def setCurrentConfig(step: OrientVertex) = {
+    
+  }
 }

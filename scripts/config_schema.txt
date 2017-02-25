@@ -1,27 +1,43 @@
-create database remote:localhost/config_1 root root plocal
-
-connect remote:localhost/config_1 root root ;
+connect remote:localhost/database root root ;
 SET echo TRUE;
 
-CREATE CLASS Step EXTENDS V;
-CREATE PROPERTY Step.stepId STRING;
-CREATE PROPERTY Step.adminId STRING;
-CREATE PROPERTY Step.kind STRING;
-
-CREATE CLASS Component EXTENDS V;
-CREATE PROPERTY Component.componentId STRING;
-CREATE PROPERTY Component.adminId STRING;
-
-CREATE CLASS hasComponent EXTENDS E;
-CREATE PROPERTY hasComponent.hasComponentId STRING;
-CREATE PROPERTY hasComponent.adminId STRING;
-
-CREATE CLASS nextStep EXTENDS E;
-CREATE PROPERTY nextStep.nextStepId STRING;
-CREATE PROPERTY nextStep.adminId STRING;
-
-CREATE CLASS GlobalSettings EXTENDS V;
+###Configuration
 
 CREATE CLASS AdminUser EXTENDS V;
 CREATE PROPERTY AdminUser.username STRING;
-CREATE PROPERTY AdminUser.userPassword STRING;
+CREATE PROPERTY AdminUser.password STRING;
+
+CREATE CLASS hasConfig EXTENDS E;
+
+CREATE CLASS Config EXTENDS V;
+CREATE PROPERTY Config.configUri STRING;
+
+CREATE CLASS hasStep EXTENDS E;
+
+CREATE CLASS Step EXTENDS V;
+CREATE PROPERTY Step.kind STRING;
+CREATE PROPERTY Step.selectionCriterium STRING;
+
+CREATE CLASS Component EXTENDS V;
+CREATE PROPERTY Component.kind STRING;
+
+CREATE CLASS hasComponent EXTENDS E;
+
+###Current Configuration
+
+CREATE CLASS CurrentConfigs EXTENDS V;
+
+CREATE CLASS hasCurrentConfig EXTENDS E;
+
+CREATE CLASS CurrentConfig ESTENDS V;
+CREATE PROPERTY CurrentConfig.clientId STRING;
+
+CREATE CLASS hasCurrentConfigStep EXTENDS E;
+
+CREATE CLASS CurrentConfigStep EXTENDA V;
+CREATE PROPERTY CurrentConfigStep.nameToShow STRING;
+
+CREATE CLASS hasCurrentConfigComponent EXTENDS E;
+
+CREATE CLASS CurrentConfigComponent EXTENDS V;
+CREATE PROPERTY CurrentConfigComponent.nameToShow STRING; 
