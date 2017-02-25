@@ -24,7 +24,8 @@ class SpecsFirstStep extends Specification with Config{
         "dtoId" -> DTOIds.startConfig,
         "dto" -> DTONames.startConfig,
         "params" -> Json.obj(
-            "configUrl" -> "http://contig/user10"
+            "configUrl" -> "http://contig/user10",
+            "clientId" -> ""
         )
     )
 //    {dtoId : 1, dto : StartConfig, params : {configUri: http://config/test}}

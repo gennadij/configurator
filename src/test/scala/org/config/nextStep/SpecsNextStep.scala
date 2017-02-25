@@ -23,7 +23,8 @@ class SpecsNextStep extends Specification with Config{
         "dtoId" -> DTOIds.nextStep,
         "dto" -> DTONames.nextSTep,
         "params" -> Json.obj(
-            "componentIds" -> Json.arr(componentIds(0))
+            "componentIds" -> Json.arr(componentIds(0)),
+            "clientId" -> ""
         )
     )
     println(nextStepCS)
