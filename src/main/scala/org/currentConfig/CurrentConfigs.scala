@@ -1,7 +1,8 @@
 package org.currentConfig
 
 import scala.collection.mutable.Set
+import scala.collection.mutable.Map
 
 object CurrentConfigs {
-  val currentConfigs: Set[CurrentConfig] = Set.empty
+  val currentConfigs: Map[String, CurrentConfig] = Map.empty
 }

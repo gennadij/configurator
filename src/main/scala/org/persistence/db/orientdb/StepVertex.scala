@@ -65,9 +65,9 @@ object StepVertex {
     
     val currentConfigStep = org.currentConfig.Step(vFirstStep.getIdentity.toString, "FirstStep", List.empty)
     
-    val currentConfig = org.currentConfig.CurrentConfig(startConfigCS.params.clientId, List(currentConfigStep))
+    val currentConfig = org.currentConfig.CurrentConfig(List(currentConfigStep))
     
-    currentConfigs += currentConfig
+    currentConfigs += (startConfigCS.params.clientId -> currentConfig)
     
     StartConfigSC(
         result = StartConfigResult(
