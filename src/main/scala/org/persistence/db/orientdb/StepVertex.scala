@@ -25,6 +25,7 @@ import org.status.ErrorIds
 import org.status.ErrorStrings
 import com.tinkerpop.blueprints.impls.orient.OrientEdge
 import org.dto.CurrentConfig
+import org.currentConfig.CurrentConfigs
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -59,6 +60,14 @@ object StepVertex {
     
     //TODO error wenn mehrere Edges gefunden werden. DB seitig speren. Mur einen Edge an den Config erlaubt. 
     val vFirstStep: OrientVertex = eHasConfig(0).getVertex(Direction.IN).asInstanceOf[OrientVertex]
+    
+    val currentConfigs = CurrentConfigs.currentConfigs
+    
+    val currentConfigStep = org.currentConfig.Step(vFirstStep.getIdentity.toString, "FirstStep", List.empty)
+    
+    val currentConfig = org.currentConfig.CurrentConfig(startConfigCS.params.clientId, List(currentConfigStep))
+    
+    currentConfigs += currentConfig
     
     StartConfigSC(
         result = StartConfigResult(

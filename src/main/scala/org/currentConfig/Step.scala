@@ -1,5 +1,7 @@
 package org.currentConfig
 
 case class Step (
-    id: String
+    id: String,
+    nameToShow: String,
+    components: List[String]
 )

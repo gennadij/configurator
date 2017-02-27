@@ -1,5 +1,7 @@
 package org.currentConfig
 
-case class CurrentConfigs (
-    currentConfigs: List[CurrentConfig]
-)
+import scala.collection.mutable.Set
+
+object CurrentConfigs {
+  val currentConfigs: Set[CurrentConfig] = Set.empty
+}
