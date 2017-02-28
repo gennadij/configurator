@@ -7,8 +7,8 @@ import org.dto.DTOIds
 import org.dto.DTONames
 import org.dto.startConfig.StartConfigSC
 import play.api.libs.json.JsValue
-//import org.junit.runner.RunWith
-//import org.specs2.runner.JUnitRunner
+import org.junit.runner.RunWith
+import org.specs2.runner.JUnitRunner
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -16,7 +16,7 @@ import play.api.libs.json.JsValue
  * Created by Gennadi Heimann on 25.12.2016
  */
 
-//@RunWith(classOf[JUnitRunner])
+@RunWith(classOf[JUnitRunner])
 class SpecsFirstStep extends Specification with Config{
   
   "Specs spezifiziert der Start der Konfiguration" >> {

@@ -42,9 +42,14 @@ object CurrentConfig {
   
   def getCurrentConfig(currentConfigCS: CurrentConfigCS): CurrentConfigSC = {
     
+    val currentConfigSteps: List[Step] = currentConfigs.get(currentConfigCS.params.clientId) match {
+      case Some(step) => step
+      case None => List[Step]()
+    }
+    
     CurrentConfigSC(
         result = CurrentConfigResult(
-            currentConfigs.get(currentConfigCS.params.clientId).get
+            currentConfigSteps
         )
     )
   }
