@@ -17,7 +17,7 @@ import org.specs2.runner.JUnitRunner
  */
 
 @RunWith(classOf[JUnitRunner])
-class SpecsCurrentConfigDB extends Specification with BeforeAfterAll with Config{
+class SpecsCurrentConfig extends Specification with BeforeAfterAll with Config{
   
   def afterAll(): Unit = {}
   def beforeAll(): Unit = {}
