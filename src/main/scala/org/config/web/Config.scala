@@ -7,6 +7,9 @@ import org.dto.startConfig.StartConfigSC
 import org.dto.nextStep.NextStepCS
 import org.dto.nextStep.NextStepSC
 import org.persistence.Persistence
+import org.dto.currentConfig.CurrentConfigCS
+import org.dto.currentConfig.CurrentConfigSC
+import org.currentConfig.CurrentConfig
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -60,6 +63,8 @@ trait Config {
   }
   
   private def currentConfig(receivedMessage: JsValue): JsValue = {
-    ???
+    val currentConfigCS: CurrentConfigCS = Json.fromJson[CurrentConfigCS](receivedMessage).get
+    val currentConfigSC: CurrentConfigSC = CurrentConfig.getCurrentConfig(currentConfigCS)
+    Json.toJson(currentConfigSC)
   }
 }
