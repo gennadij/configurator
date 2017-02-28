@@ -66,7 +66,7 @@ lazy val root = (project in file(".")).
 		,jsonFromPLay
 		,specs2
 		//,junit
-		,specs2JUnit
+		//,specs2JUnit
 		),
 		fork := true
 	)

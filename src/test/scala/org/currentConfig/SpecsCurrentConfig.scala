@@ -7,8 +7,8 @@ import play.api.libs.json.Json
 import org.dto.DTOIds
 import org.dto.DTONames
 import play.api.libs.json.JsValue
-import org.junit.runner.RunWith
-import org.specs2.runner.JUnitRunner
+//import org.junit.runner.RunWith
+//import org.specs2.runner.JUnitRunner
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -16,7 +16,7 @@ import org.specs2.runner.JUnitRunner
  * Created by Gennadi Heimann on 16.02.2017
  */
 
-@RunWith(classOf[JUnitRunner])
+//@RunWith(classOf[JUnitRunner])
 class SpecsCurrentConfig extends Specification with BeforeAfterAll with Config{
   
   def afterAll(): Unit = {}
