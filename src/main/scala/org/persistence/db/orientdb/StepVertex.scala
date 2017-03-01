@@ -60,14 +60,6 @@ object StepVertex {
     //TODO error wenn mehrere Edges gefunden werden. DB seitig speren. Mur einen Edge an den Config erlaubt. 
     val vFirstStep: OrientVertex = eHasConfig(0).getVertex(Direction.IN).asInstanceOf[OrientVertex]
     
-//    val currentConfigs = CurrentConfigs.currentConfigs
-    
-//    val currentConfigStep = org.currentConfig.Step(vFirstStep.getIdentity.toString, "FirstStep", List.empty)
-    
-//    val currentConfig = org.currentConfig.CurrentConfig(startConfigCS.params.clientId, List(currentConfigStep))
-    
-//    currentConfigs += currentConfig
-    
     val currentConfigStep : Step = Step(vFirstStep.getIdentity.toString, "FirstStep", List[Component]())
     
     CurrentConfig.setCurrentConfig(startConfigCS.params.clientId, currentConfigStep)
@@ -106,6 +98,7 @@ object StepVertex {
     val eHasStepFromSelectedComponents: List[OrientEdge] = 
       vSelectedComponents(0).getEdges(Direction.IN, "hasComponent").toList map {_.asInstanceOf[OrientEdge]}
     
+    //TODO es darf nur einen Step gefunden werden
     val vSelectedStep: OrientVertex = eHasStepFromSelectedComponents(0)
       .getVertex(Direction.OUT).asInstanceOf[OrientVertex]
     
@@ -137,10 +130,10 @@ object StepVertex {
     
     //CURRENT_CONFIG
     
-    // Statefull connection 
-    // in DB ablegen
-    // über Client Schleifen lassen (bei stateless connection)
-    
+    val currentConfigStep = Step(vSelectedStep.getIdentity.toString, "Step" + vSelectedStep.getIdentity.toString(), 
+        nextStepCS.params.componentIds map {c => Component(c, "Component" + c)})
+        
+    CurrentConfig.setCurrentConfig(nextStepCS.params.clientId, currentConfigStep)
     
     NextStepSC(
         status = Status(

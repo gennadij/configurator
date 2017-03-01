@@ -1,6 +1,6 @@
 package org.currentConfig
 
-import scala.collection.mutable.Map
+import scala.collection.mutable.Map 
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import org.dto.currentConfig.CurrentConfigCS
 import org.dto.currentConfig.CurrentConfigSC
@@ -52,6 +52,10 @@ object CurrentConfig {
             currentConfigSteps
         )
     )
+  }
+  
+  def getCuttentConfig: Map[String, List[Step]] = {
+    currentConfigs
   }
 }
 

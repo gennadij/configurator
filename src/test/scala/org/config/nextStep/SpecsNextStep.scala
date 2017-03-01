@@ -63,7 +63,8 @@ class SpecsNextStep extends Specification with Config{
         "dtoId" -> DTOIds.startConfig,
         "dto" -> DTONames.startConfig,
         "params" -> Json.obj(
-            "configUrl" -> "http://contig/user10"
+            "configUrl" -> "http://contig/user10",
+            "clientId" -> ""
         )
     )
     println(startConfigCS)
