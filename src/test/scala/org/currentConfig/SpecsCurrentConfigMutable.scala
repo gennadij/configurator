@@ -18,6 +18,8 @@ import org.specs2.specification.BeforeAll
  * Created by Gennadi Heimann on 27.02.2017
  */
 
+//TODO deprecated weil beim StartConfig keine CurrentConfig geliefert wird
+
 @RunWith(classOf[JUnitRunner])
 class SpecsCurrentConfigMutable extends Specification with Config with BeforeAfterAll{
   

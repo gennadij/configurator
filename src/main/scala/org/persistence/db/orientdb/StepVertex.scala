@@ -60,9 +60,11 @@ object StepVertex {
     //TODO error wenn mehrere Edges gefunden werden. DB seitig speren. Mur einen Edge an den Config erlaubt. 
     val vFirstStep: OrientVertex = eHasConfig(0).getVertex(Direction.IN).asInstanceOf[OrientVertex]
     
-    val currentConfigStep : Step = Step(vFirstStep.getIdentity.toString, "FirstStep", List[Component]())
+    // TODO CurrentConfig beim StartConfig ausbauen
     
-    CurrentConfig.setCurrentConfig(startConfigCS.params.clientId, currentConfigStep)
+//    val currentConfigStep : Step = Step(vFirstStep.getIdentity.toString, "FirstStep", List[Component]())
+//    
+//    CurrentConfig.setCurrentConfig(startConfigCS.params.clientId, currentConfigStep)
     
     StartConfigSC(
         result = StartConfigResult(

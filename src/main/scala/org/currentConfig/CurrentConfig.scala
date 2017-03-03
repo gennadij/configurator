@@ -21,22 +21,21 @@ object CurrentConfig {
   def setCurrentConfig(clientId: String, step: Step): Unit = {
     
     
-//    val currentConfigSteps: List[Step] = if (currentConfigs.get(clientId) == None) {
-//      
-//    }
-    
     val currentConfigSteps: List[Step] = currentConfigs.get(clientId) match {
       case Some(step) => currentConfigs.get(clientId).get
       case None => currentConfig.setCurrentConfig(step, List[Step]())
 //      case _ => println("Fehler bei CurrentConfig")
     }
     
+    val indexOfSelectedStep = currentConfigSteps.indexWhere(s => s.stepId == step.stepId)
     
-//    val currentConfigSteps: List[Step] = currentConfigs.get(clientId).get
-    
-    
-    
-    currentConfigs += (clientId -> currentConfigSteps)
+    if(indexOfSelectedStep == -1) {
+      currentConfigs += (clientId -> (currentConfigSteps :+ step))
+    }else {
+       val countOfStepToDelete = currentConfigSteps.size - indexOfSelectedStep
+       val steps = currentConfigSteps.dropRight(countOfStepToDelete)
+       currentConfigs + (clientId -> (steps :+ step))
+    }
   }
   
   
