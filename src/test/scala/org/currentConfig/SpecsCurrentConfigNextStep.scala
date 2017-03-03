@@ -19,8 +19,9 @@ import play.api.libs.json.JsValue
 @RunWith(classOf[JUnitRunner])
 class SpecsCurrentConfigNextStep extends Specification with Config with BeforeAfterAll{
   
-  private val clientId_1: String = java.util.UUID.randomUUID.toString
-  private val clientId_2: String = java.util.UUID.randomUUID.toString
+  private val clientId_1: String = "623dd31e-e808-48c7-b493-46435b687820"
+  private val clientId_2: String = "8f91f784-c60d-40d7-9641-abc02cc88eb2"
+//  private val clientId_2: String = java.util.UUID.randomUUID.toString
   
   def afterAll(): Unit = {
     CurrentConfig.getCuttentConfig.clear()
@@ -37,11 +38,11 @@ class SpecsCurrentConfigNextStep extends Specification with Config with BeforeAf
         )
     )
     
-//    println(startConfigCSForClient_1)
+    println(startConfigCSForClient_1)
     
     val startConfigSCForClient_1: JsValue = handleMessage(startConfigCSForClient_1)
     
-//    println(startConfigSCForClient_1)
+    println(startConfigSCForClient_1)
     
     val startConfigCSForClient_2 = Json.obj(
         "dtoId" -> DTOIds.startConfig,
@@ -52,11 +53,11 @@ class SpecsCurrentConfigNextStep extends Specification with Config with BeforeAf
         )
     )
     
-//    println(startConfigCSForClient_2)
+    println(startConfigCSForClient_2)
     
     val startConfigSCForClient_2: JsValue = handleMessage(startConfigCSForClient_2)
     
-//    println(startConfigSCForClient_2)
+    println(startConfigSCForClient_2)
   }
 
   "Diese Specifikation spezifiziert die aktuelle Konfiguration nach dem 2, Step" >> {
@@ -69,11 +70,11 @@ class SpecsCurrentConfigNextStep extends Specification with Config with BeforeAf
           )
       )
       
-//      println(currentConfigCSAfterStartConfig_1)
+      println(currentConfigCSAfterStartConfig_1)
       
       val currentConfigSCAfterStartConfig_1 = handleMessage(currentConfigCSAfterStartConfig_1)
       
-//      println(currentConfigSCAfterStartConfig_1)
+      println(currentConfigSCAfterStartConfig_1)
       
       (currentConfigSCAfterStartConfig_1 \ "dtoId").asOpt[Int] === Some(DTOIds.CURRENT_CONFIG)
       (currentConfigSCAfterStartConfig_1 \ "dto").asOpt[String] === Some(DTONames.CURRENT_CONFIG)
@@ -94,11 +95,11 @@ class SpecsCurrentConfigNextStep extends Specification with Config with BeforeAf
           )
       )
       
-  //    println(currentConfigCSAfterStartConfig_2)
+      println(currentConfigCSAfterStartConfig_2)
       
       val currentConfigSCAfterStartConfig_2 = handleMessage(currentConfigCSAfterStartConfig_2)
       
-  //    println(currentConfigSCAfterStartConfig_2)
+      println(currentConfigSCAfterStartConfig_2)
       
       (currentConfigSCAfterStartConfig_2 \ "dtoId").asOpt[Int] === Some(DTOIds.CURRENT_CONFIG)
       (currentConfigSCAfterStartConfig_2 \ "dto").asOpt[String] === Some(DTONames.CURRENT_CONFIG)
