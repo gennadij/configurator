@@ -1,1 +1,0 @@
-CREATE DATABASE remote:localhost/config_1 root root plocal

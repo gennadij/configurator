@@ -34,8 +34,7 @@ object CurrentConfig {
     }else {
        val countOfStepToDelete = currentConfigSteps.size - indexOfSelectedStep
        val steps = currentConfigSteps.dropRight(countOfStepToDelete)
-       val currentConfigsReturn = currentConfigs. += (clientId -> (steps :+ step))
-       currentConfigsReturn
+       currentConfigs. += (clientId -> (steps :+ step))
     }
   }
   
