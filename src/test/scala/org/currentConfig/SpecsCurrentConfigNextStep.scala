@@ -44,6 +44,26 @@ class SpecsCurrentConfigNextStep extends Specification with Config with BeforeAf
     
     println(startConfigSCForClient_1)
     
+    val selectedComponentForClient_1 = 
+      (((startConfigSCForClient_1 \ "result" \ "step" \ "components")(0)) \ "componentId").asOpt[String].get
+    
+    val nextStepCSForClient_1 = Json.obj(
+        "dtoId" -> DTOIds.nextStep,
+        "dto" -> DTONames.nextSTep,
+        "params" -> Json.obj(
+            "componentIds" -> List(selectedComponentForClient_1),
+            "clientId" -> clientId_1
+        )
+    )
+    
+    println(nextStepCSForClient_1)
+    
+    val nextStepSCForClient_1 = handleMessage(nextStepCSForClient_1)
+    
+    println(nextStepSCForClient_1)
+    
+    // CLIENT 2
+    
     val startConfigCSForClient_2 = Json.obj(
         "dtoId" -> DTOIds.startConfig,
         "dto" -> DTONames.startConfig,
@@ -58,6 +78,25 @@ class SpecsCurrentConfigNextStep extends Specification with Config with BeforeAf
     val startConfigSCForClient_2: JsValue = handleMessage(startConfigCSForClient_2)
     
     println(startConfigSCForClient_2)
+    
+    val selectedComponentForClient_2 = 
+      (((startConfigSCForClient_2 \ "result" \ "step" \ "components")(0)) \ "componentId").asOpt[String].get
+    
+    val nextStepCSForClient_2 = Json.obj(
+        "dtoId" -> DTOIds.nextStep,
+        "dto" -> DTONames.nextSTep,
+        "params" -> Json.obj(
+            "componentIds" -> List(selectedComponentForClient_2),
+            "clientId" -> clientId_2
+        )
+    )
+    
+    println(nextStepCSForClient_2)
+    
+    val nextStepSCForClient_2 = handleMessage(nextStepCSForClient_2)
+    
+    println(nextStepSCForClient_2)
+    
   }
 
   "Diese Specifikation spezifiziert die aktuelle Konfiguration nach dem 2, Step" >> {
@@ -80,11 +119,11 @@ class SpecsCurrentConfigNextStep extends Specification with Config with BeforeAf
       (currentConfigSCAfterStartConfig_1 \ "dto").asOpt[String] === Some(DTONames.CURRENT_CONFIG)
       (currentConfigSCAfterStartConfig_1 \ "result" \ "steps").asOpt[Seq[JsValue]].get.size === 1
       (((currentConfigSCAfterStartConfig_1 \ "result" \ "steps")(0)) \ "nameToShow")
-        .asOpt[String] === Some("FirstStep")
+        .asOpt[String] === Some("Step#25:55")
       (((currentConfigSCAfterStartConfig_1 \ "result" \ "steps")(0)) \ "components")
         .asOpt[Seq[JsValue]].get.size === 1
       (((((currentConfigSCAfterStartConfig_1 \ "result" \ "steps")(0)) \ "components")(0)) \ "nameToShow")
-      .asOpt[String] === "Component1"
+      .asOpt[String] === Some("Component#29:41")
     }
     "CurrentConfig after StartConfiguration Client 2" >> {
       val currentConfigCSAfterStartConfig_2 = Json.obj(
@@ -104,11 +143,11 @@ class SpecsCurrentConfigNextStep extends Specification with Config with BeforeAf
       (currentConfigSCAfterStartConfig_2 \ "dtoId").asOpt[Int] === Some(DTOIds.CURRENT_CONFIG)
       (currentConfigSCAfterStartConfig_2 \ "dto").asOpt[String] === Some(DTONames.CURRENT_CONFIG)
       (currentConfigSCAfterStartConfig_2 \ "result" \ "steps").asOpt[Seq[JsValue]].get.size === 1
-      (((currentConfigSCAfterStartConfig_2 \ "result" \ "steps")(0)) \ "nameToShow").asOpt[String] === Some("FirstStep")
+      (((currentConfigSCAfterStartConfig_2 \ "result" \ "steps")(0)) \ "nameToShow").asOpt[String] === Some("Step#25:55")
       (((currentConfigSCAfterStartConfig_2 \ "result" \ "steps")(0)) \ "components")
         .asOpt[Seq[JsValue]].get.size === 1
       (((((currentConfigSCAfterStartConfig_2 \ "result" \ "steps")(0)) \ "components")(0)) \ "nameToShow")
-        .asOpt[String] === "Component1"
+        .asOpt[String] === Some("Component#29:41")
     }
   }
 }
