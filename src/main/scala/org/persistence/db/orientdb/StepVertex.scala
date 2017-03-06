@@ -72,7 +72,7 @@ object StepVertex {
             "FirstStep",
             Step(
                 vFirstStep.getIdentity.toString,
-                "First Step",
+                vFirstStep.getProperty(PropertyKey.NAME_TO_SHOW),
                 components(vFirstStep)
             )
         )
@@ -132,7 +132,7 @@ object StepVertex {
     
     //CURRENT_CONFIG
     
-    val currentConfigStep = Step(vSelectedStep.getIdentity.toString, "Step" + vSelectedStep.getIdentity.toString(), 
+    val currentConfigStep = Step(vSelectedStep.getIdentity.toString, vSelectedStep.getProperty(PropertyKey.NAME_TO_SHOW), 
         nextStepCS.params.componentIds map {c => Component(c, "Component" + c)})
         
     CurrentConfig.setCurrentConfig(nextStepCS.params.clientId, currentConfigStep)
@@ -146,7 +146,7 @@ object StepVertex {
         result = NextStepResult(
             Step(
                 vNextSteps(0).getIdentity.toString,
-                "Next Step",
+                vNextSteps(0).getProperty(PropertyKey.NAME_TO_SHOW),
                 components(vNextSteps(0))
             )
         )
@@ -189,7 +189,7 @@ object StepVertex {
     vComponents.map(vC => {
       new Component(
           vC.getIdentity.toString,
-          "Component"
+          vC.getProperty(PropertyKey.NAME_TO_SHOW)
       )
     })
   }
@@ -209,18 +209,5 @@ object StepVertex {
       eNS.getVertex(Direction.IN)
     })
     if(vNextStep.size == 1) vNextStep.head.getId.toString() else "no nextStep"
-  }
-  
-  /**
-   * @author Gennadi Heimann
-   * 
-   * @version 1.0
-   * 
-   * @param
-   * 
-   * @return
-   */
-  private def setCurrentConfig(step: OrientVertex) = {
-    
   }
 }

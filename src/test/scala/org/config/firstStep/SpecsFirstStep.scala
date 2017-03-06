@@ -9,6 +9,7 @@ import org.dto.startConfig.StartConfigSC
 import play.api.libs.json.JsValue
 import org.junit.runner.RunWith
 import org.specs2.runner.JUnitRunner
+import org.persistence.GlobalConfigForDB
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -24,7 +25,7 @@ class SpecsFirstStep extends Specification with Config{
         "dtoId" -> DTOIds.startConfig,
         "dto" -> DTONames.startConfig,
         "params" -> Json.obj(
-            "configUrl" -> "http://contig/user10",
+            "configUrl" -> GlobalConfigForDB.activeUrl,
             "clientId" -> ""
         )
     )
@@ -43,19 +44,19 @@ class SpecsFirstStep extends Specification with Config{
         (startConfigSC \ "result" \ "message").asOpt[String].get === "FirstStep"
       }
       "result \\ step \\ nameToShow" >> {
-        (startConfigSC \ "result" \ "step" \ "nameToShow" ).asOpt[String].get === "First Step"
+        (startConfigSC \ "result" \ "step" \ "nameToShow" ).asOpt[String].get === "S_1"
       }
       "result \\ step \\ components-> size" >> {
         (startConfigSC \ "result" \ "step" \ "components").asOpt[List[JsValue]].get.size == 3
       }
       "result \\ step \\ components(0) \\ nameToShow" >> {
-        (((startConfigSC \ "result" \ "step" \ "components")(0)) \ "nameToShow").asOpt[String].get == "Component"
+        (((startConfigSC \ "result" \ "step" \ "components")(0)) \ "nameToShow").asOpt[String].get == "C_1_1"
       }
       "result \\ step \\ components(1) \\ nameToShow" >> {
-        (((startConfigSC \ "result" \ "step" \ "components")(1)) \ "nameToShow").asOpt[String].get == "Component"
+        (((startConfigSC \ "result" \ "step" \ "components")(1)) \ "nameToShow").asOpt[String].get == "C_1_2"
       }
       "result \\ step \\ components(2) \\ nameToShow" >> {
-        (((startConfigSC \ "result" \ "step" \ "components")(2)) \ "nameToShow").asOpt[String].get == "Component"
+        (((startConfigSC \ "result" \ "step" \ "components")(2)) \ "nameToShow").asOpt[String].get == "C_1_3"
       }
     }
   }

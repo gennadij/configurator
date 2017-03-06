@@ -2,6 +2,7 @@ package org.persistence
 
 object GlobalConfigForDB {
   val activeDB: String = "test"
+  val activeUrl = "http://contig/user12"
   //Test
   def db: DB = {
     activeDB match {
