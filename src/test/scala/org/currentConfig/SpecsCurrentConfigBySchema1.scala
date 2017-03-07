@@ -25,6 +25,15 @@ import play.api.libs.json.JsValue
  * Step 4 -> Component S4C2
  * Step 5 -> Component S5C3
  * Step 6 -> Component S6C1
+ * 
+ * Client 2
+ * 
+ * Step 1 -> Component S1C2
+ * Step 2 -> Component S2C1
+ * Step 3 -> Component S3C2
+ * Step 4 -> Component S4C1
+ * Step 5 -> Component S5C4
+ * Step 6 -> Component S6C2
  */
 
 @RunWith(classOf[JUnitRunner])
@@ -40,11 +49,12 @@ class SpecsCurrentConfigBySchema1 extends Specification with Config with BeforeA
   }
   
   def beforeAll(): Unit = {
+    
     val startConfigCSForClient_1 = Json.obj(
         "dtoId" -> DTOIds.startConfig,
         "dto" -> DTONames.startConfig,
         "params" -> Json.obj(
-            "configUrl" -> "http://contig/user10",
+            "configUrl" -> "http://contig/user12",
             "clientId" -> clientId_1
         )
     )
@@ -55,23 +65,110 @@ class SpecsCurrentConfigBySchema1 extends Specification with Config with BeforeA
     
     println(startConfigSCForClient_1)
     
-    val selectedComponentForClient_1 = 
+    //=================================================================================================================
+    
+    val selectedComponent_1_ForClient_1 = 
       (((startConfigSCForClient_1 \ "result" \ "step" \ "components")(0)) \ "componentId").asOpt[String].get
     
-    val nextStepCSForClient_1 = Json.obj(
+    val nextStepCS_2_ForClient_1 = Json.obj(
         "dtoId" -> DTOIds.nextStep,
         "dto" -> DTONames.nextSTep,
         "params" -> Json.obj(
-            "componentIds" -> List(selectedComponentForClient_1),
+            "componentIds" -> List(selectedComponent_1_ForClient_1),
             "clientId" -> clientId_1
         )
     )
     
-    println(nextStepCSForClient_1)
+    println(nextStepCS_2_ForClient_1)
     
-    val nextStepSCForClient_1 = handleMessage(nextStepCSForClient_1)
+    val nextStepSC_2_ForClient_1 = handleMessage(nextStepCS_2_ForClient_1)
     
-    println(nextStepSCForClient_1)
+    println(nextStepSC_2_ForClient_1)
+    
+    //================================================================================================================
+    
+    val selectedComponent_2_ForClient_1 = 
+      (((nextStepSC_2_ForClient_1 \ "result" \ "step" \ "components")(1)) \ "componentId").asOpt[String].get
+    
+    val nextStepCS_3_ForClient_1 = Json.obj(
+        "dtoId" -> DTOIds.nextStep,
+        "dto" -> DTONames.nextSTep,
+        "params" -> Json.obj(
+            "componentIds" -> List(selectedComponent_2_ForClient_1),
+            "clientId" -> clientId_1
+        )
+    )
+    
+    println(nextStepCS_3_ForClient_1)
+    
+    val nextStepSC_3_ForClient_1 = handleMessage(nextStepCS_3_ForClient_1)
+    
+    println(nextStepSC_3_ForClient_1)
+    
+    //================================================================================================================
+    
+    val selectedComponent_3_ForClient_1 = 
+      (((nextStepSC_3_ForClient_1 \ "result" \ "step" \ "components")(2)) \ "componentId").asOpt[String].get
+      
+    val nextStepCS_4_ForClient_1 = Json.obj(
+        "dtoId" -> DTOIds.nextStep,
+        "dto" -> DTONames.nextSTep,
+        "params" -> Json.obj(
+            "componentIds" -> List(selectedComponent_3_ForClient_1),
+            "clientId" -> clientId_1
+        )
+    )
+    
+    println(nextStepCS_4_ForClient_1)
+    
+    val nextStepSC_4_ForClient_1 = handleMessage(nextStepCS_4_ForClient_1)
+    
+    println(nextStepSC_4_ForClient_1)
+    
+    //================================================================================================================
+    
+    val selectedComponent_4_ForClient_1 = 
+      (((nextStepSC_4_ForClient_1 \ "result" \ "step" \ "components")(1)) \ "componentId").asOpt[String].get
+    
+    val nextStepCS_5_ForClient_1 = Json.obj(
+        "dtoId" -> DTOIds.nextStep,
+        "dto" -> DTONames.nextSTep,
+        "params" -> Json.obj(
+            "componentIds" -> List(selectedComponent_4_ForClient_1),
+            "clientId" -> clientId_1
+        )
+    )
+    
+    println(nextStepCS_5_ForClient_1)
+    
+    val nextStepSC_5_ForClient_1 = handleMessage(nextStepCS_5_ForClient_1)
+    
+    println(nextStepSC_5_ForClient_1)
+    
+    //================================================================================================================
+    
+    val selectedComponent_5_ForClient_1 = 
+      (((nextStepSC_5_ForClient_1 \ "result" \ "step" \ "components")(2)) \ "componentId").asOpt[String].get
+    
+    val nextStepCS_6_ForClient_1 = Json.obj(
+        "dtoId" -> DTOIds.nextStep,
+        "dto" -> DTONames.nextSTep,
+        "params" -> Json.obj(
+            "componentIds" -> List(selectedComponent_5_ForClient_1),
+            "clientId" -> clientId_1
+        )
+    )
+    
+    println(nextStepCS_6_ForClient_1)
+    
+    val nextStepSC_6_ForClient_1 = handleMessage(nextStepCS_6_ForClient_1)
+    
+    println(nextStepSC_6_ForClient_1)
+    
+    //================================================================================================================
+    
+    val selectedComponent_6_ForClient_1 = 
+      (((nextStepSC_6_ForClient_1 \ "result" \ "step" \ "components")(0)) \ "componentId").asOpt[String].get
     
     // CLIENT 2
     
@@ -90,24 +187,106 @@ class SpecsCurrentConfigBySchema1 extends Specification with Config with BeforeA
     
     println(startConfigSCForClient_2)
     
-    val selectedComponentForClient_2 = 
-      (((startConfigSCForClient_2 \ "result" \ "step" \ "components")(0)) \ "componentId").asOpt[String].get
+    val selectedComponent_1_ForClient_2 = 
+      (((startConfigSCForClient_2 \ "result" \ "step" \ "components")(1)) \ "componentId").asOpt[String].get
     
-    val nextStepCSForClient_2 = Json.obj(
+    val nextStepCS_2_ForClient_2 = Json.obj(
         "dtoId" -> DTOIds.nextStep,
         "dto" -> DTONames.nextSTep,
         "params" -> Json.obj(
-            "componentIds" -> List(selectedComponentForClient_2),
+            "componentIds" -> List(selectedComponent_1_ForClient_2),
             "clientId" -> clientId_2
         )
     )
     
-    println(nextStepCSForClient_2)
+    println(nextStepCS_2_ForClient_2)
     
-    val nextStepSCForClient_2 = handleMessage(nextStepCSForClient_2)
+    val nextStepSC_2_ForClient_2 = handleMessage(nextStepCS_2_ForClient_2)
     
-    println(nextStepSCForClient_2)
+    println(nextStepSC_2_ForClient_2)
     
+    //================================================================================================================
+    
+    val selectedComponent_2_ForClient_2 = 
+      (((nextStepSC_2_ForClient_1 \ "result" \ "step" \ "components")(0)) \ "componentId").asOpt[String].get
+    
+    val nextStepCS_3_ForClient_2 = Json.obj(
+        "dtoId" -> DTOIds.nextStep,
+        "dto" -> DTONames.nextSTep,
+        "params" -> Json.obj(
+            "componentIds" -> List(selectedComponent_2_ForClient_2),
+            "clientId" -> clientId_1
+        )
+    )
+    
+    println(nextStepCS_3_ForClient_2)
+    
+    val nextStepSC_3_ForClient_2 = handleMessage(nextStepCS_3_ForClient_2)
+    
+    println(nextStepSC_3_ForClient_2)
+    
+    //================================================================================================================
+    
+    val selectedComponent_3_ForClient_2 = 
+      (((nextStepSC_3_ForClient_1 \ "result" \ "step" \ "components")(1)) \ "componentId").asOpt[String].get
+      
+    val nextStepCS_4_ForClient_2 = Json.obj(
+        "dtoId" -> DTOIds.nextStep,
+        "dto" -> DTONames.nextSTep,
+        "params" -> Json.obj(
+            "componentIds" -> List(selectedComponent_3_ForClient_2),
+            "clientId" -> clientId_1
+        )
+    )
+    
+    println(nextStepCS_4_ForClient_2)
+    
+    val nextStepSC_4_ForClient_2 = handleMessage(nextStepCS_4_ForClient_2)
+    
+    println(nextStepSC_4_ForClient_2)
+    
+    //================================================================================================================
+    
+    val selectedComponent_4_ForClient_2 = 
+      (((nextStepSC_4_ForClient_1 \ "result" \ "step" \ "components")(0)) \ "componentId").asOpt[String].get
+    
+    val nextStepCS_5_ForClient_2 = Json.obj(
+        "dtoId" -> DTOIds.nextStep,
+        "dto" -> DTONames.nextSTep,
+        "params" -> Json.obj(
+            "componentIds" -> List(selectedComponent_4_ForClient_2),
+            "clientId" -> clientId_1
+        )
+    )
+    
+    println(nextStepCS_5_ForClient_2)
+    
+    val nextStepSC_5_ForClient_2 = handleMessage(nextStepCS_5_ForClient_2)
+    
+    println(nextStepSC_5_ForClient_2)
+    
+    //================================================================================================================
+    
+    val selectedComponent_5_ForClient_2 = 
+      (((nextStepSC_5_ForClient_2 \ "result" \ "step" \ "components")(3)) \ "componentId").asOpt[String].get
+    
+    val nextStepCS_6_ForClient_2 = Json.obj(
+        "dtoId" -> DTOIds.nextStep,
+        "dto" -> DTONames.nextSTep,
+        "params" -> Json.obj(
+            "componentIds" -> List(selectedComponent_5_ForClient_2),
+            "clientId" -> clientId_1
+        )
+    )
+    
+    println(nextStepCS_6_ForClient_2)
+    
+    val nextStepSC_6_ForClient_2 = handleMessage(nextStepCS_6_ForClient_2)
+    
+    println(nextStepSC_6_ForClient_2)
+    
+    val selectedComponent_6_ForClient_2 = 
+      (((nextStepSC_6_ForClient_2 \ "result" \ "step" \ "components")(1)) \ "componentId").asOpt[String].get
   }
 
   "Diese Specifikation spezifiziert die aktuelle Konfiguration nach dem 2, Step" >> {
@@ -136,6 +315,7 @@ class SpecsCurrentConfigBySchema1 extends Specification with Config with BeforeA
       (((((currentConfigSCAfterStartConfig_1 \ "result" \ "steps")(0)) \ "components")(0)) \ "nameToShow")
       .asOpt[String] === Some("Component#29:41")
     }
+    
     "CurrentConfig after StartConfiguration Client 2" >> {
       val currentConfigCSAfterStartConfig_2 = Json.obj(
           "dtoId" -> DTOIds.CURRENT_CONFIG,
