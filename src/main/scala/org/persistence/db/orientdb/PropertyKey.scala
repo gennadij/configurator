@@ -7,5 +7,6 @@ object PropertyKey {
   val ADMIN_ID = "adminId"
   val COMPONENT_ID = "componentId"
   val KIND = "kind"
+  val NAME_TO_SHOW: String = "nameToShow"
   
 }

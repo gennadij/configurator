@@ -9,6 +9,7 @@ import play.api.libs.json.Json
 import org.dto.DTOIds
 import org.dto.DTONames
 import play.api.libs.json.JsValue
+import org.persistence.GlobalConfigForDB
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -33,7 +34,7 @@ class SpecsCurrentConfigNextStep extends Specification with Config with BeforeAf
         "dtoId" -> DTOIds.startConfig,
         "dto" -> DTONames.startConfig,
         "params" -> Json.obj(
-            "configUrl" -> "http://contig/user10",
+            "configUrl" -> GlobalConfigForDB.activeUrl,
             "clientId" -> clientId_1
         )
     )
