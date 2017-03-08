@@ -1,0 +1,2 @@
+# configurator
+generic Configurator
