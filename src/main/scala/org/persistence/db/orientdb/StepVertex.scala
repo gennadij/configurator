@@ -112,7 +112,6 @@ object StepVertex {
         }
       }
     }
-    println(eHasStep)
     
     val vNextSteps = eHasStep map {
       _.getVertex(Direction.IN)
@@ -132,27 +131,63 @@ object StepVertex {
     
     //CURRENT_CONFIG
     
+    val selectedComponents: List[Component] = getSelectedComponents(vSelectedStep, nextStepCS.params.componentIds)
+    
     val currentConfigStep = Step(vSelectedStep.getIdentity.toString, vSelectedStep.getProperty(PropertyKey.NAME_TO_SHOW), 
-        nextStepCS.params.componentIds map {c => Component(c, "Component" + c)})
+        selectedComponents map {c => Component(
+            c.componentId, 
+            c.nameToShow
+        )})
         
     CurrentConfig.setCurrentConfig(nextStepCS.params.clientId, currentConfigStep)
     
-    NextStepSC(
-        status = Status(
-            "ok",
-            1,
-            "Der naechste Schrit mit Komponenten wurde erfolgreich geladen"
-        ),
-        result = NextStepResult(
-            Step(
-                vNextSteps(0).getIdentity.toString,
-                vNextSteps(0).getProperty(PropertyKey.NAME_TO_SHOW),
-                components(vNextSteps(0))
-            )
-        )
-    )
+    //TODO wenn letzte Step geladen werden soll, vNextSteps(0) ist leer
+    
+    if(vSelectedStep.getProperty(PropertyKey.KIND).toString() == "final") {
+       NextStepSC(
+          status = Status(
+              "final",
+              1,
+              "Die Konfiguration ist fertig"
+          ),
+          result = NextStepResult(
+              Step(
+                  "",
+                  "",
+                  List[Component]()
+              )
+          )
+      )
+    } else {
+      NextStepSC(
+          status = Status(
+              "ok",
+              1,
+              "Der naechste Schrit mit Komponenten wurde erfolgreich geladen"
+          ),
+          result = NextStepResult(
+              Step(
+                  vNextSteps(0).getIdentity.toString,
+                  vNextSteps(0).getProperty(PropertyKey.NAME_TO_SHOW),
+                  components(vNextSteps(0))
+              )
+          )
+      )
+    }
   }
+    
+    
+    
 
+  def getSelectedComponents(selectedStep: OrientVertex, selectedIdsOfComponent: List[String]): List[Component] = {
+    
+    val componentsOfSelectedStep: List[Component] = components(selectedStep)
+    
+    componentsOfSelectedStep.filter(cOfSS => {
+      selectedIdsOfComponent.contains(cOfSS.componentId)
+    })
+  }
+  
   /**
    * @author Gennadi Heimann
    * 
@@ -195,11 +230,13 @@ object StepVertex {
   }
 
   /**
+   * TODO wird nicht verwendet
+   * 
    * @author Gennadi Heimann
    * 
    * @version 1.0
    * 
-   * @param
+   * @param Vertex
    * 
    * @return
    */
