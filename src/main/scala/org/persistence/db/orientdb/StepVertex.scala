@@ -53,18 +53,14 @@ object StepVertex {
       .command(new OCommandSQL(sql)).execute()
     val vConfigs: List[OrientVertex] = resConfigs.toList.map(_.asInstanceOf[OrientVertex])
     //TODO error bei der schon exestierenden configUrl, wenn db mehrere configs findet.
+    // das Problem soll beim Admin geloest werden.
     val vConfig: OrientVertex = vConfigs(0)
     
     val eHasConfig: List[Edge] = vConfig.getEdges(Direction.OUT, "hasFirstStep").toList
     
-    //TODO error wenn mehrere Edges gefunden werden. DB seitig speren. Mur einen Edge an den Config erlaubt. 
+    //TODO error wenn mehrere Edges gefunden werden. DB seitig speren. Mur einen Edge an den Config erlaubt.
+    // es werd bei der Admin ausgeschlossen
     val vFirstStep: OrientVertex = eHasConfig(0).getVertex(Direction.IN).asInstanceOf[OrientVertex]
-    
-    // TODO CurrentConfig beim StartConfig ausbauen
-    
-//    val currentConfigStep : Step = Step(vFirstStep.getIdentity.toString, "FirstStep", List[Component]())
-//    
-//    CurrentConfig.setCurrentConfig(startConfigCS.params.clientId, currentConfigStep)
     
     StartConfigSC(
         result = StartConfigResult(
@@ -91,12 +87,14 @@ object StepVertex {
   def nextStep(nextStepCS: NextStepCS): NextStepSC = {
     val graph: OrientGraph = OrientDB.getGraph()
 
+    // hole Vertex von selectedComponent aus der DB
     val vSelectedComponents: List[OrientVertex] = nextStepCS.params.componentIds map {
       componentId => {
         graph.getVertex(componentId)
       }
     }
     
+    // hole Edge from hasStep von selectedComponents aus der DB
     val eHasStepFromSelectedComponents: List[OrientEdge] = 
       vSelectedComponents(0).getEdges(Direction.IN, "hasComponent").toList map {_.asInstanceOf[OrientEdge]}
     
