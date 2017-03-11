@@ -8,10 +8,6 @@ import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
 import scala.collection.JavaConversions._
 import com.orientechnologies.orient.core.sql.OCommandSQL
 import org.persistence.db.orientdb.StepVertex
-import org.persistence.db.orientdb.ComponentVertex
-import org.persistence.db.orientdb.HasComponentEdge
-import org.persistence.db.orientdb.NextStepEdge
-import org.persistence.db.orientdb.OrientDB
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import com.tinkerpop.blueprints.Direction
 import com.tinkerpop.blueprints.impls.orient.OrientEdge

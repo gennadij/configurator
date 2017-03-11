@@ -59,7 +59,7 @@ object StepVertex {
     val eHasConfig: List[Edge] = vConfig.getEdges(Direction.OUT, "hasFirstStep").toList
     
     //TODO error wenn mehrere Edges gefunden werden. DB seitig speren. Mur einen Edge an den Config erlaubt.
-    // es werd bei der Admin ausgeschlossen
+    // es wird bei der Admin ausgeschlossen
     val vFirstStep: OrientVertex = eHasConfig(0).getVertex(Direction.IN).asInstanceOf[OrientVertex]
     
     StartConfigSC(
@@ -99,6 +99,7 @@ object StepVertex {
       vSelectedComponents(0).getEdges(Direction.IN, "hasComponent").toList map {_.asInstanceOf[OrientEdge]}
     
     //TODO es darf nur einen Step gefunden werden
+    // Das wird beim Admin ausgeschlossen
     val vSelectedStep: OrientVertex = eHasStepFromSelectedComponents(0)
       .getVertex(Direction.OUT).asInstanceOf[OrientVertex]
     
@@ -115,17 +116,7 @@ object StepVertex {
       _.getVertex(Direction.IN)
     }
     
-    //TODO pruefe ob in der vNextStep gleiche Steps -> verwende compareOneWithAll(list: Seq[OrientVertex]): Boolean
-    
-//    val eHasComponents: List[OrientEdge] = vNextSteps(0).getEdges(Direction.OUT, "hasComponent").toList map {
-//      _.asInstanceOf[OrientEdge]
-//    }
-//    
-//    val vComponentsOfNextStep: List[OrientVertex] = eHasComponents map {
-//      eHasComponent => {
-//        eHasComponent.getVertex(Direction.IN).asInstanceOf[OrientVertex]
-//      }
-//    }
+    // Admin schliesst aus, dass mehrere nextStep exestieren können
     
     //CURRENT_CONFIG
     
@@ -139,7 +130,8 @@ object StepVertex {
         
     CurrentConfig.setCurrentConfig(nextStepCS.params.clientId, currentConfigStep)
     
-    //TODO wenn letzte Step geladen werden soll, vNextSteps(0) ist leer
+    //TODO v0.1.0 Definition FinalStep und Abschluss der Konfiguration
+    
     
     if(vSelectedStep.getProperty(PropertyKey.KIND).toString() == "final") {
        NextStepSC(
@@ -176,7 +168,15 @@ object StepVertex {
     
     
     
-
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.0
+   * 
+   * @param
+   * 
+   * @return
+   */
   def getSelectedComponents(selectedStep: OrientVertex, selectedIdsOfComponent: List[String]): List[Component] = {
     
     val componentsOfSelectedStep: List[Component] = components(selectedStep)
@@ -195,12 +195,6 @@ object StepVertex {
    * 
    * @return
    */
-//  private def compareElemInList(list: Seq[String]) = {
-//    list match {
-//      case x :: rest => rest forall (_ == x)
-//    }
-//  }
-  
     private def compareOneWithAll(list: Seq[OrientVertex]): Boolean = {
     list match {
       case firstVertex :: rest => rest forall (_ == firstVertex)
@@ -225,24 +219,5 @@ object StepVertex {
           vC.getProperty(PropertyKey.NAME_TO_SHOW)
       )
     })
-  }
-
-  /**
-   * TODO wird nicht verwendet
-   * 
-   * @author Gennadi Heimann
-   * 
-   * @version 1.0
-   * 
-   * @param Vertex
-   * 
-   * @return
-   */
-  private def getNextStep(component: Vertex): String = {
-    val eNextStep: List[Edge] = component.getEdges(Direction.OUT).toList
-    val vNextStep: List[Vertex] = eNextStep.map ( { eNS => 
-      eNS.getVertex(Direction.IN)
-    })
-    if(vNextStep.size == 1) vNextStep.head.getId.toString() else "no nextStep"
   }
 }
