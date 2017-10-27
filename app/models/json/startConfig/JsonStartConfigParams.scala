@@ -10,11 +10,11 @@ import play.api.libs.json.Json
  * params : {configUri: http://config/test}
  */
 
-case class StartConfigParams (
+case class JsonStartConfigParams (
     configUrl: String,
     clientId: String
 )
 
-object StartConfigParams {
-  implicit val format = Json.reads[StartConfigParams]
+object JsonStartConfigParams {
+  implicit val format = Json.reads[JsonStartConfigParams]
 }

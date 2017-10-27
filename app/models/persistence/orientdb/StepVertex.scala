@@ -5,8 +5,8 @@ import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import com.orientechnologies.orient.core.sql.OCommandSQL
 import com.tinkerpop.blueprints.Edge
-import models.json.startConfig.StartConfigOut
-import models.json.startConfig.StartConfigIn
+import models.json.startConfig.JsonStartConfigOut
+import models.json.startConfig.JsonStartConfigIn
 import models.persistence.OrientDB
 
 
@@ -27,7 +27,7 @@ object StepVertex {
    * 
    * @return
    */
-  def firstStep(startConfigIn: StartConfigIn): StartConfigOut = {
+  def firstStep(startConfigIn: JsonStartConfigIn): JsonStartConfigOut = {
     val graph: OrientGraph = OrientDB.getGraph()
     
     val configUrl: String = startConfigIn.params.configUrl

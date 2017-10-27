@@ -1,4 +1,4 @@
-package models.json
+package models.json.common
 
 import play.api.libs.json.Json
 
@@ -8,11 +8,11 @@ import play.api.libs.json.Json
  * {id: #22:9, kind: immutable, nextStep: #27:11}
  */
 
-case class Component (
+case class JsonComponent (
     componentId: String,
     nameToShow: String
 )
 
-object Component {
-  implicit val format = Json.writes[Component]
+object JsonComponent {
+  implicit val format = Json.writes[JsonComponent]
 }

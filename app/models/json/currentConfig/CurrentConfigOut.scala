@@ -2,7 +2,6 @@ package models.json.currentConfig
 
 import play.api.libs.json.Json
 import models.json.JsonNames
-import org.dto.currentConfig.CurrentConfigResult
 
 /**
  * Created by Gennadi Heimann on 24.02.2017

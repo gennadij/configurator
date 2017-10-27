@@ -3,13 +3,13 @@ package models.config
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import models.persistence.Persistence
-import models.json.startConfig.StartConfigOut
+import models.json.startConfig.JsonStartConfigOut
 import models.json.nextStep.NextStepIn
 import models.json.nextStep.NextStepOut
 import models.json.currentConfig.CurrentConfigIn
 import models.json.currentConfig.CurrentConfigOut
 import models.currentConfig.CurrentConfig
-import models.json.startConfig.StartConfigIn
+import models.json.startConfig.JsonStartConfigIn
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -51,8 +51,8 @@ trait ConfigWeb {
   }
   
   private def startConfig(receivedMessage: JsValue): JsValue = {
-    val startConfigIn: StartConfigIn = Json.fromJson[StartConfigIn](receivedMessage).get
-    val startConfigOut: StartConfigOut = Persistence.startConfig(startConfigIn)
+    val startConfigIn: JsonStartConfigIn = Json.fromJson[JsonStartConfigIn](receivedMessage).get
+    val startConfigOut: JsonStartConfigOut = Persistence.startConfig(startConfigIn)
     Json.toJson(startConfigOut)
   }
   

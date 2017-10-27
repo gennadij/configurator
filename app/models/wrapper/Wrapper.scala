@@ -1,5 +1,15 @@
 package models.wrapper
 
+import models.wrapper.startConfig.StartConfigIn
+import models.json.startConfig.JsonStartConfigIn
+import models.json.startConfig.JsonStartConfigOut
+import models.wrapper.startConfig.StartConfigOut
+import models.json.startConfig.JsonStartConfigResult
+import models.json.common.JsonStep
+import models.json.common.JsonComponent
+import models.json.common.JsonComponent
+import models.json.common.JsonComponent
+
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
  * 
@@ -7,4 +17,30 @@ package models.wrapper
  */
 trait Wrapper {
   
+  
+  def toStartConfigIn(jsonStartConfigIn: JsonStartConfigIn): StartConfigIn = {
+    StartConfigIn(
+        jsonStartConfigIn.params.configUrl,
+        jsonStartConfigIn.params.clientId
+    )
+  }
+  
+  def toJsonStartConfigOut(startConfigOut: StartConfigOut): JsonStartConfigOut = {
+    JsonStartConfigOut(
+        result = JsonStartConfigResult(
+            startConfigOut.status,
+            startConfigOut.message,
+            JsonStep(
+                startConfigOut.step.stepId,
+                startConfigOut.step.nameToShow,
+                startConfigOut.step.components.map(component => {
+                  JsonComponent(
+                      component.componentId,
+                      component.nameToShow
+                  )
+                })
+            )
+        )
+    )
+  }
 }

@@ -1,7 +1,7 @@
 package models.json.nextStep
 
 import play.api.libs.json.Json
-import models.json.Step
+import models.json.common.JsonStep
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -10,7 +10,7 @@ import models.json.Step
  */
 
 case class NextStepResult (
-    step: Step
+    step: JsonStep
 )
 
 object NextStepResult {

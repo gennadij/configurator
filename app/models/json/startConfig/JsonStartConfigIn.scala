@@ -10,11 +10,11 @@ import models.json.JsonNames
  * 
  * {dtoId : 1, dto : StartConfig, params : ...}
  */
-case class StartConfigIn (
+case class JsonStartConfigIn (
     json: String = JsonNames.startConfig,
-    params: StartConfigParams
+    params: JsonStartConfigParams
 )
 
-object StartConfigIn {
-  implicit val format = Json.reads[StartConfigIn]
+object JsonStartConfigIn {
+  implicit val format = Json.reads[JsonStartConfigIn]
 }

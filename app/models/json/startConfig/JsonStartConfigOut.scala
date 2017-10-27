@@ -11,11 +11,11 @@ import models.json.JsonNames
  * {dtoId : 1, dto : StartConfig, result : ...}
  */
 
-case class StartConfigOut (
+case class JsonStartConfigOut (
     dto: String = JsonNames.startConfig,
-    result: StartConfigResult
+    result: JsonStartConfigResult
 )
 
-object StartConfigOut {
-  implicit val format = Json.writes[StartConfigOut]
+object JsonStartConfigOut {
+  implicit val format = Json.writes[JsonStartConfigOut]
 }

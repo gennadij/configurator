@@ -1,4 +1,4 @@
-package models.json
+package models.json.common
 
 import play.api.libs.json.Json
 
@@ -11,12 +11,12 @@ import play.api.libs.json.Json
  * 
  */
 
-case class Step (
+case class JsonStep (
     stepId: String,
     nameToShow: String,
-    components: List[Component]
+    components: List[JsonComponent]
 )
 
-object Step {
-  implicit val format = Json.writes[Step]
+object JsonStep {
+  implicit val format = Json.writes[JsonStep]
 }

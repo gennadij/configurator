@@ -11,8 +11,8 @@ import com.tinkerpop.blueprints.Direction
 import com.tinkerpop.blueprints.impls.orient.OrientEdge
 import com.tinkerpop.blueprints.Edge
 import com.tinkerpop.blueprints.Vertex
-import models.json.startConfig.StartConfigOut
-import models.json.startConfig.StartConfigIn
+import models.json.startConfig.JsonStartConfigOut
+import models.json.startConfig.JsonStartConfigIn
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -31,7 +31,7 @@ object Persistence {
    * 
    * @return
    */
-  def startConfig(startConfigIn: StartConfigIn) : StartConfigOut = {
+  def startConfig(startConfigIn: JsonStartConfigIn) : JsonStartConfigOut = {
     StepVertex.firstStep(startConfigIn)
   }
   
