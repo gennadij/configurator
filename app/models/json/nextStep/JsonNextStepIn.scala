@@ -8,11 +8,11 @@ import models.json.JsonNames
  * 
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
  */
-case class NextStepIn (
+case class JsonNextStepIn (
     dto: String = JsonNames.nextSTep,
-    params: NextStepParams
+    params: JsonNextStepParams
 )
 
-object NextStepIn {
-  implicit val format = Json.reads[NextStepIn]
+object JsonNextStepIn {
+  implicit val format = Json.reads[JsonNextStepIn]
 }

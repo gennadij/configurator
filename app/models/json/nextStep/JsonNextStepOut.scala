@@ -9,12 +9,12 @@ import models.json.JsonNames
  * Created by Gennadi Heimann on 27.12.20016
  */
 
-case class NextStepOut (
+case class JsonNextStepOut (
     dto: String = JsonNames.nextSTep,
     status: String,
-    result: NextStepResult
+    result: JsonNextStepResult
 )
 
-object NextStepOut {
-  implicit val format = Json.writes[NextStepOut]
+object JsonNextStepOut {
+  implicit val format = Json.writes[JsonNextStepOut]
 }

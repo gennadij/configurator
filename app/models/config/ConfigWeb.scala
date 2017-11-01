@@ -4,8 +4,8 @@ import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import models.persistence.Persistence
 import models.json.startConfig.JsonStartConfigOut
-import models.json.nextStep.NextStepIn
-import models.json.nextStep.NextStepOut
+import models.json.nextStep.JsonNextStepIn
+import models.json.nextStep.JsonNextStepOut
 import models.json.currentConfig.CurrentConfigIn
 import models.json.currentConfig.CurrentConfigOut
 import models.currentConfig.CurrentConfig
@@ -57,8 +57,8 @@ trait ConfigWeb {
   }
   
   private def nextStep(receiveMessage: JsValue): JsValue = {
-    val nextStepIn: NextStepIn = Json.fromJson[NextStepIn](receiveMessage).get
-    val nextStepOut: NextStepOut = Persistence.nestStep(nextStepOut)
+    val nextStepIn: JsonNextStepIn = Json.fromJson[JsonNextStepIn](receiveMessage).get
+    val nextStepOut: JsonNextStepOut = Persistence.nestStep(nextStepOut)
     Json.toJson(nextStepOut)
   }
   

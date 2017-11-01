@@ -9,6 +9,9 @@ import models.json.common.JsonStep
 import models.json.common.JsonComponent
 import models.json.common.JsonComponent
 import models.json.common.JsonComponent
+import models.json.nextStep.JsonNextStepIn
+import models.wrapper.nextStep.NextStepIn
+import models.wrapper.nextStep.NextStepIn
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -41,6 +44,13 @@ trait Wrapper {
                 })
             )
         )
+    )
+  }
+  
+  def toNextStepIn(jsonNextStepIn: JsonNextStepIn): NextStepIn = {
+    NextStepIn(
+        jsonNextStepIn.params.componentIds,
+        jsonNextStepIn.params.clientId
     )
   }
 }

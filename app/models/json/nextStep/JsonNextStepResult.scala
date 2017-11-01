@@ -1,6 +1,7 @@
 package models.json.nextStep
 
 import play.api.libs.json.Json
+import models.json.common.JsonStep
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -8,11 +9,10 @@ import play.api.libs.json.Json
  * Created by Gennadi Heimann on 27.12.2016
  */
 
-case class NextStepParams (
-    componentIds: List[String],
-    clientId: String
+case class JsonNextStepResult (
+    step: JsonStep
 )
 
-object NextStepParams {
-  implicit val format = Json.reads[NextStepParams]
+object JsonNextStepResult {
+  implicit val format = Json.writes[JsonNextStepResult]
 }
