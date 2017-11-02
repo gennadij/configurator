@@ -4,8 +4,8 @@ import scala.collection.mutable.Map
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import org.dto.currentConfig.CurrentConfigResult
 import models.json.common.JsonStep
-import models.json.currentConfig.CurrentConfigIn
-import models.json.currentConfig.CurrentConfigOut
+import models.json.currentConfig.JsonCurrentConfigIn
+import models.json.currentConfig.JsonCurrentConfigOut
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -39,14 +39,14 @@ object CurrentConfig {
   }
   
   
-  def getCurrentConfig(currentConfigIn: CurrentConfigIn): CurrentConfigOut = {
+  def getCurrentConfig(currentConfigIn: JsonCurrentConfigIn): JsonCurrentConfigOut = {
     
     val currentConfigSteps: List[JsonStep] = currentConfigs.get(currentConfigIn.params.clientId) match {
       case Some(step) => step
       case None => List[JsonStep]()
     }
     
-    CurrentConfigOut(
+    JsonCurrentConfigOut(
         result = CurrentConfigResult(
             currentConfigSteps
         )

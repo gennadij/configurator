@@ -10,7 +10,7 @@ import models.json.JsonNames
  */
 
 case class JsonNextStepOut (
-    dto: String = JsonNames.nextSTep,
+    json: String = JsonNames.nextSTep,
     status: String,
     result: JsonNextStepResult
 )

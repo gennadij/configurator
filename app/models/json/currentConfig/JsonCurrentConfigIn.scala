@@ -9,11 +9,11 @@ import models.json.JsonNames
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
  */
 
-case class CurrentConfigIn (
-    dto: String = JsonNames.CURRENT_CONFIG,
-    params: CurrentConfigParams
+case class JsonCurrentConfigIn (
+    json: String = JsonNames.CURRENT_CONFIG,
+    params: JsonCurrentConfigParams
 )
 
-object CurrentConfigIn {
-  implicit val format = Json.reads[CurrentConfigIn]
+object JsonCurrentConfigIn {
+  implicit val format = Json.reads[JsonCurrentConfigIn]
 }

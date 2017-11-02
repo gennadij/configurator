@@ -7,6 +7,6 @@ import models.wrapper.common.Step
  * 
  * Created by Gennadi Heimann 31.10.2017
  */
-case class CurrentCOnfigOut (
+case class CurrentConfigOut (
     steps: List[Step]
 )

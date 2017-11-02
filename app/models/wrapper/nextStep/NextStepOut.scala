@@ -8,7 +8,7 @@ import models.wrapper.common.Step
  * Created by Gennadi Heimann Oct 31, 2017
  */
 case class NextStepOut (
-    status: Boolean,
+    status: String,
     message: String,
     step: Step
 )

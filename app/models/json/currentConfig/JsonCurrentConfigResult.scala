@@ -9,10 +9,10 @@ import models.json.common.JsonStep
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
  */
 
-case class CurrentConfigResult (
+case class JsonCurrentConfigResult (
     steps: List[JsonStep]
 )
 
-object CurrentConfigResult {
-  implicit val format = Json.writes[CurrentConfigResult]
+object JsonCurrentConfigResult {
+  implicit val format = Json.writes[JsonCurrentConfigResult]
 }

@@ -6,8 +6,8 @@ import models.persistence.Persistence
 import models.json.startConfig.JsonStartConfigOut
 import models.json.nextStep.JsonNextStepIn
 import models.json.nextStep.JsonNextStepOut
-import models.json.currentConfig.CurrentConfigIn
-import models.json.currentConfig.CurrentConfigOut
+import models.json.currentConfig.JsonCurrentConfigIn
+import models.json.currentConfig.JsonCurrentConfigOut
 import models.currentConfig.CurrentConfig
 import models.json.startConfig.JsonStartConfigIn
 
@@ -63,8 +63,8 @@ trait ConfigWeb {
   }
   
   private def currentConfig(receivedMessage: JsValue): JsValue = {
-    val currentConfigIn: CurrentConfigIn = Json.fromJson[CurrentConfigIn](receivedMessage).get
-    val currentConfigOut: CurrentConfigOut = CurrentConfig.getCurrentConfig(currentConfigIn)
+    val currentConfigIn: JsonCurrentConfigIn = Json.fromJson[JsonCurrentConfigIn](receivedMessage).get
+    val currentConfigOut: JsonCurrentConfigOut = CurrentConfig.getCurrentConfig(currentConfigIn)
     Json.toJson(currentConfigOut)
   }
 }

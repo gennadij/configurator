@@ -8,10 +8,10 @@ import play.api.libs.json.Json
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
  */
 
-case class CurrentConfigParams (
+case class JsonCurrentConfigParams (
     clientId: String
 )
   
-object CurrentConfigParams {
-  implicit val format = Json.reads[CurrentConfigParams]
+object JsonCurrentConfigParams {
+  implicit val format = Json.reads[JsonCurrentConfigParams]
 }

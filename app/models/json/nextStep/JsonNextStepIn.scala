@@ -4,12 +4,12 @@ import play.api.libs.json.Json
 import models.json.JsonNames
 
 /**
- * Created by Gennadi Heimann on 27.12.2016
- * 
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
+ * 
+ * Created by Gennadi Heimann on 27.12.2016
  */
 case class JsonNextStepIn (
-    dto: String = JsonNames.nextSTep,
+    json: String = JsonNames.nextSTep,
     params: JsonNextStepParams
 )
 
