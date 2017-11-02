@@ -20,6 +20,9 @@ object WebClientsMgr{
 }
 
 class WebClientsMgr extends Actor {
+  
+  def receive = process(Set.empty)
+  
   def process(subscribers: Set[ActorRef]): Receive = {
     case Join => 
       Logger.debug("WebClient Aktor Join")

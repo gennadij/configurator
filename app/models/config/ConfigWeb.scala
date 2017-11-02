@@ -41,30 +41,30 @@ trait ConfigWeb {
    *            components: [{id: #45:2, kind: immutable}, ...]}}
    */
   
-  def handleMessage(receivedMessage: JsValue): JsValue = {
+  def handleMessage(receivedMessage: JsValue, client: Config): JsValue = {
     (receivedMessage \ "dto").asOpt[String] match {
-      case Some("StartConfig") => startConfig(receivedMessage)
-      case Some("NextStep") => nextStep(receivedMessage)
-      case Some("CurrentConfig") => currentConfig(receivedMessage)
+      case Some("StartConfig") => startConfig(receivedMessage, client)
+      case Some("NextStep") => nextStep(receivedMessage, client)
+      case Some("CurrentConfig") => currentConfig(receivedMessage, client)
       case _ => Json.obj("error" -> "keinen Treffer")
     }
   }
   
-  private def startConfig(receivedMessage: JsValue): JsValue = {
-    val startConfigIn: JsonStartConfigIn = Json.fromJson[JsonStartConfigIn](receivedMessage).get
-    val startConfigOut: JsonStartConfigOut = Persistence.startConfig(startConfigIn)
-    Json.toJson(startConfigOut)
+  private def startConfig(receivedMessage: JsValue, client: Config): JsValue = {
+    val jsonStartConfigIn: JsonStartConfigIn = Json.fromJson[JsonStartConfigIn](receivedMessage).get
+    val jsonStartConfigOut: JsonStartConfigOut = client.startConfig(jsonStartConfigIn)
+    Json.toJson(jsonStartConfigOut)
   }
   
-  private def nextStep(receiveMessage: JsValue): JsValue = {
-    val nextStepIn: JsonNextStepIn = Json.fromJson[JsonNextStepIn](receiveMessage).get
-    val nextStepOut: JsonNextStepOut = Persistence.nestStep(nextStepOut)
-    Json.toJson(nextStepOut)
+  private def nextStep(receiveMessage: JsValue, client: Config): JsValue = {
+    val jsonNextStepIn: JsonNextStepIn = Json.fromJson[JsonNextStepIn](receiveMessage).get
+    val jsonNextStepOut: JsonNextStepOut = client.nextStep(jsonNextStepIn)
+    Json.toJson(jsonNextStepOut)
   }
   
-  private def currentConfig(receivedMessage: JsValue): JsValue = {
-    val currentConfigIn: JsonCurrentConfigIn = Json.fromJson[JsonCurrentConfigIn](receivedMessage).get
-    val currentConfigOut: JsonCurrentConfigOut = CurrentConfig.getCurrentConfig(currentConfigIn)
-    Json.toJson(currentConfigOut)
+  private def currentConfig(receivedMessage: JsValue, client: Config): JsValue = {
+    val jsonCurrentConfigIn: JsonCurrentConfigIn = Json.fromJson[JsonCurrentConfigIn](receivedMessage).get
+    val jsonCurrentConfigOut: JsonCurrentConfigOut = client.currentConfig(jsonCurrentConfigIn)
+    Json.toJson(jsonCurrentConfigOut)
   }
 }

@@ -4,6 +4,8 @@ import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
 import play.api.test._
 import play.api.test.Helpers._
+import akka.actor.ActorSystem
+import akka.stream.Materializer
 
 /**
  * Add your spec here.
@@ -11,7 +13,7 @@ import play.api.test.Helpers._
  *
  * For more information, see https://www.playframework.com/documentation/latest/ScalaTestingWithScalaTest
  */
-class HomeControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting {
+class HomeControllerSpec(implicit actorSystem: ActorSystem, mat: Materializer) extends PlaySpec with GuiceOneAppPerTest with Injecting {
 
   "HomeController GET" should {
 

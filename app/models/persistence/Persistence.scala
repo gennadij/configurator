@@ -13,6 +13,11 @@ import com.tinkerpop.blueprints.Edge
 import com.tinkerpop.blueprints.Vertex
 import models.json.startConfig.JsonStartConfigOut
 import models.json.startConfig.JsonStartConfigIn
+import models.wrapper.startConfig.StartConfigIn
+import models.wrapper.startConfig.StartConfigOut
+import models.wrapper.nextStep.NextStepIn
+import models.wrapper.nextStep.NextStepOut
+import models.persistence.db.orientdb.StepVertex
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -31,7 +36,7 @@ object Persistence {
    * 
    * @return
    */
-  def startConfig(startConfigIn: JsonStartConfigIn) : JsonStartConfigOut = {
+  def startConfig(startConfigIn: StartConfigIn) : StartConfigOut = {
     StepVertex.firstStep(startConfigIn)
   }
   
@@ -44,8 +49,8 @@ object Persistence {
    * 
    * @return
    */
-  def nestStep(nextStepCS: NextStepCS): NextStepSC = {
-    StepVertex.nextStep(nextStepCS)
+  def nestStep(nextStepIn: NextStepIn): NextStepOut = {
+    StepVertex.nextStep(nextStepIn)
   }
   
   

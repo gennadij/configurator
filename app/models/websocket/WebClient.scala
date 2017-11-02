@@ -1,6 +1,8 @@
 package models.websocket
 
 import play.api.libs.json.JsValue
+import models.config.Config
+import models.config.ConfigWeb
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -14,10 +16,10 @@ object WebClient {
   }
 }
 
-class WebClient {
-  val admin = new Admin()
+class WebClient extends ConfigWeb{
+  val client = new Config()
   
   def handleMessage(receivedMessage: JsValue): JsValue = {
-    handleMessage(receivedMessage, admin)
+    handleMessage(receivedMessage, client)
   }
 }

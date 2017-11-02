@@ -1,4 +1,4 @@
-package org.persistence.db.orientdb
+package models.persistence.db.orientdb
 
 object PropertyKey {
   

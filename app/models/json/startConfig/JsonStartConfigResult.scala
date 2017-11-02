@@ -11,7 +11,7 @@ import models.json.common.JsonStep
  * result : {step: ...}
  */
 case class JsonStartConfigResult (
-    status: Boolean,
+    status: String,
     message: String,
     step: JsonStep
 )

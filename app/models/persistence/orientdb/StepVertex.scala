@@ -1,13 +1,21 @@
 package models.persistence.db.orientdb
 
+import scala.collection.JavaConverters._
 import com.tinkerpop.blueprints.impls.orient.OrientGraph
 import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import com.orientechnologies.orient.core.sql.OCommandSQL
 import com.tinkerpop.blueprints.Edge
-import models.json.startConfig.JsonStartConfigOut
-import models.json.startConfig.JsonStartConfigIn
 import models.persistence.OrientDB
+import models.wrapper.startConfig.StartConfigIn
+import models.wrapper.startConfig.StartConfigOut
+import com.tinkerpop.blueprints.Direction
+import models.wrapper.common.Step
+import models.wrapper.nextStep.NextStepIn
+import models.wrapper.nextStep.NextStepOut
+import com.tinkerpop.blueprints.impls.orient.OrientEdge
+import models.wrapper.common.Component
+import models.currentConfig.CurrentConfig
 
 
 /**
@@ -27,34 +35,32 @@ object StepVertex {
    * 
    * @return
    */
-  def firstStep(startConfigIn: JsonStartConfigIn): JsonStartConfigOut = {
-    val graph: OrientGraph = OrientDB.getGraph()
+  def firstStep(startConfigIn: StartConfigIn): StartConfigOut = {
+    val graph: OrientGraph = OrientDB.getFactory().getTx
     
-    val configUrl: String = startConfigIn.params.configUrl
+    val configUrl: String = startConfigIn.configUrl
     
     val sql: String = s"select from Config where configUrl='$configUrl'"
     val resConfigs: OrientDynaElementIterable = graph
       .command(new OCommandSQL(sql)).execute()
-    val vConfigs: List[OrientVertex] = resConfigs.toList.map(_.asInstanceOf[OrientVertex])
+    val vConfigs: List[OrientVertex] = resConfigs.asScala.toList.map(_.asInstanceOf[OrientVertex])
     //TODO error bei der schon exestierenden configUrl, wenn db mehrere configs findet.
     // das Problem soll beim Admin geloest werden.
     val vConfig: OrientVertex = vConfigs(0)
     
-    val eHasConfig: List[Edge] = vConfig.getEdges(Direction.OUT, "hasFirstStep").toList
+    val eHasConfig: List[Edge] = vConfig.getEdges(Direction.OUT, "hasFirstStep").asScala.toList
     
     //TODO error wenn mehrere Edges gefunden werden. DB seitig speren. Mur einen Edge an den Config erlaubt.
     // es wird bei der Admin ausgeschlossen
     val vFirstStep: OrientVertex = eHasConfig(0).getVertex(Direction.IN).asInstanceOf[OrientVertex]
     
-    StartConfigSC(
-        result = StartConfigResult(
-            true,
-            "FirstStep",
-            Step(
-                vFirstStep.getIdentity.toString,
-                vFirstStep.getProperty(PropertyKey.NAME_TO_SHOW),
-                components(vFirstStep)
-            )
+    StartConfigOut(
+        "",
+        "FirstStep",
+        Step(
+            vFirstStep.getIdentity.toString,
+            vFirstStep.getProperty(PropertyKey.NAME_TO_SHOW),
+            components(vFirstStep)
         )
     )
   }
@@ -68,11 +74,11 @@ object StepVertex {
    * 
    * @return
    */
-  def nextStep(nextStepCS: NextStepCS): NextStepSC = {
-    val graph: OrientGraph = OrientDB.getGraph()
+  def nextStep(nextStepIn: NextStepIn): NextStepOut = {
+    val graph: OrientGraph = OrientDB.getFactory().getTx
 
     // hole Vertex von selectedComponent aus der DB
-    val vSelectedComponents: List[OrientVertex] = nextStepCS.params.componentIds map {
+    val vSelectedComponents: List[OrientVertex] = nextStepIn.componentIds map {
       componentId => {
         graph.getVertex(componentId)
       }
@@ -80,7 +86,7 @@ object StepVertex {
     
     // hole Edge from hasStep von selectedComponents aus der DB
     val eHasStepFromSelectedComponents: List[OrientEdge] = 
-      vSelectedComponents(0).getEdges(Direction.IN, "hasComponent").toList map {_.asInstanceOf[OrientEdge]}
+      vSelectedComponents(0).getEdges(Direction.IN, "hasComponent").asScala.toList map {_.asInstanceOf[OrientEdge]}
     
     //TODO es darf nur einen Step gefunden werden
     // Das wird beim Admin ausgeschlossen
@@ -90,7 +96,7 @@ object StepVertex {
     
     val eHasStep: List[OrientEdge] = vSelectedComponents flatMap {
       vComponent => {
-        vComponent.getEdges(Direction.OUT, "hasStep") map {
+        vComponent.getEdges(Direction.OUT, "hasStep").asScala.toList map {
           _.asInstanceOf[OrientEdge]
         }
       }
@@ -104,7 +110,7 @@ object StepVertex {
     
     //CURRENT_CONFIG
     
-    val selectedComponents: List[Component] = getSelectedComponents(vSelectedStep, nextStepCS.params.componentIds)
+    val selectedComponents: List[Component] = getSelectedComponents(vSelectedStep, nextStepIn.componentIds)
     
     val currentConfigStep = Step(vSelectedStep.getIdentity.toString, vSelectedStep.getProperty(PropertyKey.NAME_TO_SHOW), 
         selectedComponents map {c => Component(
@@ -112,40 +118,42 @@ object StepVertex {
             c.nameToShow
         )})
         
-    CurrentConfig.setCurrentConfig(nextStepCS.params.clientId, currentConfigStep)
+    CurrentConfig.setCurrentConfig(nextStepIn.clientId, currentConfigStep)
     
     //TODO v0.1.0 Definition FinalStep und Abschluss der Konfiguration
     
     
     if(vSelectedStep.getProperty(PropertyKey.KIND).toString() == "final") {
-       NextStepSC(
-          status = Status(
-              "final",
-              1,
-              "Die Konfiguration ist fertig"
-          ),
-          result = NextStepResult(
+       NextStepOut(
+          status = ""
+//            Status(
+//              "final",
+//              1,
+//              "Die Konfiguration ist fertig"
+//          )
+          ,
+          message = "",
               Step(
                   "",
                   "",
                   List[Component]()
               )
-          )
       )
     } else {
-      NextStepSC(
-          status = Status(
-              "ok",
-              1,
-              "Der naechste Schrit mit Komponenten wurde erfolgreich geladen"
-          ),
-          result = NextStepResult(
+      NextStepOut(
+          status = ""
+//            Status(
+//              "ok",
+//              1,
+//              "Der naechste Schrit mit Komponenten wurde erfolgreich geladen"
+//          )
+          ,message = ""
+          ,
               Step(
                   vNextSteps(0).getIdentity.toString,
                   vNextSteps(0).getProperty(PropertyKey.NAME_TO_SHOW),
                   components(vNextSteps(0))
               )
-          )
       )
     }
   }
@@ -195,7 +203,7 @@ object StepVertex {
    * @return
    */
   def components(step: OrientVertex): List[Component] = {
-    val eHasComponents: List[Edge] = step.getEdges(Direction.OUT).toList
+    val eHasComponents: List[Edge] = step.getEdges(Direction.OUT).asScala.toList
     val vComponents: List[OrientVertex] = eHasComponents.map(_.getVertex(Direction.IN).asInstanceOf[OrientVertex])
     vComponents.map(vC => {
       new Component(

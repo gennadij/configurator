@@ -2,28 +2,29 @@ package models.currentConfig
 
 import scala.collection.mutable.Map 
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
-import org.dto.currentConfig.CurrentConfigResult
 import models.json.common.JsonStep
 import models.json.currentConfig.JsonCurrentConfigIn
 import models.json.currentConfig.JsonCurrentConfigOut
+import models.wrapper.currentConfig.CurrentConfigIn
+import models.wrapper.currentConfig.CurrentConfigOut
+import models.wrapper.common.Step
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
  * 
  * Crated by Gennadi Heimann 28.02.2017
- * 
  */
 object CurrentConfig {
-  private val currentConfigs: Map[String, List[JsonStep]] = Map.empty
+  private val currentConfigs: Map[String, List[Step]] = Map.empty
   
   val currentConfig: CurrentConfig = new CurrentConfig
   
-  def setCurrentConfig(clientId: String, step: JsonStep): Unit = {
+  def setCurrentConfig(clientId: String, step: Step): Unit = {
     
     
-    val currentConfigSteps: List[JsonStep] = currentConfigs.get(clientId) match {
+    val currentConfigSteps: List[Step] = currentConfigs.get(clientId) match {
       case Some(step) => currentConfigs.get(clientId).get
-      case None => currentConfig.setCurrentConfig(step, List[JsonStep]())
+      case None => currentConfig.setCurrentConfig(step, List[Step]())
 //      case _ => println("Fehler bei CurrentConfig")
     }
     
@@ -39,30 +40,28 @@ object CurrentConfig {
   }
   
   
-  def getCurrentConfig(currentConfigIn: JsonCurrentConfigIn): JsonCurrentConfigOut = {
+  def getCurrentConfig(currentConfigIn: CurrentConfigIn): CurrentConfigOut = {
     
-    val currentConfigSteps: List[JsonStep] = currentConfigs.get(currentConfigIn.params.clientId) match {
+    val currentConfigSteps: List[Step] = currentConfigs.get(currentConfigIn.clientId) match {
       case Some(step) => step
-      case None => List[JsonStep]()
+      case None => List[Step]()
     }
     
-    JsonCurrentConfigOut(
-        result = CurrentConfigResult(
-            currentConfigSteps
-        )
+    CurrentConfigOut(
+        currentConfigSteps
     )
   }
   
-  def getCuttentConfig: Map[String, List[JsonStep]] = {
+  def getCuttentConfig: Map[String, List[Step]] = {
     currentConfigs
   }
 }
 
 class CurrentConfig {
 
-  private def setCurrentConfig(step: JsonStep, currentConfigSteps: List[JsonStep]): List[JsonStep] = {
+  private def setCurrentConfig(step: Step, currentConfigSteps: List[Step]): List[Step] = {
     
-    val newStep = JsonStep(
+    val newStep = Step(
         step.stepId,
         step.nameToShow,
         step.components

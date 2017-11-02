@@ -8,7 +8,7 @@ import models.wrapper.common.Step
  * Created by Gennadi Heimann 27.10.2017
  */
 case class StartConfigOut (
-    status: Boolean,
+    status: String,
     message: String,
     step: Step
 )
