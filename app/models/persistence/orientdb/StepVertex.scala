@@ -16,6 +16,10 @@ import models.wrapper.nextStep.NextStepOut
 import com.tinkerpop.blueprints.impls.orient.OrientEdge
 import models.wrapper.common.Component
 import models.currentConfig.CurrentConfig
+import models.status.StartConfigSuccessful
+import models.status.StartConfigSuccessful
+import models.status.Status
+import models.status.StartConfigODBWriteError
 
 
 /**
@@ -31,38 +35,43 @@ object StepVertex {
    * 
    * @version 0.1.0
    * 
-   * @param
+   * @param StartConfigIn
    * 
-   * @return
+   * @return StartConfigOut
    */
   def firstStep(startConfigIn: StartConfigIn): StartConfigOut = {
     val graph: OrientGraph = OrientDB.getFactory().getTx
     
     val configUrl: String = startConfigIn.configUrl
+    val sqlQuery: String = s"select from Config where configUrl='$configUrl'"
     
-    val sql: String = s"select from Config where configUrl='$configUrl'"
-    val resConfigs: OrientDynaElementIterable = graph
-      .command(new OCommandSQL(sql)).execute()
-    val vConfigs: List[OrientVertex] = resConfigs.asScala.toList.map(_.asInstanceOf[OrientVertex])
-    //TODO error bei der schon exestierenden configUrl, wenn db mehrere configs findet.
-    // das Problem soll beim Admin geloest werden.
-    val vConfig: OrientVertex = vConfigs(0)
-    
-    val eHasConfig: List[Edge] = vConfig.getEdges(Direction.OUT, "hasFirstStep").asScala.toList
-    
-    //TODO error wenn mehrere Edges gefunden werden. DB seitig speren. Mur einen Edge an den Config erlaubt.
-    // es wird bei der Admin ausgeschlossen
-    val vFirstStep: OrientVertex = eHasConfig(0).getVertex(Direction.IN).asInstanceOf[OrientVertex]
-    
-    StartConfigOut(
-        "",
-        "FirstStep",
-        Step(
-            vFirstStep.getIdentity.toString,
-            vFirstStep.getProperty(PropertyKey.NAME_TO_SHOW),
-            components(vFirstStep)
+    try{
+      val resConfigs: OrientDynaElementIterable = graph.command(new OCommandSQL(sqlQuery)).execute()
+      val vConfigs: List[OrientVertex] = resConfigs.asScala.toList.map(_.asInstanceOf[OrientVertex])
+      val vConfig: OrientVertex = vConfigs.head
+      val eHasConfig: List[Edge] = vConfig.getEdges(Direction.OUT, "hasFirstStep").asScala.toList
+      val vFirstStep: OrientVertex = eHasConfig.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]
+      val status: Status = new StartConfigSuccessful
+      StartConfigOut(
+          Some(Step(
+              vFirstStep.getIdentity.toString,
+              vFirstStep.getProperty(PropertyKey.NAME_TO_SHOW),
+              components(vFirstStep)
+          )),
+          status.status,
+          status.message
+      )
+    }catch{
+      case e: Exception => {
+        graph.rollback()
+        val status: Status = new StartConfigODBWriteError
+        StartConfigOut(
+            None,
+            status.status,
+            status.message
         )
-    )
+      }
+    }
   }
   
   /**

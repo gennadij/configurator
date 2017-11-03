@@ -42,9 +42,9 @@ trait Wrapper {
             startConfigOut.status,
             startConfigOut.message,
             JsonStep(
-                startConfigOut.step.stepId,
-                startConfigOut.step.nameToShow,
-                startConfigOut.step.components.map(component => {
+                startConfigOut.step.get.stepId,
+                startConfigOut.step.get.nameToShow,
+                startConfigOut.step.get.components.map(component => {
                   JsonComponent(
                       component.componentId,
                       component.nameToShow

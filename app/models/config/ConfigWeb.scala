@@ -19,28 +19,6 @@ import models.json.startConfig.JsonStartConfigIn
 
 trait ConfigWeb {
   
-  /**
-   * DTOs
-   * StartConfig
-   *   Server <- Client
-   *      {dtoId : 1, dto : StartConfig, params : {configUrl: http://config/test}}
-   *   Server -> Client
-   *      {dtoId : 1, dto : StartConfig, status: {kind: error, id: 12, message: Nachricht} result : {
-   *         configId: #21:23, 
-   *         step: {id: #21:9, kind: "first", 
-   *            components: [{id: #22:9, kind: immutable}, ...]}}}
-   *  NextStep
-   *   Client -> Server
-   *      {dtoId: 2, dto: "NextStep", params: {
-   *         configId: #21:23, 
-   *         componentIds: [#21:2, ... ]}}
-   *   Server -> Client
-   *      {dtoId: 2, dto: "NextStep", result: {
-   *         configId: #21:23, 
-   *         step :{id: #21:3, kind: "default",
-   *            components: [{id: #45:2, kind: immutable}, ...]}}
-   */
-  
   def handleMessage(receivedMessage: JsValue, client: Config): JsValue = {
     (receivedMessage \ "dto").asOpt[String] match {
       case Some("StartConfig") => startConfig(receivedMessage, client)
