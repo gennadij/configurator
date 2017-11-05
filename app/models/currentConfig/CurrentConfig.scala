@@ -28,23 +28,23 @@ object CurrentConfig {
    * 
    * @return Unit
    */
-  def setCurrentConfig(clientId: String, step: Step): Unit = {
+  def setCurrentConfig(step: Step): Unit = {
     
-    val currentConfigSteps: List[Step] = currentConfigs.get(clientId) match {
-      case Some(step) => currentConfigs.get(clientId).get
-      case None => currentConfig.setCurrentConfig(step, List[Step]())
-//      case _ => println("Fehler bei CurrentConfig")
-    }
-    
-    val indexOfSelectedStep = currentConfigSteps.indexWhere(s => s.stepId == step.stepId)
-    
-    if(indexOfSelectedStep == -1) {
-      currentConfigs += (clientId -> (currentConfigSteps :+ step))
-    }else {
-       val countOfStepToDelete = currentConfigSteps.size - indexOfSelectedStep
-       val steps = currentConfigSteps.dropRight(countOfStepToDelete)
-       currentConfigs. += (clientId -> (steps :+ step))
-    }
+//    val currentConfigSteps: List[Step] = currentConfigs.get(clientId) match {
+//      case Some(step) => currentConfigs.get(clientId).get
+//      case None => currentConfig.setCurrentConfig(step, List[Step]())
+////      case _ => println("Fehler bei CurrentConfig")
+//    }
+//    
+//    val indexOfSelectedStep = currentConfigSteps.indexWhere(s => s.stepId == step.stepId)
+//    
+//    if(indexOfSelectedStep == -1) {
+//      currentConfigs += (clientId -> (currentConfigSteps :+ step))
+//    }else {
+//       val countOfStepToDelete = currentConfigSteps.size - indexOfSelectedStep
+//       val steps = currentConfigSteps.dropRight(countOfStepToDelete)
+//       currentConfigs. += (clientId -> (steps :+ step))
+//    }
   }
   
   /**

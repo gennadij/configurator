@@ -6,6 +6,5 @@ package models.wrapper.nextStep
  * Created by Gennadi Heimann 31.59.2017
  */
 case class NextStepIn(
-    componentIds: List[String],
-    clientId: String
+    componentIds: List[String]
 )

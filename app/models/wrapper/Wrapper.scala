@@ -54,23 +54,28 @@ trait Wrapper {
    * @return StartConfigOut
    */
   def toJsonStartConfigOut(startConfigOut: StartConfigOut): JsonStartConfigOut = {
-    Logger.info(startConfigOut.toString())
-    //TODO Pruefen wenn Step NOne ist
     
     JsonStartConfigOut(
         result = JsonStartConfigResult(
             startConfigOut.status,
             startConfigOut.message,
-            JsonStep(
-                startConfigOut.step.get.stepId,
-                startConfigOut.step.get.nameToShow,
-                startConfigOut.step.get.components.map(component => {
-                  JsonComponent(
-                      component.componentId,
-                      component.nameToShow
-                  )
-                })
-            )
+            startConfigOut.step match {
+              case Some(step) => {
+                Some(JsonStep(
+                    step.stepId,
+                    step.nameToShow,
+                    step.components.map(component => {
+                      JsonComponent(
+                          component.componentId,
+                          component.nameToShow
+                      )
+                    })
+                ))
+              }
+              case None => {
+                None
+              }
+            }
         )
     )
   }
@@ -86,8 +91,7 @@ trait Wrapper {
    */
   def toNextStepIn(jsonNextStepIn: JsonNextStepIn): NextStepIn = {
     NextStepIn(
-        jsonNextStepIn.params.componentIds,
-        jsonNextStepIn.params.clientId
+        jsonNextStepIn.params.componentIds
     )
   }
   

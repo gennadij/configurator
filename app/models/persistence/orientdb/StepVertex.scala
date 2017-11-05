@@ -142,8 +142,8 @@ object StepVertex {
             c.componentId, 
             c.nameToShow
         )})
-        
-    CurrentConfig.setCurrentConfig(nextStepIn.clientId, currentConfigStep)
+       //TODO client Id ist nicht mehr notwendig
+//    CurrentConfig.setCurrentConfig(currentConfigStep)
     
     //TODO v0.1.0 Definition FinalStep und Abschluss der Konfiguration
     
