@@ -9,7 +9,7 @@ import models.json.JsonNames
  * Created by Gennadi Heimann on 27.12.2016
  */
 case class JsonNextStepIn (
-    json: String = JsonNames.nextSTep,
+    json: String = JsonNames.NEXT_STEP,
     params: JsonNextStepParams
 )
 

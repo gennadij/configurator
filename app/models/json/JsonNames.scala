@@ -8,7 +8,7 @@ package models.json
  */
 
 object JsonNames {
-  val startConfig: String = "StartConfig"
-  val nextSTep: String = "NextStep"
+  val START_CONFIG: String = "StartConfig"
+  val NEXT_STEP: String = "NextStep"
   val CURRENT_CONFIG: String = "CurrentConfig"
 }

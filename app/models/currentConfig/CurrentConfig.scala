@@ -19,8 +19,16 @@ object CurrentConfig {
   
   val currentConfig: CurrentConfig = new CurrentConfig
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param String, Step
+   * 
+   * @return Unit
+   */
   def setCurrentConfig(clientId: String, step: Step): Unit = {
-    
     
     val currentConfigSteps: List[Step] = currentConfigs.get(clientId) match {
       case Some(step) => currentConfigs.get(clientId).get
@@ -39,7 +47,15 @@ object CurrentConfig {
     }
   }
   
-  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param CurrentConfigIn
+   * 
+   * @return CurrentConfigOut
+   */
   def getCurrentConfig(currentConfigIn: CurrentConfigIn): CurrentConfigOut = {
     
     val currentConfigSteps: List[Step] = currentConfigs.get(currentConfigIn.clientId) match {
@@ -52,11 +68,25 @@ object CurrentConfig {
     )
   }
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param 
+   * 
+   * @return Map[String, List[Step]]
+   */
   def getCuttentConfig: Map[String, List[Step]] = {
     currentConfigs
   }
 }
 
+/**
+ * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
+ * 
+ * Crated by Gennadi Heimann 28.02.2017
+ */
 class CurrentConfig {
 
   private def setCurrentConfig(step: Step, currentConfigSteps: List[Step]): List[Step] = {
@@ -69,6 +99,4 @@ class CurrentConfig {
     
     currentConfigSteps.+:(newStep)
   }
-  
-  private def getCurrentConfig() = ???
 }

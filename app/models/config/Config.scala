@@ -17,14 +17,41 @@ import models.currentConfig.CurrentConfig
  */
 class Config extends Wrapper{
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param JsonStartConfigIn
+   * 
+   * @return JsonStartConfigOut
+   */
   def startConfig(jsonStartConfigIn: JsonStartConfigIn): JsonStartConfigOut = {
     toJsonStartConfigOut(Persistence.startConfig(toStartConfigIn(jsonStartConfigIn)))
   }
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param JsonNextStepIn
+   * 
+   * @return JsonNextStepOut
+   */
   def nextStep(jsonNextStepIn: JsonNextStepIn): JsonNextStepOut = {
     toJsonNextStepOut(Persistence.nestStep(toNextStepIn(jsonNextStepIn)))
   }
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param JsonCurrentConfigIn
+   * 
+   * @return JsonCurrentConfigOut
+   */
   def currentConfig(jsonCurrentConfigIn: JsonCurrentConfigIn): JsonCurrentConfigOut = {
     toJsonCurentConfigOut(CurrentConfig.getCurrentConfig(toCurrentConfigIn(jsonCurrentConfigIn)))
   }

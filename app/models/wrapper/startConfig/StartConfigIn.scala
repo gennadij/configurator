@@ -7,5 +7,4 @@ package models.wrapper.startConfig
  */
 case class StartConfigIn (
     configUrl: String,
-    clientId: String
 )

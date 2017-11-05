@@ -12,7 +12,7 @@ import models.json.JsonNames
  */
 
 case class JsonStartConfigOut (
-    json: String = JsonNames.startConfig,
+    json: String = JsonNames.START_CONFIG,
     result: JsonStartConfigResult
 )
 

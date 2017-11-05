@@ -11,7 +11,7 @@ import models.json.JsonNames
  * {dtoId : 1, dto : StartConfig, params : ...}
  */
 case class JsonStartConfigIn (
-    json: String = JsonNames.startConfig,
+    json: String = JsonNames.START_CONFIG,
     params: JsonStartConfigParams
 )
 

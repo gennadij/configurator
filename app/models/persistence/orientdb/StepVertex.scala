@@ -20,6 +20,9 @@ import models.status.StartConfigSuccessful
 import models.status.StartConfigSuccessful
 import models.status.Status
 import models.status.StartConfigODBWriteError
+import com.tinkerpop.blueprints.Vertex
+import play.api.Logger
+import models.status.common.ClassCastError
 
 
 /**
@@ -33,7 +36,7 @@ object StepVertex {
   /**
    * @author Gennadi Heimann
    * 
-   * @version 0.1.0
+   * @version 0.0.1
    * 
    * @param StartConfigIn
    * 
@@ -43,13 +46,17 @@ object StepVertex {
     val graph: OrientGraph = OrientDB.getFactory().getTx
     
     val configUrl: String = startConfigIn.configUrl
-    val sqlQuery: String = s"select from Config where configUrl='$configUrl'"
     
     try{
-      val resConfigs: OrientDynaElementIterable = graph.command(new OCommandSQL(sqlQuery)).execute()
-      val vConfigs: List[OrientVertex] = resConfigs.asScala.toList.map(_.asInstanceOf[OrientVertex])
-      val vConfig: OrientVertex = vConfigs.head
-      val eHasConfig: List[Edge] = vConfig.getEdges(Direction.OUT, "hasFirstStep").asScala.toList
+      
+      //TODO DOcu aus der OrientDB
+      //Without an index against the property name, this query can take up a lot of time. You can improve performance by creating a new index against the name property:
+      //http://orientdb.com/docs/last/Graph-VE.html
+      
+      val vConfigs: List[Vertex] = graph.getVertices("configUrl", configUrl).asScala.toList
+      
+      val eHasConfig: List[Edge] = vConfigs.head.getEdges(Direction.OUT, "hasFirstStep").asScala.toList
+      // TODO nur einen FirstStep zu einen Config angehaengt werden kann
       val vFirstStep: OrientVertex = eHasConfig.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]
       val status: Status = new StartConfigSuccessful
       StartConfigOut(
@@ -62,7 +69,16 @@ object StepVertex {
           status.message
       )
     }catch{
-      case e: Exception => {
+      case e2 : ClassCastException => {
+        graph.rollback()
+        val status: Status = new ClassCastError
+        StartConfigOut(
+            None,
+            status.status,
+            status.message
+        )
+      }
+      case e1: Exception => {
         graph.rollback()
         val status: Status = new StartConfigODBWriteError
         StartConfigOut(
@@ -77,11 +93,11 @@ object StepVertex {
   /**
    * @author Gennadi Heimann
    * 
-   * @version 0.1.0
+   * @version 0.0.1
    * 
-   * @param
+   * @param NextStepIn
    * 
-   * @return
+   * @return NextStepOut
    */
   def nextStep(nextStepIn: NextStepIn): NextStepOut = {
     val graph: OrientGraph = OrientDB.getFactory().getTx

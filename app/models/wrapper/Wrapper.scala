@@ -20,6 +20,7 @@ import models.wrapper.currentConfig.CurrentConfigIn
 import models.wrapper.currentConfig.CurrentConfigOut
 import models.json.currentConfig.JsonCurrentConfigOut
 import models.json.currentConfig.JsonCurrentConfigResult
+import play.api.Logger
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -28,15 +29,34 @@ import models.json.currentConfig.JsonCurrentConfigResult
  */
 trait Wrapper {
   
-  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param JsonStartConfigIn
+   * 
+   * @return StartConfigIn
+   */
   def toStartConfigIn(jsonStartConfigIn: JsonStartConfigIn): StartConfigIn = {
     StartConfigIn(
-        jsonStartConfigIn.params.configUrl,
-        jsonStartConfigIn.params.clientId
+        jsonStartConfigIn.params.configUrl
     )
   }
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param JsonStartConfigOut
+   * 
+   * @return StartConfigOut
+   */
   def toJsonStartConfigOut(startConfigOut: StartConfigOut): JsonStartConfigOut = {
+    Logger.info(startConfigOut.toString())
+    //TODO Pruefen wenn Step NOne ist
+    
     JsonStartConfigOut(
         result = JsonStartConfigResult(
             startConfigOut.status,
@@ -55,6 +75,15 @@ trait Wrapper {
     )
   }
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param JsonNextStepIn
+   * 
+   * @return NextStepIn
+   */
   def toNextStepIn(jsonNextStepIn: JsonNextStepIn): NextStepIn = {
     NextStepIn(
         jsonNextStepIn.params.componentIds,
@@ -62,6 +91,15 @@ trait Wrapper {
     )
   }
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param NextStepOut
+   * 
+   * @return JsonNextStepOut
+   */
   def toJsonNextStepOut(nextStepOut: NextStepOut): JsonNextStepOut = {
     JsonNextStepOut(
         status = nextStepOut.status,
@@ -80,12 +118,30 @@ trait Wrapper {
     )
   }
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param JsonCurrentConfigIn
+   * 
+   * @return CurrentConfigIn
+   */
   def toCurrentConfigIn(jsonCurrentConfiugIn: JsonCurrentConfigIn): CurrentConfigIn = {
     CurrentConfigIn(
         jsonCurrentConfiugIn.params.clientId
     )
   }
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param CurrentConfigOut
+   * 
+   * @return JsonCurrentConfigOut
+   */
   def toJsonCurentConfigOut(currentConfigOut: CurrentConfigOut): JsonCurrentConfigOut = {
     JsonCurrentConfigOut(
         result = JsonCurrentConfigResult(

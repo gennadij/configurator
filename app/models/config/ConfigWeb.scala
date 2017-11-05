@@ -10,6 +10,11 @@ import models.json.currentConfig.JsonCurrentConfigIn
 import models.json.currentConfig.JsonCurrentConfigOut
 import models.currentConfig.CurrentConfig
 import models.json.startConfig.JsonStartConfigIn
+import play.api.libs.json.JsResult
+import play.api.libs.json.JsSuccess
+import play.api.libs.json.JsError
+import models.json.JsonNames
+import play.api.Logger
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -19,30 +24,78 @@ import models.json.startConfig.JsonStartConfigIn
 
 trait ConfigWeb {
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param JsValue, Config
+   * 
+   * @return JsValue
+   */
   def handleMessage(receivedMessage: JsValue, client: Config): JsValue = {
-    (receivedMessage \ "dto").asOpt[String] match {
+    (receivedMessage \ "json").asOpt[String] match {
       case Some("StartConfig") => startConfig(receivedMessage, client)
       case Some("NextStep") => nextStep(receivedMessage, client)
       case Some("CurrentConfig") => currentConfig(receivedMessage, client)
       case _ => Json.obj("error" -> "keinen Treffer")
     }
   }
-  
+
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param JsValue, Config
+   * 
+   * @return JsValue
+   */
   private def startConfig(receivedMessage: JsValue, client: Config): JsValue = {
-    val jsonStartConfigIn: JsonStartConfigIn = Json.fromJson[JsonStartConfigIn](receivedMessage).get
-    val jsonStartConfigOut: JsonStartConfigOut = client.startConfig(jsonStartConfigIn)
+    val jsonStartConfigIn: JsResult[JsonStartConfigIn] = Json.fromJson[JsonStartConfigIn](receivedMessage)
+    jsonStartConfigIn match {
+      case s: JsSuccess[JsonStartConfigIn] => s
+      case e: JsError => Logger.error("Errors -> " + JsonNames.START_CONFIG + ": " + JsError.toJson(e).toString())
+    }
+    val jsonStartConfigOut: JsonStartConfigOut = client.startConfig(jsonStartConfigIn.get)
     Json.toJson(jsonStartConfigOut)
   }
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param JsValue, Config
+   * 
+   * @return JsValue
+   */
   private def nextStep(receiveMessage: JsValue, client: Config): JsValue = {
-    val jsonNextStepIn: JsonNextStepIn = Json.fromJson[JsonNextStepIn](receiveMessage).get
-    val jsonNextStepOut: JsonNextStepOut = client.nextStep(jsonNextStepIn)
+    val jsonNextStepIn: JsResult[JsonNextStepIn] = Json.fromJson[JsonNextStepIn](receiveMessage)
+    jsonNextStepIn match {
+      case s : JsSuccess[JsonNextStepIn] => s
+      case e : JsError => Logger.error("Errors -> " + JsonNames.NEXT_STEP + ": " + JsError.toJson(e).toString())
+    }
+    val jsonNextStepOut: JsonNextStepOut = client.nextStep(jsonNextStepIn.get)
     Json.toJson(jsonNextStepOut)
   }
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param JsValue, Config
+   * 
+   * @return JsValue
+   */
   private def currentConfig(receivedMessage: JsValue, client: Config): JsValue = {
-    val jsonCurrentConfigIn: JsonCurrentConfigIn = Json.fromJson[JsonCurrentConfigIn](receivedMessage).get
-    val jsonCurrentConfigOut: JsonCurrentConfigOut = client.currentConfig(jsonCurrentConfigIn)
+    val jsonCurrentConfigIn: JsResult[JsonCurrentConfigIn] = Json.fromJson[JsonCurrentConfigIn](receivedMessage)
+    jsonCurrentConfigIn match {
+      case s: JsSuccess[JsonCurrentConfigIn] => s
+      case e: JsError => Logger.error("Errors -> " + JsonNames.CURRENT_CONFIG + ": " + JsError.toJson(e).toString())
+    }
+    val jsonCurrentConfigOut: JsonCurrentConfigOut = client.currentConfig(jsonCurrentConfigIn.get)
     Json.toJson(jsonCurrentConfigOut)
   }
 }
