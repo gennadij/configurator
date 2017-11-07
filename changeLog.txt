@@ -3,5 +3,5 @@
 |                           CHANGELOGS                                         |
 |******************************************************************************|
 
-changeLog version v0.1.0
+changeLog version v0.0.1
     # Definition von FinalStep und Abschluss der Konfiguration
