@@ -109,9 +109,9 @@ trait Wrapper {
         status = nextStepOut.status,
         result = JsonNextStepResult(
             JsonStep(
-                nextStepOut.step.stepId,
-                nextStepOut.step.nameToShow,
-                nextStepOut.step.components.map(component => {
+                nextStepOut.step.get.stepId,
+                nextStepOut.step.get.nameToShow,
+                nextStepOut.step.get.components.map(component => {
                   JsonComponent(
                       component.componentId,
                       component.nameToShow

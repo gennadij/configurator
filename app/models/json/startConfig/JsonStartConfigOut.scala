@@ -17,6 +17,5 @@ case class JsonStartConfigOut (
 )
 
 object JsonStartConfigOut {
-  //TODO Impl Nullable Objects
   implicit val format = Json.writes[JsonStartConfigOut]
 }

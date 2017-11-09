@@ -23,6 +23,8 @@ import models.status.StartConfigODBWriteError
 import com.tinkerpop.blueprints.Vertex
 import play.api.Logger
 import models.status.common.ClassCastError
+import models.status.NextStepSuccessful
+import models.status.NextStepODBWriteError
 
 
 /**
@@ -56,7 +58,6 @@ object StepVertex {
       val vConfigs: List[Vertex] = graph.getVertices("configUrl", configUrl).asScala.toList
       
       val eHasConfig: List[Edge] = vConfigs.head.getEdges(Direction.OUT, "hasFirstStep").asScala.toList
-      // TODO nur einen FirstStep zu einen Config angehaengt werden kann
       val vFirstStep: OrientVertex = eHasConfig.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]
       val status: Status = new StartConfigSuccessful
       StartConfigOut(
@@ -102,84 +103,45 @@ object StepVertex {
   def nextStep(nextStepIn: NextStepIn): NextStepOut = {
     val graph: OrientGraph = OrientDB.getFactory().getTx
 
-    // hole Vertex von selectedComponent aus der DB
-    val vSelectedComponents: List[OrientVertex] = nextStepIn.componentIds map {
-      componentId => {
-        graph.getVertex(componentId)
-      }
-    }
-    
-    // hole Edge from hasStep von selectedComponents aus der DB
-    val eHasStepFromSelectedComponents: List[OrientEdge] = 
-      vSelectedComponents(0).getEdges(Direction.IN, "hasComponent").asScala.toList map {_.asInstanceOf[OrientEdge]}
-    
-    //TODO es darf nur einen Step gefunden werden
-    // Das wird beim Admin ausgeschlossen
-    val vSelectedStep: OrientVertex = eHasStepFromSelectedComponents(0)
-      .getVertex(Direction.OUT).asInstanceOf[OrientVertex]
-    
-    
-    val eHasStep: List[OrientEdge] = vSelectedComponents flatMap {
-      vComponent => {
-        vComponent.getEdges(Direction.OUT, "hasStep").asScala.toList map {
-          _.asInstanceOf[OrientEdge]
+    try{
+      
+      // hole Vertices von selectedComponents aus der DB
+      // TODO Die Implenmentierung bezieht sich zurzeit nur auf die Singelchooce
+      // Die Multichooce wird spaeter implementiert. Es muss zuerst auf dem Admin-Seite vorbereitet werden
+      val vSelectedComponents: List[OrientVertex] = nextStepIn.componentIds map {
+        componentId => {
+          graph.getVertex(componentId)
         }
       }
-    }
-    
-    val vNextSteps = eHasStep map {
-      _.getVertex(Direction.IN)
-    }
-    
-    // Admin schliesst aus, dass mehrere nextStep exestieren können
-    
-    //CURRENT_CONFIG
-    
-    val selectedComponents: List[Component] = getSelectedComponents(vSelectedStep, nextStepIn.componentIds)
-    
-    val currentConfigStep = Step(vSelectedStep.getIdentity.toString, vSelectedStep.getProperty(PropertyKey.NAME_TO_SHOW), 
-        selectedComponents map {c => Component(
-            c.componentId, 
-            c.nameToShow
-        )})
+      
+      val vNextStep: Option[OrientVertex] = getStepFromSelectedComponent(vSelectedComponents.head)
+      
        //TODO client Id ist nicht mehr notwendig
-//    CurrentConfig.setCurrentConfig(currentConfigStep)
     
-    //TODO v0.1.0 Definition FinalStep und Abschluss der Konfiguration
+      //TODO Erkennung der  FinalSchritt und Abschluss der Konfiguration
     
-    
-    if(vSelectedStep.getProperty(PropertyKey.KIND).toString() == "final") {
+      val status = new NextStepSuccessful
        NextStepOut(
-          status = ""
-//            Status(
-//              "final",
-//              1,
-//              "Die Konfiguration ist fertig"
-//          )
-          ,
-          message = "",
+          status.status,
+          status.message,
+          Some(
               Step(
-                  "",
-                  "",
-                  List[Component]()
+                  vNextStep.get.getIdentity.toString,
+                  vNextStep.get.getProperty(PropertyKey.NAME_TO_SHOW),
+                  components(vNextStep.get)
               )
+          )
       )
-    } else {
-      NextStepOut(
-          status = ""
-//            Status(
-//              "ok",
-//              1,
-//              "Der naechste Schrit mit Komponenten wurde erfolgreich geladen"
-//          )
-          ,message = ""
-          ,
-              Step(
-                  vNextSteps(0).getIdentity.toString,
-                  vNextSteps(0).getProperty(PropertyKey.NAME_TO_SHOW),
-                  components(vNextSteps(0))
-              )
-      )
+    }catch{
+      case e1: Exception => {
+        graph.rollback()
+        val status: Status = new NextStepODBWriteError
+        NextStepOut(
+            status.status,
+            status.message,
+            None
+        )
+      }
     }
   }
     
@@ -236,5 +198,19 @@ object StepVertex {
           vC.getProperty(PropertyKey.NAME_TO_SHOW)
       )
     })
+  }
+  
+  def getStepFromSelectedComponent(vSelectedComponent:OrientVertex): Some[OrientVertex] = {
+    
+      // hole Edge from hasStep von selectedComponents aus der DB
+      val eHasStepFromSelectedComponents: List[OrientEdge] = 
+          vSelectedComponent.getEdges(Direction.OUT, PropertyKey.HAS_STEP).asScala.toList map {_.asInstanceOf[OrientEdge]}
+      
+      Logger.info(eHasStepFromSelectedComponents.toString())
+      // hole angehaengete Schritt aus der DB
+      val vStep = eHasStepFromSelectedComponents.head.getVertex(Direction.OUT).asInstanceOf[OrientVertex]
+      
+      Some(vStep)
+      
   }
 }

@@ -11,6 +11,7 @@ import models.json.JsonNames
 import play.api.Logger
 import models.status.StartConfigSuccessful
 import play.api.libs.json.JsValue
+import models.status.NextStepSuccessful
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -40,9 +41,13 @@ class NextStepSpecs extends Specification with ConfigWeb with BeforeAfterAll{
       
       val startConfigOut = wC.handleMessage(startConfigIn)
       
+      Logger.info("StartConfigIn " + startConfigIn)
+      Logger.info("StartConfigOut " + startConfigOut)
+      
       //User hat ausgewaelt
       val componentIdC11: String = (((startConfigOut \ "result" \ "step" \ "components")(0)) \ "componentId") .asOpt[String].get
       
+      Logger.info("componentIdC11" + componentIdC11)
       val componentIds: List[String] = List(componentIdC11)
       
       val nextStepIn = Json.obj(
@@ -54,13 +59,16 @@ class NextStepSpecs extends Specification with ConfigWeb with BeforeAfterAll{
       
       val nextStepOut: JsValue = wC.handleMessage(nextStepIn)
       
-      (nextStepOut \ "json").asOpt[String].get === JsonNames.START_CONFIG
-      (nextStepOut \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S1_user29_v016"
+      Logger.info("NextStepIn " + nextStepIn)
+      Logger.info("NextStepOut " + nextStepOut)
+      
+      (nextStepOut \ "json").asOpt[String].get === JsonNames.NEXT_STEP
+      (nextStepOut \ "result" \ "step" \ "nameToShow").asOpt[String].get === ""
       (nextStepOut \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 3
       (((nextStepOut \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_1_1_user29_v016"
       (((nextStepOut \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_1_2_user29_v016"
       (((nextStepOut \ "result" \ "step" \ "components")(2)) \ "nameToShow") .asOpt[String].get === "C_1_3_user29_v016"
-      val status = new StartConfigSuccessful
+      val status = new NextStepSuccessful
       (nextStepOut \ "result" \ "status").asOpt[String].get === status.status
       (nextStepOut \ "result" \ "message").asOpt[String].get === status.message
     }

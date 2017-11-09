@@ -10,5 +10,5 @@ import models.wrapper.common.Step
 case class NextStepOut (
     status: String,
     message: String,
-    step: Step
+    step: Option[Step]
 )

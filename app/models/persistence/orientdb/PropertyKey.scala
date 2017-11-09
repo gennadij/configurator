@@ -8,5 +8,7 @@ object PropertyKey {
   val COMPONENT_ID = "componentId"
   val KIND = "kind"
   val NAME_TO_SHOW: String = "nameToShow"
+  val HAS_COMPONENT: String = "hasComponent"
+  val HAS_STEP: String = "hasStep"
   
 }
