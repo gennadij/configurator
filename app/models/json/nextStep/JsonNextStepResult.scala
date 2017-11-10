@@ -10,6 +10,8 @@ import models.json.common.JsonStep
  */
 
 case class JsonNextStepResult (
+    status: String,
+    message: String,
     step: JsonStep
 )
 

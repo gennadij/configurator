@@ -106,8 +106,9 @@ trait Wrapper {
    */
   def toJsonNextStepOut(nextStepOut: NextStepOut): JsonNextStepOut = {
     JsonNextStepOut(
-        status = nextStepOut.status,
         result = JsonNextStepResult(
+            status = nextStepOut.status,
+            message = nextStepOut.message,
             JsonStep(
                 nextStepOut.step.get.stepId,
                 nextStepOut.step.get.nameToShow,

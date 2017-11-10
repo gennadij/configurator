@@ -63,11 +63,11 @@ class NextStepSpecs extends Specification with ConfigWeb with BeforeAfterAll{
       Logger.info("NextStepOut " + nextStepOut)
       
       (nextStepOut \ "json").asOpt[String].get === JsonNames.NEXT_STEP
-      (nextStepOut \ "result" \ "step" \ "nameToShow").asOpt[String].get === ""
-      (nextStepOut \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 3
-      (((nextStepOut \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_1_1_user29_v016"
-      (((nextStepOut \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_1_2_user29_v016"
-      (((nextStepOut \ "result" \ "step" \ "components")(2)) \ "nameToShow") .asOpt[String].get === "C_1_3_user29_v016"
+      (nextStepOut \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S2_user29_v016"
+      (nextStepOut \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 2
+      (((nextStepOut \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_2_1_user29_v016"
+      (((nextStepOut \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_2_2_user29_v016"
+//      (((nextStepOut \ "result" \ "step" \ "components")(2)) \ "nameToShow") .asOpt[String].get === "C_1_3_user29_v016"
       val status = new NextStepSuccessful
       (nextStepOut \ "result" \ "status").asOpt[String].get === status.status
       (nextStepOut \ "result" \ "message").asOpt[String].get === status.message

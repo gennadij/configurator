@@ -116,6 +116,7 @@ object StepVertex {
       
       val vNextStep: Option[OrientVertex] = getStepFromSelectedComponent(vSelectedComponents.head)
       
+      Logger.info("StepVertex " + vNextStep)
        //TODO client Id ist nicht mehr notwendig
     
       //TODO Erkennung der  FinalSchritt und Abschluss der Konfiguration
@@ -208,7 +209,7 @@ object StepVertex {
       
       Logger.info(eHasStepFromSelectedComponents.toString())
       // hole angehaengete Schritt aus der DB
-      val vStep = eHasStepFromSelectedComponents.head.getVertex(Direction.OUT).asInstanceOf[OrientVertex]
+      val vStep = eHasStepFromSelectedComponents.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]
       
       Some(vStep)
       
