@@ -1,4 +1,6 @@
-package models.status
+package models.status.nextStep
+
+import models.status.Status
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com

@@ -8,6 +8,6 @@ import models.status.Status
  * Created by Gennadi Heimann 05.11.2017
  */
 class ClassCastError extends Status{
-  def message: String = "CLASS_CAST_ERROR"
-  def status: String = "Interner Fehler des Configurators"
+  def status: String = "CLASS_CAST_ERROR"
+  def message: String = "Interner Fehler des Configurators"
 }

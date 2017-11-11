@@ -9,10 +9,10 @@ import models.websocket.WebClient
 import play.api.libs.json.Json
 import models.json.JsonNames
 import play.api.Logger
-import models.status.StartConfigSuccessful
+import models.status.startCongig.StartConfigSuccessful
 import play.api.libs.json.JsValue
-import models.status.NextStepSuccessful
-import models.status.NextStepFinalStep
+import models.status.nextStep.NextStepSuccessful
+import models.status.nextStep.FinalStepSuccessful
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -20,7 +20,7 @@ import models.status.NextStepFinalStep
  * Created by Gennadi Heimann 10.11.2017
  */
 @RunWith(classOf[JUnitRunner])
-class FinalStepSpecsextends extends Specification with ConfigWeb with BeforeAfterAll{
+class FinalStepSpecs extends Specification with ConfigWeb with BeforeAfterAll{
 
   val wC = WebClient.init
   
@@ -123,7 +123,7 @@ class FinalStepSpecsextends extends Specification with ConfigWeb with BeforeAfte
       
       (nextStepOut_3 \ "json").asOpt[String].get === JsonNames.NEXT_STEP
       (nextStepOut_3 \ "result" \ "step").asOpt[String] === None
-      val status_3 = new NextStepFinalStep
+      val status_3 = new FinalStepSuccessful
       (nextStepOut_3 \ "result" \ "status").asOpt[String].get === status_3.status
       (nextStepOut_3 \ "result" \ "message").asOpt[String].get === status_3.message
       

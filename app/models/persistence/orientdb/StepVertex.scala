@@ -16,16 +16,16 @@ import models.wrapper.nextStep.NextStepOut
 import com.tinkerpop.blueprints.impls.orient.OrientEdge
 import models.wrapper.common.Component
 import models.currentConfig.CurrentConfig
-import models.status.StartConfigSuccessful
-import models.status.StartConfigSuccessful
+import models.status.startCongig.StartConfigSuccessful
+import models.status.startCongig.StartConfigSuccessful
 import models.status.Status
-import models.status.StartConfigODBWriteError
 import com.tinkerpop.blueprints.Vertex
 import play.api.Logger
 import models.status.common.ClassCastError
-import models.status.NextStepSuccessful
-import models.status.NextStepODBWriteError
-import models.status.NextStepFinalStep
+import models.status.nextStep.NextStepSuccessful
+import models.status.nextStep.FinalStepSuccessful
+import models.status.common.ODBReadError
+import models.status.common.ODBReadError
 
 
 /**
@@ -82,7 +82,8 @@ object StepVertex {
       }
       case e1: Exception => {
         graph.rollback()
-        val status: Status = new StartConfigODBWriteError
+        val status: Status = new ODBReadError
+        Logger.error(e1.printStackTrace().toString)
         StartConfigOut(
             None,
             status.status,
@@ -133,7 +134,7 @@ object StepVertex {
             )
         }
         case None => {
-          val status = new NextStepFinalStep
+          val status = new FinalStepSuccessful
           NextStepOut(
                 status.status,
                 status.message,
@@ -145,7 +146,7 @@ object StepVertex {
       case e1: Exception => {
         graph.rollback()
         Logger.error(e1.printStackTrace().toString())
-        val status: Status = new NextStepODBWriteError
+        val status: Status = new ODBReadError
         NextStepOut(
             status.status,
             status.message,

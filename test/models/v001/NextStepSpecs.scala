@@ -9,9 +9,9 @@ import models.websocket.WebClient
 import play.api.libs.json.Json
 import models.json.JsonNames
 import play.api.Logger
-import models.status.StartConfigSuccessful
+import models.status.startCongig.StartConfigSuccessful
 import play.api.libs.json.JsValue
-import models.status.NextStepSuccessful
+import models.status.nextStep.NextStepSuccessful
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com

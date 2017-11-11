@@ -9,9 +9,9 @@ import models.websocket.WebClient
 import play.api.libs.json.Json
 import models.json.JsonNames
 import play.api.libs.json.JsValue
-import models.status.StartConfigSuccessful
+import models.status.startCongig.StartConfigSuccessful
 import play.api.Logger
-import models.status.StartConfigODBWriteError
+import models.status.common.ODBReadError
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -49,7 +49,7 @@ class StartConfigWithDefectURLSpecs extends Specification with ConfigWeb with Be
       
       (startConfigOut \ "json").asOpt[String].get === JsonNames.START_CONFIG
       (startConfigOut \ "result" \ "step").asOpt[String] === None
-      val status = new StartConfigODBWriteError
+      val status = new ODBReadError
       (startConfigOut \ "result" \ "status").asOpt[String].get === status.status
       (startConfigOut \ "result" \ "message").asOpt[String].get === status.message
     }
