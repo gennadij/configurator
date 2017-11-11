@@ -109,16 +109,21 @@ trait Wrapper {
         result = JsonNextStepResult(
             status = nextStepOut.status,
             message = nextStepOut.message,
-            JsonStep(
-                nextStepOut.step.get.stepId,
-                nextStepOut.step.get.nameToShow,
-                nextStepOut.step.get.components.map(component => {
-                  JsonComponent(
-                      component.componentId,
-                      component.nameToShow
-                  )
-                })
-            )
+            nextStepOut.step match {
+              case Some(step) => {
+                Some(JsonStep(
+                    step.stepId,
+                    step.nameToShow,
+                    step.components.map(component => {
+                      JsonComponent(
+                          component.componentId,
+                          component.nameToShow
+                      )
+                    })
+                ))
+              }
+              case None => None
+            }
         )
     )
   }

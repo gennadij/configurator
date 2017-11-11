@@ -12,6 +12,7 @@ import play.api.Logger
 import models.status.StartConfigSuccessful
 import play.api.libs.json.JsValue
 import models.status.NextStepSuccessful
+import models.status.NextStepFinalStep
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -47,7 +48,7 @@ class FinalStepSpecsextends extends Specification with ConfigWeb with BeforeAfte
       //User hat ausgewaelt
       val componentIdC11: String = (((startConfigOut \ "result" \ "step" \ "components")(0)) \ "componentId") .asOpt[String].get
       
-      Logger.info("componentIdC11" + componentIdC11)
+      Logger.info("componentIdC11 " + componentIdC11)
       val componentIds_1: List[String] = List(componentIdC11)
       
       val nextStepIn_1 = Json.obj(
@@ -59,8 +60,8 @@ class FinalStepSpecsextends extends Specification with ConfigWeb with BeforeAfte
       
       val nextStepOut_1: JsValue = wC.handleMessage(nextStepIn_1)
       
-      Logger.info("NextStepIn " + nextStepIn_1)
-      Logger.info("NextStepOut " + nextStepOut_1)
+      Logger.info("NextStepIn_1 " + nextStepIn_1)
+      Logger.info("NextStepOut_1 " + nextStepOut_1)
       
       (nextStepOut_1 \ "json").asOpt[String].get === JsonNames.NEXT_STEP
       (nextStepOut_1 \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S2_user29_v016"
@@ -75,7 +76,7 @@ class FinalStepSpecsextends extends Specification with ConfigWeb with BeforeAfte
     
       val componentIdC21 = (((nextStepOut_1 \ "result" \ "step" \ "components")(0)) \ "componentId") .asOpt[String].get
       
-      Logger.info("componentIdC21" + componentIdC21)
+      Logger.info("componentIdC21 " + componentIdC21)
       val componentIds_2: List[String] = List(componentIdC21)
       
       val nextStepIn_2 = Json.obj(
@@ -95,8 +96,8 @@ class FinalStepSpecsextends extends Specification with ConfigWeb with BeforeAfte
       (nextStepOut_2 \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 4
       (((nextStepOut_2 \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_3_1_user29_v016"
       (((nextStepOut_2 \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_3_2_user29_v016"
-      (((nextStepOut_2 \ "result" \ "step" \ "components")(2)) \ "nameToShow") .asOpt[String].get === "C_3_2_user29_v016"
-      (((nextStepOut_2 \ "result" \ "step" \ "components")(3)) \ "nameToShow") .asOpt[String].get === "C_3_2_user29_v016"
+      (((nextStepOut_2 \ "result" \ "step" \ "components")(2)) \ "nameToShow") .asOpt[String].get === "C_3_3_user29_v016"
+      (((nextStepOut_2 \ "result" \ "step" \ "components")(3)) \ "nameToShow") .asOpt[String].get === "C_3_4_user29_v016"
       val status_2 = new NextStepSuccessful
       (nextStepOut_2 \ "result" \ "status").asOpt[String].get === status_2.status
       (nextStepOut_2 \ "result" \ "message").asOpt[String].get === status_2.message
@@ -105,7 +106,7 @@ class FinalStepSpecsextends extends Specification with ConfigWeb with BeforeAfte
     
       val componentIdC31 = (((nextStepOut_2 \ "result" \ "step" \ "components")(0)) \ "componentId") .asOpt[String].get
       
-      Logger.info("componentIdC31" + componentIdC31)
+      Logger.info("componentIdC31 " + componentIdC31)
       val componentIds_3: List[String] = List(componentIdC31)
       
       val nextStepIn_3 = Json.obj(
@@ -121,13 +122,8 @@ class FinalStepSpecsextends extends Specification with ConfigWeb with BeforeAfte
       Logger.info("NextStepOut " + nextStepOut_3)
       
       (nextStepOut_3 \ "json").asOpt[String].get === JsonNames.NEXT_STEP
-      (nextStepOut_3 \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S3_user29_v016"
-//      (nextStepOut_3 \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 4
-//      (((nextStepOut_3 \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_3_1_user29_v016"
-//      (((nextStepOut_3 \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_3_2_user29_v016"
-//      (((nextStepOut_3 \ "result" \ "step" \ "components")(2)) \ "nameToShow") .asOpt[String].get === "C_3_2_user29_v016"
-//      (((nextStepOut_3 \ "result" \ "step" \ "components")(3)) \ "nameToShow") .asOpt[String].get === "C_3_2_user29_v016"
-      val status_3 = new NextStepSuccessful
+      (nextStepOut_3 \ "result" \ "step").asOpt[String] === None
+      val status_3 = new NextStepFinalStep
       (nextStepOut_3 \ "result" \ "status").asOpt[String].get === status_3.status
       (nextStepOut_3 \ "result" \ "message").asOpt[String].get === status_3.message
       

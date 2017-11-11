@@ -1,7 +1,8 @@
 package models.json.nextStep
 
-import play.api.libs.json.Json
 import models.json.common.JsonStep
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -12,9 +13,13 @@ import models.json.common.JsonStep
 case class JsonNextStepResult (
     status: String,
     message: String,
-    step: JsonStep
+    step: Option[JsonStep]
 )
 
 object JsonNextStepResult {
-  implicit val format = Json.writes[JsonNextStepResult]
+  implicit val writes: Writes[JsonNextStepResult] = (
+      (JsPath \ "status").write[String] and
+      (JsPath \ "message").write[String] and
+      (JsPath \ "step").write(Writes.optionWithNull[JsonStep])
+  )(unlift(JsonNextStepResult.unapply))
 }

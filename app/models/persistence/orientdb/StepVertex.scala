@@ -25,6 +25,7 @@ import play.api.Logger
 import models.status.common.ClassCastError
 import models.status.NextStepSuccessful
 import models.status.NextStepODBWriteError
+import models.status.NextStepFinalStep
 
 
 /**
@@ -116,26 +117,34 @@ object StepVertex {
       
       val vNextStep: Option[OrientVertex] = getStepFromSelectedComponent(vSelectedComponents.head)
       
-      Logger.info("StepVertex " + vNextStep)
-       //TODO client Id ist nicht mehr notwendig
-    
-      //TODO Erkennung der  FinalSchritt und Abschluss der Konfiguration
-    
-      val status = new NextStepSuccessful
-       NextStepOut(
-          status.status,
-          status.message,
-          Some(
-              Step(
-                  vNextStep.get.getIdentity.toString,
-                  vNextStep.get.getProperty(PropertyKey.NAME_TO_SHOW),
-                  components(vNextStep.get)
-              )
-          )
-      )
+      vNextStep match {
+        case Some(step) => {
+          val status = new NextStepSuccessful
+            NextStepOut(
+                status.status,
+                status.message,
+                Some(
+                    Step(
+                        step.getIdentity.toString,
+                        step.getProperty(PropertyKey.NAME_TO_SHOW),
+                        components(step)
+                    )
+                )
+            )
+        }
+        case None => {
+          val status = new NextStepFinalStep
+          NextStepOut(
+                status.status,
+                status.message,
+                None
+            )
+        }
+      }
     }catch{
       case e1: Exception => {
         graph.rollback()
+        Logger.error(e1.printStackTrace().toString())
         val status: Status = new NextStepODBWriteError
         NextStepOut(
             status.status,
@@ -201,17 +210,17 @@ object StepVertex {
     })
   }
   
-  def getStepFromSelectedComponent(vSelectedComponent:OrientVertex): Some[OrientVertex] = {
+  def getStepFromSelectedComponent(vSelectedComponent:OrientVertex): Option[OrientVertex] = {
     
       // hole Edge from hasStep von selectedComponents aus der DB
       val eHasStepFromSelectedComponents: List[OrientEdge] = 
           vSelectedComponent.getEdges(Direction.OUT, PropertyKey.HAS_STEP).asScala.toList map {_.asInstanceOf[OrientEdge]}
-      
-      Logger.info(eHasStepFromSelectedComponents.toString())
-      // hole angehaengete Schritt aus der DB
-      val vStep = eHasStepFromSelectedComponents.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]
-      
-      Some(vStep)
-      
+      eHasStepFromSelectedComponents match {
+        case List() => None
+        case _ => {
+          // hole angehaengete Schritt aus der DB
+          Some(eHasStepFromSelectedComponents.head.getVertex(Direction.IN).asInstanceOf[OrientVertex])
+        }
+      }
   }
 }
