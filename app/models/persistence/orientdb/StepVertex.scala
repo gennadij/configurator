@@ -60,6 +60,8 @@ object StepVertex {
       
       val eHasConfig: List[Edge] = vConfigs.head.getEdges(Direction.OUT, "hasFirstStep").asScala.toList
       val vFirstStep: OrientVertex = eHasConfig.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]
+      
+      
       val status: Status = new StartConfigSuccessful
       StartConfigOut(
           Some(Step(
@@ -118,40 +120,23 @@ object StepVertex {
       
       val vNextStep: Option[OrientVertex] = getStepFromSelectedComponent(vSelectedComponents.head)
       
+      //lese die Abhaengigkeiten
+      
+      val vDependencies: List[OrientVertex] = getDependencies(vSelectedComponents)
+      
       vNextStep match {
         case Some(step) => {
-          val status = new NextStepSuccessful
-            NextStepOut(
-                status.status,
-                status.message,
-                Some(
-                    Step(
-                        step.getIdentity.toString,
-                        step.getProperty(PropertyKey.NAME_TO_SHOW),
-                        components(step)
-                    )
-                )
-            )
+          createNextStepOut(step)
         }
         case None => {
-          val status = new FinalStepSuccessful
-          NextStepOut(
-                status.status,
-                status.message,
-                None
-            )
+          createFinalStep
         }
       }
     }catch{
       case e1: Exception => {
         graph.rollback()
         Logger.error(e1.printStackTrace().toString())
-        val status: Status = new ODBReadError
-        NextStepOut(
-            status.status,
-            status.message,
-            None
-        )
+        createErrorStep
       }
     }
   }
@@ -223,5 +208,47 @@ object StepVertex {
           Some(eHasStepFromSelectedComponents.head.getVertex(Direction.IN).asInstanceOf[OrientVertex])
         }
       }
+  }
+  
+  def createNextStepOut(step: OrientVertex): NextStepOut = {
+    val status = new NextStepSuccessful
+    NextStepOut(
+        status.status,
+        status.message,
+        Some(
+            Step(
+                step.getIdentity.toString,
+                step.getProperty(PropertyKey.NAME_TO_SHOW),
+                components(step)
+            )
+        )
+    )
+  }
+  
+  def createFinalStep: NextStepOut = {
+    val status = new FinalStepSuccessful
+    NextStepOut(
+          status.status,
+          status.message,
+          None
+    )
+  }
+  
+  def createErrorStep: NextStepOut = {
+    val status: Status = new ODBReadError
+    NextStepOut(
+        status.status,
+        status.message,
+        None
+    )
+  }
+  
+  def getDependencies(components: List[OrientVertex]): List[OrientVertex] = {
+    
+    
+    
+    
+    
+    ???
   }
 }
