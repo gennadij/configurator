@@ -26,6 +26,7 @@ import models.status.nextStep.NextStepSuccessful
 import models.status.nextStep.FinalStepSuccessful
 import models.status.common.ODBReadError
 import models.status.common.ODBReadError
+import models.wrapper.dependency.Dependency
 
 
 /**
@@ -112,6 +113,10 @@ object StepVertex {
       // hole Vertices von selectedComponents aus der DB
       // TODO Die Implenmentierung bezieht sich zurzeit nur auf die Singelchooce
       // Die Multichooce wird spaeter implementiert. Es muss zuerst auf dem Admin-Seite vorbereitet werden
+      
+      // Die Erstellung von NextStep muss nach der Pruefung der Dependencies erfolgen
+      
+      
       val vSelectedComponents: List[OrientVertex] = nextStepIn.componentIds map {
         componentId => {
           graph.getVertex(componentId)
@@ -122,7 +127,7 @@ object StepVertex {
       
       //lese die Abhaengigkeiten
       
-      val vDependencies: List[OrientVertex] = getDependencies(vSelectedComponents)
+      val dependencies: List[Dependency] = getDependencies(vSelectedComponents)
       
       vNextStep match {
         case Some(step) => {
@@ -146,7 +151,7 @@ object StepVertex {
   /**
    * @author Gennadi Heimann
    * 
-   * @version 0.0.0
+   * @version 0.0.1
    * 
    * @param
    * 
@@ -164,7 +169,7 @@ object StepVertex {
   /**
    * @author Gennadi Heimann
    * 
-   * @version 1.0
+   * @version 0.0.1
    * 
    * @param
    * 
@@ -179,7 +184,7 @@ object StepVertex {
   /**
    * @author Gennadi Heimann
    * 
-   * @version 1.0
+   * @version 0.0.1
    * 
    * @param
    * 
@@ -196,6 +201,15 @@ object StepVertex {
     })
   }
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param
+   * 
+   * @return
+   */
   def getStepFromSelectedComponent(vSelectedComponent:OrientVertex): Option[OrientVertex] = {
     
       // hole Edge from hasStep von selectedComponents aus der DB
@@ -210,6 +224,15 @@ object StepVertex {
       }
   }
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param
+   * 
+   * @return
+   */
   def createNextStepOut(step: OrientVertex): NextStepOut = {
     val status = new NextStepSuccessful
     NextStepOut(
@@ -225,6 +248,15 @@ object StepVertex {
     )
   }
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param
+   * 
+   * @return
+   */
   def createFinalStep: NextStepOut = {
     val status = new FinalStepSuccessful
     NextStepOut(
@@ -234,6 +266,15 @@ object StepVertex {
     )
   }
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param
+   * 
+   * @return
+   */
   def createErrorStep: NextStepOut = {
     val status: Status = new ODBReadError
     NextStepOut(
@@ -243,12 +284,26 @@ object StepVertex {
     )
   }
   
-  def getDependencies(components: List[OrientVertex]): List[OrientVertex] = {
-    
-    
-    
-    
-    
-    ???
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param
+   * 
+   * @return
+   */
+  def getDependencies(components: List[OrientVertex]): List[Dependency] = {
+    components map (component => {
+        val eHasDependency: OrientEdge = component.getEdges(Direction.OUT, PropertyKey.HAS_DEPENDENCY).asInstanceOf[OrientEdge]
+        Dependency(
+            eHasDependency.getProperty(PropertyKey.OUT),
+            eHasDependency.getProperty(PropertyKey.IN),
+            eHasDependency.getProperty(PropertyKey.VISUALIZATION),
+            eHasDependency.getProperty(PropertyKey.DEPENDENCY_TYPE),
+            eHasDependency.getProperty(PropertyKey.NAME_TO_SHOW),
+        )
+      }
+    )
   }
 }

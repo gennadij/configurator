@@ -10,5 +10,10 @@ object PropertyKey {
   val NAME_TO_SHOW: String = "nameToShow"
   val HAS_COMPONENT: String = "hasComponent"
   val HAS_STEP: String = "hasStep"
+  val HAS_DEPENDENCY = "hasDependency"
+  val IN: String = "in"
+  val OUT: String = "out"
+  val VISUALIZATION: String = "visualization"
+  val DEPENDENCY_TYPE: String = "dependencyType"
   
 }
