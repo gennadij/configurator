@@ -9,6 +9,8 @@ import models.json.nextStep.JsonNextStepOut
 import models.json.currentConfig.JsonCurrentConfigIn
 import models.json.currentConfig.JsonCurrentConfigOut
 import models.currentConfig.CurrentConfig
+import models.json.component.JsonComponentIn
+import models.json.component.JsonComponentOut
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -54,6 +56,10 @@ class Config extends Wrapper{
    */
   def currentConfig(jsonCurrentConfigIn: JsonCurrentConfigIn): JsonCurrentConfigOut = {
     toJsonCurentConfigOut(CurrentConfig.getCurrentConfig(toCurrentConfigIn(jsonCurrentConfigIn)))
+  }
+  
+  def component(jsonComponentIn: JsonComponentIn): JsonComponentOut = {
+    toJsonComponentOut(Persistence.component(toComponentIn(jsonComponentIn)))
   }
   
 }

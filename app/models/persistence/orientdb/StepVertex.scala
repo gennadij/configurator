@@ -68,7 +68,7 @@ object StepVertex {
           Some(Step(
               vFirstStep.getIdentity.toString,
               vFirstStep.getProperty(PropertyKey.NAME_TO_SHOW),
-              components(vFirstStep)
+              getComponentsFromNextStep(vFirstStep)
           )),
           status.status,
           status.message
@@ -113,21 +113,28 @@ object StepVertex {
       // hole Vertices von selectedComponents aus der DB
       // TODO Die Implenmentierung bezieht sich zurzeit nur auf die Singelchooce
       // Die Multichooce wird spaeter implementiert. Es muss zuerst auf dem Admin-Seite vorbereitet werden
-      
-      // Die Erstellung von NextStep muss nach der Pruefung der Dependencies erfolgen
-      
-      
+
       val vSelectedComponents: List[OrientVertex] = nextStepIn.componentIds map {
         componentId => {
           graph.getVertex(componentId)
         }
       }
       
+      //lese IN and OUT Abhaengigkeiten der Komonenten
+      
+      val componentDependencies: List[Dependency] = getDependencies(vSelectedComponents)
+      
+      //lese den VaterStep der Komponenten. Es reicht das nur über eine Komponente der VaterStep ermittelt wird
+      
+      val fatherStep: OrientVertex = getFatherStep(vSelectedComponents)
+     
+      //lese IN und OUT Abhaengigkeiten des VaterStepes
+      
+      val fatherStepDependencies = ???
+      
       val vNextStep: Option[OrientVertex] = getStepFromSelectedComponent(vSelectedComponents.head)
       
-      //lese die Abhaengigkeiten
-      
-      val dependencies: List[Dependency] = getDependencies(vSelectedComponents)
+      //lese IN und OUT Abhaengigkeiten des Steps
       
       vNextStep match {
         case Some(step) => {
@@ -157,14 +164,14 @@ object StepVertex {
    * 
    * @return
    */
-  def getSelectedComponents(selectedStep: OrientVertex, selectedIdsOfComponent: List[String]): List[Component] = {
-    
-    val componentsOfSelectedStep: List[Component] = components(selectedStep)
-    
-    componentsOfSelectedStep.filter(cOfSS => {
-      selectedIdsOfComponent.contains(cOfSS.componentId)
-    })
-  }
+//  def getSelectedComponents(selectedStep: OrientVertex, selectedIdsOfComponent: List[String]): List[Component] = {
+//    
+//    val componentsOfSelectedStep: List[Component] = getComponentsFromNextStep(selectedStep)
+//    
+//    componentsOfSelectedStep.filter(cOfSS => {
+//      selectedIdsOfComponent.contains(cOfSS.componentId)
+//    })
+//  }
   
   /**
    * @author Gennadi Heimann
@@ -190,9 +197,10 @@ object StepVertex {
    * 
    * @return
    */
-  def components(step: OrientVertex): List[Component] = {
+  def getComponentsFromNextStep(step: OrientVertex): List[Component] = {
     val eHasComponents: List[Edge] = step.getEdges(Direction.OUT).asScala.toList
     val vComponents: List[OrientVertex] = eHasComponents.map(_.getVertex(Direction.IN).asInstanceOf[OrientVertex])
+    
     vComponents.map(vC => {
       new Component(
           vC.getIdentity.toString,
@@ -242,7 +250,7 @@ object StepVertex {
             Step(
                 step.getIdentity.toString,
                 step.getProperty(PropertyKey.NAME_TO_SHOW),
-                components(step)
+                getComponentsFromNextStep(step)
             )
         )
     )
@@ -305,5 +313,26 @@ object StepVertex {
         )
       }
     )
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param
+   * 
+   * @return
+   */
+  def getFatherStep(components: List[OrientVertex]): OrientVertex = {
+    val eHasComponents: List[OrientEdge] = components.head.getEdges(Direction.IN, PropertyKey.HAS_COMPONENT)
+        .asScala.toList map {_.asInstanceOf[OrientEdge]}
+    
+    val vFatherStep: List[OrientVertex] = eHasComponents map {
+      eHasComponent => {
+        eHasComponent.getVertex(Direction.OUT)
+      }
+    }
+    vFatherStep.head
   }
 }

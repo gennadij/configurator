@@ -15,6 +15,8 @@ import play.api.libs.json.JsSuccess
 import play.api.libs.json.JsError
 import models.json.JsonNames
 import play.api.Logger
+import models.json.component.JsonComponentIn
+import models.json.component.JsonComponentOut
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -38,6 +40,7 @@ trait ConfigWeb {
       case Some("StartConfig") => startConfig(receivedMessage, client)
       case Some("NextStep") => nextStep(receivedMessage, client)
       case Some("CurrentConfig") => currentConfig(receivedMessage, client)
+      case Some("Component") => component(receivedMessage, client)
       case _ => Json.obj("error" -> "keinen Treffer")
     }
   }
@@ -97,5 +100,15 @@ trait ConfigWeb {
     }
     val jsonCurrentConfigOut: JsonCurrentConfigOut = client.currentConfig(jsonCurrentConfigIn.get)
     Json.toJson(jsonCurrentConfigOut)
+  }
+  
+  def component(receivedMessage: JsValue, client: Config): JsValue = {
+    val jsonComponentIn: JsResult[JsonComponentIn] = Json.fromJson[JsonComponentIn](receivedMessage)
+    jsonComponentIn match {
+      case s: JsSuccess[JsonComponentIn] => s
+      case e: JsError => Logger.error("Errors -> " + JsonNames.CURRENT_CONFIG + ": " + JsError.toJson(e).toString())
+    }
+    val jsonComponentOut: JsonComponentOut = client.component(jsonComponentIn.get)
+    Json.toJson(jsonComponentOut)
   }
 }

@@ -11,4 +11,5 @@ object JsonNames {
   val START_CONFIG: String = "StartConfig"
   val NEXT_STEP: String = "NextStep"
   val CURRENT_CONFIG: String = "CurrentConfig"
+  val COMPONENT: String = "Component"
 }
