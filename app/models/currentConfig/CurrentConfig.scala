@@ -15,6 +15,70 @@ import models.wrapper.common.Step
  * Crated by Gennadi Heimann 28.02.2017
  */
 object CurrentConfig {
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * Initialisierung des CurentConfig
+   * Es wird nur erster Schritt ohne seine Komponente hinzugefuegt
+   * 
+   * @param FirstStep
+   * 
+   * @return
+   */
+  def init(firstStep: Step) = {
+    
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * Neu ausgewaelte Komponente wird zu seinem Schritt eingefuegt
+   * 
+   * @param Step
+   * 
+   * @return
+   */
+  def addComponent = {
+    // es wird geprueft ob der Step schon angelegt war
+    // Die erste Komponente in dem Schritt wird ohne Pruefung des SelectionCriterium hinzugefuegt
+    // Die Abhaengigkeiten werden weiterhin jedes mal geprueft
+    ???
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * Wenn alle Komponente des Schrittes ausgewaelt und bearbeitet waren,
+   * wird ein neuen Schritt geladen.
+   * 
+   * Dieser neuer Schritt wird in die CurrentConfig hinzugefuegt
+   * 
+   * @param Step
+   * 
+   * @return
+   */
+  def addNextStep = {
+    ???
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param 
+   * 
+   * @return CurrentConfig
+   */
+  def getCurrentConfig = ???
+  
+  
   private val currentConfigs: Map[String, List[Step]] = Map.empty
   
   val currentConfig: CurrentConfig = new CurrentConfig

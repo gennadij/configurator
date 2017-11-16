@@ -15,5 +15,7 @@ object PropertyKey {
   val OUT: String = "out"
   val VISUALIZATION: String = "visualization"
   val DEPENDENCY_TYPE: String = "dependencyType"
+  val SELECTION_CRITERIUM_MIN: String = "selectionCriteriumMin"
+  val SELECTION_CRITERIUM_MAX: String = "selectionCriteriumMax"
   
 }
