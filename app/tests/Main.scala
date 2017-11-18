@@ -29,9 +29,26 @@ object Main {
     
     println("Singelton")
     
-    CurrentConfig.printClassHash
-    CurrentConfig.printClassHash
-    CurrentConfig.printClassHash
+    
+    val step_1 = Step("s1", List(), None)
+    
+    val component_1_1 = Component("c_1_1")
+    
+    val component_1_2 = Component("c_1_2")
+    
+    val step_2 = Step("s2", List(), Some(step_1))
+    
+    val component_2_1 = Component("c_2_1")
+    
+    CurrentConfig.addStep(Some(step_1), None)
+    
+    CurrentConfig.addComponent(step_1, component_1_1)
+    
+    CurrentConfig.addComponent(step_1, component_1_2)
+    
+    CurrentConfig.addStep(Some(step_2), Some(step_1))
+    
+    CurrentConfig.printCurrentConfig
     
   }
 }
