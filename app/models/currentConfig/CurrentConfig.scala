@@ -76,6 +76,19 @@ object CurrentConfig {
   def printCurrentConfig: Unit = {
     currentConfig.printCurrentConfig
   }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param 
+   * 
+   * @return Unit
+   */
+  def getCurrentStep(stepId: String): Option[StepCurrentConfig] = {
+    currentConfig.getCurrentConfig
+  }
 }
 
 /**
@@ -98,7 +111,7 @@ class CurrentConfig {
    */
   private def addComponent(step: StepCurrentConfig, component: Component): Unit = {
     
-    val currentStep: Option[StepCurrentConfig] = getStep(step)
+    val currentStep: Option[StepCurrentConfig] = getStep(step.stepId)
     
     val currentComponents: List[Component] = currentStep.get.components
     
@@ -130,6 +143,19 @@ class CurrentConfig {
    * 
    * @return Option[StepCurrentConfig]
    */
+  private def getCurrentStep(stepId: String): Option[StepCurrentConfig] = {
+    getStep(stepId)
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param 
+   * 
+   * @return Option[StepCurrentConfig]
+   */
   private def getCurrentConfig: Option[StepCurrentConfig] = this.firstStep
   
   /**
@@ -141,10 +167,10 @@ class CurrentConfig {
    * 
    * @return Option[StepCurrentConfig]
    */
-  private def getStep(stepB: StepCurrentConfig): Option[StepCurrentConfig] = {
+  private def getStep(stepId: String): Option[StepCurrentConfig] = {
     
     val stepA = this.firstStep
-    getStepRecursive(stepA, stepB)
+    getStepRecursive(stepA, stepId)
   }
   
   /**
@@ -156,11 +182,11 @@ class CurrentConfig {
    * 
    * @return Option[StepCurrentConfig]
    */
-  private def getStepRecursive(stepA: Option[StepCurrentConfig], stepB: StepCurrentConfig): Option[StepCurrentConfig] = {
-    if(stepA.get.stepId == stepB.stepId){
+  private def getStepRecursive(stepA: Option[StepCurrentConfig], stepId: String): Option[StepCurrentConfig] = {
+    if(stepA.get.stepId == stepId){
       stepA
     }else{
-      getStepRecursive(stepA.get.nextStep, stepB)
+      getStepRecursive(stepA.get.nextStep, stepId)
     }
   }
   

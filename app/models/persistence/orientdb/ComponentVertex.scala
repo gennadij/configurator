@@ -13,6 +13,9 @@ import com.tinkerpop.blueprints.impls.orient.OrientEdge
 import com.tinkerpop.blueprints.Direction
 import models.persistence.db.orientdb.PropertyKey
 import models.wrapper.common.SelectionCriterium
+import models.currentConfig.CurrentConfig
+import models.currentConfig.StepCurrentConfig
+import models.wrapper.common.Component
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -35,6 +38,7 @@ object ComponentVertex {
     
     
     try{
+      
       val vComponent = graph.getVertex(componentIn.componentId)
       
       val dependencies: List[Dependency] = getComponentDependenciesOut(vComponent)
@@ -43,9 +47,11 @@ object ComponentVertex {
       
       val selectionCriterium: SelectionCriterium = getSelectionCriterium(vFatherStep)
       
-      val currentConfig = ???
+      val currentStep: Option[StepCurrentConfig] = CurrentConfig.getCurrentConfig
       
-      val stausSelectionCriterium = checkSelectionCriterium
+      val previousSelectedComponents: List[Component] = currentStep.get.components
+      
+      val stausSelectionCriterium = checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium)
       
       ???
     }catch{
@@ -137,7 +143,11 @@ object ComponentVertex {
    * @return OrientVertex
    */
   
-  def checkSelectionCriterium = {
+  def checkSelectionCriterium(countOfComponent: Int, selectionCriterium: SelectionCriterium): Status = {
+    val status: Status = ???
+    
+    
+    
     ???
   }
 }

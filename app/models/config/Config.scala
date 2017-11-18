@@ -57,7 +57,8 @@ class Config extends Wrapper{
    * @return JsonCurrentConfigOut
    */
   def currentConfig(jsonCurrentConfigIn: JsonCurrentConfigIn): JsonCurrentConfigOut = {
-    toJsonCurentConfigOut(CurrentConfig.getCurrentConfig(toCurrentConfigIn(jsonCurrentConfigIn)))
+//    toJsonCurentConfigOut(CurrentConfig.getCurrentConfig(toCurrentConfigIn(jsonCurrentConfigIn)))
+    ???
   }
   
   def component(jsonComponentIn: JsonComponentIn): JsonComponentOut = {
