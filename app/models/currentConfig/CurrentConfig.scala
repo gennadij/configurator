@@ -8,6 +8,8 @@ import models.json.currentConfig.JsonCurrentConfigOut
 import models.wrapper.currentConfig.CurrentConfigIn
 import models.wrapper.currentConfig.CurrentConfigOut
 import models.wrapper.common.Step
+import models.wrapper.common.Component
+import play.api.Logger
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -15,36 +17,25 @@ import models.wrapper.common.Step
  * Crated by Gennadi Heimann 28.02.2017
  */
 object CurrentConfig {
-  private val currentConfigs: Map[String, List[Step]] = Map.empty
+  
   
   val currentConfig: CurrentConfig = new CurrentConfig
-  
   /**
    * @author Gennadi Heimann
    * 
    * @version 0.0.1
    * 
-   * @param String, Step
+   * Neu ausgewaelte Komponente wird zu seinem Schritt eingefuegt
    * 
-   * @return Unit
+   * @param 
+   * 
+   * @return
    */
-  def setCurrentConfig(step: Step): Unit = {
-    
-//    val currentConfigSteps: List[Step] = currentConfigs.get(clientId) match {
-//      case Some(step) => currentConfigs.get(clientId).get
-//      case None => currentConfig.setCurrentConfig(step, List[Step]())
-////      case _ => println("Fehler bei CurrentConfig")
-//    }
-//    
-//    val indexOfSelectedStep = currentConfigSteps.indexWhere(s => s.stepId == step.stepId)
-//    
-//    if(indexOfSelectedStep == -1) {
-//      currentConfigs += (clientId -> (currentConfigSteps :+ step))
-//    }else {
-//       val countOfStepToDelete = currentConfigSteps.size - indexOfSelectedStep
-//       val steps = currentConfigSteps.dropRight(countOfStepToDelete)
-//       currentConfigs. += (clientId -> (steps :+ step))
-//    }
+  def addComponent(step: StepCurrentConfig, component: Component): Unit = {
+    // es wird geprueft ob der Step schon angelegt war
+    // Die erste Komponente in dem Schritt wird ohne Pruefung des SelectionCriterium hinzugefuegt
+    // Die Abhaengigkeiten werden weiterhin jedes mal geprueft
+    currentConfig.addComponent(step, component)
   }
   
   /**
@@ -52,20 +43,14 @@ object CurrentConfig {
    * 
    * @version 0.0.1
    * 
-   * @param CurrentConfigIn
+   * Dieser neuer Schritt wird in die CurrentConfig hinzugefuegt
    * 
-   * @return CurrentConfigOut
+   * @param 
+   * 
+   * @return
    */
-  def getCurrentConfig(currentConfigIn: CurrentConfigIn): CurrentConfigOut = {
-    
-    val currentConfigSteps: List[Step] = currentConfigs.get(currentConfigIn.clientId) match {
-      case Some(step) => step
-      case None => List[Step]()
-    }
-    
-    CurrentConfigOut(
-        currentConfigSteps
-    )
+  def addStep(nextStep: Option[StepCurrentConfig], fatherStep: Option[StepCurrentConfig]): Unit = {
+    currentConfig.addStep(nextStep, fatherStep)
   }
   
   /**
@@ -75,10 +60,34 @@ object CurrentConfig {
    * 
    * @param 
    * 
-   * @return Map[String, List[Step]]
+   * @return CurrentConfig
    */
-  def getCuttentConfig: Map[String, List[Step]] = {
-    currentConfigs
+  def getCurrentConfig = currentConfig.getCurrentConfig
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param 
+   * 
+   * @return Unit
+   */
+  def printCurrentConfig: Unit = {
+    currentConfig.printCurrentConfig
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param 
+   * 
+   * @return Unit
+   */
+  def getCurrentStep(stepId: String): Option[StepCurrentConfig] = {
+    currentConfig.getCurrentConfig
   }
 }
 
@@ -88,15 +97,134 @@ object CurrentConfig {
  * Crated by Gennadi Heimann 28.02.2017
  */
 class CurrentConfig {
-
-  private def setCurrentConfig(step: Step, currentConfigSteps: List[Step]): List[Step] = {
+  
+  var firstStep: Option[StepCurrentConfig] = None
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param StepCurrentConfig, Component
+   * 
+   * @return Unit
+   */
+  private def addComponent(step: StepCurrentConfig, component: Component): Unit = {
     
-    val newStep = Step(
-        step.stepId,
-        step.nameToShow,
-        step.components
-    )
+    val currentStep: Option[StepCurrentConfig] = getStep(step.stepId)
     
-    currentConfigSteps.+:(newStep)
+    val currentComponents: List[Component] = currentStep.get.components
+    
+    currentStep.get.components = currentComponents.::(component)
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param Option[StepCurrentConfig], Option[StepCurrentConfig]
+   * 
+   * @return Unit
+   */
+  private def addStep(nextStep: Option[StepCurrentConfig], fatherStep: Option[StepCurrentConfig]): Unit = {
+    fatherStep match {
+      case Some(fatherStep) => fatherStep.nextStep = nextStep
+      case None => firstStep = nextStep
+    }
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param 
+   * 
+   * @return Option[StepCurrentConfig]
+   */
+  private def getCurrentStep(stepId: String): Option[StepCurrentConfig] = {
+    getStep(stepId)
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param 
+   * 
+   * @return Option[StepCurrentConfig]
+   */
+  private def getCurrentConfig: Option[StepCurrentConfig] = this.firstStep
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param StepCurrentConfig
+   * 
+   * @return Option[StepCurrentConfig]
+   */
+  private def getStep(stepId: String): Option[StepCurrentConfig] = {
+    
+    val stepA = this.firstStep
+    getStepRecursive(stepA, stepId)
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param Option[StepCurrentConfig], Option[StepCurrentConfig]
+   * 
+   * @return Option[StepCurrentConfig]
+   */
+  private def getStepRecursive(stepA: Option[StepCurrentConfig], stepId: String): Option[StepCurrentConfig] = {
+    if(stepA.get.stepId == stepId){
+      stepA
+    }else{
+      getStepRecursive(stepA.get.nextStep, stepId)
+    }
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param 
+   * 
+   * @return Unit
+   */
+  private def printCurrentConfig: Unit = {
+    Logger.info("Current Configuration")
+    getNextStep(this.firstStep)
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param Option[StepCurrentConfig]
+   * 
+   * @return Unit
+   */
+  private def getNextStep(step: Option[StepCurrentConfig]): Unit = {
+     
+    step.get.nextStep match {
+      case Some(nextStep) => {
+        Logger.info(step.get.stepId)
+        step.get.components.reverse foreach {component => Logger.info("====" + component.componentId)}
+        getNextStep(step.get.nextStep)
+      }
+      case None => {
+        Logger.info(step.get.stepId)
+        step.get.components.reverse foreach {component => Logger.info("====" + component.componentId)}
+      }
+    }
   }
 }

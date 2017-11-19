@@ -21,6 +21,11 @@ import models.wrapper.currentConfig.CurrentConfigOut
 import models.json.currentConfig.JsonCurrentConfigOut
 import models.json.currentConfig.JsonCurrentConfigResult
 import play.api.Logger
+import models.json.component.JsonComponentIn
+import models.wrapper.component.ComponentIn
+import models.wrapper.component.ComponentOut
+import models.json.component.JsonComponentOut
+import models.json.component.JsonComponentResult
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -167,6 +172,38 @@ trait Wrapper {
                     })
                  )
              })
+        )
+    )
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param JsonComponentIn
+   * 
+   * @return ComponentIn
+   */
+  def toComponentIn(jsonComponentIn: JsonComponentIn): ComponentIn = {
+    ComponentIn(
+        jsonComponentIn.params.componentId
+    )
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param JsonComponentIn
+   * 
+   * @return ComponentIn
+   */
+  def toJsonComponentOut(componentOut: ComponentOut): JsonComponentOut = {
+    JsonComponentOut(
+        result = JsonComponentResult(
+            componentOut.components
         )
     )
   }

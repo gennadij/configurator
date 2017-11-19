@@ -18,6 +18,9 @@ import models.wrapper.startConfig.StartConfigOut
 import models.wrapper.nextStep.NextStepIn
 import models.wrapper.nextStep.NextStepOut
 import models.persistence.db.orientdb.StepVertex
+import models.persistence.orientdb.ComponentVertex
+import models.wrapper.component.ComponentOut
+import models.wrapper.component.ComponentIn
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -51,5 +54,18 @@ object Persistence {
    */
   def nestStep(nextStepIn: NextStepIn): NextStepOut = {
     StepVertex.nextStep(nextStepIn)
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param ComponentIn
+   * 
+   * @return ComponentOut
+   */
+  def component(componentIn: ComponentIn): ComponentOut = {
+    ComponentVertex.component(componentIn)
   }
 }
