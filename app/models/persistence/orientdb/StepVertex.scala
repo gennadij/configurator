@@ -16,8 +16,8 @@ import models.wrapper.nextStep.NextStepOut
 import com.tinkerpop.blueprints.impls.orient.OrientEdge
 import models.wrapper.common.Component
 import models.currentConfig.CurrentConfig
-import models.status.startCongig.StartConfigSuccessful
-import models.status.startCongig.StartConfigSuccessful
+import models.status.startConfig.StartConfigSuccessful
+import models.status.startConfig.StartConfigSuccessful
 import models.status.Status
 import com.tinkerpop.blueprints.Vertex
 import play.api.Logger

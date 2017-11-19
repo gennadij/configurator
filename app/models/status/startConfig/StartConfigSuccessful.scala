@@ -1,4 +1,4 @@
-package models.status.startCongig
+package models.status.startConfig
 
 import models.status.Status
 

@@ -17,5 +17,6 @@ object PropertyKey {
   val DEPENDENCY_TYPE: String = "dependencyType"
   val SELECTION_CRITERIUM_MIN: String = "selectionCriteriumMin"
   val SELECTION_CRITERIUM_MAX: String = "selectionCriteriumMax"
-  
+  val EXCLUDE: String = "exclude"
+  val REQUIRE: String = "require"
 }
