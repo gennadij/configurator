@@ -1,4 +1,4 @@
-package models.json.nextStep
+package models.json.common
 
 import play.api.libs.json.Json
 

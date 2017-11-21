@@ -1,4 +1,4 @@
-package models.status.common
+package models.status.Component
 
 import models.status.Status
 

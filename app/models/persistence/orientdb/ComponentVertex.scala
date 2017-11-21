@@ -17,9 +17,12 @@ import models.currentConfig.CurrentConfig
 import models.currentConfig.StepCurrentConfig
 import models.wrapper.common.Component
 import models.status.common.Successful
-import models.status.common.RequireComponent
-import models.status.common.ExcludeComponent
-import models.status.common.RequireNextStep
+import models.status.Component.RequireComponent
+import models.status.Component.ExcludeComponent
+import models.status.Component.RequireNextStep
+import models.status.Component.AllowNextComponent
+import models.status.common.Error
+import models.status.Component.AllowNextComponent
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -61,6 +64,12 @@ object ComponentVertex {
       
       val stausSelectionCriterium: Status = checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium)
       
+      stausSelectionCriterium match {
+        case rC: RequireComponent => ???
+        case rNS: RequireNextStep => ???
+        case rNC: AllowNextComponent => ???
+        case e: Error => ???
+      }
       
       ???
     }catch{
@@ -154,13 +163,20 @@ object ComponentVertex {
   
   def checkSelectionCriterium(countOfComponent: Int, selectionCriterium: SelectionCriterium): Status = {
     
+    val min = selectionCriterium.min
+    val max = selectionCriterium.max
+    
     selectionCriterium match {
-      case smoller_min if selectionCriterium.min < countOfComponent => new Successful
-      case greater_min if selectionCriterium.min > countOfComponent => new RequireComponent
-      case equal_min if selectionCriterium.min == countOfComponent => new Successful
-      case smoller_max if selectionCriterium.max < countOfComponent => new ExcludeComponent
-      case greater_max if selectionCriterium.max > countOfComponent => new Successful
-      case equal_max if selectionCriterium.max == countOfComponent => new RequireNextStep
+      case requireComponent if min > countOfComponent && max > countOfComponent => new RequireComponent
+      case requireNextStep if min <= countOfComponent && max == countOfComponent => new RequireNextStep
+      case allowNextComponent if min <= countOfComponent && max < countOfComponent => new AllowNextComponent
+      case _ => new Error
+//      case smoller_min if selectionCriterium.min < countOfComponent => new Successful
+//      case greater_min if selectionCriterium.min > countOfComponent => new RequireComponent
+//      case equal_min if selectionCriterium.min == countOfComponent => new Successful
+//      case smoller_max if selectionCriterium.max < countOfComponent => new ExcludeComponent
+//      case greater_max if selectionCriterium.max > countOfComponent => new Successful
+//      case equal_max if selectionCriterium.max == countOfComponent => new RequireNextStep
     }
   }
 }

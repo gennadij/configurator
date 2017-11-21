@@ -1,6 +1,7 @@
 package models.json.component
 
 import play.api.libs.json.Json
+import models.json.common.JsonDependency
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -8,7 +9,9 @@ import play.api.libs.json.Json
  * Created by Gennadi Heimann 13.11.2017
  */
 case class JsonComponentResult (
-    components: List[String]
+    status: String,
+    message: String,
+    dependencies: Set[JsonDependency]
 )
 
 
