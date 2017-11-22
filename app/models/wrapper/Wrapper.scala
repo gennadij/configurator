@@ -201,10 +201,11 @@ trait Wrapper {
    * @return ComponentIn
    */
   def toJsonComponentOut(componentOut: ComponentOut): JsonComponentOut = {
-    JsonComponentOut(
-        result = JsonComponentResult(
-            componentOut.components
-        )
-    )
+//    JsonComponentOut(
+//        result = JsonComponentResult(
+//            componentOut.components
+//        )
+//    )
+    ???
   }
 }

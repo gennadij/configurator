@@ -13,3 +13,8 @@ ChangeLog version 0.0.1
     
     Die ausgewaelte Komponente wird in der CurrentConfig gesichert, damit das
     SelectionCriterium bewertet kann.
+    
+# 2.@created on     22.11.2017
+    @finished on    
+    
+    

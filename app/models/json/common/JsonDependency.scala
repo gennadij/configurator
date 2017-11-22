@@ -19,5 +19,5 @@ case class JsonDependency (
 )
 
 object JsonDependency {
-  implicit val format = Json.reads[JsonDependency]
+  implicit val format = Json.writes[JsonDependency]
 }

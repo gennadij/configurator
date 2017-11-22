@@ -17,12 +17,18 @@ import models.currentConfig.CurrentConfig
 import models.currentConfig.StepCurrentConfig
 import models.wrapper.common.Component
 import models.status.common.Successful
-import models.status.Component.RequireComponent
-import models.status.Component.ExcludeComponent
-import models.status.Component.RequireNextStep
-import models.status.Component.AllowNextComponent
+import models.status.RequireComponent
+import models.status.ExcludeComponent
+import models.status.RequireNextStep
+import models.status.AllowNextComponent
 import models.status.common.Error
-import models.status.Component.AllowNextComponent
+import models.status.AllowNextComponent
+import models.status.RequireComponent
+import models.status.AllowNextComponent
+import models.status.RequireComponent
+import models.status.RequireComponent
+import models.status.SelectionCriteriumStatus
+import models.status.SelectionCriteriumStatus
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -43,7 +49,6 @@ object ComponentVertex {
   def component(componentIn: ComponentIn): ComponentOut = {
     val graph: OrientGraph = OrientDB.getFactory().getTx
     
-    
     try{
       
       val vComponent = graph.getVertex(componentIn.componentId)
@@ -62,13 +67,13 @@ object ComponentVertex {
       
       val previousSelectedComponents: List[Component] = currentStep.get.components
       
-      val stausSelectionCriterium: Status = checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium)
+      val stausSelectionCriterium: SelectionCriteriumStatus = checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium)
       
       stausSelectionCriterium match {
-        case rC: RequireComponent => ???
-        case rNS: RequireNextStep => ???
-        case rNC: AllowNextComponent => ???
-        case e: Error => ???
+        case RequireComponent() => ???
+        case RequireNextStep() => ???
+        case AllowNextComponent() => ???
+        case ExcludeComponent() => ???
       }
       
       ???
@@ -161,22 +166,16 @@ object ComponentVertex {
    * @return
    */
   
-  def checkSelectionCriterium(countOfComponent: Int, selectionCriterium: SelectionCriterium): Status = {
+  def checkSelectionCriterium(countOfComponent: Int, selectionCriterium: SelectionCriterium): SelectionCriteriumStatus = {
     
     val min = selectionCriterium.min
     val max = selectionCriterium.max
     
     selectionCriterium match {
-      case requireComponent if min > countOfComponent && max > countOfComponent => new RequireComponent
-      case requireNextStep if min <= countOfComponent && max == countOfComponent => new RequireNextStep
-      case allowNextComponent if min <= countOfComponent && max < countOfComponent => new AllowNextComponent
-      case _ => new Error
-//      case smoller_min if selectionCriterium.min < countOfComponent => new Successful
-//      case greater_min if selectionCriterium.min > countOfComponent => new RequireComponent
-//      case equal_min if selectionCriterium.min == countOfComponent => new Successful
-//      case smoller_max if selectionCriterium.max < countOfComponent => new ExcludeComponent
-//      case greater_max if selectionCriterium.max > countOfComponent => new Successful
-//      case equal_max if selectionCriterium.max == countOfComponent => new RequireNextStep
+      case requireComponent if min > countOfComponent && max > countOfComponent => RequireComponent()
+      case requireNextStep if min <= countOfComponent && max == countOfComponent => RequireNextStep()
+      case allowNextComponent if min <= countOfComponent && max < countOfComponent => AllowNextComponent()
+      case excludeComponent if max < countOfComponent => ExcludeComponent()
     }
   }
 }
