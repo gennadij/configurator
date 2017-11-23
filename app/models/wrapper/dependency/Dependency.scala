@@ -6,8 +6,8 @@ package models.wrapper.dependency
  * Created by Gennadi Heimann 12.11.2017
  */
 case class Dependency (
-    out: String,
-    in: String,
+    fromId: String,
+    toId: String,
     visualization: String,
     dependencyType: String,
     nameToShow: String

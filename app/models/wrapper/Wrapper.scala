@@ -26,6 +26,7 @@ import models.wrapper.component.ComponentIn
 import models.wrapper.component.ComponentOut
 import models.json.component.JsonComponentOut
 import models.json.component.JsonComponentResult
+import models.json.common.JsonDependency
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -201,11 +202,23 @@ trait Wrapper {
    * @return ComponentIn
    */
   def toJsonComponentOut(componentOut: ComponentOut): JsonComponentOut = {
-//    JsonComponentOut(
-//        result = JsonComponentResult(
-//            componentOut.components
-//        )
-//    )
-    ???
+    JsonComponentOut(
+        result = JsonComponentResult(
+            componentOut.status,
+            componentOut.message,
+            componentOut.dependencies map (d => {
+              JsonDependency(
+                  d.fromId,
+                  d.toId,
+                  "",
+                  d.dependencyType,
+                  d.visualization,
+                  d.nameToShow,
+                  "",
+                  ""
+              )
+            })
+        )
+    )
   }
 }

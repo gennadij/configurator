@@ -9,7 +9,7 @@ import models.websocket.WebClient
 import play.api.libs.json.Json
 import models.json.JsonNames
 import play.api.Logger
-import models.status.startCongig.StartConfigSuccessful
+import models.status.startConfig.StartConfigSuccessful
 import play.api.libs.json.JsValue
 import models.status.nextStep.NextStepSuccessful
 
@@ -50,27 +50,34 @@ class NextStepSpecs extends Specification with ConfigWeb with BeforeAfterAll{
       Logger.info("componentIdC11" + componentIdC11)
       val componentIds: List[String] = List(componentIdC11)
       
-      val nextStepIn = Json.obj(
-          "json" -> JsonNames.NEXT_STEP
+      val jsonComponentIn: JsValue = Json.obj(
+          "json" -> JsonNames.COMPONENT
           ,"params" -> Json.obj(
-               "componentIds" -> componentIds
+               "componentId" -> componentIdC11
            )
       )
       
-      val nextStepOut: JsValue = wC.handleMessage(nextStepIn)
+//      val nextStepIn = Json.obj(
+//          "json" -> JsonNames.NEXT_STEP
+//          ,"params" -> Json.obj(
+//               "componentIds" -> componentIds
+//           )
+//      )
       
-      Logger.info("NextStepIn " + nextStepIn)
-      Logger.info("NextStepOut " + nextStepOut)
+      val jsonComponentOut: JsValue = wC.handleMessage(jsonComponentIn)
       
-      (nextStepOut \ "json").asOpt[String].get === JsonNames.NEXT_STEP
-      (nextStepOut \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S2_user29_v016"
-      (nextStepOut \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 2
-      (((nextStepOut \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_2_1_user29_v016"
-      (((nextStepOut \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_2_2_user29_v016"
+      Logger.info("NextStepIn " + jsonComponentIn)
+      Logger.info("NextStepOut " + jsonComponentOut)
+      
+      (jsonComponentOut \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (jsonComponentOut \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S2_user29_v016"
+      (jsonComponentOut \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 2
+      (((jsonComponentOut \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_2_1_user29_v016"
+      (((jsonComponentOut \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_2_2_user29_v016"
 //      (((nextStepOut \ "result" \ "step" \ "components")(2)) \ "nameToShow") .asOpt[String].get === "C_1_3_user29_v016"
       val status = new NextStepSuccessful
-      (nextStepOut \ "result" \ "status").asOpt[String].get === status.status
-      (nextStepOut \ "result" \ "message").asOpt[String].get === status.message
+      (jsonComponentOut \ "result" \ "status").asOpt[String].get === status.status
+      (jsonComponentOut \ "result" \ "message").asOpt[String].get === status.message
     }
   }
   

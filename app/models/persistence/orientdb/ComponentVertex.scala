@@ -29,6 +29,9 @@ import models.status.RequireComponent
 import models.status.RequireComponent
 import models.status.SelectionCriteriumStatus
 import models.status.SelectionCriteriumStatus
+import models.json.component.JsonComponentOut
+import models.status.common.ClassCastError
+import models.status.common.ODBReadError
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -70,25 +73,55 @@ object ComponentVertex {
       val stausSelectionCriterium: SelectionCriteriumStatus = checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium)
       
       stausSelectionCriterium match {
-        case RequireComponent() => ???
-        case RequireNextStep() => ???
-        case AllowNextComponent() => ???
-        case ExcludeComponent() => ???
+        case status: RequireComponent => {
+           ComponentOut(
+               status.status,
+               status.message,
+               requireDependencies ::: excludeDependencies
+           )
+        }
+        case status: RequireNextStep => {
+           ComponentOut(
+               status.status,
+               status.message,
+               requireDependencies ::: excludeDependencies
+           )
+        }
+        case status: AllowNextComponent => {
+           ComponentOut(
+               status.status,
+               status.message,
+               requireDependencies ::: excludeDependencies
+           )
+        }
+        case status: ExcludeComponent => {
+           ComponentOut(
+               status.status,
+               status.message,
+               requireDependencies ::: excludeDependencies
+           )
+        }
       }
-      
-      ???
     }catch{
       case e2 : ClassCastException => {
         graph.rollback()
         Logger.error(e2.printStackTrace().toString)
-        val status: Status = ???
-        ???
+        val status: Status = new ClassCastError
+        ComponentOut(
+               status.status,
+               status.message,
+               List()
+           )
       }
       case e1: Exception => {
         graph.rollback()
-        val status: Status = ???
+        val status: Status = new ODBReadError
         Logger.error(e1.printStackTrace().toString)
-        ???
+        ComponentOut(
+               status.status,
+               status.message,
+               List()
+           )
       }
     }
   }
@@ -105,15 +138,17 @@ object ComponentVertex {
   def getComponentDependenciesOut(vComponent: OrientVertex): List[Dependency] = {
     val eHasDependencies: List[OrientEdge] = vComponent.getEdges(Direction.OUT, PropertyKey.HAS_DEPENDENCY)
         .asScala.toList map {_.asInstanceOf[OrientEdge]}
-    
+    Logger.info(eHasDependencies.head.getPropertyKeys.toString())
     eHasDependencies map {
       eHasDependency => {
+        Logger.info(eHasDependency.getProperties.toString())
+        //TODO PropertyKey.VISUALIZATION in DB mit Leerzeichen
         Dependency(
-            eHasDependency.getProperty(PropertyKey.OUT), //out: String,
-            eHasDependency.getProperty(PropertyKey.IN), //in: String,
-            eHasDependency.getProperty(PropertyKey.VISUALIZATION), //visualization: String,
-            eHasDependency.getProperty(PropertyKey.DEPENDENCY_TYPE), //dependencyType: String,
-            eHasDependency.getProperty(PropertyKey.NAME_TO_SHOW)  //nameToShow: String
+            eHasDependency.getProperty(PropertyKey.OUT).toString, //out: String,
+            eHasDependency.getProperty(PropertyKey.IN).toString, //in: String,
+            eHasDependency.getProperty(PropertyKey.VISUALIZATION).toString, //visualization: String,
+            eHasDependency.getProperty(PropertyKey.DEPENDENCY_TYPE).toString, //dependencyType: String,
+            eHasDependency.getProperty(PropertyKey.NAME_TO_SHOW).toString  //nameToShow: String
         )
       }
     }
