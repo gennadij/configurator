@@ -58,6 +58,8 @@ object ComponentVertex {
       
       val dependencies: List[Dependency] = getComponentDependenciesOut(vComponent)
       
+      Logger.info(this.getClass.getSimpleName + ": " + dependencies)
+      
       val excludeDependencies: List[Dependency] = dependencies filter {_.dependencyType == PropertyKey.EXCLUDE}
       
       val requireDependencies: List[Dependency] = dependencies filter {_.dependencyType == PropertyKey.REQUIRE}
@@ -68,10 +70,16 @@ object ComponentVertex {
       
       val currentStep: Option[StepCurrentConfig] = CurrentConfig.getCurrentConfig
       
-      val previousSelectedComponents: List[Component] = currentStep.get.components
+      val previousSelectedComponents: List[Component] = currentStep match {
+        case Some(step) => step.components
+        case None => List()
+      }
       
-      val stausSelectionCriterium: SelectionCriteriumStatus = checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium)
+      val stausSelectionCriterium: SelectionCriteriumStatus = 
+        checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium)
       
+      Logger.info(this.getClass.getSimpleName + ": " + stausSelectionCriterium)
+        
       stausSelectionCriterium match {
         case status: RequireComponent => {
            ComponentOut(
@@ -138,10 +146,10 @@ object ComponentVertex {
   def getComponentDependenciesOut(vComponent: OrientVertex): List[Dependency] = {
     val eHasDependencies: List[OrientEdge] = vComponent.getEdges(Direction.OUT, PropertyKey.HAS_DEPENDENCY)
         .asScala.toList map {_.asInstanceOf[OrientEdge]}
-    Logger.info(eHasDependencies.head.getPropertyKeys.toString())
+    Logger.info(this.getClass.getSimpleName + ": " + eHasDependencies.head.getPropertyKeys.toString())
     eHasDependencies map {
       eHasDependency => {
-        Logger.info(eHasDependency.getProperties.toString())
+        Logger.info(this.getClass.getSimpleName + ": " + eHasDependency.getProperties.toString())
         //TODO PropertyKey.VISUALIZATION in DB mit Leerzeichen
         Dependency(
             eHasDependency.getProperty(PropertyKey.OUT).toString, //out: String,
