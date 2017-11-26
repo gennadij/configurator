@@ -12,4 +12,8 @@ target
 /docu/latex/tmp/
 /docu/latex/*.aux
 /docu/latex/*.log
-/docu/latex/.*
+/docu/latex/*.gz
+/docu/v001/.gitignore
+/docu/v001/latex/*.dvi
+/docu/v001/latex/*.aux
+/docu/v001/latex/*.log
