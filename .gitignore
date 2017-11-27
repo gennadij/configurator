@@ -9,6 +9,7 @@ target
 /.settings
 /RUNNING_PID
 /bin/
+/docu/.*
 /docu/latex/tmp/
 /docu/latex/*.aux
 /docu/latex/*.log
