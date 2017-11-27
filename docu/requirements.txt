@@ -1,7 +1,0 @@
-Dependencies
-
-Die Abhaengigkeiten bestehen aus der folgenden felder aus:
-
-dependencyType (exclude, require)
-
-visualization (auto)

@@ -10,10 +10,6 @@ target
 /RUNNING_PID
 /bin/
 /docu/.*
-/docu/latex/tmp/
-/docu/latex/*.aux
-/docu/latex/*.log
-/docu/latex/.*
 logs
 target
 .cache-main
@@ -25,10 +21,7 @@ target
 /.settings
 /RUNNING_PID
 /bin/
-/docu/latex/tmp/
-/docu/latex/*.aux
-/docu/latex/*.log
-/docu/latex/*.gz
+/docu/logic_description/*.gz
 /docu/v001/.gitignore
 /docu/v001/latex/*.dvi
 /docu/v001/latex/*.aux
