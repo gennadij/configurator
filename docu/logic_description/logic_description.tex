@@ -2,52 +2,94 @@
 
 \begin{document}
 
+\begin{titlepage}
 
-\section{Title}
+\author{Gennadi Heimann} 
+\title{Generischer Konfigurator} 
+\date{29.12.2017} 
+\maketitle
+\end{titlepage}
 
-\subsection{Subtitle}
+\section{Logik Beschreibung}
 
-\subsection{Logik Beschreibung}
+\subsection{Abh{\"a}ngigkeiten}
 
-\subsubsection{Dependencies}
-
-Die Abhängigkeiten im Konfigurator bestehen aus folgenden Felder aus:
-dependencyType
+Die Abh\"angigkeiten im Konfigurator bilden die Regel. Jede Komponente hat eine
+Ausgangsabh\"angigket (outDependency) und eine Eingangsabh\"angigket
+(inDependency). Die Ausgangsabh\"angigket bewirkt auf ihre Komponente mit der
+Regel die in der Abh\"angigkeit hintergelegt ist. 
+Es gibt zwei Arten (dependencyType) von Abh\"angigkeiten $<exclude>$ und
+$<require>$. Die $<exclude>$ Abh\"angigkeit schlie\ss{}t die Komponente aus der
+Konfiguration aus. Die $<require>$ Abh\"angigkeit fordert wiederum, dass die
+Komponente in die KOnfiguration hinzugef\"ugt werden muss. Das Verhalten der
+Abh\"ngigkeiten wird von Parameter $<visualization>$ gesteuert. Der Benutzer
+des Konfigurators w\"ahlt die Komponente innerhalb eines Schrittes und die
+Logik das Konfigurators pr\"uft die Abh\"angigkeiten und anhand der Parameter
+wird weitere Verlauf gesteuert. In der darauffolgende Beschreibung werden
+einzelne Parameter erkl\"art.
 
 \begin{itemize} 
-  \item exclude
-  \begin{itemize}
-    \item auto 
+    \item visualization bei der $<exclude>$ Komponenten
     \begin{itemize}
-      \item Diese KOmponente und Ihre RequireComponente werder in Konfigurator
-      gemerkt und beim Einsteigen in diesem Step werden diese Komponente nicht
-      angezeigt
+        \item auto 
+        \begin{itemize}
+            \item Die Komponente wird automatisch aus der Konfiguration
+            entfernt.Wenn die ausgeschlossene Komponente weiter auf
+            eine $<exclude>$ Komponente verwei\ss{}t, werden diese Komponente 
+            recursive ausgeschlossen. Das 
+            bedeutet, dass bei der sp\"aterem Verlauf werden diese
+            Komponente nicht gezeigt. Bei der $<require>$ Komponenten
+            wird dieses Vorgehen nicht angewendet. Die Komponente wird nicht aus der 
+            Konfiguration entfernt.
+        \end{itemize}
+        \item marked + selectable
+        \begin{itemize}
+            \item Die IN-Komponente wird visual merkiert, dass sie
+            $<exclude>$ Komponente ist und der Benutzer hat die
+            M\"oglichkeit diese Komponente auszuw\"ahlen.
+            Wenn der Benutzer w\"ählt diese Komponente aus, wird ein
+            Hinweis dem Benutzer vorgeschlagen, wie er die Abh\"angigkeiten
+            in seiner Konfiguration l\"osen kann. Es wird eine andere
+            OUT-Komponente aus dem gleichem Schritt vorgeschlagen. Wenn in
+            diesem Schritt keinen Vorschlag gemacht werden kann wird weiter
+            in dem übergeordneten Schritt weiter gesucht. Bei jedem
+            vorgeschlagenen Komponente wird weiterhin nach Abh\"angigkeiten
+            gepr\"ft.
+        \end{itemize}
+        \item marked + unselectable
+        \begin{itemize}
+            \item Die Komponente wird visuel markiert aber kann nicht
+            ausgew\"ahlt werden. Die Abh\"angigkeiten werden gleich wie bei der
+            Visualizationparameter $<auto>$ behandelt.
+        \end{itemize}
+    \end{itemize}
+    \item require
+    \begin{itemize}
+        \item auto
+        \begin{itemize}
+          \item Die Komponente wird automatisch in die Konfiguration hinzugef\"ugt.
+          Es wird gepr\"uft, ob der IN-Komponente der Abh\"angigkeit weitere
+          $<require>$ oder $<exclude>$ Komponente hat. Wenn ja, wird gem\"a\ss{} der
+          Parameter in der Abh\"angigkeit die Konfiguration angepasst. Wenn die
+          IN-Koponente über mehrere Schritt in der Konfiguration entfernt ist. Der
+          Konfigurator wird, dann in Laufe der Konfiguration bei jedem Schritt dem
+          Benutzer einen Hinweis geben, welche Komponente der Benutzer ausw\"ahlen
+          kann/muss um zu dem Schritt mit der $<require>$ Komponente zu kommen. Die
+          Komponente wird visual markiert, dass sie schon zu der Konfiguration
+          hinzugefugt wurde. Diese Komponente ist auch $<unselectable>$. Bei der
+          Abh\"angigkeit in gleichem Schritt wird die Komponente ohne jegliche
+          Hinweise zu der Konfiguration hinzugef\"ugt und dementsprechend markiert.
+        \end{itemize}
     
+        \item selectable
+    
+        \begin{itemize}
+            \item Bevor die Komponente zu der Konfiguration hinzugef\"ugt wird, wird
+            dem Benutzer einen Hinweis mit dem Auswahl gegeben. Der Benutzer kann
+            entscheiden ob er die required Komponente zu der Konfiguration
+            hinzuf\"ugen will.
+        \end{itemize}
     \end{itemize}
-    \item marked + selectable
-    \begin{itemize}
-      \item Die Komponente wird visual merkiert dass sie exclude ist. Nach dem
-      Auswahl dieser Komponente bekommt der Benutzer Auswahl zu der möglichen
-      Ersatz zu der Out-Komponente, wenn dass nicht m\"oglich wird der Auswahl
-      vorzuschlagen wird die Komponente von \"ubergeordnetem Schritt
-      vorgeschlagen
-    \end{itemize}
-    \item marked + unselectable
-    \begin{itemize}
-      \item Die Komponente wird visuel markiert aber kann nicht ausgew\"ahlt
-     werden
-    \end{itemize}
-  \end{itemize}
-\item require
-  \begin{itemize}
-    \item auto
-    \begin{itemize}
-      \item Die Komponente wird automatisch in die Konfiguration hinzugef\"ugt.
-      Es wird gepr\"uft ob der IN-Komponente weitere require oder exclude
-      Komponente hat. Wenn ja, wird gem\"a\ss{} der Abh\"angigkeiten die
-      Konfiguration angepasst.
-    \end{itemize}
-  \end{itemize}
 \end{itemize}
 
 
