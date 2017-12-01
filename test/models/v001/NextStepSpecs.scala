@@ -13,6 +13,7 @@ import models.status.startConfig.StartConfigSuccessful
 import play.api.libs.json.JsValue
 import models.status.nextStep.NextStepSuccessful
 import models.status.RequireComponent
+import models.status.AllowNextComponent
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -51,35 +52,49 @@ class NextStepSpecs extends Specification with ConfigWeb with BeforeAfterAll{
       Logger.info(this.getClass.getSimpleName + ": componentIdC11" + componentIdC11)
       val componentIds: List[String] = List(componentIdC11)
       
-      val jsonComponentIn: JsValue = Json.obj(
+      val jsonComponentIn_1: JsValue = Json.obj(
           "json" -> JsonNames.COMPONENT
           ,"params" -> Json.obj(
                "componentId" -> componentIdC11
            )
       )
       
-//      val nextStepIn = Json.obj(
-//          "json" -> JsonNames.NEXT_STEP
-//          ,"params" -> Json.obj(
-//               "componentIds" -> componentIds
-//           )
-//      )
+      val jsonComponentOut_1: JsValue = wC.handleMessage(jsonComponentIn_1)
       
-      val jsonComponentOut: JsValue = wC.handleMessage(jsonComponentIn)
+      Logger.info(this.getClass.getSimpleName + ": ComponentIn " + jsonComponentIn_1)
+      Logger.info(this.getClass.getSimpleName + ": ComponentOut " + jsonComponentOut_1)
       
-      Logger.info(this.getClass.getSimpleName + ": ComponentIn " + jsonComponentIn)
-      Logger.info(this.getClass.getSimpleName + ": ComponentOut " + jsonComponentOut)
+      (jsonComponentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (jsonComponentOut_1 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
+      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
+      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
+      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
       
-      (jsonComponentOut \ "json").asOpt[String].get === JsonNames.COMPONENT
-//      (jsonComponentOut \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S2_user29_v016"
-//      (jsonComponentOut \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 2
-//      (((jsonComponentOut \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_2_1_user29_v016"
-//      (((jsonComponentOut \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_2_2_user29_v016"
-//      (((nextStepOut \ "result" \ "step" \ "components")(2)) \ "nameToShow") .asOpt[String].get === "C_1_3_user29_v016"
-      (jsonComponentOut \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 0
-      val status = RequireComponent()
-      (jsonComponentOut \ "result" \ "status").asOpt[String].get === status.status
-      (jsonComponentOut \ "result" \ "message").asOpt[String].get === status.message
+      val status = AllowNextComponent()
+      (jsonComponentOut_1 \ "result" \ "status").asOpt[String].get === status.status
+      (jsonComponentOut_1 \ "result" \ "message").asOpt[String].get === status.message
+      
+      //User hat ausgewaelt
+      val componentIdC12: String = (((startConfigOut \ "result" \ "step" \ "components")(2)) \ "componentId") .asOpt[String].get
+      
+      val jsonComponentIn_2: JsValue = Json.obj(
+          "json" -> JsonNames.COMPONENT
+          ,"params" -> Json.obj(
+               "componentId" -> componentIdC12
+           )
+      )
+      
+      val jsonComponentOut_2: JsValue = wC.handleMessage(jsonComponentIn_2)
+      
+      (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (jsonComponentOut_2 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
+      (((jsonComponentOut_2 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
+      (((jsonComponentOut_2 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
+      (((jsonComponentOut_2 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
+      
+      val status_2 = AllowNextComponent()
+      (jsonComponentOut_2 \ "result" \ "status").asOpt[String].get === status_2.status
+      (jsonComponentOut_2 \ "result" \ "message").asOpt[String].get === status_2.message
     }
   }
   

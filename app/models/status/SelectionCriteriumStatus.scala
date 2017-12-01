@@ -47,5 +47,5 @@ case class RequireNextStep() extends SelectionCriteriumStatus{
  */
 case class AllowNextComponent() extends SelectionCriteriumStatus{
   def status: String = "ALLOW_NEXT_COMPONENT"
-  def message: String = ""
+  def message: String = "Sie koennen weitere Komponente auswaelen"
 }

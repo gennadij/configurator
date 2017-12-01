@@ -208,9 +208,8 @@ trait Wrapper {
             componentOut.message,
             componentOut.dependencies map (d => {
               JsonDependency(
-                  d.fromId,
-                  d.toId,
-                  "",
+                  d.outId,
+                  d.inId,
                   d.dependencyType,
                   d.visualization,
                   d.nameToShow,

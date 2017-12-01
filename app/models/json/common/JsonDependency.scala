@@ -8,9 +8,8 @@ import play.api.libs.json.Json
  * Created by Gennadi Heimann 05.11.2017
  */
 case class JsonDependency (
-    fromId: String,
-    toId: String,
-    dependencyId: String,
+    outId: String,
+    inId: String,
     dependencyType: String,
     visualization: String,
     nameToShow: String,

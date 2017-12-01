@@ -27,6 +27,8 @@ import models.status.nextStep.FinalStepSuccessful
 import models.status.common.ODBReadError
 import models.status.common.ODBReadError
 import models.wrapper.dependency.Dependency
+import models.currentConfig.StepCurrentConfig
+import models.currentConfig.StepCurrentConfig
 
 
 /**
@@ -57,11 +59,23 @@ object StepVertex {
       //Without an index against the property name, this query can take up a lot of time. You can improve performance by creating a new index against the name property:
       //http://orientdb.com/docs/last/Graph-VE.html
       
+      
+      //TODO
+      //Wenn selectionCriterium min = 0 und max > 1 darf der Benutzer ohne ausgewählte Komponente zu dem weiterem Schritt gehen
+      //Wenn selectionCriterium min = 0 und max = 0 wird der Schritt uebersprungen
       val vConfigs: List[Vertex] = graph.getVertices("configUrl", configUrl).asScala.toList
       
       val eHasConfig: List[Edge] = vConfigs.head.getEdges(Direction.OUT, "hasFirstStep").asScala.toList
       val vFirstStep: OrientVertex = eHasConfig.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]
       
+      val firstStepCurrentConfig: StepCurrentConfig = StepCurrentConfig(
+          vFirstStep.getIdentity.toString,
+          List(),
+          None
+      )
+      
+      // Fuege den ersten Schritt zu der aktuelle Konfiguration hinzu
+      CurrentConfig.addStep(Some(firstStepCurrentConfig), None)
       
       val status: Status = new StartConfigSuccessful
       StartConfigOut(

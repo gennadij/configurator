@@ -127,10 +127,10 @@ class CurrentConfig {
    * 
    * @return Unit
    */
-  private def addStep(nextStep: Option[StepCurrentConfig], fatherStep: Option[StepCurrentConfig]): Unit = {
+  private def addStep(currentStep: Option[StepCurrentConfig], fatherStep: Option[StepCurrentConfig]): Unit = {
     fatherStep match {
-      case Some(fatherStep) => fatherStep.nextStep = nextStep
-      case None => firstStep = nextStep
+      case Some(fatherStep) => fatherStep.nextStep = currentStep
+      case None => firstStep = currentStep
     }
   }
   

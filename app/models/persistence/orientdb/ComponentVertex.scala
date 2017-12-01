@@ -58,19 +58,27 @@ object ComponentVertex {
       
       val dependencies: List[Dependency] = getComponentDependenciesOut(vComponent)
       
-      Logger.info(this.getClass.getSimpleName + ": " + dependencies)
+      Logger.info(this.getClass.getSimpleName + " dependencies : " + dependencies)
       
       val excludeDependencies: List[Dependency] = dependencies filter {_.dependencyType == PropertyKey.EXCLUDE}
       
+      Logger.info(this.getClass.getSimpleName + " excludeDependencies : " + excludeDependencies)
+      
       val requireDependencies: List[Dependency] = dependencies filter {_.dependencyType == PropertyKey.REQUIRE}
+      
+      Logger.info(this.getClass.getSimpleName + " requireDependencies : " + requireDependencies)
       
       val vFatherStep: OrientVertex = getFatherStep(vComponent)
       
+      Logger.info(this.getClass.getSimpleName + ": fatherStep " + vFatherStep)
+      
       val selectionCriterium: SelectionCriterium = getSelectionCriterium(vFatherStep)
       
-      val currentStep: Option[StepCurrentConfig] = CurrentConfig.getCurrentConfig
+      Logger.info(this.getClass.getSimpleName + ": selectionCriterium " + selectionCriterium)
       
-      val previousSelectedComponents: List[Component] = currentStep match {
+      val currentConfig: Option[StepCurrentConfig] = CurrentConfig.getCurrentConfig
+      
+      val previousSelectedComponents: List[Component] = currentConfig match {
         case Some(step) => step.components
         case None => List()
       }
@@ -79,10 +87,18 @@ object ComponentVertex {
         checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium)
       
       Logger.info(this.getClass.getSimpleName + ": " + stausSelectionCriterium)
-        
+      
+      val currentStep: Option[StepCurrentConfig] = CurrentConfig.getCurrentStep(vFatherStep.getIdentity.toString)
+      
       stausSelectionCriterium match {
         case status: RequireComponent => {
-           ComponentOut(
+          val component: Component = Component(
+              vComponent.getIdentity.toString,
+              vComponent.getProperty(PropertyKey.NAME_TO_SHOW)
+          )
+          CurrentConfig.addComponent(currentStep.get, component)
+          
+          ComponentOut(
                status.status,
                status.message,
                requireDependencies ::: excludeDependencies
@@ -96,6 +112,12 @@ object ComponentVertex {
            )
         }
         case status: AllowNextComponent => {
+          val component: Component = Component(
+              vComponent.getIdentity.toString,
+              vComponent.getProperty(PropertyKey.NAME_TO_SHOW)
+          )
+          CurrentConfig.addComponent(currentStep.get, component)
+          
            ComponentOut(
                status.status,
                status.message,
@@ -152,8 +174,8 @@ object ComponentVertex {
         Logger.info(this.getClass.getSimpleName + ": " + eHasDependency.getProperties.toString())
         //TODO PropertyKey.VISUALIZATION in DB mit Leerzeichen
         Dependency(
-            eHasDependency.getProperty(PropertyKey.OUT).toString, //out: String,
-            eHasDependency.getProperty(PropertyKey.IN).toString, //in: String,
+            eHasDependency.getProperty(PropertyKey.OUT).asInstanceOf[OrientVertex].getIdentity.toString, //outId: String,
+            eHasDependency.getProperty(PropertyKey.IN).asInstanceOf[OrientVertex].getIdentity.toString, //inId: String,
             eHasDependency.getProperty(PropertyKey.VISUALIZATION).toString, //visualization: String,
             eHasDependency.getProperty(PropertyKey.DEPENDENCY_TYPE).toString, //dependencyType: String,
             eHasDependency.getProperty(PropertyKey.NAME_TO_SHOW).toString  //nameToShow: String
@@ -209,16 +231,21 @@ object ComponentVertex {
    * @return
    */
   
-  def checkSelectionCriterium(countOfComponent: Int, selectionCriterium: SelectionCriterium): SelectionCriteriumStatus = {
-    
+  def checkSelectionCriterium(countOfSelectedComponents: Int, selectionCriterium: SelectionCriterium): SelectionCriteriumStatus = {
+    //Ungepruefte Komponente, die noch nicht in der aktuellen Konfiguration hinzugefuegt wird
+    val countOfComponents = countOfSelectedComponents + 1
     val min = selectionCriterium.min
     val max = selectionCriterium.max
     
+    Logger.info(this.getClass.getSimpleName + " min : " + min)
+    Logger.info(this.getClass.getSimpleName + " max : " + max)
+    Logger.info(this.getClass.getSimpleName + " countOfComponents : " + countOfComponents)
+    
     selectionCriterium match {
-      case requireComponent if min > countOfComponent && max > countOfComponent => RequireComponent()
-      case requireNextStep if min <= countOfComponent && max == countOfComponent => RequireNextStep()
-      case allowNextComponent if min <= countOfComponent && max < countOfComponent => AllowNextComponent()
-      case excludeComponent if max < countOfComponent => ExcludeComponent()
+      case requireComponent if min > countOfComponents && max > countOfComponents => RequireComponent()
+      case requireNextStep if min <= countOfComponents && max == countOfComponents => RequireNextStep()
+      case allowNextComponent if min <= countOfComponents && max > countOfComponents => AllowNextComponent()
+      case excludeComponent if max < countOfComponents => ExcludeComponent()
     }
   }
 }
