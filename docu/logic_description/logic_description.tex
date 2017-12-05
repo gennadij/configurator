@@ -92,6 +92,13 @@ einzelne Parameter erkl\"art.
     \end{itemize}
 \end{itemize}
 
+Die aktuelle Konfiguration beh\"alt die gesamte Information (Abh\"angigkeiten)
+von der hinzugef\"ugten Komponente. Diese Information hilft dem Konfigurator die
+Pr\"ufungen durchf\"uhren, wenn der Web-Client Fehler macht. Zum Beispiel, wenn
+der Web-Client dem Benutzer eine Komponente auszuw\"ahlen erlaubt, die von
+Server als $<unselecteble>$ oder $<remove>$ markiert wurde. In diesem Fall
+bekommt der Benutzer die Fehlermeldung.
+
 \subsection{Auswahlkriterium}
 
 Die Anzahl der Komponente die innerhalb eines Schrittes ausgew\"ahlt werden
@@ -141,5 +148,35 @@ countOfComponents = Anzahl der ausgew\"ahlten Komponenten
 Der Server liefert bei jedem Aktion die Erklärungen zu diesen Aktion, deswegen
 bei dem Webclient sollte einen Bereich geben wo diese Information Präsentiert
 werden kann.
+
+\subsection{Auswahl der Komponente}
+
+Der Server bekommt von dem Web-Client die ausgew\"ahlte Komponente.
+
+\begin{enumerate}
+    \item Die Komponente $<Vertex>$ aus der DB lesen.
+    \item Alle ausgehende und eingehende Abh\"angigkeiten $<Edge>$ dieser
+    Komponente aus DB lesen.
+    \item Die Abh\"angigkeiten werden auf folgende Arten gefiltert:
+    \begin{itemize}
+        \item Die $<exclude>$ ausgehende Abh\"angigkeiten
+        (outExcludeDependencies)
+        \item Die $<exclude>$ eingehende Abh\"angigkeiten
+        (inExcludeDependencies)
+        \item Die $<require>$ ausgehende Abh\"angigkeiten
+        (outRequireDependencies)
+        \item Die $<require>$ eingehende Abh\"angigkeiten
+        (inRequireDependencies)
+    \end{itemize}
+    \item Zu jede Abh\"angigkeit werden dazugeh\"orige abh\"qangige Komponente
+    ermittelt.
+    \item In dem Vaterschritt der Komponente wird das Auswahlkriterium
+    ausgelesen
+    \item Aus der aktuellen Konfiguration wird die Anzahl davor ausgew\"ahlten
+    Komponente ermittelt und mit Auswahlkriterium verglichen. Die ermittelte
+    Entscheidung wird unter Abh\"angigkeiten erkl\"art.
+    \item 
+\end{enumerate}
+
 
 \end{document}

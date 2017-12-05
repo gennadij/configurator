@@ -32,6 +32,8 @@ import models.status.SelectionCriteriumStatus
 import models.json.component.JsonComponentOut
 import models.status.common.ClassCastError
 import models.status.common.ODBReadError
+import models.status.ErrorComponent
+import models.status.SuccessComponent
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -56,17 +58,29 @@ object ComponentVertex {
       
       val vComponent = graph.getVertex(componentIn.componentId)
       
-      val dependencies: List[Dependency] = getComponentDependenciesOut(vComponent)
+      val dependenciesOut: List[Dependency] = getComponentDependenciesOut(vComponent)
       
-      Logger.info(this.getClass.getSimpleName + " dependencies : " + dependencies)
+      Logger.info(this.getClass.getSimpleName + " dependenciesOut : " + dependenciesOut)
       
-      val excludeDependencies: List[Dependency] = dependencies filter {_.dependencyType == PropertyKey.EXCLUDE}
+      val dependenciesIn: List[Dependency] = getComponentDependenciesIn(vComponent)
       
-      Logger.info(this.getClass.getSimpleName + " excludeDependencies : " + excludeDependencies)
+      Logger.info(this.getClass.getSimpleName + " dependenciesIn : " + dependenciesIn)
       
-      val requireDependencies: List[Dependency] = dependencies filter {_.dependencyType == PropertyKey.REQUIRE}
+      val excludeDependenciesOut: List[Dependency] = dependenciesOut filter {_.dependencyType == PropertyKey.EXCLUDE}
       
-      Logger.info(this.getClass.getSimpleName + " requireDependencies : " + requireDependencies)
+      Logger.info(this.getClass.getSimpleName + " excludeDependenciesOut : " + excludeDependenciesOut)
+      
+      val requireDependenciesOut: List[Dependency] = dependenciesOut filter {_.dependencyType == PropertyKey.REQUIRE}
+      
+      Logger.info(this.getClass.getSimpleName + " requireDependenciesOut : " + requireDependenciesOut)
+      
+      val excludeDependenciesIn: List[Dependency] = dependenciesIn filter {_.dependencyType == PropertyKey.EXCLUDE}
+      
+      Logger.info(this.getClass.getSimpleName + " excludeDependenciesIn : " + excludeDependenciesIn)
+      
+      val requireDependenciesIn: List[Dependency] = dependenciesIn filter {_.dependencyType == PropertyKey.REQUIRE}
+      
+      Logger.info(this.getClass.getSimpleName + " requireDependenciesIn : " + requireDependenciesIn)
       
       val vFatherStep: OrientVertex = getFatherStep(vComponent)
       
@@ -76,60 +90,88 @@ object ComponentVertex {
       
       Logger.info(this.getClass.getSimpleName + ": selectionCriterium " + selectionCriterium)
       
-      val currentConfig: Option[StepCurrentConfig] = CurrentConfig.getCurrentConfig
+      val currentStep: Option[StepCurrentConfig] = CurrentConfig.getCurrentStep(vFatherStep.getIdentity.toString)
       
-      val previousSelectedComponents: List[Component] = currentConfig match {
+      Logger.info(this.getClass.getSimpleName + ": currentStep from CurrentConfig " + currentStep)
+      
+      val previousSelectedComponents: List[Component] = currentStep match {
         case Some(step) => step.components
         case None => List()
       }
       
       val stausSelectionCriterium: SelectionCriteriumStatus = 
-        checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium)
+          checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium)
       
       Logger.info(this.getClass.getSimpleName + ": " + stausSelectionCriterium)
       
-      val currentStep: Option[StepCurrentConfig] = CurrentConfig.getCurrentStep(vFatherStep.getIdentity.toString)
+      val statusExcludeDependencies = checkExcludeDependencies(currentStep.get, excludeDependenciesIn)
       
-      stausSelectionCriterium match {
-        case status: RequireComponent => {
-          val component: Component = Component(
-              vComponent.getIdentity.toString,
-              vComponent.getProperty(PropertyKey.NAME_TO_SHOW)
-          )
-          CurrentConfig.addComponent(currentStep.get, component)
-          
+      statusExcludeDependencies match {
+        case status: ErrorComponent => {
           ComponentOut(
                status.status,
                status.message,
-               requireDependencies ::: excludeDependencies
+               List()
            )
         }
-        case status: RequireNextStep => {
-           ComponentOut(
-               status.status,
-               status.message,
-               requireDependencies ::: excludeDependencies
-           )
-        }
-        case status: AllowNextComponent => {
-          val component: Component = Component(
-              vComponent.getIdentity.toString,
-              vComponent.getProperty(PropertyKey.NAME_TO_SHOW)
-          )
-          CurrentConfig.addComponent(currentStep.get, component)
-          
-           ComponentOut(
-               status.status,
-               status.message,
-               requireDependencies ::: excludeDependencies
-           )
-        }
-        case status: ExcludeComponent => {
-           ComponentOut(
-               status.status,
-               status.message,
-               requireDependencies ::: excludeDependencies
-           )
+        case status: SuccessComponent => {
+          stausSelectionCriterium match {
+            case status: RequireComponent => {
+              val component: Component = Component(
+                  vComponent.getIdentity.toString,
+                  vComponent.getProperty(PropertyKey.NAME_TO_SHOW)
+              )
+              CurrentConfig.addComponent(currentStep.get, component)
+              
+              CurrentConfig.printCurrentConfig
+              
+              ComponentOut(
+                   status.status,
+                   status.message,
+                   requireDependenciesOut ::: excludeDependenciesOut
+               )
+            }
+            case status: RequireNextStep => {
+              val component: Component = Component(
+                  vComponent.getIdentity.toString,
+                  vComponent.getProperty(PropertyKey.NAME_TO_SHOW)
+              )
+              
+              CurrentConfig.addComponent(currentStep.get, component)
+              
+              CurrentConfig.printCurrentConfig
+              
+              ComponentOut(
+                   status.status,
+                   status.message,
+                   requireDependenciesOut ::: excludeDependenciesOut
+               )
+            }
+            case status: AllowNextComponent => {
+              val component: Component = Component(
+                  vComponent.getIdentity.toString,
+                  vComponent.getProperty(PropertyKey.NAME_TO_SHOW)
+              )
+              CurrentConfig.addComponent(currentStep.get, component)
+              
+              CurrentConfig.printCurrentConfig
+              
+               ComponentOut(
+                   status.status,
+                   status.message,
+                   requireDependenciesOut ::: excludeDependenciesOut
+               )
+            }
+            case status: ExcludeComponent => {
+              CurrentConfig.printCurrentConfig
+              
+              ComponentOut(
+                   status.status,
+                   status.message,
+                   requireDependenciesOut ::: excludeDependenciesOut
+               )
+            }
+          }
         }
       }
     }catch{
@@ -156,6 +198,33 @@ object ComponentVertex {
     }
   }
   
+   /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param OrientVertex
+   * 
+   * @return List[Dependency]
+   */
+  def getComponentDependenciesIn(vComponent: OrientVertex): List[Dependency] = {
+    val eHasDependencies: List[OrientEdge] = vComponent.getEdges(Direction.IN, PropertyKey.HAS_DEPENDENCY)
+        .asScala.toList map {_.asInstanceOf[OrientEdge]}
+    eHasDependencies map {
+      eHasDependency => {
+        //TODO PropertyKey.VISUALIZATION in DB mit Leerzeichen
+        Dependency(
+            eHasDependency.getProperty(PropertyKey.OUT).asInstanceOf[OrientVertex].getIdentity.toString, //outId: String,
+            eHasDependency.getProperty(PropertyKey.IN).asInstanceOf[OrientVertex].getIdentity.toString, //inId: String,
+            eHasDependency.getProperty(PropertyKey.VISUALIZATION).toString, //visualization: String,
+            eHasDependency.getProperty(PropertyKey.DEPENDENCY_TYPE).toString, //dependencyType: String,
+            eHasDependency.getProperty(PropertyKey.NAME_TO_SHOW).toString  //nameToShow: String
+        )
+      }
+    }
+  }
+  
+  
   /**
    * @author Gennadi Heimann
    * 
@@ -168,10 +237,8 @@ object ComponentVertex {
   def getComponentDependenciesOut(vComponent: OrientVertex): List[Dependency] = {
     val eHasDependencies: List[OrientEdge] = vComponent.getEdges(Direction.OUT, PropertyKey.HAS_DEPENDENCY)
         .asScala.toList map {_.asInstanceOf[OrientEdge]}
-    Logger.info(this.getClass.getSimpleName + ": " + eHasDependencies.head.getPropertyKeys.toString())
     eHasDependencies map {
       eHasDependency => {
-        Logger.info(this.getClass.getSimpleName + ": " + eHasDependency.getProperties.toString())
         //TODO PropertyKey.VISUALIZATION in DB mit Leerzeichen
         Dependency(
             eHasDependency.getProperty(PropertyKey.OUT).asInstanceOf[OrientVertex].getIdentity.toString, //outId: String,
@@ -237,8 +304,6 @@ object ComponentVertex {
     val min = selectionCriterium.min
     val max = selectionCriterium.max
     
-    Logger.info(this.getClass.getSimpleName + " min : " + min)
-    Logger.info(this.getClass.getSimpleName + " max : " + max)
     Logger.info(this.getClass.getSimpleName + " countOfComponents : " + countOfComponents)
     
     selectionCriterium match {
@@ -246,6 +311,18 @@ object ComponentVertex {
       case requireNextStep if min <= countOfComponents && max == countOfComponents => RequireNextStep()
       case allowNextComponent if min <= countOfComponents && max > countOfComponents => AllowNextComponent()
       case excludeComponent if max < countOfComponents => ExcludeComponent()
+    }
+  }
+  
+  def checkExcludeDependencies(currentStep: StepCurrentConfig, inExcludeDependencies: List[Dependency]) = {
+    val selectedcomponentIds: List[String] = currentStep.components map (_.componentId)
+    val inExcludeComponentIds: List[String] = inExcludeDependencies map (_.outId)
+    
+    val excludeComponentsIds: List[String] = selectedcomponentIds flatMap { sCId => inExcludeComponentIds.filter{inECId => sCId == inECId} }
+    
+    excludeComponentsIds.size match {
+      case count if count > 0 => ErrorComponent()
+      case count if count == 0 => SuccessComponent()
     }
   }
 }
