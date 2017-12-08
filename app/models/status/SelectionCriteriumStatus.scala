@@ -5,7 +5,7 @@ package models.status
  * 
  * Created by Gennadi Heimann 22.11.2017
  */
-sealed abstract class SelectionCriteriumStatus{
+sealed abstract class SelectionCriteriumStatus extends Status {
   def status: String
   def message: String
 }

@@ -123,30 +123,31 @@ object StepVertex {
     val graph: OrientGraph = OrientDB.getFactory().getTx
 
     try{
+      //Lese den letzten Schritt aus der CurentConfig in diesem Schritt steht das Info zu dem naechstem Schritt.
+//      val vSelectedComponents: List[OrientVertex] = nextStepIn.componentIds map {
+//        componentId => {
+//          graph.getVertex(componentId)
+//        }
+//      }
       
-      // hole Vertices von selectedComponents aus der DB
-      // TODO Die Implenmentierung bezieht sich zurzeit nur auf die Singelchooce
-      // Die Multichooce wird spaeter implementiert. Es muss zuerst auf dem Admin-Seite vorbereitet werden
-
-      val vSelectedComponents: List[OrientVertex] = nextStepIn.componentIds map {
-        componentId => {
-          graph.getVertex(componentId)
-        }
-      }
+      val nextStepId: String = CurrentConfig.getLastStep.stepId
+      
+      
+//      val vSelectedComponents: List[OrientVertex] = ???
       
       //lese IN and OUT Abhaengigkeiten der Komonenten
       
-      val componentDependencies: List[Dependency] = getDependencies(vSelectedComponents)
+//      val componentDependencies: List[Dependency] = getDependencies(vSelectedComponents)
       
       //lese den VaterStep der Komponenten. Es reicht das nur über eine Komponente der VaterStep ermittelt wird
       
-      val fatherStep: OrientVertex = getFatherStep(vSelectedComponents)
+//      val fatherStep: OrientVertex = getFatherStep(vSelectedComponents)
      
       //lese IN und OUT Abhaengigkeiten des VaterStepes
       
-      val fatherStepDependencies = ???
-      
-      val vNextStep: Option[OrientVertex] = getStepFromSelectedComponent(vSelectedComponents.head)
+//      val fatherStepDependencies = ???
+      //TODO
+      val vNextStep: Option[OrientVertex] = ???//getStepFromSelectedComponent(vSelectedComponents.head)
       
       //lese IN und OUT Abhaengigkeiten des Steps
       
