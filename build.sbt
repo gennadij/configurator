@@ -1,74 +1,33 @@
 
-//val mockito = "org.mockito" % "mockito-all" % "1.9.5" % "test"
-//val junit = "junit" % "junit" % "4.8.1" % "test"
-//val specs2Junit = "org.specs2" %% "specs2-junit" % "3.8.2" % "test"
-//val orientdbServer = "com.orientechnologies" % "orientdb-server" % "2.1.+"
+name := """configOnPLay"""
 
+organization := "org.genericConfig"
 
+version := "1.0-SNAPSHOT"
 
-//==============================================================================
+lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-// https://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_2.11
-val xml = "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.6"
+scalaVersion := "2.12.3"
 
-// https://mvnrepository.com/artifact/com.orientechnologies/orientdb-core
-val orientdbCore = "com.orientechnologies" % "orientdb-core" % "2.2.12"
+//libraryDependencies += guice
 
-// https://mvnrepository.com/artifact/com.tinkerpop.blueprints/blueprints-core
-val bluprintsCore = "com.tinkerpop.blueprints" % "blueprints-core" % "2.6.0"
+libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
 
-// https://mvnrepository.com/artifact/com.orientechnologies/orientdb-graphdb
-val orientdbGraph = "com.orientechnologies" % "orientdb-graphdb" % "2.2.12"
+libraryDependencies += "org.specs2" % "specs2-junit_2.12" % "3.8.6" % "test"
 
-// https://mvnrepository.com/artifact/com.orientechnologies/orientdb-enterprise
-val orientdbEnterprise = "com.orientechnologies" % "orientdb-enterprise" % "2.1.24"
+libraryDependencies += "com.tinkerpop.blueprints" % "blueprints-core" % "2.6.0"
+libraryDependencies += "com.orientechnologies" % "orientdb-graphdb" % "2.2.12"
+libraryDependencies += "com.orientechnologies" % "orientdb-client" % "2.2.12"
+libraryDependencies += "com.orientechnologies" % "orientdb-enterprise" % "2.1.24"
+libraryDependencies += "com.orientechnologies" % "orientdb-core" % "2.2.12"
 
-// https://mvnrepository.com/artifact/com.orientechnologies/orientdb-client
-val orientdbClient = "com.orientechnologies" % "orientdb-client" % "2.2.12"
+//dependencyOverrides += "com.google.guava" % "guava" % "22.0"
+dependencyOverrides += "com.typesafe.akka" % "akka-stream_2.12" % "2.5.4"
+dependencyOverrides += "com.typesafe.akka" % "akka-actor_2.12" % "2.5.4"
+//dependencyOverrides += "net.java.dev.jna" % "jna-platform" % "4.0.0"
 
-// https://mvnrepository.com/artifact/com.orientechnologies/orientdb-tools
-val orientdbTools = "com.orientechnologies" % "orientdb-tools" % "2.2.12"
+// Adds additional packages into Twirl
+//TwirlKeys.templateImports += "org.genericConfig.controllers._"
 
-// https://mvnrepository.com/artifact/com.typesafe.play/play-json_2.11
-val jsonFromPLay = "com.typesafe.play" % "play-json_2.11" % "2.5.9"
-
-// https://mvnrepository.com/artifact/org.specs2/specs2-core_2.11
-val specs2 = "org.specs2" % "specs2-core_2.11" % "3.8.6" % "test"
-
-// https://mvnrepository.com/artifact/junit/junit
-val junit = "junit" % "junit" % "4.12" % "test"
-
-// https://mvnrepository.com/artifact/org.scala-tools/maven-scala-plugin
-val scalaTools = "org.scala-tools" % "maven-scala-plugin" % "2.15.2"
-
-// https://mvnrepository.com/artifact/org.specs2/specs2-junit_2.11
-val specs2JUnit = "org.specs2" % "specs2-junit_2.11" % "3.8.6" % "test"
-
-lazy val commonSettings = Seq(
-	organization := "org.generic_configurator", 	
-	version := "0.1.0",
-	scalaVersion := "2.11.8",
-	publishMavenStyle := true
-)
-
-lazy val root = (project in file(".")).
-	settings(commonSettings: _*).
-	settings(
-		name := "configurator",
-		libraryDependencies ++= Seq(
-		xml
-		,orientdbCore
-		,bluprintsCore
-		,orientdbGraph
-		,orientdbEnterprise
-		,orientdbClient
-		,orientdbTools
-		,jsonFromPLay
-		//,specs2
-		//,junit
-		,specs2JUnit
-		),
-		fork := true
-	)
-	
-
+// Adds additional packages into conf/routes
+// play.sbt.routes.RoutesKeys.routesImport += "org.genericConfig.binders._"
