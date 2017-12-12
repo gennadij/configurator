@@ -89,6 +89,19 @@ object CurrentConfig {
   def getCurrentStep(stepId: String): Option[StepCurrentConfig] = {
     currentConfig.getCurrentConfig
   }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param 
+   * 
+   * @return StepCurrentConfig
+   */
+  def getLastStep: StepCurrentConfig = {
+    currentConfig.getLastStep
+  }
 }
 
 /**
@@ -157,6 +170,37 @@ class CurrentConfig {
    * @return Option[StepCurrentConfig]
    */
   private def getCurrentConfig: Option[StepCurrentConfig] = this.firstStep
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param 
+   * 
+   * @return StepCurrentConfig
+   */
+  private def getLastStep: StepCurrentConfig = {
+    val firstStep = this.firstStep.get
+    getLastStepRecursive(firstStep)
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param StepCurrentConfig
+   * 
+   * @return StepCurrentConfig
+   */
+  private def getLastStepRecursive(step: StepCurrentConfig): StepCurrentConfig = {
+    
+    step.nextStep match {
+      case Some(step) => getLastStepRecursive(step)
+      case None => step
+    }
+  }
   
   /**
    * @author Gennadi Heimann

@@ -96,9 +96,7 @@ trait Wrapper {
    * @return NextStepIn
    */
   def toNextStepIn(jsonNextStepIn: JsonNextStepIn): NextStepIn = {
-    NextStepIn(
-        jsonNextStepIn.params.componentIds
-    )
+    NextStepIn()
   }
   
   /**

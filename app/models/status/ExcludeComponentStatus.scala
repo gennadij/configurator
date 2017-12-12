@@ -5,10 +5,7 @@ package models.status
  * 
  * Created by Gennadi Heimann 05.12.2017
  */
-sealed abstract class ExcludeComponentStatus{
-  def status: String
-  def message: String
-}
+sealed abstract class ExcludeComponentStatus extends Status
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com

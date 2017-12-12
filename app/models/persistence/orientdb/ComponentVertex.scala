@@ -99,12 +99,13 @@ object ComponentVertex {
         case None => List()
       }
       
-      val stausSelectionCriterium: SelectionCriteriumStatus = 
+      val stausSelectionCriterium: Status = 
           checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium)
       
       Logger.info(this.getClass.getSimpleName + ": " + stausSelectionCriterium)
       
       val statusExcludeDependencies = checkExcludeDependencies(currentStep.get, excludeDependenciesIn)
+      
       
       statusExcludeDependencies match {
         case status: ErrorComponent => {
@@ -137,7 +138,29 @@ object ComponentVertex {
                   vComponent.getProperty(PropertyKey.NAME_TO_SHOW)
               )
               
+              
               CurrentConfig.addComponent(currentStep.get, component)
+              
+              // Fuege nachsten Schritt hinzu
+              
+              val eHasSteps: List[OrientEdge] = graph.getVertex(currentStep.get.components.head.componentId)
+                .getEdges(Direction.OUT, PropertyKey.HAS_STEP).asScala.toList map {_.asInstanceOf[OrientEdge]}
+              
+              val vNextStep: Option[OrientVertex ]= eHasSteps match {
+                case List() => None
+                case _ => {
+                  // hole angehaengete Schritt aus der DB
+                  Some(eHasSteps.head.getVertex(Direction.IN).asInstanceOf[OrientVertex])
+                }
+              }
+              
+              val nextStep: Option[StepCurrentConfig] = Some(StepCurrentConfig(
+                  vNextStep.get.getIdentity.toString,
+                  List(),
+                  None
+              ))
+              
+              CurrentConfig.addStep(nextStep, currentStep)
               
               CurrentConfig.printCurrentConfig
               
@@ -298,7 +321,7 @@ object ComponentVertex {
    * @return
    */
   
-  def checkSelectionCriterium(countOfSelectedComponents: Int, selectionCriterium: SelectionCriterium): SelectionCriteriumStatus = {
+  def checkSelectionCriterium(countOfSelectedComponents: Int, selectionCriterium: SelectionCriterium): Status = {
     //Ungepruefte Komponente, die noch nicht in der aktuellen Konfiguration hinzugefuegt wird
     val countOfComponents = countOfSelectedComponents + 1
     val min = selectionCriterium.min

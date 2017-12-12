@@ -10,7 +10,7 @@ import models.json.JsonNames
  */
 case class JsonNextStepIn (
     json: String = JsonNames.NEXT_STEP,
-    params: JsonNextStepParams
+//    params: JsonNextStepParams
 )
 
 object JsonNextStepIn {
