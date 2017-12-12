@@ -26,7 +26,7 @@ class NextStepSpecs extends Specification with ConfigWeb with BeforeAfterAll{
 
   val wC = WebClient.init
   
-  def beforeAll() = {
+  def beforeAll() = {   
   }
   
   def afterAll() = {
