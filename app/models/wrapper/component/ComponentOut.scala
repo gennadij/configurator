@@ -10,5 +10,6 @@ import models.wrapper.dependency.Dependency
 case class ComponentOut (
     status: String,
     message: String,
+    nextStepExistence: Boolean,
     dependencies: List[Dependency]
 )

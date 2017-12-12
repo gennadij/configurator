@@ -204,6 +204,7 @@ trait Wrapper {
         result = JsonComponentResult(
             componentOut.status,
             componentOut.message,
+            componentOut.nextStepExistence,
             componentOut.dependencies map (d => {
               JsonDependency(
                   d.outId,

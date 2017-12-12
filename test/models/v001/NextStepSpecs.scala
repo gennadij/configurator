@@ -11,10 +11,10 @@ import models.json.JsonNames
 import play.api.Logger
 import models.status.startConfig.StartConfigSuccessful
 import play.api.libs.json.JsValue
-import models.status.nextStep.NextStepSuccessful
 import models.status.RequireComponent
 import models.status.AllowNextComponent
 import models.status.RequireNextStep
+import models.status.NextStepSuccessful
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -121,14 +121,14 @@ class NextStepSpecs extends Specification with ConfigWeb with BeforeAfterAll{
       Logger.info(this.getClass.getSimpleName + ": nextStepIn_2 " + jsonNextStepIn_2)
       Logger.info(this.getClass.getSimpleName + ": nextStepOut_2 " + jsonNextStepOut_2)
       
-      (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.NEXT_STEP
-      (startConfigOut \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S2_user29_v016"
-      (startConfigOut \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 3
-      (((startConfigOut \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_2_1_user29_v016"
-      (((startConfigOut \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_2_2_user29_v016"
-      val status_3 = new StartConfigSuccessful
-      (startConfigOut \ "result" \ "status").asOpt[String].get === status.status
-      (startConfigOut \ "result" \ "message").asOpt[String].get === status.message
+      (jsonNextStepOut_2 \ "json").asOpt[String].get === JsonNames.NEXT_STEP
+      (jsonNextStepOut_2 \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S2_user29_v016"
+      (jsonNextStepOut_2 \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 2
+      (((jsonNextStepOut_2 \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_2_1_user29_v016"
+      (((jsonNextStepOut_2 \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_2_2_user29_v016"
+      val status_3 = NextStepSuccessful()
+      (jsonNextStepOut_2 \ "result" \ "status").asOpt[String].get === status_3.status
+      (jsonNextStepOut_2 \ "result" \ "message").asOpt[String].get === status_3.message
     }
   }
   

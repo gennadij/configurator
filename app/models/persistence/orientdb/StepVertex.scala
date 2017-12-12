@@ -22,13 +22,13 @@ import models.status.Status
 import com.tinkerpop.blueprints.Vertex
 import play.api.Logger
 import models.status.common.ClassCastError
-import models.status.nextStep.NextStepSuccessful
-import models.status.nextStep.FinalStepSuccessful
 import models.status.common.ODBReadError
 import models.status.common.ODBReadError
 import models.wrapper.dependency.Dependency
 import models.currentConfig.StepCurrentConfig
 import models.currentConfig.StepCurrentConfig
+import models.status.NextStepSuccessful
+import models.status.FinalStepSuccessful
 
 
 /**
@@ -67,6 +67,8 @@ object StepVertex {
       
       val eHasConfig: List[Edge] = vConfigs.head.getEdges(Direction.OUT, "hasFirstStep").asScala.toList
       val vFirstStep: OrientVertex = eHasConfig.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]
+      
+      
       
       val firstStepCurrentConfig: StepCurrentConfig = StepCurrentConfig(
           vFirstStep.getIdentity.toString,
@@ -130,10 +132,11 @@ object StepVertex {
 //        }
 //      }
       
-      val nextStepId: String = CurrentConfig.getLastStep.stepId
+      val lastStep: StepCurrentConfig = CurrentConfig.getLastStep
       
+      val selectedComponents: List[Component] = lastStep.components
       
-//      val vSelectedComponents: List[OrientVertex] = ???
+      val vSelectedComponent: OrientVertex = graph.getVertex(selectedComponents.head.componentId)
       
       //lese IN and OUT Abhaengigkeiten der Komonenten
       
@@ -146,10 +149,10 @@ object StepVertex {
       //lese IN und OUT Abhaengigkeiten des VaterStepes
       
 //      val fatherStepDependencies = ???
-      //TODO
-      val vNextStep: Option[OrientVertex] = ???//getStepFromSelectedComponent(vSelectedComponents.head)
       
-      //lese IN und OUT Abhaengigkeiten des Steps
+      
+      val vNextStep: Option[OrientVertex] = getStepFromSelectedComponent(vSelectedComponent)
+      
       
       vNextStep match {
         case Some(step) => {
@@ -257,7 +260,7 @@ object StepVertex {
    * @return
    */
   def createNextStepOut(step: OrientVertex): NextStepOut = {
-    val status = new NextStepSuccessful
+    val status = NextStepSuccessful()
     NextStepOut(
         status.status,
         status.message,
@@ -281,7 +284,7 @@ object StepVertex {
    * @return
    */
   def createFinalStep: NextStepOut = {
-    val status = new FinalStepSuccessful
+    val status = FinalStepSuccessful()
     NextStepOut(
           status.status,
           status.message,

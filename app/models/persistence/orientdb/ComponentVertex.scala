@@ -51,6 +51,8 @@ object ComponentVertex {
    * 
    * @return ComponentOut
    */
+  
+  //TODO existenz von nextStep muss bei jeder ausgewaelten Componente geprüft werden
   def component(componentIn: ComponentIn): ComponentOut = {
     val graph: OrientGraph = OrientDB.getFactory().getTx
     
@@ -106,12 +108,14 @@ object ComponentVertex {
       
       val statusExcludeDependencies = checkExcludeDependencies(currentStep.get, excludeDependenciesIn)
       
+      val nextStepExistence: Boolean = checkNextStepExistence(vComponent)
       
       statusExcludeDependencies match {
         case status: ErrorComponent => {
           ComponentOut(
                status.status,
                status.message,
+               nextStepExistence,
                List()
            )
         }
@@ -129,6 +133,7 @@ object ComponentVertex {
               ComponentOut(
                    status.status,
                    status.message,
+                   nextStepExistence,
                    requireDependenciesOut ::: excludeDependenciesOut
                )
             }
@@ -143,30 +148,31 @@ object ComponentVertex {
               
               // Fuege nachsten Schritt hinzu
               
-              val eHasSteps: List[OrientEdge] = graph.getVertex(currentStep.get.components.head.componentId)
-                .getEdges(Direction.OUT, PropertyKey.HAS_STEP).asScala.toList map {_.asInstanceOf[OrientEdge]}
-              
-              val vNextStep: Option[OrientVertex ]= eHasSteps match {
-                case List() => None
-                case _ => {
-                  // hole angehaengete Schritt aus der DB
-                  Some(eHasSteps.head.getVertex(Direction.IN).asInstanceOf[OrientVertex])
-                }
-              }
-              
-              val nextStep: Option[StepCurrentConfig] = Some(StepCurrentConfig(
-                  vNextStep.get.getIdentity.toString,
-                  List(),
-                  None
-              ))
-              
-              CurrentConfig.addStep(nextStep, currentStep)
+//              val eHasSteps: List[OrientEdge] = graph.getVertex(currentStep.get.components.head.componentId)
+//                .getEdges(Direction.OUT, PropertyKey.HAS_STEP).asScala.toList map {_.asInstanceOf[OrientEdge]}
+//              
+//              val vNextStep: Option[OrientVertex ]= eHasSteps match {
+//                case List() => None
+//                case _ => {
+//                  // hole angehaengete Schritt aus der DB
+//                  Some(eHasSteps.head.getVertex(Direction.IN).asInstanceOf[OrientVertex])
+//                }
+//              }
+//              
+//              val nextStep: Option[StepCurrentConfig] = Some(StepCurrentConfig(
+//                  vNextStep.get.getIdentity.toString,
+//                  List(),
+//                  None
+//              ))
+//              
+//              CurrentConfig.addStep(nextStep, currentStep)
               
               CurrentConfig.printCurrentConfig
               
               ComponentOut(
                    status.status,
                    status.message,
+                   nextStepExistence,
                    requireDependenciesOut ::: excludeDependenciesOut
                )
             }
@@ -182,6 +188,7 @@ object ComponentVertex {
                ComponentOut(
                    status.status,
                    status.message,
+                   nextStepExistence,
                    requireDependenciesOut ::: excludeDependenciesOut
                )
             }
@@ -191,6 +198,7 @@ object ComponentVertex {
               ComponentOut(
                    status.status,
                    status.message,
+                   nextStepExistence,
                    requireDependenciesOut ::: excludeDependenciesOut
                )
             }
@@ -205,6 +213,7 @@ object ComponentVertex {
         ComponentOut(
                status.status,
                status.message,
+               false,
                List()
            )
       }
@@ -215,6 +224,7 @@ object ComponentVertex {
         ComponentOut(
                status.status,
                status.message,
+               false,
                List()
            )
       }
@@ -346,6 +356,13 @@ object ComponentVertex {
     excludeComponentsIds.size match {
       case count if count > 0 => ErrorComponent()
       case count if count == 0 => SuccessComponent()
+    }
+  }
+  
+  def checkNextStepExistence(vComponent: OrientVertex): Boolean = {
+    vComponent.getEdges(Direction.OUT, PropertyKey.HAS_STEP).asScala.toList match {
+      case eHasSteps if eHasSteps.size > 0 => true
+      case eHasSteps if eHasSteps.size == 0 => false
     }
   }
 }
