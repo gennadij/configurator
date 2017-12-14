@@ -87,7 +87,7 @@ object CurrentConfig {
    * @return Unit
    */
   def getCurrentStep(stepId: String): Option[StepCurrentConfig] = {
-    currentConfig.getCurrentConfig
+    currentConfig.getCurrentStep(stepId)
   }
   
   /**

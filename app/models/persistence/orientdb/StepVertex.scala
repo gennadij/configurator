@@ -16,8 +16,6 @@ import models.wrapper.nextStep.NextStepOut
 import com.tinkerpop.blueprints.impls.orient.OrientEdge
 import models.wrapper.common.Component
 import models.currentConfig.CurrentConfig
-import models.status.startConfig.StartConfigSuccessful
-import models.status.startConfig.StartConfigSuccessful
 import models.status.Status
 import com.tinkerpop.blueprints.Vertex
 import play.api.Logger
@@ -29,6 +27,9 @@ import models.currentConfig.StepCurrentConfig
 import models.currentConfig.StepCurrentConfig
 import models.status.NextStepSuccessful
 import models.status.FinalStepSuccessful
+import models.status.StartConfigSuccessful
+import models.status.CurrentConfigInconsistent
+import models.status.CurrentConfigConsistent
 
 
 /**
@@ -79,7 +80,7 @@ object StepVertex {
       // Fuege den ersten Schritt zu der aktuelle Konfiguration hinzu
       CurrentConfig.addStep(Some(firstStepCurrentConfig), None)
       
-      val status: Status = new StartConfigSuccessful
+      val status: Status = new StartConfigSuccessful()
       StartConfigOut(
           Some(Step(
               vFirstStep.getIdentity.toString,
@@ -125,35 +126,25 @@ object StepVertex {
     val graph: OrientGraph = OrientDB.getFactory().getTx
 
     try{
-      //Lese den letzten Schritt aus der CurentConfig in diesem Schritt steht das Info zu dem naechstem Schritt.
-//      val vSelectedComponents: List[OrientVertex] = nextStepIn.componentIds map {
-//        componentId => {
-//          graph.getVertex(componentId)
-//        }
-//      }
       
       val lastStep: StepCurrentConfig = CurrentConfig.getLastStep
       
       val selectedComponents: List[Component] = lastStep.components
+      Logger.info(this.getClass.getSimpleName + ": " + lastStep)
       
       val vSelectedComponent: OrientVertex = graph.getVertex(selectedComponents.head.componentId)
       
-      //lese IN and OUT Abhaengigkeiten der Komonenten
-      
-//      val componentDependencies: List[Dependency] = getDependencies(vSelectedComponents)
-      
-      //lese den VaterStep der Komponenten. Es reicht das nur über eine Komponente der VaterStep ermittelt wird
-      
-//      val fatherStep: OrientVertex = getFatherStep(vSelectedComponents)
-     
-      //lese IN und OUT Abhaengigkeiten des VaterStepes
-      
-//      val fatherStepDependencies = ???
-      
-      
       val vNextStep: Option[OrientVertex] = getStepFromSelectedComponent(vSelectedComponent)
       
+      val lastStepFromCurrentConfig: StepCurrentConfig = CurrentConfig.getLastStep
       
+      val currentStep = StepCurrentConfig(
+        vNextStep.get.getIdentity.toString,
+        List(),
+        None
+      )
+      
+      lastStepFromCurrentConfig.nextStep = Some(currentStep)
       vNextStep match {
         case Some(step) => {
           createNextStepOut(step)

@@ -34,6 +34,7 @@ import models.status.common.ClassCastError
 import models.status.common.ODBReadError
 import models.status.ErrorComponent
 import models.status.SuccessComponent
+import models.status.FinalComponent
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -105,7 +106,7 @@ object ComponentVertex {
           checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium)
       
       Logger.info(this.getClass.getSimpleName + ": " + stausSelectionCriterium)
-      
+      //TODO
       val statusExcludeDependencies = checkExcludeDependencies(currentStep.get, excludeDependenciesIn)
       
       val nextStepExistence: Boolean = checkNextStepExistence(vComponent)
@@ -142,39 +143,32 @@ object ComponentVertex {
                   vComponent.getIdentity.toString,
                   vComponent.getProperty(PropertyKey.NAME_TO_SHOW)
               )
-              
-              
+            
+            
               CurrentConfig.addComponent(currentStep.get, component)
-              
-              // Fuege nachsten Schritt hinzu
-              
-//              val eHasSteps: List[OrientEdge] = graph.getVertex(currentStep.get.components.head.componentId)
-//                .getEdges(Direction.OUT, PropertyKey.HAS_STEP).asScala.toList map {_.asInstanceOf[OrientEdge]}
-//              
-//              val vNextStep: Option[OrientVertex ]= eHasSteps match {
-//                case List() => None
-//                case _ => {
-//                  // hole angehaengete Schritt aus der DB
-//                  Some(eHasSteps.head.getVertex(Direction.IN).asInstanceOf[OrientVertex])
-//                }
-//              }
-//              
-//              val nextStep: Option[StepCurrentConfig] = Some(StepCurrentConfig(
-//                  vNextStep.get.getIdentity.toString,
-//                  List(),
-//                  None
-//              ))
-//              
-//              CurrentConfig.addStep(nextStep, currentStep)
               
               CurrentConfig.printCurrentConfig
               
-              ComponentOut(
-                   status.status,
-                   status.message,
-                   nextStepExistence,
-                   requireDependenciesOut ::: excludeDependenciesOut
-               )
+              nextStepExistence match {
+                case true => {
+                  ComponentOut(
+                     status.status,
+                     status.message,
+                     nextStepExistence,
+                     requireDependenciesOut ::: excludeDependenciesOut
+                  )
+                }
+                case false => {
+                  val status: Status = FinalComponent()
+                  ComponentOut(
+                     status.status,
+                     status.message,
+                     nextStepExistence,
+                     requireDependenciesOut ::: excludeDependenciesOut
+                  )
+                }
+              }
+              
             }
             case status: AllowNextComponent => {
               val component: Component = Component(

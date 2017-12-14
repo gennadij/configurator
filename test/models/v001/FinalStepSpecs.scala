@@ -9,10 +9,11 @@ import models.websocket.WebClient
 import play.api.libs.json.Json
 import models.json.JsonNames
 import play.api.Logger
-import models.status.startConfig.StartConfigSuccessful
 import play.api.libs.json.JsValue
-import models.status.nextStep.NextStepSuccessful
-import models.status.nextStep.FinalStepSuccessful
+import models.status.AllowNextComponent
+import models.status.NextStepSuccessful
+import models.status.RequireNextStep
+import models.status.FinalComponent
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -45,90 +46,132 @@ class FinalStepSpecs extends Specification with ConfigWeb with BeforeAfterAll{
       Logger.info("StartConfigIn " + startConfigIn)
       Logger.info("StartConfigOut " + startConfigOut)
       
-      //User hat ausgewaelt
-      val componentIdC11: String = (((startConfigOut \ "result" \ "step" \ "components")(0)) \ "componentId") .asOpt[String].get
+      //User hat ausgewaelt Schritt 1
+      val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
+            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_1_user29_v016")
+            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
       
-      Logger.info("componentIdC11 " + componentIdC11)
-      val componentIds_1: List[String] = List(componentIdC11)
+      Logger.info(this.getClass.getSimpleName + ": componentIdC11 " + componentIdC11)
       
-      val nextStepIn_1 = Json.obj(
-          "json" -> JsonNames.NEXT_STEP
+      val componentIn_1 = Json.obj(
+          "json" -> JsonNames.COMPONENT
           ,"params" -> Json.obj(
-               "componentIds" -> componentIds_1
+               "componentId" -> componentIdC11
            )
       )
+      Logger.info("componentIn_1 " + componentIn_1)
       
-      val nextStepOut_1: JsValue = wC.handleMessage(nextStepIn_1)
+      val componentOut_1: JsValue = wC.handleMessage(componentIn_1)
       
-      Logger.info("NextStepIn_1 " + nextStepIn_1)
-      Logger.info("NextStepOut_1 " + nextStepOut_1)
+      Logger.info("componentOut_1 " + componentOut_1)
       
-      (nextStepOut_1 \ "json").asOpt[String].get === JsonNames.NEXT_STEP
-      (nextStepOut_1 \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S2_user29_v016"
-      (nextStepOut_1 \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 2
-      (((nextStepOut_1 \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_2_1_user29_v016"
-      (((nextStepOut_1 \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_2_2_user29_v016"
-      val status_1 = new NextStepSuccessful
-      (nextStepOut_1 \ "result" \ "status").asOpt[String].get === status_1.status
-      (nextStepOut_1 \ "result" \ "message").asOpt[String].get === status_1.message
+      (componentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_1 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
+      (((componentOut_1 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
+      (((componentOut_1 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
+      (((componentOut_1 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
+      (componentOut_1 \ "result" \ "nextStepExistence").asOpt[Boolean].get === true
+      val status_1 = new AllowNextComponent()
+      (componentOut_1 \ "result" \ "status").asOpt[String].get === status_1.status
+      (componentOut_1 \ "result" \ "message").asOpt[String].get === status_1.message
       
-      //User hat ausgewaelt
-    
-      val componentIdC21 = (((nextStepOut_1 \ "result" \ "step" \ "components")(0)) \ "componentId") .asOpt[String].get
+      Logger.info(this.getClass.getSimpleName + ": =================================================")
       
-      Logger.info("componentIdC21 " + componentIdC21)
-      val componentIds_2: List[String] = List(componentIdC21)
-      
-      val nextStepIn_2 = Json.obj(
+      val jsonNextStepIn_2 : JsValue = Json.obj(
           "json" -> JsonNames.NEXT_STEP
-          ,"params" -> Json.obj(
-               "componentIds" -> componentIds_2
-           )
       )
       
-      val nextStepOut_2: JsValue = wC.handleMessage(nextStepIn_2)
+      val jsonNextStepOut_2 = wC.handleMessage(jsonNextStepIn_2)
       
-      Logger.info("NextStepIn " + nextStepIn_2)
-      Logger.info("NextStepOut " + nextStepOut_2)
+      Logger.info(this.getClass.getSimpleName + ": nextStepIn_2 " + jsonNextStepIn_2)
+      Logger.info(this.getClass.getSimpleName + ": nextStepOut_2 " + jsonNextStepOut_2)
       
-      (nextStepOut_2 \ "json").asOpt[String].get === JsonNames.NEXT_STEP
-      (nextStepOut_2 \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S3_user29_v016"
-      (nextStepOut_2 \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 4
-      (((nextStepOut_2 \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_3_1_user29_v016"
-      (((nextStepOut_2 \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_3_2_user29_v016"
-      (((nextStepOut_2 \ "result" \ "step" \ "components")(2)) \ "nameToShow") .asOpt[String].get === "C_3_3_user29_v016"
-      (((nextStepOut_2 \ "result" \ "step" \ "components")(3)) \ "nameToShow") .asOpt[String].get === "C_3_4_user29_v016"
-      val status_2 = new NextStepSuccessful
-      (nextStepOut_2 \ "result" \ "status").asOpt[String].get === status_2.status
-      (nextStepOut_2 \ "result" \ "message").asOpt[String].get === status_2.message
+      (jsonNextStepOut_2 \ "json").asOpt[String].get === JsonNames.NEXT_STEP
+      (jsonNextStepOut_2 \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S2_user29_v016"
+      (jsonNextStepOut_2 \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 2
+      (((jsonNextStepOut_2 \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_2_1_user29_v016"
+      (((jsonNextStepOut_2 \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_2_2_user29_v016"
+      val status_3 = NextStepSuccessful()
+      (jsonNextStepOut_2 \ "result" \ "status").asOpt[String].get === status_3.status
+      (jsonNextStepOut_2 \ "result" \ "message").asOpt[String].get === status_3.message
       
-      //User hat ausgewaelt
-    
-      val componentIdC31 = (((nextStepOut_2 \ "result" \ "step" \ "components")(0)) \ "componentId") .asOpt[String].get
+      Logger.info(this.getClass.getSimpleName + ": =================================================")
       
-      Logger.info("componentIdC31 " + componentIdC31)
-      val componentIds_3: List[String] = List(componentIdC31)
+      //User hat ausgewaelt Schritt 2
+      val componentIdC21: String = (jsonNextStepOut_2 \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
+            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_2_1_user29_v016")
+            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
       
-      val nextStepIn_3 = Json.obj(
-          "json" -> JsonNames.NEXT_STEP
+      Logger.info(this.getClass.getSimpleName + ": componentIdC21 " + componentIdC21)
+      
+      val componentIn_2 = Json.obj(
+          "json" -> JsonNames.COMPONENT
           ,"params" -> Json.obj(
-               "componentIds" -> componentIds_3
+               "componentId" -> componentIdC21
            )
       )
+      Logger.info("componentIn_2 " + componentIn_2)
       
-      val nextStepOut_3: JsValue = wC.handleMessage(nextStepIn_3)
+      val componentOut_2: JsValue = wC.handleMessage(componentIn_2)
       
-      Logger.info("NextStepIn " + nextStepIn_3)
-      Logger.info("NextStepOut " + nextStepOut_3)
+      Logger.info("componentOut_2 " + componentOut_2)
       
-      (nextStepOut_3 \ "json").asOpt[String].get === JsonNames.NEXT_STEP
-      (nextStepOut_3 \ "result" \ "step").asOpt[String] === None
-      val status_3 = new FinalStepSuccessful
-      (nextStepOut_3 \ "result" \ "status").asOpt[String].get === status_3.status
-      (nextStepOut_3 \ "result" \ "message").asOpt[String].get === status_3.message
+      (componentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_2 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 0
+      (componentOut_2 \ "result" \ "nextStepExistence").asOpt[Boolean].get === true
+      val status_2 = RequireNextStep()
+      (componentOut_2 \ "result" \ "status").asOpt[String].get === status_2.status
+      (componentOut_2 \ "result" \ "message").asOpt[String].get === status_2.message
       
+      Logger.info(this.getClass.getSimpleName + ": =================================================")
       
+      val jsonNextStepIn_3 : JsValue = Json.obj(
+          "json" -> JsonNames.NEXT_STEP
+      )
+      
+      val jsonNextStepOut_3 = wC.handleMessage(jsonNextStepIn_3)
+      
+      Logger.info(this.getClass.getSimpleName + ": nextStepIn_3 " + jsonNextStepIn_3)
+      Logger.info(this.getClass.getSimpleName + ": nextStepOut_3 " + jsonNextStepOut_3)
+      
+      (jsonNextStepOut_3 \ "json").asOpt[String].get === JsonNames.NEXT_STEP
+      (jsonNextStepOut_3 \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S3_user29_v016"
+      (jsonNextStepOut_3 \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 4
+      (((jsonNextStepOut_3 \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_3_1_user29_v016"
+      (((jsonNextStepOut_3 \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_3_2_user29_v016"
+      (((jsonNextStepOut_3 \ "result" \ "step" \ "components")(2)) \ "nameToShow") .asOpt[String].get === "C_3_3_user29_v016"
+      (((jsonNextStepOut_3 \ "result" \ "step" \ "components")(3)) \ "nameToShow") .asOpt[String].get === "C_3_4_user29_v016"
+      val status_5 = NextStepSuccessful()
+      (jsonNextStepOut_3 \ "result" \ "status").asOpt[String].get === status_5.status
+      (jsonNextStepOut_3 \ "result" \ "message").asOpt[String].get === status_5.message
+      
+      Logger.info(this.getClass.getSimpleName + ": =================================================")
+      
+      //User hat ausgewaelt
+      val componentIdC31: String = (jsonNextStepOut_3 \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
+            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_3_1_user29_v016")
+            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
+      
+      Logger.info(this.getClass.getSimpleName + ": componentIdC31 " + componentIdC31)
+      
+      val componentIn_3 = Json.obj(
+          "json" -> JsonNames.COMPONENT
+          ,"params" -> Json.obj(
+               "componentId" -> componentIdC31
+           )
+      )
+      Logger.info("componentIn_3 " + componentIn_3)
+      
+      val componentOut_3: JsValue = wC.handleMessage(componentIn_3)
+      
+      Logger.info("componentOut_3 " + componentOut_3)
+      
+      (componentOut_3 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_3 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 0
+      (componentOut_3 \ "result" \ "nextStepExistence").asOpt[Boolean].get === false
+      val status_4 = FinalComponent()
+      (componentOut_3 \ "result" \ "status").asOpt[String].get === status_4.status
+      (componentOut_3 \ "result" \ "message").asOpt[String].get === status_4.message
     }
   }
-  
 }

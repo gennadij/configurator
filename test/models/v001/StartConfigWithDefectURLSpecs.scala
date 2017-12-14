@@ -9,7 +9,6 @@ import models.websocket.WebClient
 import play.api.libs.json.Json
 import models.json.JsonNames
 import play.api.libs.json.JsValue
-import models.status.startConfig.StartConfigSuccessful
 import play.api.Logger
 import models.status.common.ODBReadError
 

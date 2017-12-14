@@ -21,3 +21,13 @@ case class FinalStepSuccessful() extends NextStepStatus{
   def status: String = "FINAL_STEP_SUCCESSFUL"
   def message: String = "Die Konfiguration ist abgeschlossen"
 }
+
+case class CurrentConfigInconsistent() extends NextStepStatus{
+  def status: String = "CURRENT_CONFIG_INCONSISTENT"
+  def message: String = ""
+}
+
+case class CurrentConfigConsistent() extends NextStepStatus{
+  def status: String = "CURRENT_CONFIG_CONSISTENT"
+  def message: String = ""
+}
