@@ -53,7 +53,6 @@ object ComponentVertex {
    * @return ComponentOut
    */
   
-  //TODO existenz von nextStep muss bei jeder ausgewaelten Componente geprüft werden
   def component(componentIn: ComponentIn): ComponentOut = {
     val graph: OrientGraph = OrientDB.getFactory().getTx
     
@@ -106,7 +105,7 @@ object ComponentVertex {
           checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium)
       
       Logger.info(this.getClass.getSimpleName + ": " + stausSelectionCriterium)
-      //TODO
+      
       val statusExcludeDependencies = checkExcludeDependencies(currentStep.get, excludeDependenciesIn)
       
       val nextStepExistence: Boolean = checkNextStepExistence(vComponent)

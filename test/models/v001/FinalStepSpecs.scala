@@ -14,6 +14,7 @@ import models.status.AllowNextComponent
 import models.status.NextStepSuccessful
 import models.status.RequireNextStep
 import models.status.FinalComponent
+import models.status.NextStepError
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -172,6 +173,23 @@ class FinalStepSpecs extends Specification with ConfigWeb with BeforeAfterAll{
       val status_4 = FinalComponent()
       (componentOut_3 \ "result" \ "status").asOpt[String].get === status_4.status
       (componentOut_3 \ "result" \ "message").asOpt[String].get === status_4.message
+      
+      Logger.info(this.getClass.getSimpleName + ": =================================================")
+      
+      val jsonNextStepIn_4 : JsValue = Json.obj(
+          "json" -> JsonNames.NEXT_STEP
+      )
+      
+      val jsonNextStepOut_4 = wC.handleMessage(jsonNextStepIn_4)
+      
+      Logger.info(this.getClass.getSimpleName + ": nextStepIn_4 " + jsonNextStepIn_4)
+      Logger.info(this.getClass.getSimpleName + ": nextStepOut_4 " + jsonNextStepOut_4)
+      
+      (jsonNextStepOut_4 \ "json").asOpt[String].get === JsonNames.NEXT_STEP
+      (jsonNextStepOut_4 \ "result" \ "step").asOpt[String] === None
+      val status_6 = NextStepError()
+      (jsonNextStepOut_4 \ "result" \ "status").asOpt[String].get === status_6.status
+      (jsonNextStepOut_4 \ "result" \ "message").asOpt[String].get === status_6.message
     }
   }
 }

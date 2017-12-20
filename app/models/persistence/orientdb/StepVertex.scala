@@ -30,6 +30,7 @@ import models.status.FinalStepSuccessful
 import models.status.StartConfigSuccessful
 import models.status.CurrentConfigInconsistent
 import models.status.CurrentConfigConsistent
+import models.status.NextStepError
 
 
 /**
@@ -136,21 +137,30 @@ object StepVertex {
       
       val vNextStep: Option[OrientVertex] = getStepFromSelectedComponent(vSelectedComponent)
       
-      val lastStepFromCurrentConfig: StepCurrentConfig = CurrentConfig.getLastStep
+      //TODO Prüfen ob nextStep final Step
+      //
       
-      val currentStep = StepCurrentConfig(
-        vNextStep.get.getIdentity.toString,
-        List(),
-        None
-      )
+//      val isFinalStep = ???
       
-      lastStepFromCurrentConfig.nextStep = Some(currentStep)
       vNextStep match {
         case Some(step) => {
+          val currentStep = StepCurrentConfig(
+            vNextStep.get.getIdentity.toString,
+            List(),
+            None
+          )
+          
+          lastStep.nextStep = Some(currentStep)
+          
           createNextStepOut(step)
         }
         case None => {
-          createFinalStep
+          val status = NextStepError()
+            NextStepOut(
+                status.status,
+                status.message,
+                None
+          )
         }
       }
     }catch{

@@ -7,11 +7,6 @@ package models.status
  */
 sealed abstract class ComponentStatus extends Status
 
-/**
- * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
- * 
- * Created by Gennadi Heimann Dez 5, 2017
- */
 case class ErrorComponent() extends ComponentStatus{
   def status: String = "ERROR_COMPONENT"
   def message: String = "Diese Komponente darf nicht ausgewaehlt werden. " + 
