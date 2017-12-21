@@ -9,5 +9,5 @@ sealed abstract class StartConfigStatus extends Status
 
 case class StartConfigSuccessful() extends StartConfigStatus{
     def status = "START_CONFIG_SUCCESSFUL"
-    def message = "Der erste Schritt wurde erfolgrei geladen"
+    def message = "Der erste Schritt wurde erfolgreich geladen"
 }

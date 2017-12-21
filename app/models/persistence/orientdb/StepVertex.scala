@@ -149,7 +149,8 @@ object StepVertex {
             List(),
             None
           )
-          
+          // TODO Beim Zweitem druck des Buttons "Naechste Schritt laden" passiert einen Fehler
+          // Beim Client sollte dieses Button geloescht werden, aber aus der Serverseite muss diesen Fehler geprueft werden.
           lastStep.nextStep = Some(currentStep)
           
           createNextStepOut(step)

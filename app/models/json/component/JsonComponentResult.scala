@@ -9,6 +9,8 @@ import models.json.common.JsonDependency
  * Created by Gennadi Heimann 13.11.2017
  */
 case class JsonComponentResult (
+    selectedComponentId: String,
+    stepId: String,
     status: String,
     message: String,
     nextStepExistence: Boolean,

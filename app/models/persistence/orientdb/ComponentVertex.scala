@@ -113,10 +113,12 @@ object ComponentVertex {
       statusExcludeDependencies match {
         case status: ErrorComponent => {
           ComponentOut(
-               status.status,
-               status.message,
-               nextStepExistence,
-               List()
+              vComponent.getIdentity.toString,
+              vFatherStep.getIdentity.toString,
+              status.status,
+              status.message,
+              nextStepExistence,
+              List()
            )
         }
         case status: SuccessComponent => {
@@ -131,10 +133,12 @@ object ComponentVertex {
               CurrentConfig.printCurrentConfig
               
               ComponentOut(
-                   status.status,
-                   status.message,
-                   nextStepExistence,
-                   requireDependenciesOut ::: excludeDependenciesOut
+                  vComponent.getIdentity.toString,
+                  vFatherStep.getIdentity.toString,
+                  status.status,
+                  status.message,
+                  nextStepExistence,
+                  requireDependenciesOut ::: excludeDependenciesOut
                )
             }
             case status: RequireNextStep => {
@@ -151,19 +155,23 @@ object ComponentVertex {
               nextStepExistence match {
                 case true => {
                   ComponentOut(
-                     status.status,
-                     status.message,
-                     nextStepExistence,
-                     requireDependenciesOut ::: excludeDependenciesOut
+                      vComponent.getIdentity.toString,
+                      vFatherStep.getIdentity.toString,
+                      status.status,
+                      status.message,
+                      nextStepExistence,
+                      requireDependenciesOut ::: excludeDependenciesOut
                   )
                 }
                 case false => {
                   val status: Status = FinalComponent()
                   ComponentOut(
-                     status.status,
-                     status.message,
-                     nextStepExistence,
-                     requireDependenciesOut ::: excludeDependenciesOut
+                      vComponent.getIdentity.toString,
+                      vFatherStep.getIdentity.toString,
+                      status.status,
+                      status.message,
+                      nextStepExistence,
+                      requireDependenciesOut ::: excludeDependenciesOut
                   )
                 }
               }
@@ -179,6 +187,8 @@ object ComponentVertex {
               CurrentConfig.printCurrentConfig
               
                ComponentOut(
+                   vComponent.getIdentity.toString,
+                   vFatherStep.getIdentity.toString,
                    status.status,
                    status.message,
                    nextStepExistence,
@@ -189,10 +199,12 @@ object ComponentVertex {
               CurrentConfig.printCurrentConfig
               
               ComponentOut(
-                   status.status,
-                   status.message,
-                   nextStepExistence,
-                   requireDependenciesOut ::: excludeDependenciesOut
+                  vComponent.getIdentity.toString,
+                  vFatherStep.getIdentity.toString,
+                  status.status,
+                  status.message,
+                  nextStepExistence,
+                  requireDependenciesOut ::: excludeDependenciesOut
                )
             }
           }
@@ -204,22 +216,26 @@ object ComponentVertex {
         Logger.error(e2.printStackTrace().toString)
         val status: Status = new ClassCastError
         ComponentOut(
-               status.status,
-               status.message,
-               false,
-               List()
-           )
+            "",
+            "",
+            status.status,
+            status.message,
+            false,
+            List()
+        )
       }
       case e1: Exception => {
         graph.rollback()
         val status: Status = new ODBReadError
         Logger.error(e1.printStackTrace().toString)
         ComponentOut(
-               status.status,
-               status.message,
-               false,
-               List()
-           )
+            "",
+            "",
+            status.status,
+            status.message,
+            false,
+            List()
+        )
       }
     }
   }

@@ -8,6 +8,8 @@ import models.wrapper.dependency.Dependency
  * Created by Gennadi Heimann 13.11.2017
  */
 case class ComponentOut (
+    selectedComponentId: String,
+    stepId: String,
     status: String,
     message: String,
     nextStepExistence: Boolean,

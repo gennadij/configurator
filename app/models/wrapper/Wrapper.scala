@@ -202,6 +202,8 @@ trait Wrapper {
   def toJsonComponentOut(componentOut: ComponentOut): JsonComponentOut = {
     JsonComponentOut(
         result = JsonComponentResult(
+            componentOut.selectedComponentId,
+            componentOut.stepId,
             componentOut.status,
             componentOut.message,
             componentOut.nextStepExistence,
