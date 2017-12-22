@@ -10,8 +10,7 @@ import models.json.JsonNames
  */
 
 case class JsonCurrentConfigIn (
-    json: String = JsonNames.CURRENT_CONFIG,
-    params: JsonCurrentConfigParams
+    json: String = JsonNames.CURRENT_CONFIG
 )
 
 object JsonCurrentConfigIn {

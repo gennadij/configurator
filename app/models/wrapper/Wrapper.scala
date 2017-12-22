@@ -27,6 +27,8 @@ import models.wrapper.component.ComponentOut
 import models.json.component.JsonComponentOut
 import models.json.component.JsonComponentResult
 import models.json.common.JsonDependency
+import models.currentConfig.StepCurrentConfig
+import models.json.currentConfig.JsonStepCurrentConfig
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -141,10 +143,10 @@ trait Wrapper {
    * 
    * @return CurrentConfigIn
    */
-  def toCurrentConfigIn(jsonCurrentConfiugIn: JsonCurrentConfigIn): CurrentConfigIn = {
-    CurrentConfigIn(
-        jsonCurrentConfiugIn.params.clientId
-    )
+  def toCurrentConfigIn(jsonCurrentConfiugIn: JsonCurrentConfigIn) = {
+//    CurrentConfigIn(
+//        jsonCurrentConfiugIn.params.clientId
+//    )
   }
   
   /**
@@ -156,23 +158,32 @@ trait Wrapper {
    * 
    * @return JsonCurrentConfigOut
    */
-  def toJsonCurentConfigOut(currentConfigOut: CurrentConfigOut): JsonCurrentConfigOut = {
+  def toJsonCurentConfigOut(step: Option[StepCurrentConfig]): JsonCurrentConfigOut = {
     JsonCurrentConfigOut(
         result = JsonCurrentConfigResult(
-            currentConfigOut.steps.map(step => {
-                JsonStep(
-                    step.stepId,
-                    step.nameToShow,
-                    step.components.map(component => {
-                        JsonComponent(
-                            component.componentId,
-                            component.nameToShow
-                        )
-                    })
-                 )
-             })
+            step = getJsonCurrentStepRecursiv(step)
         )
     )
+  }
+  
+  
+  def getJsonCurrentStepRecursiv(firstStep: Option[StepCurrentConfig]): Option[JsonStepCurrentConfig] = {
+    firstStep match {
+      case Some(nextStep) => {
+        Some(JsonStepCurrentConfig(
+            nextStep.stepId,
+            nextStep.nameToShow,
+            nextStep.components map (c => {
+              JsonComponent(
+                  c.componentId,
+                  c.nameToShow
+              )
+            }),
+            getJsonCurrentStepRecursiv(nextStep.nextStep)
+        ))
+      }
+      case None => None
+    }
   }
   
   /**

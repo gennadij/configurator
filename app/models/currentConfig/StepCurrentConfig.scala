@@ -9,6 +9,7 @@ import models.wrapper.common.Component
  */
 case class StepCurrentConfig (
     stepId: String,
+    nameToShow: String,
     var components: List[Component],
     var nextStep: Option[StepCurrentConfig]
 )

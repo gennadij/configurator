@@ -2,6 +2,7 @@ package models.json.currentConfig
 
 import play.api.libs.json.Json
 import models.json.common.JsonStep
+import models.json.common.JsonComponent
 
 /**
  * Created by Gennadi Heimann on 24.02.2017
@@ -10,7 +11,7 @@ import models.json.common.JsonStep
  */
 
 case class JsonCurrentConfigResult (
-    steps: List[JsonStep]
+    step: Option[JsonStepCurrentConfig]
 )
 
 object JsonCurrentConfigResult {

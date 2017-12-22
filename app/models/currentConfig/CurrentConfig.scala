@@ -261,13 +261,13 @@ class CurrentConfig {
      
     step.get.nextStep match {
       case Some(nextStep) => {
-        Logger.info(step.get.stepId)
-        step.get.components.reverse foreach {component => Logger.info("====" + component.componentId)}
+        Logger.info(step.get.stepId + " -> " + step.get.nameToShow)
+        step.get.components.reverse foreach {component => Logger.info("====" + component.componentId + " -> " + component.nameToShow)}
         getNextStep(step.get.nextStep)
       }
       case None => {
-        Logger.info(step.get.stepId)
-        step.get.components.reverse foreach {component => Logger.info("====" + component.componentId)}
+        Logger.info(step.get.stepId + " -> " + step.get.nameToShow)
+        step.get.components.reverse foreach {component => Logger.info("====" + component.componentId + " -> " + component.nameToShow)}
       }
     }
   }

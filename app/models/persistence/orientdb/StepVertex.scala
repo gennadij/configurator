@@ -74,6 +74,7 @@ object StepVertex {
       
       val firstStepCurrentConfig: StepCurrentConfig = StepCurrentConfig(
           vFirstStep.getIdentity.toString,
+          vFirstStep.getProperty(PropertyKey.NAME_TO_SHOW).toString,
           List(),
           None
       )
@@ -146,6 +147,7 @@ object StepVertex {
         case Some(step) => {
           val currentStep = StepCurrentConfig(
             vNextStep.get.getIdentity.toString,
+            vNextStep.get.getProperty(PropertyKey.NAME_TO_SHOW).toString,
             List(),
             None
           )
