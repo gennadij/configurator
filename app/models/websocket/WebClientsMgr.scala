@@ -32,7 +32,7 @@ class WebClientsMgr extends Actor {
       context become process(subscribers - sender)
       
     case msg: ClientSentMessage =>
-      Logger.debug("WebClient " + sender.hashCode() + " send message")
+      Logger.debug("WebClient " + sender.hashCode() + " send => " + msg.toString())
       sender ! msg
   }
 }

@@ -1,8 +1,9 @@
 package models.json.currentConfig
 
-import play.api.libs.json.Json
+import play.api.libs.json._
 import models.json.common.JsonStep
 import models.json.common.JsonComponent
+import play.api.libs.functional.syntax._
 
 /**
  * Created by Gennadi Heimann on 24.02.2017
@@ -15,5 +16,9 @@ case class JsonCurrentConfigResult (
 )
 
 object JsonCurrentConfigResult {
-  implicit val format = Json.writes[JsonCurrentConfigResult]
+  import models.json.currentConfig.JsonStepCurrentConfig.jsonStepCurrentConfigWrites
+  implicit val jsonCurrentConfigResultWrites: Writes[JsonCurrentConfigResult] = Json.writes[JsonCurrentConfigResult]
+//    (
+//      (JsPath \ "step").write(Writes.optionWithNull[JsonStepCurrentConfig])
+//  )(unlift(JsonCurrentConfigResult.unapply))
 }
