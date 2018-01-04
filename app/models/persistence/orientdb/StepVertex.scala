@@ -134,14 +134,16 @@ object StepVertex {
       val selectedComponents: List[Component] = lastStep.components
       Logger.info(this.getClass.getSimpleName + ": " + lastStep)
       
-      val vSelectedComponent: OrientVertex = graph.getVertex(selectedComponents.head.componentId)
-      
-      val vNextStep: Option[OrientVertex] = getStepFromSelectedComponent(vSelectedComponent)
-      
-      //TODO Prüfen ob nextStep final Step
-      //
-      
-//      val isFinalStep = ???
+      // TODO Beim Zweitem druck des Buttons "Naechste Schritt laden" passiert einen Fehler
+      // Beim Client sollte dieses Button geloescht werden, aber aus der Serverseite muss diesen Fehler geprueft werden.
+      // Status besser impl
+      val vNextStep: Option[OrientVertex] = selectedComponents match {
+        case List() => None
+        case _ => {
+          val vSelectedComponent: OrientVertex = graph.getVertex(selectedComponents.head.componentId)
+          getStepFromSelectedComponent(vSelectedComponent)
+        }
+      }
       
       vNextStep match {
         case Some(step) => {
@@ -151,8 +153,7 @@ object StepVertex {
             List(),
             None
           )
-          // TODO Beim Zweitem druck des Buttons "Naechste Schritt laden" passiert einen Fehler
-          // Beim Client sollte dieses Button geloescht werden, aber aus der Serverseite muss diesen Fehler geprueft werden.
+          
           lastStep.nextStep = Some(currentStep)
           
           createNextStepOut(step)

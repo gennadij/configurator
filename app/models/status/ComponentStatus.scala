@@ -15,7 +15,7 @@ case class ErrorComponent() extends ComponentStatus{
 
 case class SuccessComponent() extends ComponentStatus {
   def status: String = "SUCCESS_COMPONENT"
-  def message: String = "Diese Komponente wurde erfolgreich zu der Knfiguration hinzugefuegt"
+  def message: String = "Diese Komponente wurde erfolgreich zu der Konfiguration hinzugefuegt"
 }
 
 case class FinalComponent() extends ComponentStatus {

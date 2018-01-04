@@ -102,6 +102,19 @@ object CurrentConfig {
   def getLastStep: StepCurrentConfig = {
     currentConfig.getLastStep
   }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param StepCurrentConfig, String
+   * 
+   * @return Unit
+   */
+  def removeComponent(stepId: String, componentId: String): List[Component] = {
+    currentConfig.removeComponent(stepId, componentId)
+  }
 }
 
 /**
@@ -213,8 +226,7 @@ class CurrentConfig {
    */
   private def getStep(stepId: String): Option[StepCurrentConfig] = {
     
-    val stepA = this.firstStep
-    getStepRecursive(stepA, stepId)
+    getStepRecursive(this.firstStep, stepId)
   }
   
   /**
@@ -258,17 +270,35 @@ class CurrentConfig {
    * @return Unit
    */
   private def getNextStep(step: Option[StepCurrentConfig]): Unit = {
-     
     step.get.nextStep match {
       case Some(nextStep) => {
-        Logger.info(step.get.stepId + " -> " + step.get.nameToShow)
-        step.get.components.reverse foreach {component => Logger.info("====" + component.componentId + " -> " + component.nameToShow)}
+        Logger.info(step.get.getClass.hashCode() + " -> " + step.get.stepId + " -> " + step.get.nameToShow)
+        step.get.components.reverse foreach {component => Logger.info("====" + component.hashCode() + "-" + component.componentId + " -> " + component.nameToShow)}
         getNextStep(step.get.nextStep)
       }
       case None => {
-        Logger.info(step.get.stepId + " -> " + step.get.nameToShow)
-        step.get.components.reverse foreach {component => Logger.info("====" + component.componentId + " -> " + component.nameToShow)}
+        Logger.info(step.get.getClass.hashCode() + " -> " + step.get.stepId + " -> " + step.get.nameToShow)
+        step.get.components.reverse foreach {component => Logger.info("====" + component.hashCode() + "-" + component.componentId + " -> " + component.nameToShow)}
       }
     }
+  }
+  
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.2
+   * 
+   * @param StepCurrentConfig
+   * 
+   * @return Unit
+   */
+  private def removeComponent(stepId: String, componentId: String): List[Component] = {
+    val step: Option[StepCurrentConfig] = getCurrentStep(stepId)
+    Logger.info("Step with deleted component " + step.get.getClass.hashCode())
+    step.get.components = step.get.components.dropWhile(_.componentId == componentId)
+    Logger.info("Step with deleted component " + step.get.components)
+    printCurrentConfig
+    step.get.components
   }
 }
