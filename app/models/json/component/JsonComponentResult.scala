@@ -11,9 +11,7 @@ import models.json.common.JsonDependency
 case class JsonComponentResult (
     selectedComponentId: String,
     stepId: String,
-    status: String,
-    message: String,
-    nextStepExistence: Boolean,
+    status: JsonComponentStatus,
     dependencies: List[JsonDependency]
 )
 

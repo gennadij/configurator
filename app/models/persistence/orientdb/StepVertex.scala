@@ -19,9 +19,6 @@ import models.currentConfig.CurrentConfig
 import models.status.Status
 import com.tinkerpop.blueprints.Vertex
 import play.api.Logger
-import models.status.common.ClassCastError
-import models.status.common.ODBReadError
-import models.status.common.ODBReadError
 import models.wrapper.dependency.Dependency
 import models.currentConfig.StepCurrentConfig
 import models.currentConfig.StepCurrentConfig
@@ -31,6 +28,8 @@ import models.status.StartConfigSuccessful
 import models.status.CurrentConfigInconsistent
 import models.status.CurrentConfigConsistent
 import models.status.NextStepError
+import models.status.ODBReadError
+import models.status.ClassCastError
 
 
 /**
@@ -95,11 +94,10 @@ object StepVertex {
     }catch{
       case e2 : ClassCastException => {
         graph.rollback()
-        val status: Status = new ClassCastError
         StartConfigOut(
             None,
-            status.status,
-            status.message
+            ClassCastError().status,
+            ClassCastError().message
         )
       }
       case e1: Exception => {
@@ -307,10 +305,9 @@ object StepVertex {
    * @return
    */
   def createErrorStep: NextStepOut = {
-    val status: Status = new ODBReadError
     NextStepOut(
-        status.status,
-        status.message,
+        ODBReadError().status,
+        ODBReadError().message,
         None
     )
   }

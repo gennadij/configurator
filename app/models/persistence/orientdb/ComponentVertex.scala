@@ -16,31 +16,25 @@ import models.wrapper.common.SelectionCriterium
 import models.currentConfig.CurrentConfig
 import models.currentConfig.StepCurrentConfig
 import models.wrapper.common.Component
-import models.status.common.Successful
-import models.status.common.Error
-import models.status.SelectionCriteriumStatus
-import models.status.SelectionCriteriumStatus
 import models.json.component.JsonComponentOut
-import models.status.common.ClassCastError
-import models.status.common.ODBReadError
 import models.status.component.StatusComponent
 import models.status.component.RequireComponent
 import models.status.component.AllowNextComponent
 import models.status.component.ExcludeComponent
 import models.status.component.StatusSelectedComponent
-import models.status.component.StatusSelectedComponent
 import models.status.component.ExcludedComponent
 import models.status.component.NotExcludedComponent
 import models.status.component.StatusExcludeDependency
-import models.status.component.StatusExcludeDependency
-import models.status.component.StatusSelectionCriterium
-import models.status.component.StatusSelectionCriterium
-import models.status.component.StatusSelectedComponent
-import models.status.component.StatusSelectedComponent
 import models.status.component.AddComponent
 import models.status.component.RemoveComponent
 import models.status.component.RequireNextStep
 import models.status.FinalComponent
+import models.status.component.StatusSelectionCriterium
+import models.status.ClassCastError
+import models.status.ODBReadError
+import models.status.ClassCastError
+import models.status.Status
+import models.status.component.StatusSelectionCriterium
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -137,34 +131,24 @@ object ComponentVertex {
       
       val dependencies: List[Dependency] = requireDependenciesOut ::: excludeDependenciesOut
       
-      createComponentOut(status, vComponent, vFatherStep.getIdentity.toString, currentStep, dependencies)
+      createComponentOut(
+          status, 
+          currentStep, 
+          vComponent.getIdentity.toString, 
+          vComponent.getProperty(PropertyKey.NAME_TO_SHOW), 
+          vFatherStep.getIdentity.toString, 
+          dependencies)
       
     }catch{
       case e2 : ClassCastException => {
         graph.rollback()
         Logger.error(e2.printStackTrace().toString)
-        val status: Status = new ClassCastError
-        ComponentOut(
-            "",
-            "",
-            status.status,
-            status.message,
-            false,
-            List()
-        )
+        createExceptionComponentOut(ClassCastError())
       }
       case e1: Exception => {
         graph.rollback()
-        val status: Status = new ODBReadError
         Logger.error(e1.printStackTrace().toString)
-        ComponentOut(
-            "",
-            "",
-            status.status,
-            status.message,
-            false,
-            List()
-        )
+        createExceptionComponentOut(ODBReadError())
       }
     }
   }
@@ -181,161 +165,27 @@ object ComponentVertex {
   
   def createComponentOut(
       status: StatusComponent, 
-      vComponent: OrientVertex, 
-      fatherStepId: String, 
       currentStep: Option[StepCurrentConfig],
+      componentId: String, 
+      componentNameToShow: String,
+      fatherStepId: String, 
       dependencies: List[Dependency]): ComponentOut = {
+    
     status.excludeDependency match {
-        case statusEC: ExcludedComponent => {
-          ComponentOut(
-              vComponent.getIdentity.toString,
-              fatherStepId,
-              statusEC.status,
-              statusEC.message,
-              status.nextStepExistence,
-              List()
-           )
-        }
-        case statusNEC: NotExcludedComponent => {
-          status.selectionCriterium match {
-            case statusSC: RequireComponent => {
-              val component: Component = Component(
-                  vComponent.getIdentity.toString,
-                  vComponent.getProperty(PropertyKey.NAME_TO_SHOW)
-              )
-              status.selectedComponent match {
-                case statusSelC: RemoveComponent => {
-                  CurrentConfig.addComponent(currentStep.get, component)
-                  CurrentConfig.printCurrentConfig
-                  ComponentOut(
-                      vComponent.getIdentity.toString,
-                      fatherStepId,
-                      statusSelC.status,
-                      statusSelC.message,
-                      status.nextStepExistence,
-                      dependencies
-                   )
-                }
-                case statusSelC: AddComponent => {
-                  ComponentOut(
-                      vComponent.getIdentity.toString,
-                      fatherStepId,
-                      statusSelC.status,
-                      statusSelC.message,
-                      status.nextStepExistence,
-                      dependencies
-                   )
-                }
-              }
-            }
-            case statusRN: RequireNextStep => {
-              val component: Component = Component(
-                  vComponent.getIdentity.toString,
-                  vComponent.getProperty(PropertyKey.NAME_TO_SHOW)
-              )
-              status.selectedComponent match {
-                  case statusSelC: RemoveComponent => {
-                    status.nextStepExistence match {
-                      case true => {
-                        ComponentOut(
-                            vComponent.getIdentity.toString,
-                            fatherStepId,
-                            statusRN.status,
-                            statusRN.message,
-                            status.nextStepExistence,
-                            dependencies
-                        )
-                      }
-                      case false => {
-//                        val status: Status = FinalComponent
-                        ComponentOut(
-                            vComponent.getIdentity.toString,
-                            fatherStepId,
-                            statusSelC.status,
-                            statusSelC.message,
-                            status.nextStepExistence,
-                            dependencies
-                        )
-                      }
-                    }
-                  }
-                  case statusSelC: AddComponent => {
-                    CurrentConfig.addComponent(currentStep.get, component)
-                    CurrentConfig.printCurrentConfig
-                    status.nextStepExistence match {
-                      case true => {
-                        ComponentOut(
-                            vComponent.getIdentity.toString,
-                            fatherStepId,
-                            statusRN.status,
-                            statusRN.message,
-                            status.nextStepExistence,
-                            dependencies
-                        )
-                      }
-                      case false => {
-//                        val status: Status = FinalComponent
-                        ComponentOut(
-                            vComponent.getIdentity.toString,
-                            fatherStepId,
-                            statusSelC.status,
-                            statusSelC.message,
-                            status.nextStepExistence,
-                            dependencies
-                        )
-                      }
-                    }
-                  }
-              }
-            }
-            case statusANC: AllowNextComponent => {
-              val component: Component = Component(
-                  vComponent.getIdentity.toString,
-                  vComponent.getProperty(PropertyKey.NAME_TO_SHOW)
-              )
-              
-              status.selectedComponent match {
-                case statusRC: RemoveComponent => {
-                  ComponentOut(
-                      vComponent.getIdentity.toString,
-                      fatherStepId,
-                      statusRC.status,
-                      statusRC.message,
-                      status.nextStepExistence,
-                      dependencies
-                  )
-                }
-                case statusAC: AddComponent => {
-                  CurrentConfig.addComponent(currentStep.get, component)
-                  
-                  CurrentConfig.printCurrentConfig
-                  
-                  ComponentOut(
-                      vComponent.getIdentity.toString,
-                      fatherStepId,
-                      statusAC.status,
-                      statusAC.message,
-                      status.nextStepExistence,
-                      dependencies
-                  )
-                }
-              }
-            }
-            case statusEC: ExcludeComponent => {
-              CurrentConfig.printCurrentConfig
-              
-              ComponentOut(
-                  vComponent.getIdentity.toString,
-                  fatherStepId,
-                  statusEC.status,
-                  statusEC.message,
-                  status.nextStepExistence,
-                  dependencies
-               )
-            }
-          }
-        }
+      case statusExcludedComponent: ExcludedComponent => {
+        ComponentOut(
+            componentId,
+            fatherStepId,
+            statusExcludedComponent.status,
+            statusExcludedComponent.message,
+            status.nextStepExistence,
+            List()
+         )
       }
+      case statusNotExcludedComponent: NotExcludedComponent => {
+        defineStatusForSelectionCreterium(status, currentStep, componentId, componentNameToShow, fatherStepId, dependencies)
+      }
+    }
   }
   
   /**
@@ -349,18 +199,133 @@ object ComponentVertex {
    */
   
   def checkSelectedComponent(currentStep: Option[StepCurrentConfig], componentInId: String): StatusSelectedComponent = {
-      currentStep match {
-        case Some(step) => {
-          step.components.exists(_.componentId == componentInId) match {
-            case true => {
-              CurrentConfig.removeComponent(currentStep.get.stepId, componentInId)
-              RemoveComponent()
-            }
-            case false => AddComponent()
+    currentStep match {
+      case Some(step) => {
+        step.components.exists(_.componentId == componentInId) match {
+          case true => {
+            CurrentConfig.removeComponent(currentStep.get.stepId, componentInId)
+            RemoveComponent()
+          }
+          case false => AddComponent()
+        }
+      }
+      case None => AddComponent()
+    }
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.2
+   * 
+   * @param 
+   * 
+   * @return ComponentOut
+   */
+  def defineStatusForSelectionCreterium(
+      status: StatusComponent, 
+      currentStep: Option[StepCurrentConfig],
+      componentId: String,
+      componentNameToShow: String,
+      fatherStepId: String,
+      dependencies: List[Dependency]): ComponentOut = {
+    status.selectionCriterium match {
+      case statusRequireComponent:   RequireComponent => {
+        
+        defineStatusSelectedComponent(status, statusRequireComponent, currentStep, componentId, componentNameToShow, fatherStepId, dependencies)
+      }
+      case statusRequireNextStep:    RequireNextStep => {
+        
+        defineStatusSelectedComponent(status, statusRequireNextStep, currentStep, componentId, componentNameToShow, fatherStepId, dependencies)
+        
+      }
+      case statusAllowNextComponent: AllowNextComponent => {
+        defineStatusSelectedComponent(status, statusAllowNextComponent, currentStep, componentId, componentNameToShow, fatherStepId, dependencies)
+      }
+      case statusExcludeComponent:   ExcludeComponent => {
+        CurrentConfig.printCurrentConfig
+        ComponentOut(
+            componentId,
+            fatherStepId,
+            statusExcludeComponent.status,
+            statusExcludeComponent.message,
+            status.nextStepExistence,
+            dependencies
+         )
+      }
+    }
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.2
+   * 
+   * @param 
+   * 
+   * @return ComponentOut
+   */
+  def defineStatusSelectedComponent(
+      status: StatusComponent,
+      statusSelectionCriterium: StatusSelectionCriterium,
+      currentStep: Option[StepCurrentConfig],
+      componentId: String,
+      componentNameToShow: String,
+      fatherStepId: String,
+      dependencies: List[Dependency]): ComponentOut = {
+    status.selectedComponent match {
+      case statusRemoveComponent: RemoveComponent => {
+        ComponentOut(
+            componentId,
+            fatherStepId,
+            statusRemoveComponent.status,
+            statusRemoveComponent.message,
+            status.nextStepExistence,
+            dependencies
+         )
+      }
+      case statusAddComponent: AddComponent => {
+        val component: Component = Component(
+            componentId,
+            componentNameToShow
+        )
+        CurrentConfig.addComponent(currentStep.get, component)
+        CurrentConfig.printCurrentConfig
+        status.nextStepExistence match {
+          case true => {
+            ComponentOut(
+                componentId,
+                fatherStepId,
+                statusSelectionCriterium.status,
+                statusSelectionCriterium.message,
+                status.nextStepExistence,
+                dependencies
+            )
+          }
+          case false => {
+            ComponentOut(
+                componentId,
+                fatherStepId,
+                FinalComponent().status,
+                FinalComponent().message,
+                status.nextStepExistence,
+                dependencies
+            )
           }
         }
-        case None => AddComponent()
       }
+    }
+  }
+  
+  def createExceptionComponentOut(status: Status): ComponentOut = {
+    ComponentOut(
+            "",
+            "",
+            status.status,
+            status.message,
+            false,
+            List()
+        )
   }
   
    /**
