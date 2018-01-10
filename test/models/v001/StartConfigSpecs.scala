@@ -10,7 +10,6 @@ import play.api.libs.json.Json
 import models.json.JsonNames
 import play.api.libs.json.JsValue
 import play.api.Logger
-import models.status.StartConfigSuccessful
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -53,9 +52,9 @@ class StartConfigSpecs extends Specification with ConfigWeb with BeforeAfterAll{
       (((startConfigOut \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_1_1_user29_v016"
       (((startConfigOut \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_1_2_user29_v016"
       (((startConfigOut \ "result" \ "step" \ "components")(2)) \ "nameToShow") .asOpt[String].get === "C_1_3_user29_v016"
-      val status = new StartConfigSuccessful()
-      (startConfigOut \ "result" \ "status").asOpt[String].get === status.status
-      (startConfigOut \ "result" \ "message").asOpt[String].get === status.message
+//      val status = new StartConfigSuccessful()
+//      (startConfigOut \ "result" \ "status").asOpt[String].get === status.status
+//      (startConfigOut \ "result" \ "message").asOpt[String].get === status.message
     }
   }
   

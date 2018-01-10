@@ -10,11 +10,6 @@ import play.api.libs.json.Json
 import models.json.JsonNames
 import play.api.Logger
 import play.api.libs.json.JsValue
-import models.status.AllowNextComponent
-import models.status.NextStepSuccessful
-import models.status.RequireNextStep
-import models.status.FinalComponent
-import models.status.NextStepError
 import models.persistence.db.orientdb.PropertyKey
 
 /**

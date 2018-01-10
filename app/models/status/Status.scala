@@ -15,6 +15,16 @@ case class FinalComponent() extends Status {
   def message: String = "Es wurde letze Komponente ausgewaelt. Konfiguration ist abgeschlossen"
 }
 
+case class Success() extends Status {
+  def status: String = "SUCCESS"
+  def message: String = "Die Aktion ist erfolgreich"
+}
+
+case class Error() extends Status {
+  def status: String = "ERROR"
+  def message: String = "Die Aktion ist nicht erfolgreich"
+}
+
 case class ClassCastError() extends Status{
   def status: String = "CLASS_CAST_ERROR"
   def message: String = "Interner Fehler des Configurators"

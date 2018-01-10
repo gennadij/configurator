@@ -25,8 +25,8 @@ import models.status.component.StatusSelectedComponent
 import models.status.component.ExcludedComponent
 import models.status.component.NotExcludedComponent
 import models.status.component.StatusExcludeDependency
-import models.status.component.AddComponent
-import models.status.component.RemoveComponent
+import models.status.component.AddedComponent
+import models.status.component.RemovedComponent
 import models.status.component.RequireNextStep
 import models.status.FinalComponent
 import models.status.component.StatusSelectionCriterium
@@ -35,6 +35,11 @@ import models.status.ODBReadError
 import models.status.ClassCastError
 import models.status.Status
 import models.status.component.StatusSelectionCriterium
+import models.status.Status
+import models.status.Status
+import models.status.Success
+import models.status.component.ErrorComponent
+import models.status.Error
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -60,27 +65,19 @@ object ComponentVertex {
       
       val vComponent = graph.getVertex(componentIn.componentId)
       
-      val dependenciesOut: List[Dependency] = getComponentDependenciesOut(vComponent)
-      
-//      Logger.info(this.getClass.getSimpleName + " dependenciesOut : " + dependenciesOut)
-      
-      val dependenciesIn: List[Dependency] = getComponentDependenciesIn(vComponent)
-      
-//      Logger.info(this.getClass.getSimpleName + " dependenciesIn : " + dependenciesIn)
-      
-      val excludeDependenciesOut: List[Dependency] = dependenciesOut filter {_.dependencyType == PropertyKey.EXCLUDE}
+      val excludeDependenciesOut: List[Dependency] = getComponentDependenciesOut(vComponent) filter {_.dependencyType == PropertyKey.EXCLUDE}
       
 //      Logger.info(this.getClass.getSimpleName + " excludeDependenciesOut : " + excludeDependenciesOut)
       
-      val requireDependenciesOut: List[Dependency] = dependenciesOut filter {_.dependencyType == PropertyKey.REQUIRE}
+      val requireDependenciesOut: List[Dependency] = getComponentDependenciesOut(vComponent) filter {_.dependencyType == PropertyKey.REQUIRE}
       
 //      Logger.info(this.getClass.getSimpleName + " requireDependenciesOut : " + requireDependenciesOut)
       
-      val excludeDependenciesIn: List[Dependency] = dependenciesIn filter {_.dependencyType == PropertyKey.EXCLUDE}
+      val excludeDependenciesIn: List[Dependency] = getComponentDependenciesIn(vComponent) filter {_.dependencyType == PropertyKey.EXCLUDE}
       
 //      Logger.info(this.getClass.getSimpleName + " excludeDependenciesIn : " + excludeDependenciesIn)
       
-      val requireDependenciesIn: List[Dependency] = dependenciesIn filter {_.dependencyType == PropertyKey.REQUIRE}
+      val requireDependenciesIn: List[Dependency] = getComponentDependenciesIn(vComponent) filter {_.dependencyType == PropertyKey.REQUIRE}
       
 //      Logger.info(this.getClass.getSimpleName + " requireDependenciesIn : " + requireDependenciesIn)
       
@@ -94,7 +91,7 @@ object ComponentVertex {
       
       val currentStep: Option[StepCurrentConfig] = CurrentConfig.getCurrentStep(vFatherStep.getIdentity.toString)
       
-      Logger.info(this.getClass.getSimpleName + ": currentStep from CurrentConfig " + currentStep.get.getClass.hashCode())
+//      Logger.info(this.getClass.getSimpleName + ": currentStep from CurrentConfig " + currentStep.get.getClass.hashCode())
       
       //TODO
       //Implementierung der Wiederholten Auswahl der Komponent
@@ -108,17 +105,18 @@ object ComponentVertex {
       //Wenn die Komponente schon in der aktuellen Konfiguration vorhanden ist, dann wird diese Komponente aus dem Schritt entfernt.
       //Bei der Entfernung der Komponente muuss der Status des Schrittes beachtet werden.
       
-      var statusDeletedComponent = false
+      // Falls die Komponente noch mal ausgewaehlt wurde, wird diese aus der Konfiguration entfernt
+      val statusSelectedComponent: StatusSelectedComponent = checkSelectedComponent(currentStep, componentIn.componentId)
       
       val previousSelectedComponents: List[Component] = currentStep match {
         case Some(step) => step.components
         case None => List()
       }
-      
-      val statusSelectedComponent: StatusSelectedComponent = checkSelectedComponent(currentStep, componentIn.componentId)
      
+      Logger.info(this.getClass.getSimpleName + ": previousSelectedComponents " + previousSelectedComponents)
+      
       val stausSelectionCriterium: StatusSelectionCriterium = 
-          checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium)
+          checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium, statusSelectedComponent)
       
 //      Logger.info(this.getClass.getSimpleName + ": " + stausSelectionCriterium)
       
@@ -126,10 +124,30 @@ object ComponentVertex {
       
       val nextStepExistence: Boolean = checkNextStepExistence(vComponent)
       
-      val status: StatusComponent = StatusComponent(
-          stausSelectionCriterium, statusSelectedComponent, statusExcludeDependencies, nextStepExistence)
+      val commonStatus: Status = Success()
+      
+      val status: StatusComponent = statusExcludeDependencies match {
+        case NotExcludedComponent() => {
+          StatusComponent(
+            Some(stausSelectionCriterium), 
+            Some(statusSelectedComponent), 
+            Some(statusExcludeDependencies), 
+            Some(commonStatus), 
+            Some(nextStepExistence))
+        }
+        case ExcludedComponent() => {
+          StatusComponent(
+            Some(stausSelectionCriterium), 
+            Some(ErrorComponent()), 
+            Some(statusExcludeDependencies), 
+            Some(Error()), 
+            Some(nextStepExistence))
+        }
+      }
       
       val dependencies: List[Dependency] = requireDependenciesOut ::: excludeDependenciesOut
+      
+//      Logger.info(this.getClass.getSimpleName + " Status : " + status)
       
       createComponentOut(
           status, 
@@ -143,12 +161,14 @@ object ComponentVertex {
       case e2 : ClassCastException => {
         graph.rollback()
         Logger.error(e2.printStackTrace().toString)
-        createExceptionComponentOut(ClassCastError())
+        val errorStatus = StatusComponent(None, None, None, Some(ClassCastError()), None)
+        createExceptionComponentOut(errorStatus)
       }
       case e1: Exception => {
         graph.rollback()
+        val errorStatus = StatusComponent(None, None, None, Some(ODBReadError()), None)
         Logger.error(e1.printStackTrace().toString)
-        createExceptionComponentOut(ODBReadError())
+        createExceptionComponentOut(errorStatus)
       }
     }
   }
@@ -171,14 +191,12 @@ object ComponentVertex {
       fatherStepId: String, 
       dependencies: List[Dependency]): ComponentOut = {
     
-    status.excludeDependency match {
+    status.excludeDependency.get match {
       case statusExcludedComponent: ExcludedComponent => {
-        ComponentOut(
+        ComponentOut(  
             componentId,
             fatherStepId,
-            statusExcludedComponent.status,
-            statusExcludedComponent.message,
-            status.nextStepExistence,
+            status,
             List()
          )
       }
@@ -204,12 +222,12 @@ object ComponentVertex {
         step.components.exists(_.componentId == componentInId) match {
           case true => {
             CurrentConfig.removeComponent(currentStep.get.stepId, componentInId)
-            RemoveComponent()
+            RemovedComponent()
           }
-          case false => AddComponent()
+          case false => AddedComponent()
         }
       }
-      case None => AddComponent()
+      case None => AddedComponent()
     }
   }
   
@@ -229,7 +247,7 @@ object ComponentVertex {
       componentNameToShow: String,
       fatherStepId: String,
       dependencies: List[Dependency]): ComponentOut = {
-    status.selectionCriterium match {
+    status.selectionCriterium.get match {
       case statusRequireComponent:   RequireComponent => {
         
         defineStatusSelectedComponent(status, statusRequireComponent, currentStep, componentId, componentNameToShow, fatherStepId, dependencies)
@@ -247,9 +265,7 @@ object ComponentVertex {
         ComponentOut(
             componentId,
             fatherStepId,
-            statusExcludeComponent.status,
-            statusExcludeComponent.message,
-            status.nextStepExistence,
+            status,
             dependencies
          )
       }
@@ -273,42 +289,45 @@ object ComponentVertex {
       componentNameToShow: String,
       fatherStepId: String,
       dependencies: List[Dependency]): ComponentOut = {
-    status.selectedComponent match {
-      case statusRemoveComponent: RemoveComponent => {
+    status.selectedComponent.get match {
+      case statusErrorComponent: ErrorComponent => {
+        ComponentOut(
+            "",
+            "",
+            status,
+            List()
+        )
+      }
+      case statusRemoveComponent: RemovedComponent => {
         ComponentOut(
             componentId,
             fatherStepId,
-            statusRemoveComponent.status,
-            statusRemoveComponent.message,
-            status.nextStepExistence,
+            status,
             dependencies
          )
       }
-      case statusAddComponent: AddComponent => {
+      case statusAddComponent: AddedComponent => {
         val component: Component = Component(
             componentId,
             componentNameToShow
         )
         CurrentConfig.addComponent(currentStep.get, component)
         CurrentConfig.printCurrentConfig
-        status.nextStepExistence match {
+        status.nextStepExistence.get match {
           case true => {
             ComponentOut(
                 componentId,
                 fatherStepId,
-                statusSelectionCriterium.status,
-                statusSelectionCriterium.message,
-                status.nextStepExistence,
+                status,
                 dependencies
             )
           }
           case false => {
+            val finalStepStatus = status.copy(common = Some(FinalComponent()))
             ComponentOut(
                 componentId,
                 fatherStepId,
-                FinalComponent().status,
-                FinalComponent().message,
-                status.nextStepExistence,
+                status, //TODO Final Step Status fehlt
                 dependencies
             )
           }
@@ -317,13 +336,11 @@ object ComponentVertex {
     }
   }
   
-  def createExceptionComponentOut(status: Status): ComponentOut = {
+  def createExceptionComponentOut(status: StatusComponent): ComponentOut = {
     ComponentOut(
             "",
             "",
-            status.status,
-            status.message,
-            false,
+            status,
             List()
         )
   }
@@ -430,17 +447,24 @@ object ComponentVertex {
   
   def checkSelectionCriterium(
       countOfSelectedComponents: Int, 
-      selectionCriterium: SelectionCriterium): StatusSelectionCriterium = {
+      selectionCriterium: SelectionCriterium,
+      statusSelectedComponent: StatusSelectedComponent): StatusSelectionCriterium = {
     //Ungepruefte Komponente, die noch nicht in der aktuellen Konfiguration hinzugefuegt wird
-    val countOfComponents = countOfSelectedComponents + 1
+    val countOfComponents = statusSelectedComponent match {
+      case AddedComponent() => countOfSelectedComponents + 1
+      case RemovedComponent() => countOfSelectedComponents
+      case ErrorComponent() => countOfSelectedComponents
+    }
+    
     val min = selectionCriterium.min
     val max = selectionCriterium.max
     
     Logger.info(this.getClass.getSimpleName + " countOfComponents : " + countOfComponents)
+    Logger.info(this.getClass.getSimpleName + " selectionCriterium : " + min + " " + max)
     
     selectionCriterium match {
       case requireComponent if min > countOfComponents && max > countOfComponents => RequireComponent()
-      case requireNextStep if min <= countOfComponents && max == countOfComponents => RequireComponent()
+      case requireNextStep if min <= countOfComponents && max == countOfComponents => RequireNextStep()
       case allowNextComponent if min <= countOfComponents && max > countOfComponents => AllowNextComponent()
       case excludeComponent if max < countOfComponents => ExcludeComponent()
     }

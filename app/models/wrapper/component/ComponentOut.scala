@@ -1,6 +1,9 @@
 package models.wrapper.component
 
 import models.wrapper.dependency.Dependency
+import models.status.component.StatusComponent
+import models.status.Status
+import models.status.Status
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -10,8 +13,6 @@ import models.wrapper.dependency.Dependency
 case class ComponentOut (
     selectedComponentId: String,
     stepId: String,
-    status: String,
-    message: String,
-    nextStepExistence: Boolean,
+    status: StatusComponent,
     dependencies: List[Dependency]
 )

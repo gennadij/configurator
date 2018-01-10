@@ -29,6 +29,9 @@ import models.json.component.JsonComponentResult
 import models.json.common.JsonDependency
 import models.currentConfig.StepCurrentConfig
 import models.json.currentConfig.JsonStepCurrentConfig
+import models.json.component.JsonComponentStatus
+import models.json.common.JsonStatus
+import models.status.component.StatusComponent
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -211,13 +214,56 @@ trait Wrapper {
    * @return ComponentIn
    */
   def toJsonComponentOut(componentOut: ComponentOut): JsonComponentOut = {
+    
+    val status: StatusComponent = componentOut.status
     JsonComponentOut(
         result = JsonComponentResult(
             componentOut.selectedComponentId,
             componentOut.stepId,
-            componentOut.status,
-            componentOut.message,
-            componentOut.nextStepExistence,
+            JsonComponentStatus(
+                status.selectionCriterium match {
+                  case Some(status) => {
+                    Some(JsonStatus(
+                        status.status,
+                        status.message
+                    ))
+                  }
+                  case None => None
+                },
+                status.selectedComponent match {
+                  case Some(status) => {
+                    Some(JsonStatus(
+                        status.status,
+                        status.message
+                    ))
+                  }
+                  case None => None
+                },
+                status.excludeDependency match {
+                  case Some(status) => {
+                    Some(JsonStatus(
+                        status.status,
+                        status.message
+                    ))
+                  }
+                  case None => None
+                },
+                status.common match {
+                  case Some(status) => {
+                    Some(JsonStatus(
+                        status.status,
+                        status.message
+                    ))
+                  }
+                  case None => None
+                },
+                status.nextStepExistence match {
+                  case Some(status) => {
+                    Some(status)
+                  }
+                  case None => None
+                }
+            ),
             componentOut.dependencies map (d => {
               JsonDependency(
                   d.outId,

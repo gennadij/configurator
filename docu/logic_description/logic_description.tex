@@ -104,11 +104,9 @@ bekommt der Benutzer die Fehlermeldung.
 Die Anzahl der Komponente die innerhalb eines Schrittes ausgew\"ahlt werden
 können, werden über den Parameter $<SelectionCriterum>$ gesteuert. Dieses
 Kriterium definiert für jeden Schritt die maximale und minimale Anzahl der
-Komponente, die von dem Benutzer ausge\"ahlt werden k\"onnen. Das Auswahlkriterium wird nach dem
-Pr\"ufung der Abh\"angigkeiten durchgeführt. Es werden follgende F\"alle
-unterschieden:
-
-countOfComponents = Anzahl der ausgew\"ahlten Komponenten
+Komponente, die von dem Benutzer ausge\"ahlt werden k\"onnen. Das Auswahlkriterium 
+wird nach demPr\"ufung der Abh\"angigkeiten durchgeführt. Es werden follgende F\"alle
+unterschieden:\\\\
 
 \begin{itemize}
     \item RequireComponent 
@@ -140,9 +138,25 @@ countOfComponents = Anzahl der ausgew\"ahlten Komponenten
     \begin{itemize}
         \item Wenn der Benutzer mehr Komponente als erlaubt ausw\"ahlen
         möchte.\\
-        \textbf{max $<$countOfComponents}
+        \textbf{max $<$ countOfComponents}
     \end{itemize}
 \end{itemize}
+
+\noindent\textbf{$<$countOfComponents$>$} = Anzahl der vorher
+ausgew\"ahlten Komponenten.
+Die Anzahl der Komponenten wird aus der aktuellen Konfiguraion ermittelt\\\\
+
+\noindent Die Variable $<countOfComponents>$ wird vor der Prüfung auf die
+Auswahlkriterium immmer angepasst. Die Ausgew\"ahlte Komponnete wird zuerst mit aktuellen
+Konfiguration verglichen. \\\\
+Wenn die ausgew\"ahlte Komponente nicht in der
+bestehenden Konfiguration exestiert, wird $<countOfComponents>$ auf 1
+inkrementiert. Somit wird tempor\"ar die ausgewählte Komponnte zu der aktuellen
+Konfiguration hinzugefügt. Nach dem alle Pr\"ufungen erfolgreich abgelaufen wird
+diese Komponnete zu der aktuellen Konfiguration hinzugefügt.\\\\
+Wenn die ausgew\"ahlte Komponente in der aktuellen Konfiguration gefunden wird.
+Das bedeutet, dass die Komponnete abgew\"ahlt wird und uas der Konfiguration
+entfernt werden muss, deswegn wird $<countOfComponents>$ nicht ver\"andert.
 
 \subsection{Hinweisfeld zu jeder Aktion}
 Der Server liefert bei jedem Aktion die Erklärungen zu diesen Aktion, deswegen

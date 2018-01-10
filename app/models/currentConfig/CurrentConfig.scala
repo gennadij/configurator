@@ -295,10 +295,11 @@ class CurrentConfig {
    */
   private def removeComponent(stepId: String, componentId: String): List[Component] = {
     val step: Option[StepCurrentConfig] = getCurrentStep(stepId)
+    Logger.info(this.getClass.getSimpleName + ": " + step.get.components + " " + componentId)
     Logger.info("Step with deleted component " + step.get.getClass.hashCode())
-    step.get.components = step.get.components.dropWhile(_.componentId == componentId)
+    step.get.components = step.get.components.filterNot(_.componentId == componentId)
     Logger.info("Step with deleted component " + step.get.components)
-    printCurrentConfig
+//    printCurrentConfig
     step.get.components
   }
 }
