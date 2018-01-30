@@ -18,7 +18,7 @@ import models.persistence.db.orientdb.PropertyKey
  * Created by Gennadi Heimann 22.12.2017
  */
 @RunWith(classOf[JUnitRunner])
-class CurrentConfigSpecs extends Specification with ConfigWeb with BeforeAfterAll{
+class Scenario_002_5_Specs extends Specification with ConfigWeb with BeforeAfterAll{
 
   val wC = WebClient.init
   

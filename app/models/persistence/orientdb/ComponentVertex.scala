@@ -92,20 +92,7 @@ object ComponentVertex {
       val currentStep: Option[StepCurrentConfig] = CurrentConfig.getCurrentStep(vFatherStep.getIdentity.toString)
       
 //      Logger.info(this.getClass.getSimpleName + ": currentStep from CurrentConfig " + currentStep.get.getClass.hashCode())
-      
-      //TODO
-      //Implementierung der Wiederholten Auswahl der Komponent
-      //Wenn der Benutzer noch mal auf der schon ausgewählete Komponente in dem beliebigen Schritt 
-      //wird diese Komponente aus der Konfiguration entfernt. Wenn diese Komponent die Abhängigkeiten hat 
-      //dann werden diese Abhängigkeiten geprüft und denentsprechend der Regeln behandelt.
-      //Zuerst wird der Schritt der ausgewählten Komponente gesucht.
-      //Danach wird dieser Schritt in der aktuelle Konfiguration gesucht. 
-      //Wenn kein Schritt gefunden wird, wird ein Fehler dem Benutzer weitergeleitet
-      //In dem gefundenem Schritt (aktuelle Konfiguration) wird die ausgewählte Komponente gesucht.
-      //Wenn die Komponente schon in der aktuellen Konfiguration vorhanden ist, dann wird diese Komponente aus dem Schritt entfernt.
-      //Bei der Entfernung der Komponente muuss der Status des Schrittes beachtet werden.
-      
-      // Falls die Komponente noch mal ausgewaehlt wurde, wird diese aus der Konfiguration entfernt
+
       val statusSelectedComponent: StatusSelectedComponent = checkSelectedComponent(currentStep, componentIn.componentId)
       
       val previousSelectedComponents: List[Component] = currentStep match {
@@ -113,7 +100,7 @@ object ComponentVertex {
         case None => List()
       }
      
-      Logger.info(this.getClass.getSimpleName + ": previousSelectedComponents " + previousSelectedComponents)
+//      Logger.info(this.getClass.getSimpleName + ": previousSelectedComponents " + previousSelectedComponents)
       
       val stausSelectionCriterium: StatusSelectionCriterium = 
           checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium, statusSelectedComponent)
@@ -459,8 +446,8 @@ object ComponentVertex {
     val min = selectionCriterium.min
     val max = selectionCriterium.max
     
-    Logger.info(this.getClass.getSimpleName + " countOfComponents : " + countOfComponents)
-    Logger.info(this.getClass.getSimpleName + " selectionCriterium : " + min + " " + max)
+//    Logger.info(this.getClass.getSimpleName + " countOfComponents : " + countOfComponents)
+//    Logger.info(this.getClass.getSimpleName + " selectionCriterium : " + min + " " + max)
     
     selectionCriterium match {
       case requireComponent if min > countOfComponents && max > countOfComponents => RequireComponent()

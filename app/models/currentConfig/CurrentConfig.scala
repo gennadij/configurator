@@ -256,7 +256,7 @@ class CurrentConfig {
    * @return Unit
    */
   private def printCurrentConfig: Unit = {
-    Logger.info("Current Configuration")
+//    Logger.info("Current Configuration")
     getNextStep(this.firstStep)
   }
   
@@ -295,10 +295,10 @@ class CurrentConfig {
    */
   private def removeComponent(stepId: String, componentId: String): List[Component] = {
     val step: Option[StepCurrentConfig] = getCurrentStep(stepId)
-    Logger.info(this.getClass.getSimpleName + ": " + step.get.components + " " + componentId)
-    Logger.info("Step with deleted component " + step.get.getClass.hashCode())
+//    Logger.info(this.getClass.getSimpleName + ": " + step.get.components + " " + componentId)
+//    Logger.info("Step with deleted component " + step.get.getClass.hashCode())
     step.get.components = step.get.components.filterNot(_.componentId == componentId)
-    Logger.info("Step with deleted component " + step.get.components)
+//    Logger.info("Step with deleted component " + step.get.components)
 //    printCurrentConfig
     step.get.components
   }

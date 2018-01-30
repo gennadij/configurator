@@ -17,6 +17,7 @@ import models.status.component.AddedComponent
 import models.status.component.NotExcludedComponent
 import models.status.Success
 import models.status.component.RemovedComponent
+import models.status.component.RequireComponent
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -24,7 +25,7 @@ import models.status.component.RemovedComponent
  * Created by Gennadi Heimann 03.01.2018
  */
 @RunWith(classOf[JUnitRunner])
-class CurrentConfigWithDoubleSelectedComponent_1  extends Specification with ConfigWeb with BeforeAfterAll{
+class Scenario_002_2_Specs  extends Specification with ConfigWeb with BeforeAfterAll{
 
   val wC = WebClient.init
   
@@ -34,7 +35,7 @@ class CurrentConfigWithDoubleSelectedComponent_1  extends Specification with Con
   def afterAll() = {
   }
   
-  "Specification spezifiziert CurrentConfig bei der doppeltem Auswahl der Komponente " >> {
+  "Scenario 002_2 -> Specification spezifiziert CurrentConfig bei der doppeltem Auswahl der Komponente " >> {
     "Die Komponente C_1_1_user29_v016 wird zwei mal ausgewaelt" >> {
       val configUrl = "http://contig1/user29_v016"
       val startConfigIn = Json.obj(
@@ -127,7 +128,7 @@ class CurrentConfigWithDoubleSelectedComponent_1  extends Specification with Con
       (((componentOut_2 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
       (((componentOut_2 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
       
-      val statusSelectionCriterium_2 = AllowNextComponent()
+      val statusSelectionCriterium_2 = RequireComponent()
       (componentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "status").asOpt[String].get === statusSelectionCriterium_2.status
       (componentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === statusSelectionCriterium_2.message
       
@@ -160,67 +161,6 @@ class CurrentConfigWithDoubleSelectedComponent_1  extends Specification with Con
       (jsonCurrentConfigOut_2 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_2 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
       (result_2 \ "step" \ "components").asOpt[List[JsValue]].get.size === 0
-      
-//      Logger.info(this.getClass.getSimpleName + ": =================================================")
-//      
-//      val componentIdC12: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-//            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_2_user29_v016")
-//            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
-//      
-//      val componentIn_3 = Json.obj(
-//          "json" -> JsonNames.COMPONENT
-//          ,"params" -> Json.obj(
-//               "componentId" -> componentIdC11
-//           )
-//      )
-//      Logger.info("componentIn_2 " + componentIn_2)
-//      
-//      val componentOut_3: JsValue = wC.handleMessage(componentIn_3)
-//      
-//      Logger.info("componentOut_3 " + componentOut_3)
-//      
-//      val jsonCurrentConfigIn_3 : JsValue = Json.obj(
-//          "json" -> JsonNames.CURRENT_CONFIG
-//      )
-//      
-//      val jsonCurrentConfigOut_3: JsValue = wC.handleMessage(jsonCurrentConfigIn_2)
-//      
-//      Logger.info(this.getClass.getSimpleName + ": currentConfigIn " + jsonCurrentConfigIn_3)
-//      Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + jsonCurrentConfigOut_3)
-//      
-//      val result_3 = (jsonCurrentConfigOut_3 \ "result")
-//      (jsonCurrentConfigOut_3 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-//      (result_3 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
-//      (result_3 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
-////      ((result_1 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_2_user29_v016")
-//      
-//      Logger.info(this.getClass.getSimpleName + ": =================================================")
-//      
-//      val componentIn_4 = Json.obj(
-//          "json" -> JsonNames.COMPONENT
-//          ,"params" -> Json.obj(
-//               "componentId" -> componentIdC12
-//           )
-//      )
-//      Logger.info("componentIn_4 " + componentIn_4)
-//      
-//      val componentOut_4: JsValue = wC.handleMessage(componentIn_4)
-//      
-//      Logger.info("componentOut_4 " + componentOut_4)
-//      
-//      val jsonCurrentConfigIn_4 : JsValue = Json.obj(
-//          "json" -> JsonNames.CURRENT_CONFIG
-//      )
-//      
-//      val jsonCurrentConfigOut_4: JsValue = wC.handleMessage(jsonCurrentConfigIn_4)
-//      
-//      Logger.info(this.getClass.getSimpleName + ": currentConfigIn " + jsonCurrentConfigIn_4)
-//      Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + jsonCurrentConfigOut_4)
-//      
-//      val result_4 = (jsonCurrentConfigOut_4 \ "result")
-//      (jsonCurrentConfigOut_4 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-//      (result_4 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
-//      (result_4 \ "step" \ "components").asOpt[List[JsValue]].get.size === 0
     }
   }
 }

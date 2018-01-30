@@ -168,29 +168,78 @@ werden kann.
 Der Server bekommt von dem Web-Client die ausgew\"ahlte Komponente.
 
 \begin{enumerate}
-    \item Die Komponente $<Vertex>$ aus der DB lesen.
+    \item Die Komponente $<Vertex>$ aus der DB lesen. $<vComponent>$
+    
     \item Alle ausgehende und eingehende Abh\"angigkeiten $<Edge>$ dieser
     Komponente aus DB lesen.
+    
     \item Die Abh\"angigkeiten werden auf folgende Arten gefiltert:
+    
     \begin{itemize}
         \item Die $<exclude>$ ausgehende Abh\"angigkeiten
-        (outExcludeDependencies)
+        $<excludeDependenciesOut>$
         \item Die $<exclude>$ eingehende Abh\"angigkeiten
-        (inExcludeDependencies)
+        $<excludeDependenciesIn>$
         \item Die $<require>$ ausgehende Abh\"angigkeiten
-        (outRequireDependencies)
+        $<requireDependenciesOut>$
         \item Die $<require>$ eingehende Abh\"angigkeiten
-        (inRequireDependencies)
+        $<requireDependenciesIn>$
     \end{itemize}
+    
     \item Zu jede Abh\"angigkeit werden dazugeh\"orige abh\"qangige Komponente
     ermittelt.
-    \item In dem Vaterschritt der Komponente wird das Auswahlkriterium
-    ausgelesen
-    \item Aus der aktuellen Konfiguration wird die Anzahl davor ausgew\"ahlten
-    Komponente ermittelt und mit Auswahlkriterium verglichen. Die ermittelte
-    Entscheidung wird unter Abh\"angigkeiten erkl\"art.
-    \item 
+    
+    \item Der Vaterschritt der ausgew\"ahlten Komponente wird aus der DB
+    abgefragt. $<vFatherStep>$
+    
+    \item Aus diesem Vaterschritt wird das Auswahlkriterium ausgelesen.
+    $<selectionCriterium>$
+    
+    \item Der aktuelle Schritt wird aus der Aktuellen Konfiguration ebenso
+    ausgelesen. $<currentStep>$
+    
+    \item Im aktuellem Schritt aus der aktuellen Konfiguration wird gepr\"uft,
+    ob die ausgew\"ahlte Komponnte in vorherigen Aktionen ausgew\"ahlt war.
+    Ausf\"uhrende Funktion $<checkSelectedComponent(currentStep,componentId)>$
+    
+    \begin{itemize}
+        \item JA $->$ Die Komponente aus der aktuellen Konfiguration wird
+        gel\"oscht. Der Status ist $<RemovedComponent>$
+        Wenn die zu l\"oschende Komponente die Abh\"angigkeiten hat, werden
+        diese dementsprechend der Regel behandelt.
+        \item NEIN $->$ Der Status ist $<AddedComponent>$
+    \end{itemize}
+    
+    \item Nachdem die aktuelle Konfiguration konsistent ist, werden
+    alle vorher ausgew\"ahlte Komponente des Schrittes aus der
+    aktuellen Konfiguration ausgelesen. $<previousSelectedComponents>$
+    
+    \item Die definierte Auswahlkriterium im Vaterschritt wird mit dem vorher
+    ausgew\"ahlten Komponenten verglichen und nach der Regeln der
+    Auswahlkriterium wird die aktuell ausgew\"ahlte Komponente entweder zu der
+    aktuellen Konfiguration hizugef\"ugt oder nicht hinzugef\"ugt.
+    Ausf\"uhrende Funktion $<checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium, statusSelectedComponent)>$
+    
+    \item Danach wird geschaut ob die ausgew\"ahlte KOmponente von einem anderen
+    Komponente ausgeschlossen wird.
+    Ausf\"uhrende Funktion $<checkExcludeDependencies(currentStep.get, excludeDependenciesIn)>$
+    
+    \item Als nächstes wird geschaut ob die Komponente n\"achsten Schritt hat.
+    Ausf\"uhrende Funktion $<checkNextStepExistence(vComponent)>$
+    
+    \item Der allgemeiner Status wird zurzeit auf erfolgreich gesetzt.
+    
+    \item Alle erreichen Status werden zu der $<StatusComponent>$ hinzugef\"ugt.
+    
+    \item Alle Abhengigkeiten von $<requireDependenciesOut>$ und
+    $<excludeDependenciesOut>$ zu eier Liste hinzugef\"ugt.
+    
+    \item Danach wird mit Abh\"angigkeit des Statuses die $<ComponentOut>$
+    zusammengesetzt
+    
 \end{enumerate}
+
+
 
 
 \end{document}
