@@ -27,7 +27,7 @@ import models.wrapper.component.ComponentOut
 import models.json.component.JsonComponentOut
 import models.json.component.JsonComponentResult
 import models.json.common.JsonDependency
-import models.currentConfig.StepCurrentConfig
+import models.bo.StepCurrentConfigBO
 import models.json.currentConfig.JsonStepCurrentConfig
 import models.json.component.JsonComponentStatus
 import models.json.common.JsonStatus
@@ -161,7 +161,7 @@ trait Wrapper {
    * 
    * @return JsonCurrentConfigOut
    */
-  def toJsonCurentConfigOut(step: Option[StepCurrentConfig]): JsonCurrentConfigOut = {
+  def toJsonCurentConfigOut(step: Option[StepCurrentConfigBO]): JsonCurrentConfigOut = {
     JsonCurrentConfigOut(
         result = JsonCurrentConfigResult(
             step = getJsonCurrentStepRecursiv(step)
@@ -170,7 +170,7 @@ trait Wrapper {
   }
   
   
-  def getJsonCurrentStepRecursiv(firstStep: Option[StepCurrentConfig]): Option[JsonStepCurrentConfig] = {
+  def getJsonCurrentStepRecursiv(firstStep: Option[StepCurrentConfigBO]): Option[JsonStepCurrentConfig] = {
     firstStep match {
       case Some(nextStep) => {
         Some(JsonStepCurrentConfig(

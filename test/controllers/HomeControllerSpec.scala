@@ -18,7 +18,7 @@ class HomeControllerSpec(implicit actorSystem: ActorSystem, mat: Materializer) e
   "HomeController GET" should {
 
     "render the index page from a new instance of controller" in {
-      val controller = new HomeController(stubControllerComponents())
+      val controller = new Controller(stubControllerComponents())
       val home = controller.index().apply(FakeRequest(GET, "/"))
 
       status(home) mustBe OK
@@ -27,7 +27,7 @@ class HomeControllerSpec(implicit actorSystem: ActorSystem, mat: Materializer) e
     }
 
     "render the index page from the application" in {
-      val controller = inject[HomeController]
+      val controller = inject[Controller]
       val home = controller.index().apply(FakeRequest(GET, "/"))
 
       status(home) mustBe OK

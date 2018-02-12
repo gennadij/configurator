@@ -1,4 +1,4 @@
-package models.currentConfig
+package models.bo
 
 import models.wrapper.common.Component
 
@@ -7,9 +7,9 @@ import models.wrapper.common.Component
  * 
  * Created by Gennadi Heimann 18.11.2017
  */
-case class StepCurrentConfig (
+case class StepCurrentConfigBO (
     stepId: String,
     nameToShow: String,
-    var components: List[Component],
-    var nextStep: Option[StepCurrentConfig]
+    var components: List[ComponentBO],
+    var nextStep: Option[StepCurrentConfigBO]
 )

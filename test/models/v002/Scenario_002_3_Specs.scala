@@ -10,7 +10,7 @@ import play.api.libs.json.Json
 import models.json.JsonNames
 import play.api.Logger
 import play.api.libs.json.JsValue
-import models.persistence.db.orientdb.PropertyKey
+import models.persistence.orientdb.PropertyKeys
 import models.status.component.StatusSelectionCriterium
 import models.status.component.AllowNextComponent
 import models.status.component.AddedComponent

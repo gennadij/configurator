@@ -11,6 +11,8 @@ import models.json.currentConfig.JsonCurrentConfigOut
 import models.currentConfig.CurrentConfig
 import models.json.component.JsonComponentIn
 import models.json.component.JsonComponentOut
+import models.logic.SelectedComponent
+import models.logic.SelectedComponent
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -60,8 +62,18 @@ class Config extends Wrapper{
     toJsonCurentConfigOut(CurrentConfig.getCurrentConfig)
   }
   
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param JsonCurrentConfigIn
+   * 
+   * @return JsonCurrentConfigOut
+   */
   def component(jsonComponentIn: JsonComponentIn): JsonComponentOut = {
-    toJsonComponentOut(Persistence.component(toComponentIn(jsonComponentIn)))
+//    toJsonComponentOut(Persistence.component(toComponentIn(jsonComponentIn)))
+    toJsonComponentOut(new SelectedComponent().verifySelectedComponent(toComponentIn(jsonComponentIn)))
   }
   
 }

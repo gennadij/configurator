@@ -20,8 +20,8 @@ import models.status.Status
 import com.tinkerpop.blueprints.Vertex
 import play.api.Logger
 import models.wrapper.dependency.Dependency
-import models.currentConfig.StepCurrentConfig
-import models.currentConfig.StepCurrentConfig
+import models.bo.StepCurrentConfigBO
+import models.bo.StepCurrentConfigBO
 import models.status.NextStepSuccessful
 import models.status.FinalStepSuccessful
 import models.status.StartConfigSuccessful
@@ -30,6 +30,9 @@ import models.status.CurrentConfigConsistent
 import models.status.NextStepError
 import models.status.ODBReadError
 import models.status.ClassCastError
+import models.bo.StepBO
+import models.persistence.orientdb.PropertyKeys
+import models.bo.ComponentBO
 
 
 /**
@@ -39,7 +42,7 @@ import models.status.ClassCastError
  */
 
 object StepVertex {
-
+  
   /**
    * @author Gennadi Heimann
    * 
@@ -71,9 +74,9 @@ object StepVertex {
       
       
       
-      val firstStepCurrentConfig: StepCurrentConfig = StepCurrentConfig(
+      val firstStepCurrentConfig: StepCurrentConfigBO = StepCurrentConfigBO(
           vFirstStep.getIdentity.toString,
-          vFirstStep.getProperty(PropertyKey.NAME_TO_SHOW).toString,
+          vFirstStep.getProperty(PropertyKeys.NAME_TO_SHOW).toString,
           List(),
           None
       )
@@ -85,7 +88,7 @@ object StepVertex {
       StartConfigOut(
           Some(Step(
               vFirstStep.getIdentity.toString,
-              vFirstStep.getProperty(PropertyKey.NAME_TO_SHOW),
+              vFirstStep.getProperty(PropertyKeys.NAME_TO_SHOW),
               getComponentsFromNextStep(vFirstStep)
           )),
           status.status,
@@ -127,9 +130,9 @@ object StepVertex {
 
     try{
       
-      val lastStep: StepCurrentConfig = CurrentConfig.getLastStep
+      val lastStep: StepCurrentConfigBO = CurrentConfig.getLastStep
       
-      val selectedComponents: List[Component] = lastStep.components
+      val selectedComponents: List[ComponentBO] = lastStep.components
       Logger.info(this.getClass.getSimpleName + ": " + lastStep)
       
       // TODO Beim Zweitem druck des Buttons "Naechste Schritt laden" passiert einen Fehler
@@ -145,9 +148,9 @@ object StepVertex {
       
       vNextStep match {
         case Some(step) => {
-          val currentStep = StepCurrentConfig(
+          val currentStep = StepCurrentConfigBO(
             vNextStep.get.getIdentity.toString,
-            vNextStep.get.getProperty(PropertyKey.NAME_TO_SHOW).toString,
+            vNextStep.get.getProperty(PropertyKeys.NAME_TO_SHOW).toString,
             List(),
             None
           )
@@ -225,7 +228,7 @@ object StepVertex {
     vComponents.map(vC => {
       new Component(
           vC.getIdentity.toString,
-          vC.getProperty(PropertyKey.NAME_TO_SHOW)
+          vC.getProperty(PropertyKeys.NAME_TO_SHOW)
       )
     })
   }
@@ -243,7 +246,7 @@ object StepVertex {
     
       // hole Edge from hasStep von selectedComponents aus der DB
       val eHasStepFromSelectedComponents: List[OrientEdge] = 
-          vSelectedComponent.getEdges(Direction.OUT, PropertyKey.HAS_STEP).asScala.toList map {_.asInstanceOf[OrientEdge]}
+          vSelectedComponent.getEdges(Direction.OUT, PropertyKeys.HAS_STEP).asScala.toList map {_.asInstanceOf[OrientEdge]}
       eHasStepFromSelectedComponents match {
         case List() => None
         case _ => {
@@ -270,7 +273,7 @@ object StepVertex {
         Some(
             Step(
                 step.getIdentity.toString,
-                step.getProperty(PropertyKey.NAME_TO_SHOW),
+                step.getProperty(PropertyKeys.NAME_TO_SHOW),
                 getComponentsFromNextStep(step)
             )
         )
@@ -323,13 +326,13 @@ object StepVertex {
    */
   def getDependencies(components: List[OrientVertex]): List[Dependency] = {
     components map (component => {
-        val eHasDependency: OrientEdge = component.getEdges(Direction.OUT, PropertyKey.HAS_DEPENDENCY).asInstanceOf[OrientEdge]
+        val eHasDependency: OrientEdge = component.getEdges(Direction.OUT, PropertyKeys.HAS_DEPENDENCY).asInstanceOf[OrientEdge]
         Dependency(
-            eHasDependency.getProperty(PropertyKey.OUT),
-            eHasDependency.getProperty(PropertyKey.IN),
-            eHasDependency.getProperty(PropertyKey.VISUALIZATION),
-            eHasDependency.getProperty(PropertyKey.DEPENDENCY_TYPE),
-            eHasDependency.getProperty(PropertyKey.NAME_TO_SHOW),
+            eHasDependency.getProperty(PropertyKeys.OUT),
+            eHasDependency.getProperty(PropertyKeys.IN),
+            eHasDependency.getProperty(PropertyKeys.VISUALIZATION),
+            eHasDependency.getProperty(PropertyKeys.DEPENDENCY_TYPE),
+            eHasDependency.getProperty(PropertyKeys.NAME_TO_SHOW),
         )
       }
     )
@@ -345,7 +348,7 @@ object StepVertex {
    * @return
    */
   def getFatherStep(components: List[OrientVertex]): OrientVertex = {
-    val eHasComponents: List[OrientEdge] = components.head.getEdges(Direction.IN, PropertyKey.HAS_COMPONENT)
+    val eHasComponents: List[OrientEdge] = components.head.getEdges(Direction.IN, PropertyKeys.HAS_COMPONENT)
         .asScala.toList map {_.asInstanceOf[OrientEdge]}
     
     val vFatherStep: List[OrientVertex] = eHasComponents map {

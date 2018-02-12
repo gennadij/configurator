@@ -10,6 +10,8 @@ import models.wrapper.currentConfig.CurrentConfigOut
 import models.wrapper.common.Step
 import models.wrapper.common.Component
 import play.api.Logger
+import models.bo.StepCurrentConfigBO
+import models.bo.ComponentBO
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -31,7 +33,7 @@ object CurrentConfig {
    * 
    * @return
    */
-  def addComponent(step: StepCurrentConfig, component: Component): Unit = {
+  def addComponent(step: StepCurrentConfigBO, component: ComponentBO): Unit = {
     // es wird geprueft ob der Step schon angelegt war
     // Die erste Komponente in dem Schritt wird ohne Pruefung des SelectionCriterium hinzugefuegt
     // Die Abhaengigkeiten werden weiterhin jedes mal geprueft
@@ -49,7 +51,7 @@ object CurrentConfig {
    * 
    * @return
    */
-  def addStep(nextStep: Option[StepCurrentConfig], fatherStep: Option[StepCurrentConfig]): Unit = {
+  def addStep(nextStep: Option[StepCurrentConfigBO], fatherStep: Option[StepCurrentConfigBO]): Unit = {
     currentConfig.addStep(nextStep, fatherStep)
   }
   
@@ -86,7 +88,7 @@ object CurrentConfig {
    * 
    * @return Unit
    */
-  def getCurrentStep(stepId: String): Option[StepCurrentConfig] = {
+  def getCurrentStep(stepId: String): Option[StepCurrentConfigBO] = {
     currentConfig.getCurrentStep(stepId)
   }
   
@@ -99,7 +101,7 @@ object CurrentConfig {
    * 
    * @return StepCurrentConfig
    */
-  def getLastStep: StepCurrentConfig = {
+  def getLastStep: StepCurrentConfigBO = {
     currentConfig.getLastStep
   }
   
@@ -112,7 +114,7 @@ object CurrentConfig {
    * 
    * @return Unit
    */
-  def removeComponent(stepId: String, componentId: String): List[Component] = {
+  def removeComponent(stepId: String, componentId: String): List[ComponentBO] = {
     currentConfig.removeComponent(stepId, componentId)
   }
 }
@@ -124,7 +126,7 @@ object CurrentConfig {
  */
 class CurrentConfig {
   
-  var firstStep: Option[StepCurrentConfig] = None
+  var firstStep: Option[StepCurrentConfigBO] = None
   
   /**
    * @author Gennadi Heimann
@@ -135,11 +137,11 @@ class CurrentConfig {
    * 
    * @return Unit
    */
-  private def addComponent(step: StepCurrentConfig, component: Component): Unit = {
+  private def addComponent(step: StepCurrentConfigBO, component: ComponentBO): Unit = {
     
-    val currentStep: Option[StepCurrentConfig] = getStep(step.stepId)
+    val currentStep: Option[StepCurrentConfigBO] = getStep(step.stepId)
     
-    val currentComponents: List[Component] = currentStep.get.components
+    val currentComponents: List[ComponentBO] = currentStep.get.components
     
     currentStep.get.components = currentComponents.::(component)
   }
@@ -153,7 +155,7 @@ class CurrentConfig {
    * 
    * @return Unit
    */
-  private def addStep(currentStep: Option[StepCurrentConfig], fatherStep: Option[StepCurrentConfig]): Unit = {
+  private def addStep(currentStep: Option[StepCurrentConfigBO], fatherStep: Option[StepCurrentConfigBO]): Unit = {
     fatherStep match {
       case Some(fatherStep) => fatherStep.nextStep = currentStep
       case None => firstStep = currentStep
@@ -169,7 +171,7 @@ class CurrentConfig {
    * 
    * @return Option[StepCurrentConfig]
    */
-  private def getCurrentStep(stepId: String): Option[StepCurrentConfig] = {
+  private def getCurrentStep(stepId: String): Option[StepCurrentConfigBO] = {
     getStep(stepId)
   }
   
@@ -182,7 +184,7 @@ class CurrentConfig {
    * 
    * @return Option[StepCurrentConfig]
    */
-  private def getCurrentConfig: Option[StepCurrentConfig] = this.firstStep
+  private def getCurrentConfig: Option[StepCurrentConfigBO] = this.firstStep
   
   /**
    * @author Gennadi Heimann
@@ -193,7 +195,7 @@ class CurrentConfig {
    * 
    * @return StepCurrentConfig
    */
-  private def getLastStep: StepCurrentConfig = {
+  private def getLastStep: StepCurrentConfigBO = {
     val firstStep = this.firstStep.get
     getLastStepRecursive(firstStep)
   }
@@ -207,7 +209,7 @@ class CurrentConfig {
    * 
    * @return StepCurrentConfig
    */
-  private def getLastStepRecursive(step: StepCurrentConfig): StepCurrentConfig = {
+  private def getLastStepRecursive(step: StepCurrentConfigBO): StepCurrentConfigBO = {
     
     step.nextStep match {
       case Some(step) => getLastStepRecursive(step)
@@ -224,7 +226,7 @@ class CurrentConfig {
    * 
    * @return Option[StepCurrentConfig]
    */
-  private def getStep(stepId: String): Option[StepCurrentConfig] = {
+  private def getStep(stepId: String): Option[StepCurrentConfigBO] = {
     
     getStepRecursive(this.firstStep, stepId)
   }
@@ -238,7 +240,7 @@ class CurrentConfig {
    * 
    * @return Option[StepCurrentConfig]
    */
-  private def getStepRecursive(stepA: Option[StepCurrentConfig], stepId: String): Option[StepCurrentConfig] = {
+  private def getStepRecursive(stepA: Option[StepCurrentConfigBO], stepId: String): Option[StepCurrentConfigBO] = {
     if(stepA.get.stepId == stepId){
       stepA
     }else{
@@ -269,7 +271,7 @@ class CurrentConfig {
    * 
    * @return Unit
    */
-  private def getNextStep(step: Option[StepCurrentConfig]): Unit = {
+  private def getNextStep(step: Option[StepCurrentConfigBO]): Unit = {
     step.get.nextStep match {
       case Some(nextStep) => {
         Logger.info(step.get.getClass.hashCode() + " -> " + step.get.stepId + " -> " + step.get.nameToShow)
@@ -293,8 +295,8 @@ class CurrentConfig {
    * 
    * @return Unit
    */
-  private def removeComponent(stepId: String, componentId: String): List[Component] = {
-    val step: Option[StepCurrentConfig] = getCurrentStep(stepId)
+  private def removeComponent(stepId: String, componentId: String): List[ComponentBO] = {
+    val step: Option[StepCurrentConfigBO] = getCurrentStep(stepId)
 //    Logger.info(this.getClass.getSimpleName + ": " + step.get.components + " " + componentId)
 //    Logger.info("Step with deleted component " + step.get.getClass.hashCode())
     step.get.components = step.get.components.filterNot(_.componentId == componentId)

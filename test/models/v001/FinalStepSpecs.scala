@@ -19,7 +19,7 @@ import play.api.libs.json.JsValue
  */
 @RunWith(classOf[JUnitRunner])
 class FinalStepSpecs extends Specification with ConfigWeb with BeforeAfterAll{
-
+//TODO fehlgeschlagen
   val wC = WebClient.init
   
   def beforeAll() = {

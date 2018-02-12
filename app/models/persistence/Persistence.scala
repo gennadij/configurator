@@ -21,6 +21,8 @@ import models.persistence.db.orientdb.StepVertex
 import models.persistence.orientdb.ComponentVertex
 import models.wrapper.component.ComponentOut
 import models.wrapper.component.ComponentIn
+import models.bo.ComponentBO
+import models.bo.StepBO
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -59,13 +61,52 @@ object Persistence {
   /**
    * @author Gennadi Heimann
    * 
+   * @version 0.0.2
+   * 
+   * @param 
+   * 
+   * @return 
+   */
+  def getSelectedComponent(componentIn: ComponentIn): Option[ComponentBO] = {
+    ComponentVertex.getComponent(componentIn.componentId)
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.2
+   * 
+   * @param 
+   * 
+   * @return 
+   */
+  def getFatherStep(componentId: String): Option[StepBO] = {
+    ComponentVertex.getFatherStep(componentId)
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.2
+   * 
+   * @param 
+   * 
+   * @return 
+   */
+  def getNextStep(componentId: String): Option[StepBO] = {
+    ComponentVertex.getNextStep(componentId)
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
    * @version 0.0.1
    * 
    * @param ComponentIn
    * 
    * @return ComponentOut
    */
-  def component(componentIn: ComponentIn): ComponentOut = {
-    ComponentVertex.component(componentIn)
-  }
+//  def component(componentIn: ComponentIn): ComponentOut = {
+//    ComponentVertex.component(componentIn)
+//  }
 }
