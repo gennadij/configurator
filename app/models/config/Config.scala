@@ -72,8 +72,6 @@ class Config extends Wrapper{
    * @return JsonCurrentConfigOut
    */
   def component(jsonComponentIn: JsonComponentIn): JsonComponentOut = {
-//    toJsonComponentOut(Persistence.component(toComponentIn(jsonComponentIn)))
-    toJsonComponentOut(new SelectedComponent().verifySelectedComponent(toComponentIn(jsonComponentIn)))
+    toJsonComponentOut(SelectedComponent.verifySelectedComponent(jsonComponentIn.params.componentId))
   }
-  
 }

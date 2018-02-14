@@ -198,21 +198,6 @@ trait Wrapper {
    * 
    * @return ComponentIn
    */
-  def toComponentIn(jsonComponentIn: JsonComponentIn): ComponentIn = {
-    ComponentIn(
-        jsonComponentIn.params.componentId
-    )
-  }
-  
-  /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.1
-   * 
-   * @param JsonComponentIn
-   * 
-   * @return ComponentIn
-   */
   def toJsonComponentOut(componentOut: ComponentOut): JsonComponentOut = {
     
     val status: StatusComponent = componentOut.status

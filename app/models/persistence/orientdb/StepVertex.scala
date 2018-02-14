@@ -6,7 +6,7 @@ import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import com.orientechnologies.orient.core.sql.OCommandSQL
 import com.tinkerpop.blueprints.Edge
-import models.persistence.OrientDB
+import models.persistence.Database
 import models.wrapper.startConfig.StartConfigIn
 import models.wrapper.startConfig.StartConfigOut
 import com.tinkerpop.blueprints.Direction
@@ -53,7 +53,7 @@ object StepVertex {
    * @return StartConfigOut
    */
   def firstStep(startConfigIn: StartConfigIn): StartConfigOut = {
-    val graph: OrientGraph = OrientDB.getFactory().getTx
+    val graph: OrientGraph = Database.getFactory().getTx
     
     val configUrl: String = startConfigIn.configUrl
     
@@ -126,7 +126,7 @@ object StepVertex {
    * @return NextStepOut
    */
   def nextStep(nextStepIn: NextStepIn): NextStepOut = {
-    val graph: OrientGraph = OrientDB.getFactory().getTx
+    val graph: OrientGraph = Database.getFactory().getTx
 
     try{
       
