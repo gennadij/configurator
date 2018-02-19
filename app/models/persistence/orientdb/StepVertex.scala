@@ -58,12 +58,6 @@ object StepVertex {
     val configUrl: String = startConfigIn.configUrl
     
     try{
-      
-      //TODO DOcu aus der OrientDB
-      //Without an index against the property name, this query can take up a lot of time. You can improve performance by creating a new index against the name property:
-      //http://orientdb.com/docs/last/Graph-VE.html
-      
-      
       //TODO
       //Wenn selectionCriterium min = 0 und max > 1 darf der Benutzer ohne ausgewählte Komponente zu dem weiterem Schritt gehen
       //Wenn selectionCriterium min = 0 und max = 0 wird der Schritt uebersprungen

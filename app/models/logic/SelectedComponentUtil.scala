@@ -24,7 +24,6 @@ import models.currentConfig.CurrentConfig
 import models.wrapper.component.ComponentOut
 import models.bo.ComponentBO
 import models.status.component.StatusComponent
-import models.status.FinalComponent
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -282,25 +281,12 @@ class SelectedComponentUtil {
         )
         CurrentConfig.addComponent(currentStep.get, component)
         CurrentConfig.printCurrentConfig
-        status.nextStepExistence.get match {
-          case true => {
-            ComponentOut(
-                componentId,
-                fatherStepId,
-                status,
-                dependencies
-            )
-          }
-          case false => {
-            val finalStepStatus = status.copy(common = Some(FinalComponent()))
-            ComponentOut(
-                componentId,
-                fatherStepId,
-                status, //TODO Final Step Status fehlt
-                dependencies
-            )
-          }
-        }
+        ComponentOut(
+            componentId,
+            fatherStepId,
+            status,
+            dependencies
+        )
       }
     }
   }

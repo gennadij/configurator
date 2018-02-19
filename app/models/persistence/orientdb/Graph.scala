@@ -56,6 +56,22 @@ object Graph{
   def getNextStep(componentId: String): Option[StepBO] = {
     new Graph().getNextStep(componentId)
   }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.2
+   * 
+   * @param List[OrientVertex]
+   * 
+   * @return OrientVertex
+   */
+  def getFirstStep(configUrl: String): Option[StepBO] = {
+    
+    
+    
+    ???
+  }
 }
 
 class Graph {
@@ -132,7 +148,6 @@ class Graph {
       Some(graph.getVertex(componentId))
       
     }catch{
-      //TODO richtigen Objekt fuer Error im Datenbank
       case e2 : ClassCastException => {
         graph.rollback()
         Logger.error(e2.printStackTrace().toString)
@@ -180,7 +195,6 @@ class Graph {
         case eHasSteps if eHasSteps.size == 0 => None
       }
     }catch{
-      //TODO richtigen Objekt fuer Error im Datenbank
       case e2 : ClassCastException => {
         graph.rollback()
         Logger.error(e2.printStackTrace().toString)
@@ -220,7 +234,6 @@ class Graph {
         .asScala.toList map {_.asInstanceOf[OrientEdge]}
     eHasDependencies map {
       eHasDependency => {
-        //TODO PropertyKey.VISUALIZATION in DB mit Leerzeichen
         DependencyBO(
             eHasDependency.getProperty(PropertyKeys.OUT).asInstanceOf[OrientVertex].getIdentity.toString, //outId: String,
             eHasDependency.getProperty(PropertyKeys.IN).asInstanceOf[OrientVertex].getIdentity.toString, //inId: String,

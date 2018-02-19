@@ -12,5 +12,5 @@ case class StatusComponent (
     selectedComponent: Option[StatusSelectedComponent],
     excludeDependency: Option[StatusExcludeDependency],
     common: Option[Status],
-    nextStepExistence: Option[Boolean]
+    componentType: Option[StatusComponentType]
 )

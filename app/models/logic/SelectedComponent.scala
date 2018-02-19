@@ -23,9 +23,11 @@ import models.status.Status
 import models.status.Success
 import models.status.component.StatusComponent
 import models.status.Error
-import models.status.FinalComponent
 import models.status.ODBReadError
 import models.status.ClassCastError
+import models.status.component.DefaultComponent
+import models.status.component.FinalComponent
+import models.status.component.StatusComponentType
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -44,7 +46,6 @@ object SelectedComponent {
 class SelectedComponent(selectedComponentId: String) {
   
   private def verifySelectedComponent: ComponentOut = {
-    
     
     val selectedComponentBO: Option[ComponentBO] = Persistence.getSelectedComponent(selectedComponentId)
     
@@ -96,22 +97,27 @@ class SelectedComponent(selectedComponentId: String) {
       
       val commonStatus: Status = SelectedComponentUtil.checkCommonStatus(commonStatuses)
       
+      val componentTypeStatus: StatusComponentType = nextStepExistence match {
+        case true => DefaultComponent()
+        case false => FinalComponent()
+      }
+      
       val status: StatusComponent = statusExcludeDependencies match {
         case NotExcludedComponent() => {
           StatusComponent(
             Some(stausSelectionCriterium), 
             Some(statusSelectedComponent), 
             Some(statusExcludeDependencies), 
-            Some(commonStatus), 
-            Some(nextStepExistence))
+            Some(commonStatus),
+            Some(componentTypeStatus))
         }
         case ExcludedComponent() => {
           StatusComponent(
             Some(stausSelectionCriterium), 
             Some(ErrorComponent()), 
             Some(statusExcludeDependencies), 
-            Some(Error()), 
-            Some(nextStepExistence))
+            Some(Error()),
+            Some(componentTypeStatus))
         }
       }
       
