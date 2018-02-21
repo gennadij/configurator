@@ -25,12 +25,12 @@ case class Error() extends Status {
   def message: String = "Die Aktion ist nicht erfolgreich"
 }
 
-case class ClassCastError() extends Status{
+case class ODBClassCastError() extends Status{
   def status: String = "CLASS_CAST_ERROR"
   def message: String = "Interner Fehler des Configurators"
 }
 
 case class ODBReadError() extends Status{
-  def status: String = "NEXT_STEP_ODB_WRITE_ERROR"
-  def message: String = "Beim Laden vom naechsten Schritt ist einen Fehler in Datenbank aufgetreten"
+  def status: String = "ODB_READE_ERROR"
+  def message: String = "Beim Laden hat einen Fehler in Datenbank aufgetreten"
 }

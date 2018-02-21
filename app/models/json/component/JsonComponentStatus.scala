@@ -14,7 +14,7 @@ case class JsonComponentStatus (
     selectedComponent: Option[JsonStatus],
     excludeDependency: Option[JsonStatus],
     common: Option[JsonStatus],
-    nextStepExistence: Option[Boolean]
+    componentType: Option[JsonStatus]
 )
 
 object JsonComponentStatus {
@@ -24,6 +24,6 @@ object JsonComponentStatus {
     (JsPath \ "selectedComponent").write(Writes.optionWithNull[JsonStatus]) and
     (JsPath \ "excludeDependency").write(Writes.optionWithNull[JsonStatus]) and
     (JsPath \ "common").write(Writes.optionWithNull[JsonStatus]) and
-    (JsPath \ "nextStepExistence").writeNullable[Boolean]
+    (JsPath \ "componentType").write(Writes.optionWithNull[JsonStatus])
   )(unlift(JsonComponentStatus.unapply))
 }

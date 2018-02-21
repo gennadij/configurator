@@ -1,5 +1,7 @@
 package models.bo
 
+import models.status.step.StatusStep
+
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
  * 
@@ -9,5 +11,6 @@ case class StepBO (
     stepId: String,
     nameToShow: String,
     selectionCriteriumMin: Int,
-    selectionCriteriumMax: Int
+    selectionCriteriumMax: Int,
+    status: StatusStep
 )

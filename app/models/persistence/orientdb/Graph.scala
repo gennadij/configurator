@@ -10,6 +10,17 @@ import com.tinkerpop.blueprints.Direction
 import play.api.Logger
 import models.bo.ComponentBO
 import models.bo.DependencyBO
+import models.status.ODBClassCastError
+import models.status.ODBReadError
+import models.status.Success
+import models.status.step.MultipleNextSteps
+import models.status.step.NextStepNotExist
+import models.status.step.NextStepExist
+import models.status.step.StatusStep
+import models.status.Status
+import models.status.Status
+import models.status.Error
+import models.status.step.CommonError
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -53,7 +64,7 @@ object Graph{
    * 
    * @return OrientVertex
    */
-  def getNextStep(componentId: String): Option[StepBO] = {
+  def getNextStep(componentId: String): StepBO = {
     new Graph().getNextStep(componentId)
   }
   
@@ -123,7 +134,11 @@ class Graph {
             vFatherStep.getIdentity.toString,
             vFatherStep.getProperty(PropertyKeys.NAME_TO_SHOW).toString,
             vFatherStep.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN).toString.toInt,
-            vFatherStep.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX).toString.toInt
+            vFatherStep.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX).toString.toInt,
+            StatusStep(
+                None,
+                None
+            )
         ))
       }
       case None => None
@@ -180,47 +195,69 @@ class Graph {
    * 
    * @version 0.0.2
    * 
-   * @param ComponentIn
+   * @param String
    * 
-   * @return ComponentOut
+   * @return StepBO
    */
-  private def getNextStep(componentId: String): Option[StepBO] = {
+  private def getNextStep(componentId: String): StepBO = {
     val graph: OrientGraph = Database.getFactory().getTx
     
-    val vNextStep: Option[OrientVertex] = try{
+    val vNextStep: (Option[OrientVertex], Status) = try{
     
       graph.getVertex(componentId).getEdges(Direction.OUT, PropertyKeys.HAS_STEP).asScala.toList match {
-        case eHasSteps if eHasSteps.size == 1 => Some(eHasSteps.head.getVertex(Direction.IN).asInstanceOf[OrientVertex])
-//        case eHasSteps if eHasSteps.size > 1 => //TODO Error -> es kann 2 nextStep exsistieren
-        case eHasSteps if eHasSteps.size == 0 => None
+        case eHasSteps if eHasSteps.size == 1 => 
+          (Some(eHasSteps.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]), NextStepExist())
+        case eHasSteps if eHasSteps.size > 1 => (None, MultipleNextSteps())
+        case eHasSteps if eHasSteps.size == 0 => (None, NextStepNotExist())
       }
     }catch{
       case e2 : ClassCastException => {
         graph.rollback()
         Logger.error(e2.printStackTrace().toString)
-        None
+        (None, ODBClassCastError())
       }
       case e1: Exception => {
         graph.rollback()
         Logger.error(e1.printStackTrace().toString)
-        None
+        (None, ODBReadError())
       }
     }
     
-    
     vNextStep match {
-      case Some(vNextStep) => {
-        Some(StepBO(
+      case (Some(vNextStep), NextStepExist()) => {
+        createStepBO(
             vNextStep.getIdentity.toString,
             vNextStep.getProperty(PropertyKeys.NAME_TO_SHOW).toString,
             vNextStep.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN).toString.toInt,
-            vNextStep.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX).toString.toInt
-        ))
+            vNextStep.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX).toString.toInt,
+            StatusStep(
+                Some(NextStepExist()),
+                Some(Success())
+            )
+        )
       }
-      case None => None
+      case (None, MultipleNextSteps()) => createStepBO(status = StatusStep(Some(MultipleNextSteps()), Some(Error())))
+      case (None, NextStepNotExist()) => createStepBO(status = StatusStep(Some(NextStepNotExist()), Some(Success())))
+      case (None, ODBClassCastError()) => createStepBO(status = StatusStep(Some(CommonError()), Some(ODBClassCastError())))
+      case (None, ODBReadError()) => createStepBO(status = StatusStep(Some(CommonError()), Some(ODBReadError())))
     }
   }
-    /**
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.2
+   * 
+   * @param String, String, Int, Int, StatusStep
+   * 
+   * @return StepBO
+   */
+  private def createStepBO(
+      id: String = "", nameToShow: String = "", sCMin: Int = -1, scMax: Int = -1, status: StatusStep): StepBO = {
+    StepBO(id, nameToShow, sCMin, scMax, status)
+  }
+  
+  /**
    * @author Gennadi Heimann
    * 
    * @version 0.0.2

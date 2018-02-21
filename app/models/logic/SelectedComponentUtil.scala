@@ -2,7 +2,7 @@ package models.logic
 
 import models.status.Status
 import models.status.ODBReadError
-import models.status.ClassCastError
+import models.status.ODBClassCastError
 import models.status.Success
 import models.status.Error
 import models.bo.StepBO
@@ -19,7 +19,7 @@ import models.status.component.AllowNextComponent
 import models.status.component.ExcludeComponent
 import models.status.component.AddedComponent
 import models.status.component.RemovedComponent
-import models.status.component.ErrorComponent
+import models.status.component.ErrorSelectedComponent
 import models.currentConfig.CurrentConfig
 import models.wrapper.component.ComponentOut
 import models.bo.ComponentBO
@@ -98,7 +98,7 @@ class SelectedComponentUtil {
     
     val oDBReadErrorStatuses: List[Status] = commonStatuses.filter(_.isInstanceOf[ODBReadError])
     
-    val classCastErrorStatus: List[Status] = commonStatuses.filter(_.isInstanceOf[ClassCastError])
+    val classCastErrorStatus: List[Status] = commonStatuses.filter(_.isInstanceOf[ODBClassCastError])
     
     val errorStatus: List[Status] = commonStatuses.filter(_.isInstanceOf[Error])
     
@@ -106,7 +106,7 @@ class SelectedComponentUtil {
     
     def checkclassCastErrorStatus(classCastErrorStatus: List[Status]): Status = classCastErrorStatus match {
       case List() => checkErrorStatus(errorStatus)
-      case _ => ClassCastError()
+      case _ => ODBClassCastError()
     }
     
     def checkErrorStatus(errorStatus: List[Status]): Status = errorStatus match {
@@ -186,7 +186,7 @@ class SelectedComponentUtil {
     val countOfComponents = statusSelectedComponent match {
       case AddedComponent() => countOfSelectedComponents + 1
       case RemovedComponent() => countOfSelectedComponents
-      case ErrorComponent() => countOfSelectedComponents
+      case ErrorSelectedComponent() => countOfSelectedComponents
     }
     
     val min: Int = fatherStep.selectionCriteriumMin
@@ -254,7 +254,7 @@ class SelectedComponentUtil {
       fatherStepId: String,
       dependencies: List[DependencyBO]): ComponentOut = {
     status.selectedComponent.get match {
-      case statusErrorComponent: ErrorComponent => {
+      case statusErrorComponent: ErrorSelectedComponent => {
         ComponentOut(
             "",
             "",

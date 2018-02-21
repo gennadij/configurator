@@ -29,7 +29,7 @@ import models.status.CurrentConfigInconsistent
 import models.status.CurrentConfigConsistent
 import models.status.NextStepError
 import models.status.ODBReadError
-import models.status.ClassCastError
+import models.status.ODBClassCastError
 import models.bo.StepBO
 import models.persistence.orientdb.PropertyKeys
 import models.bo.ComponentBO
@@ -93,8 +93,8 @@ object StepVertex {
         graph.rollback()
         StartConfigOut(
             None,
-            ClassCastError().status,
-            ClassCastError().message
+            ODBClassCastError().status,
+            ODBClassCastError().message
         )
       }
       case e1: Exception => {

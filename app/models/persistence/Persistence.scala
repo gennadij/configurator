@@ -82,7 +82,7 @@ object Persistence {
    * 
    * @return 
    */
-  def getNextStep(componentId: String): Option[StepBO] = {
+  def getNextStep(componentId: String): StepBO = {
     Graph.getNextStep(componentId)
   }
 }

@@ -19,7 +19,7 @@ case class AddedComponent() extends StatusSelectedComponent {
   def message: String = "Die Komponente wurde erfolgreich in der aktuelle Konfiguration hinzugefuegt"
 }
 
-case class ErrorComponent() extends StatusSelectedComponent {
+case class ErrorSelectedComponent() extends StatusSelectedComponent {
   def status: String = "ERROR_COMPONENT"
   def message: String = "Die Komponente darf nicht in der aktuelle Konfiguration hinzugefuegt"
 }

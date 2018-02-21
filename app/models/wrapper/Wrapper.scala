@@ -22,7 +22,6 @@ import models.json.currentConfig.JsonCurrentConfigOut
 import models.json.currentConfig.JsonCurrentConfigResult
 import play.api.Logger
 import models.json.component.JsonComponentIn
-import models.wrapper.component.ComponentIn
 import models.wrapper.component.ComponentOut
 import models.json.component.JsonComponentOut
 import models.json.component.JsonComponentResult
@@ -242,9 +241,12 @@ trait Wrapper {
                   }
                   case None => None
                 },
-                status.nextStepExistence match {
+                status.componentType match {
                   case Some(status) => {
-                    Some(status)
+                    Some(JsonStatus(
+                        status.status,
+                        status.message
+                    ))
                   }
                   case None => None
                 }
