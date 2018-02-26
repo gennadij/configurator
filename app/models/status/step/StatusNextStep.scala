@@ -24,7 +24,7 @@ case class MultipleNextSteps() extends StatusNextStep{
   def message: String = ""
 }
 
-case class CommonError() extends StatusNextStep{
-  def status: String = "COMMON_ERROR"
+case class CommonErrorNextStep() extends StatusNextStep{
+  def status: String = "COMMON_ERROR_NEXT_STEP"
   def message: String = ""
 }

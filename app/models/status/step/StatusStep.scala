@@ -8,6 +8,8 @@ import models.status.Status
  * Created by Gennadi Heimann 20.02.2018
  */
 case class StatusStep(
+    firstStep: Option[StatusFirstStep],
     nextStep: Option[StatusNextStep],
+    fatherStep: Option[StatusFatherStep],
     common: Option[Status]
 )

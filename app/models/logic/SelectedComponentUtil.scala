@@ -57,7 +57,7 @@ object SelectedComponentUtil {
   }
   
   def checkSelectedComponent(
-      currentStep: Option[StepCurrentConfigBO], 
+      currentStep: StepCurrentConfigBO, 
       componentInId: String): StatusSelectedComponent = {
     new SelectedComponentUtil().checkSelectedComponent(currentStep, componentInId)
   }
@@ -220,19 +220,14 @@ class SelectedComponentUtil {
    */
   
   private def checkSelectedComponent(
-      currentStep: Option[StepCurrentConfigBO], 
+      currentStep: StepCurrentConfigBO, 
       componentInId: String): StatusSelectedComponent = {
-    currentStep match {
-      case Some(step) => {
-        step.components.exists(_.componentId == componentInId) match {
-          case true => {
-            CurrentConfig.removeComponent(currentStep.get.stepId, componentInId)
-            RemovedComponent()
-          }
-          case false => AddedComponent()
-        }
+    currentStep.components.exists(_.componentId == componentInId) match {
+      case true => {
+        CurrentConfig.removeComponent(currentStep.stepId, componentInId)
+        RemovedComponent()
       }
-      case None => AddedComponent()
+      case false => AddedComponent()
     }
   }
   
@@ -280,7 +275,7 @@ class SelectedComponentUtil {
             List.empty
         )
         CurrentConfig.addComponent(currentStep.get, component)
-        CurrentConfig.printCurrentConfig
+//        CurrentConfig.printCurrentConfig
         ComponentOut(
             componentId,
             fatherStepId,

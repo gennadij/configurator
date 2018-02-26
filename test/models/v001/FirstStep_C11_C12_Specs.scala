@@ -10,6 +10,8 @@ import play.api.libs.json.Json
 import models.json.JsonNames
 import play.api.Logger
 import play.api.libs.json.JsValue
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsArray
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -66,11 +68,22 @@ class FirstStep_C11_C12_Specs extends Specification with ConfigWeb with BeforeAf
       (jsonComponentOut_1 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
       (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
       (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
-      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
+      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === 
+        "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
+      (jsonComponentOut_1 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
+      (jsonComponentOut_1 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === 
+        "Sie koennen weitere Komponente auswaelen"
+      (jsonComponentOut_1 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
+      (jsonComponentOut_1 \ "result" \ "status" \ "selectedComponent" \ "message").asOpt[String].get === 
+        "Die Komponente wurde erfolgreich in der aktuelle Konfiguration hinzugefuegt"
+      (jsonComponentOut_1 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "NOT_EXCLUDED_COMPONENT"
+      (jsonComponentOut_1 \ "result" \ "status" \ "excludeDependency" \ "message").asOpt[String].get === 
+        "Diese Komponente kann zu der Konfiguration hinzugefuegt werden"
+      (jsonComponentOut_1 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
+      (jsonComponentOut_1 \ "result" \ "status" \ "common" \ "message").asOpt[String].get === "Die Aktion ist erfolgreich"
+      (jsonComponentOut_1 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
+      (jsonComponentOut_1 \ "result" \ "status" \ "componentType" \ "message").asOpt[String].get === ""
       
-//      val status = AllowNextComponent()
-//      (jsonComponentOut_1 \ "result" \ "status").asOpt[String].get === status.status
-//      (jsonComponentOut_1 \ "result" \ "message").asOpt[String].get === status.message
       
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       

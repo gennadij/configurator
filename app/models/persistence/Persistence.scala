@@ -24,6 +24,33 @@ object Persistence {
   /**
    * @author Gennadi Heimann
    * 
+   * @version 0.0.2
+   * 
+   * @param String
+   * 
+   * @return StepBO
+   */
+  
+  def getFirstStep(configUrl: String): StepBO = {
+    Graph.getFirstStep(configUrl)
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.2
+   * 
+   * @param String
+   * 
+   * @return List[ComponentBO]
+   */
+  def getComponents(stepId: String): List[ComponentBO] = {
+    Graph.getComponents(stepId)
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
    * @version 0.0.1
    * 
    * @param StartConfigIn
@@ -69,7 +96,7 @@ object Persistence {
    * 
    * @return 
    */
-  def getFatherStep(componentId: String): Option[StepBO] = {
+  def getFatherStep(componentId: String): StepBO = {
     Graph.getFatherStep(componentId)
   }
   

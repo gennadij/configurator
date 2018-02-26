@@ -32,7 +32,7 @@ import play.api.Logger
 import models.status.step.NextStepNotExist
 import models.status.step.NextStepExist
 import models.status.step.MultipleNextSteps
-import models.status.step.CommonError
+import models.status.step.CommonErrorNextStep
 import models.status.component.ErrorComponentType
 
 /**
@@ -60,28 +60,19 @@ class SelectedComponent(selectedComponentId: String) {
       case None => ODBReadError()
     }
     
-    val fatherStepBO: Option[StepBO] = Persistence.getFatherStep(selectedComponentBO.get.componentId)
+    val fatherStepBO: StepBO = Persistence.getFatherStep(selectedComponentBO.get.componentId)
     
-    val commonStatusFatherStep: Status = fatherStepBO match {
-      case Some(fatherStepBO) => Success()
-      case None => ODBReadError()
-    }
+    val commonStatusFatherStep: Status = fatherStepBO.status.common.get
     
-    val currentStep: Option[StepCurrentConfigBO] = CurrentConfig.getCurrentStep(fatherStepBO.get.stepId)
+    val currentStep: Option[StepCurrentConfigBO] = CurrentConfig.getCurrentStep(fatherStepBO.stepId)
     
     val nextStep: StepBO = Persistence.getNextStep(selectedComponentBO.get.componentId)
     
-    //TODO separate Status fuer NextStep
-//    val commonStatusNextStep: Status = nextStep match {
-//      case Some(statusNextStep) => Success()
-//      case None => ODBReadError()
-//    }
-      
     val commonStatusNextStep: Status = nextStep.status.common.get
     
-      Logger.info(this.getClass.getSimpleName + ": commonStatusNextStep " + commonStatusNextStep)
+    Logger.info(this.getClass.getSimpleName + ": commonStatusNextStep " + commonStatusNextStep)
 
-    val statusSelectedComponent: StatusSelectedComponent = SelectedComponentUtil.checkSelectedComponent(currentStep, selectedComponentId)
+    val statusSelectedComponent: StatusSelectedComponent = SelectedComponentUtil.checkSelectedComponent(currentStep.get, selectedComponentId)
       
       val previousSelectedComponents: List[ComponentBO] = currentStep match {
         case Some(step) => step.components
@@ -91,7 +82,10 @@ class SelectedComponent(selectedComponentId: String) {
 //      Logger.info(this.getClass.getSimpleName + ": previousSelectedComponents " + previousSelectedComponents)
       
       val stausSelectionCriterium: StatusSelectionCriterium = 
-          SelectedComponentUtil.checkSelectionCriterium(previousSelectedComponents.size, fatherStepBO.get, statusSelectedComponent)
+          SelectedComponentUtil.checkSelectionCriterium(
+              previousSelectedComponents.size, 
+              fatherStepBO, 
+              statusSelectedComponent)
       
 //      Logger.info(this.getClass.getSimpleName + ": " + stausSelectionCriterium)
       
@@ -110,7 +104,7 @@ class SelectedComponent(selectedComponentId: String) {
         case NextStepNotExist() => FinalComponent()
         case NextStepExist() => DefaultComponent()
         case MultipleNextSteps() => ErrorComponentType()
-        case CommonError() => ErrorComponentType()
+        case CommonErrorNextStep() => ErrorComponentType()
       }
       
       val status: StatusComponent = statusExcludeDependencies match {
@@ -140,7 +134,7 @@ class SelectedComponent(selectedComponentId: String) {
         currentStep, 
         selectedComponentBO.get.componentId, 
         selectedComponentBO.get.nameToShow, 
-        fatherStepBO.get.stepId, 
+        fatherStepBO.stepId, 
         dependencies)
   }
   

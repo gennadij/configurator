@@ -55,18 +55,14 @@ object StepVertex {
   def firstStep(startConfigIn: StartConfigIn): StartConfigOut = {
     val graph: OrientGraph = Database.getFactory().getTx
     
+    
     val configUrl: String = startConfigIn.configUrl
     
     try{
-      //TODO
-      //Wenn selectionCriterium min = 0 und max > 1 darf der Benutzer ohne ausgewählte Komponente zu dem weiterem Schritt gehen
-      //Wenn selectionCriterium min = 0 und max = 0 wird der Schritt uebersprungen
       val vConfigs: List[Vertex] = graph.getVertices("configUrl", configUrl).asScala.toList
       
       val eHasConfig: List[Edge] = vConfigs.head.getEdges(Direction.OUT, "hasFirstStep").asScala.toList
       val vFirstStep: OrientVertex = eHasConfig.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]
-      
-      
       
       val firstStepCurrentConfig: StepCurrentConfigBO = StepCurrentConfigBO(
           vFirstStep.getIdentity.toString,
@@ -127,11 +123,8 @@ object StepVertex {
       val lastStep: StepCurrentConfigBO = CurrentConfig.getLastStep
       
       val selectedComponents: List[ComponentBO] = lastStep.components
-      Logger.info(this.getClass.getSimpleName + ": " + lastStep)
+//      Logger.info(this.getClass.getSimpleName + ": " + lastStep)
       
-      // TODO Beim Zweitem druck des Buttons "Naechste Schritt laden" passiert einen Fehler
-      // Beim Client sollte dieses Button geloescht werden, aber aus der Serverseite muss diesen Fehler geprueft werden.
-      // Status besser impl
       val vNextStep: Option[OrientVertex] = selectedComponents match {
         case List() => None
         case _ => {
