@@ -44,7 +44,7 @@ object Persistence {
    * 
    * @return List[ComponentBO]
    */
-  def getComponents(stepId: String): List[ComponentBO] = {
+  def getComponents(stepId: String): Option[List[ComponentBO]] = {
     Graph.getComponents(stepId)
   }
   
@@ -57,9 +57,9 @@ object Persistence {
    * 
    * @return StartConfigOut
    */
-  def startConfig(startConfigIn: StartConfigIn) : StartConfigOut = {
-    StepVertex.firstStep(startConfigIn)
-  }
+//  def startConfig(startConfigIn: StartConfigIn) : StartConfigOut = {
+//    StepVertex.firstStep(startConfigIn)
+//  }
   
   /**
    * @author Gennadi Heimann
@@ -70,9 +70,9 @@ object Persistence {
    * 
    * @return NextStepOut
    */
-  def nestStep(nextStepIn: NextStepIn): NextStepOut = {
-    StepVertex.nextStep(nextStepIn)
-  }
+//  def nestStep(nextStepIn: NextStepIn): NextStepOut = {
+//    StepVertex.nextStep(nextStepIn)
+//  }
   
   /**
    * @author Gennadi Heimann

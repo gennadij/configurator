@@ -5,6 +5,9 @@ import models.wrapper.startConfig.StartConfigIn
 import models.persistence.Persistence
 import models.bo.StepBO
 import models.bo.ComponentBO
+import models.bo.StepCurrentConfigBO
+import models.currentConfig.CurrentConfig
+import models.json.startConfig.JsonStartConfigOut
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -13,6 +16,16 @@ import models.bo.ComponentBO
  */
 
 object StartConfig{
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.2
+   * 
+   * @param StartConfigIn
+   * 
+   * @return StartConfigOut
+   */
   def startConfig(startConfigIn: StartConfigIn): StartConfigOut = {
     new StartConfig(startConfigIn.configUrl).getFirstStep
   }
@@ -20,39 +33,40 @@ object StartConfig{
 
 class StartConfig(configUrl: String) {
   
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.2
+   * 
+   * @param 
+   * 
+   * @return StartConfigOut
+   */
   private def getFirstStep: StartConfigOut = {
-    //TODO Wenn selectionCriterium min = 0 und max > 1 darf der Benutzer ohne ausgewählte Komponente zu dem weiterem Schritt gehen
-    //Bei diesem SelectionCriterium soll beim Laden von dem Step das Naechste Schritt Button akteviert werden.
+
     val firstStep: StepBO = Persistence.getFirstStep(configUrl)
     
-    val components: List[ComponentBO] = Persistence.getComponents(firstStep.stepId)
-    
-//    val firstStepCurrentConfig: StepCurrentConfigBO = StepCurrentConfigBO(
-//          firstStep.stepId,
-//          firstStep.nameToShow,
-//          List(),
-//          None
-//      )
-//      
-//      // Fuege den ersten Schritt zu der aktuelle Konfiguration hinzu
-//      CurrentConfig.addStep(Some(firstStepCurrentConfig), None)
-//      
-//      val status: Status = new StartConfigSuccessful()
-//      StartConfigOut(
-//          Some(Step(
-//              vFirstStep.getIdentity.toString,
-//              vFirstStep.getProperty(PropertyKeys.NAME_TO_SHOW),
-//              getComponentsFromNextStep(vFirstStep)
-//          )),
-//          status.status,
-//          status.message
-//      )
+    val components: List[ComponentBO] = Persistence.getComponents(firstStep.stepId) match {
+      case Some(components) => components
+      case None => List()
+    }
     
     
     
+    val firstStepCurrentConfig: StepCurrentConfigBO = StepCurrentConfigBO(
+          firstStep.stepId,
+          firstStep.nameToShow,
+          List(),
+          None
+      )
+      
+  // Fuege den ersten Schritt zu der aktuelle Konfiguration hinzu
+  CurrentConfig.addFirstStep(firstStepCurrentConfig)
     
-    ???
-    
-    
+    StartConfigOut(
+        firstStep,
+        components
+    )
   }
 }

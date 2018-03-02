@@ -31,6 +31,7 @@ import models.json.currentConfig.JsonStepCurrentConfig
 import models.json.component.JsonComponentStatus
 import models.json.common.JsonStatus
 import models.status.component.StatusComponent
+import models.json.common.JsonStepStatus
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -67,25 +68,25 @@ trait Wrapper {
     
     JsonStartConfigOut(
         result = JsonStartConfigResult(
-            startConfigOut.status,
-            startConfigOut.message,
-            startConfigOut.step match {
-              case Some(step) => {
-                Some(JsonStep(
-                    step.stepId,
-                    step.nameToShow,
-                    step.components.map(component => {
+            JsonStep(
+                    startConfigOut.step.stepId,
+                    startConfigOut.step.nameToShow,
+                    startConfigOut.components.map(component => {
                       JsonComponent(
                           component.componentId,
                           component.nameToShow
                       )
                     })
-                ))
-              }
-              case None => {
-                None
-              }
-            }
+            ),
+            JsonStepStatus(
+                firstStep = Some(JsonStatus(
+                    startConfigOut.step.status.firstStep.get.status,
+                    startConfigOut.step.status.firstStep.get.message)),
+                 common = Some(JsonStatus(
+                    startConfigOut.step.status.common.get.status,
+                    startConfigOut.step.status.common.get.message))
+            )
+            
         )
     )
   }
@@ -115,23 +116,25 @@ trait Wrapper {
   def toJsonNextStepOut(nextStepOut: NextStepOut): JsonNextStepOut = {
     JsonNextStepOut(
         result = JsonNextStepResult(
-            status = nextStepOut.status,
-            message = nextStepOut.message,
-            nextStepOut.step match {
-              case Some(step) => {
-                Some(JsonStep(
-                    step.stepId,
-                    step.nameToShow,
-                    step.components.map(component => {
-                      JsonComponent(
-                          component.componentId,
-                          component.nameToShow
-                      )
-                    })
-                ))
-              }
-              case None => None
-            }
+            JsonStep(
+                nextStepOut.step.stepId,
+                nextStepOut.step.nameToShow,
+                nextStepOut.components.map(component => {
+                  JsonComponent(
+                      component.componentId,
+                      component.nameToShow
+                  )})
+              ),
+              JsonStepStatus(
+                  nextStep = Some(JsonStatus(
+                      nextStepOut.step.status.nextStep.get.status,
+                      nextStepOut.step.status.nextStep.get.message
+                  )),
+                  common = Some(JsonStatus(
+                      nextStepOut.step.status.common.get.status,
+                      nextStepOut.step.status.common.get.message
+                  ))
+              )
         )
     )
   }

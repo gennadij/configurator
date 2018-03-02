@@ -28,3 +28,13 @@ case class CommonErrorNextStep() extends StatusNextStep{
   def status: String = "COMMON_ERROR_NEXT_STEP"
   def message: String = ""
 }
+
+case class StepCurrentConfigBOIncludeNoSelectedComponents() extends StatusNextStep{
+  def status: String = "STEP_CURRENT_CONFIG_BO_INCLUDE_NO_SELECTED_COMPONENTS"
+  def message: String = ""
+}
+
+case class NextStepIncludeNoComponents() extends StatusNextStep{
+  def status: String = "NEXT_STEP_INCLUDE_NO_COMPONENTS"
+  def message: String = ""
+}

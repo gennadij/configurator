@@ -41,8 +41,8 @@ class StartConfigSpecs extends Specification with ConfigWeb with BeforeAfterAll{
       
       
       val startConfigOut = wC.handleMessage(startConfigIn)
-      Logger.info(startConfigIn.toString())
-      Logger.info(startConfigOut.toString())
+//      Logger.info(startConfigIn.toString())
+//      Logger.info(startConfigOut.toString())
       
       
       
@@ -52,9 +52,12 @@ class StartConfigSpecs extends Specification with ConfigWeb with BeforeAfterAll{
       (((startConfigOut \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_1_1_user29_v016"
       (((startConfigOut \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_1_2_user29_v016"
       (((startConfigOut \ "result" \ "step" \ "components")(2)) \ "nameToShow") .asOpt[String].get === "C_1_3_user29_v016"
-//      val status = new StartConfigSuccessful()
-//      (startConfigOut \ "result" \ "status").asOpt[String].get === status.status
-//      (startConfigOut \ "result" \ "message").asOpt[String].get === status.message
+      (startConfigOut \ "result" \ "status" \ "firstStep" \ "status").asOpt[String].get === "FIRST_STEP_EXIST"
+      (startConfigOut \ "result" \ "status" \ "firstStep" \ "message").asOpt[String].get === ""
+      (startConfigOut \ "result" \ "status" \ "nextStep").asOpt[String] === None
+      (startConfigOut \ "result" \ "status" \ "fatherStep").asOpt[String] === None
+      (startConfigOut \ "result" \ "status" \ "common" \ "status").asOpt[String].get === "SUCCESS"
+      (startConfigOut \ "result" \ "status" \ "common" \ "message").asOpt[String].get === "Die Aktion ist erfolgreich"
     }
   }
   

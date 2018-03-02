@@ -47,9 +47,14 @@ class StartConfigWithDefectURLSpecs extends Specification with ConfigWeb with Be
       
       (startConfigOut \ "json").asOpt[String].get === JsonNames.START_CONFIG
       (startConfigOut \ "result" \ "step").asOpt[String] === None
-//      val status = new ODBReadError
-//      (startConfigOut \ "result" \ "status").asOpt[String].get === status.status
-//      (startConfigOut \ "result" \ "message").asOpt[String].get === status.message
+      (startConfigOut \ "result" \ "step" \ "nameToShow").asOpt[String].get === ""
+      (startConfigOut \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 0
+      (startConfigOut \ "result" \ "status" \ "firstStep" \ "status").asOpt[String].get === "FIRST_STEP_NOT_EXIST"
+      (startConfigOut \ "result" \ "status" \ "firstStep" \ "message").asOpt[String].get === ""
+      (startConfigOut \ "result" \ "status" \ "nextStep").asOpt[String] === None
+      (startConfigOut \ "result" \ "status" \ "fatherStep").asOpt[String] === None
+      (startConfigOut \ "result" \ "status" \ "common" \ "status").asOpt[String].get === "ERROR"
+      (startConfigOut \ "result" \ "status" \ "common" \ "message").asOpt[String].get === "Die Aktion ist nicht erfolgreich"
     }
   }
 }

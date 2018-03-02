@@ -93,9 +93,19 @@ object Graph{
     new Graph().getFirstStep(configUrl)
   }
   
-  def getComponents(stepId: String): List[ComponentBO] = {
-    ???
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.2
+   * 
+   * @param String
+   * 
+   * @return Option[List[ComponentBO]]
+   */
+  def getComponents(stepId: String): Option[List[ComponentBO]] = {
+    new Graph().getComponents(stepId)
   }
+  
 }
 
 class Graph {
@@ -159,11 +169,11 @@ class Graph {
         )
       }
       case (None, FatherStepNotExist()) => 
-        createStepBO(status = StatusStep(None, None, Some(FatherStepNotExist()), Some(Error())))
+        createStepBO(StatusStep(None, None, Some(FatherStepNotExist()), Some(Error())))
       case (None, ODBClassCastError()) => 
-        createStepBO(status = StatusStep(None, None, Some(CommonErrorFatherStep()), Some(ODBClassCastError())))
+        createStepBO(StatusStep(None, None, Some(CommonErrorFatherStep()), Some(ODBClassCastError())))
       case (None, ODBReadError()) => 
-        createStepBO(status = StatusStep(None, None, Some(CommonErrorFatherStep()), Some(ODBReadError())))
+        createStepBO(StatusStep(None, None, Some(CommonErrorFatherStep()), Some(ODBReadError())))
     }
   }
   
@@ -176,8 +186,41 @@ class Graph {
    * 
    * @return List[ComponentBO]
    */
-  private def getComponents(stepId: String): List[ComponentBO] = {
-    ???
+  private def getComponents(stepId: String): Option[List[ComponentBO]] = {
+    
+    val graph: OrientGraph = Database.getFactory().getTx
+    
+    val vComponents: (Option[List[OrientVertex]], Status) = try{
+      val vStep: OrientVertex = graph.getVertex(stepId)
+      val eHasComponents: List[Edge] = vStep.getEdges(Direction.OUT).asScala.toList
+      val vComponents: List[OrientVertex] = eHasComponents.map(_.getVertex(Direction.IN).asInstanceOf[OrientVertex])
+      (Some(vComponents), Success())
+    }catch{
+      case e2 : ClassCastException => {
+        graph.rollback()
+        Logger.error(e2.printStackTrace().toString)
+        (None, ODBClassCastError())
+      }
+      case e1: Exception => {
+        graph.rollback()
+        Logger.error(e1.printStackTrace().toString)
+        (None, ODBReadError())
+      }
+    }
+    
+    vComponents match {
+      case (Some(vComponents), Success()) => {
+        Some(vComponents.map(vC => {
+          ComponentBO(
+              vC.getIdentity.toString,
+              vC.getProperty(PropertyKeys.NAME_TO_SHOW),
+              List(), List(), List(), List()
+          )
+        }))
+      }
+      case (None, ODBClassCastError()) => None
+      case (None, ODBReadError()) => None
+    }
   }
   
   /**
@@ -260,7 +303,7 @@ class Graph {
     
     vNextStep match {
       case (Some(vNextStep), NextStepExist()) => {
-        createStepBO(
+        StepBO(
             vNextStep.getIdentity.toString,
             vNextStep.getProperty(PropertyKeys.NAME_TO_SHOW).toString,
             vNextStep.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN).toString.toInt,
@@ -274,13 +317,13 @@ class Graph {
         )
       }
       case (None, MultipleNextSteps()) => 
-        createStepBO(status = StatusStep(None, Some(MultipleNextSteps()), None, Some(Error())))
+        createStepBO(StatusStep(None, Some(MultipleNextSteps()), None, Some(Error())))
       case (None, NextStepNotExist()) => 
-        createStepBO(status = StatusStep(None, Some(NextStepNotExist()), None, Some(Success())))
+        createStepBO(StatusStep(None, Some(NextStepNotExist()), None, Some(Success())))
       case (None, ODBClassCastError()) => 
-        createStepBO(status = StatusStep(None, Some(CommonErrorNextStep()), None, Some(ODBClassCastError())))
+        createStepBO(StatusStep(None, Some(CommonErrorNextStep()), None, Some(ODBClassCastError())))
       case (None, ODBReadError()) => 
-        createStepBO(status = StatusStep(None, Some(CommonErrorNextStep()), None, Some(ODBReadError())))
+        createStepBO(StatusStep(None, Some(CommonErrorNextStep()), None, Some(ODBReadError())))
     }
   }
   
@@ -299,19 +342,21 @@ class Graph {
     val graph: OrientGraph = Database.getFactory().getTx
     
     val vFirstStep: (Option[OrientVertex], Status) = try{
-      graph.getVertices(PropertyKeys.CONFIG_URL, configUrl).asScala.toList match {
-        case vConfigs if vConfigs.size == 1 => {
-          vConfigs.head.getEdges(Direction.OUT, PropertyKeys.HAS_FIRST_STEP).asScala.toList match {
-            case eHasConfigs if eHasConfigs == 1 => {
+      val vConfigs: List[Vertex] = graph.getVertices(PropertyKeys.CONFIG_URL, configUrl).asScala.toList 
+      vConfigs.size match {
+        case vConfigsCount if vConfigsCount == 1 => {
+          val eHasConfigs: List[Edge] = vConfigs.head.getEdges(Direction.OUT, PropertyKeys.HAS_FIRST_STEP).asScala.toList 
+          eHasConfigs.size match {
+            case eHasConfigsCount if eHasConfigsCount == 1 => {
               val vFirstStep: OrientVertex = eHasConfigs.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]
               (Some(vFirstStep), FirstStepExist())
             }
-            case eHasConfigs if eHasConfigs.size > 1 => (None, MultipleFirstSteps())
-            case eHasConfigs if eHasConfigs.size < 1 => (None, FirstStepNotExist())
+            case eHasConfigsCount if eHasConfigsCount > 1 => (None, MultipleFirstSteps())
+            case eHasConfigsCount if eHasConfigsCount < 1 => (None, FirstStepNotExist())
           }
         }
-        case vConfigs if vConfigs.size > 1 => (None, MultipleFirstSteps())
-        case vConfigs if vConfigs.size < 1 => (None, FirstStepNotExist())
+        case vConfigsCount if vConfigsCount > 1 => (None, MultipleFirstSteps())
+        case vConfigsCount if vConfigsCount < 1 => (None, FirstStepNotExist())
       }
     }catch{
       case e2 : ClassCastException => {
@@ -327,7 +372,7 @@ class Graph {
     
     vFirstStep match {
       case (Some(vFirstStep), FirstStepExist()) => {
-        createStepBO(
+        StepBO(
             vFirstStep.getIdentity.toString(), 
             vFirstStep.getProperty(PropertyKeys.NAME_TO_SHOW).toString(), 
             vFirstStep.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN), 
@@ -340,13 +385,13 @@ class Graph {
             ))
       }
       case (None, MultipleFirstSteps()) => 
-        createStepBO(status = StatusStep(Some(MultipleFirstSteps()), None, None, Some(Error())))
+        createStepBO(StatusStep(Some(MultipleFirstSteps()), None, None, Some(Error())))
       case (None, FirstStepNotExist()) => 
-        createStepBO(status = StatusStep(Some(FirstStepNotExist()), None, None, Some(Error())))
+        createStepBO(StatusStep(Some(FirstStepNotExist()), None, None, Some(Error())))
       case (None, ODBClassCastError()) => 
-        createStepBO(status = StatusStep(Some(CommonErrorFirstStep()), None, None, Some(ODBClassCastError())))
+        createStepBO(StatusStep(Some(CommonErrorFirstStep()), None, None, Some(ODBClassCastError())))
       case (None, ODBReadError()) => 
-        createStepBO(status = StatusStep(Some(CommonErrorFirstStep()), None, None, Some(ODBReadError())))
+        createStepBO(StatusStep(Some(CommonErrorFirstStep()), None, None, Some(ODBReadError())))
     }
   }
   
@@ -360,9 +405,8 @@ class Graph {
    * 
    * @return StepBO
    */
-  private def createStepBO(
-      id: String = "", nameToShow: String = "", sCMin: Int = -1, scMax: Int = -1, status: StatusStep): StepBO = {
-    StepBO(id, nameToShow, sCMin, scMax, status)
+  private def createStepBO(s: StatusStep): StepBO = {
+    StepBO(status = s)
   }
   
   /**

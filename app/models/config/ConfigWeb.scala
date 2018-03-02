@@ -79,7 +79,7 @@ trait ConfigWeb {
       case s : JsSuccess[JsonNextStepIn] => s
       case e : JsError => Logger.error("Errors -> " + JsonNames.NEXT_STEP + ": " + JsError.toJson(e).toString())
     }
-    val jsonNextStepOut: JsonNextStepOut = client.nextStep(jsonNextStepIn.get)
+    val jsonNextStepOut: JsonNextStepOut = client.nextStep
     Json.toJson(jsonNextStepOut)
   }
   

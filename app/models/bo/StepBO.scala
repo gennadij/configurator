@@ -8,9 +8,9 @@ import models.status.step.StatusStep
  * Created by Gennadi Heimann 09.02.2018
  */
 case class StepBO (
-    stepId: String,
-    nameToShow: String,
-    selectionCriteriumMin: Int,
-    selectionCriteriumMax: Int,
+    stepId: String = "",
+    nameToShow: String = "",
+    selectionCriteriumMin: Int = -1,
+    selectionCriteriumMax: Int = -1,
     status: StatusStep
 )

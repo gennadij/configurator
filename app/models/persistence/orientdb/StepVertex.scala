@@ -52,59 +52,59 @@ object StepVertex {
    * 
    * @return StartConfigOut
    */
-  def firstStep(startConfigIn: StartConfigIn): StartConfigOut = {
-    val graph: OrientGraph = Database.getFactory().getTx
-    
-    
-    val configUrl: String = startConfigIn.configUrl
-    
-    try{
-      val vConfigs: List[Vertex] = graph.getVertices("configUrl", configUrl).asScala.toList
-      
-      val eHasConfig: List[Edge] = vConfigs.head.getEdges(Direction.OUT, "hasFirstStep").asScala.toList
-      val vFirstStep: OrientVertex = eHasConfig.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]
-      
-      val firstStepCurrentConfig: StepCurrentConfigBO = StepCurrentConfigBO(
-          vFirstStep.getIdentity.toString,
-          vFirstStep.getProperty(PropertyKeys.NAME_TO_SHOW).toString,
-          List(),
-          None
-      )
-      
-      // Fuege den ersten Schritt zu der aktuelle Konfiguration hinzu
-      CurrentConfig.addStep(Some(firstStepCurrentConfig), None)
-      
-      val status: Status = new StartConfigSuccessful()
-      StartConfigOut(
-          Some(Step(
-              vFirstStep.getIdentity.toString,
-              vFirstStep.getProperty(PropertyKeys.NAME_TO_SHOW),
-              getComponentsFromNextStep(vFirstStep)
-          )),
-          status.status,
-          status.message
-      )
-    }catch{
-      case e2 : ClassCastException => {
-        graph.rollback()
-        StartConfigOut(
-            None,
-            ODBClassCastError().status,
-            ODBClassCastError().message
-        )
-      }
-      case e1: Exception => {
-        graph.rollback()
-        val status: Status = new ODBReadError
-        Logger.error(e1.printStackTrace().toString)
-        StartConfigOut(
-            None,
-            status.status,
-            status.message
-        )
-      }
-    }
-  }
+//  def firstStep(startConfigIn: StartConfigIn): StartConfigOut = {
+//    val graph: OrientGraph = Database.getFactory().getTx
+//    
+//    
+//    val configUrl: String = startConfigIn.configUrl
+//    
+//    try{
+//      val vConfigs: List[Vertex] = graph.getVertices("configUrl", configUrl).asScala.toList
+//      
+//      val eHasConfig: List[Edge] = vConfigs.head.getEdges(Direction.OUT, "hasFirstStep").asScala.toList
+//      val vFirstStep: OrientVertex = eHasConfig.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]
+//      
+//      val firstStepCurrentConfig: StepCurrentConfigBO = StepCurrentConfigBO(
+//          vFirstStep.getIdentity.toString,
+//          vFirstStep.getProperty(PropertyKeys.NAME_TO_SHOW).toString,
+//          List(),
+//          None
+//      )
+//      
+//      // Fuege den ersten Schritt zu der aktuelle Konfiguration hinzu
+//      CurrentConfig.addStep(Some(firstStepCurrentConfig), None)
+//      
+//      val status: Status = new StartConfigSuccessful()
+//      StartConfigOut(
+//          Some(Step(
+//              vFirstStep.getIdentity.toString,
+//              vFirstStep.getProperty(PropertyKeys.NAME_TO_SHOW),
+//              getComponentsFromNextStep(vFirstStep)
+//          )),
+//          status.status,
+//          status.message
+//      )
+//    }catch{
+//      case e2 : ClassCastException => {
+//        graph.rollback()
+//        StartConfigOut(
+//            None,
+//            ODBClassCastError().status,
+//            ODBClassCastError().message
+//        )
+//      }
+//      case e1: Exception => {
+//        graph.rollback()
+//        val status: Status = new ODBReadError
+//        Logger.error(e1.printStackTrace().toString)
+//        StartConfigOut(
+//            None,
+//            status.status,
+//            status.message
+//        )
+//      }
+//    }
+//  }
   
   /**
    * @author Gennadi Heimann
@@ -115,54 +115,54 @@ object StepVertex {
    * 
    * @return NextStepOut
    */
-  def nextStep(nextStepIn: NextStepIn): NextStepOut = {
-    val graph: OrientGraph = Database.getFactory().getTx
-
-    try{
-      
-      val lastStep: StepCurrentConfigBO = CurrentConfig.getLastStep
-      
-      val selectedComponents: List[ComponentBO] = lastStep.components
-//      Logger.info(this.getClass.getSimpleName + ": " + lastStep)
-      
-      val vNextStep: Option[OrientVertex] = selectedComponents match {
-        case List() => None
-        case _ => {
-          val vSelectedComponent: OrientVertex = graph.getVertex(selectedComponents.head.componentId)
-          getStepFromSelectedComponent(vSelectedComponent)
-        }
-      }
-      
-      vNextStep match {
-        case Some(step) => {
-          val currentStep = StepCurrentConfigBO(
-            vNextStep.get.getIdentity.toString,
-            vNextStep.get.getProperty(PropertyKeys.NAME_TO_SHOW).toString,
-            List(),
-            None
-          )
-          
-          lastStep.nextStep = Some(currentStep)
-          
-          createNextStepOut(step)
-        }
-        case None => {
-          val status = NextStepError()
-            NextStepOut(
-                status.status,
-                status.message,
-                None
-          )
-        }
-      }
-    }catch{
-      case e1: Exception => {
-        graph.rollback()
-        Logger.error(e1.printStackTrace().toString())
-        createErrorStep
-      }
-    }
-  }
+//  def nextStep(nextStepIn: NextStepIn): NextStepOut = {
+//    val graph: OrientGraph = Database.getFactory().getTx
+//
+//    try{
+//      
+//      val lastStep: StepCurrentConfigBO = CurrentConfig.getLastStep
+//      
+//      val selectedComponents: List[ComponentBO] = lastStep.components
+////      Logger.info(this.getClass.getSimpleName + ": " + lastStep)
+//      
+//      val vNextStep: Option[OrientVertex] = selectedComponents match {
+//        case List() => None
+//        case _ => {
+//          val vSelectedComponent: OrientVertex = graph.getVertex(selectedComponents.head.componentId)
+//          getStepFromSelectedComponent(vSelectedComponent)
+//        }
+//      }
+//      
+//      vNextStep match {
+//        case Some(step) => {
+//          val currentStep = StepCurrentConfigBO(
+//            vNextStep.get.getIdentity.toString,
+//            vNextStep.get.getProperty(PropertyKeys.NAME_TO_SHOW).toString,
+//            List(),
+//            None
+//          )
+//          
+//          lastStep.nextStep = Some(currentStep)
+//          
+//          createNextStepOut(step)
+//        }
+//        case None => {
+//          val status = NextStepError()
+//            NextStepOut(
+//                status.status,
+//                status.message,
+//                None
+//          )
+//        }
+//      }
+//    }catch{
+//      case e1: Exception => {
+//        graph.rollback()
+//        Logger.error(e1.printStackTrace().toString())
+//        createErrorStep
+//      }
+//    }
+//  }
     
     
     
@@ -252,20 +252,20 @@ object StepVertex {
    * 
    * @return
    */
-  def createNextStepOut(step: OrientVertex): NextStepOut = {
-    val status = NextStepSuccessful()
-    NextStepOut(
-        status.status,
-        status.message,
-        Some(
-            Step(
-                step.getIdentity.toString,
-                step.getProperty(PropertyKeys.NAME_TO_SHOW),
-                getComponentsFromNextStep(step)
-            )
-        )
-    )
-  }
+//  def createNextStepOut(step: OrientVertex): NextStepOut = {
+//    val status = NextStepSuccessful()
+//    NextStepOut(
+//        status.status,
+//        status.message,
+//        Some(
+//            Step(
+//                step.getIdentity.toString,
+//                step.getProperty(PropertyKeys.NAME_TO_SHOW),
+//                getComponentsFromNextStep(step)
+//            )
+//        )
+//    )
+//  }
   
   /**
    * @author Gennadi Heimann
@@ -276,14 +276,14 @@ object StepVertex {
    * 
    * @return
    */
-  def createFinalStep: NextStepOut = {
-    val status = FinalStepSuccessful()
-    NextStepOut(
-          status.status,
-          status.message,
-          None
-    )
-  }
+//  def createFinalStep: NextStepOut = {
+//    val status = FinalStepSuccessful()
+//    NextStepOut(
+//          status.status,
+//          status.message,
+//          None
+//    )
+//  }
   
   /**
    * @author Gennadi Heimann
@@ -294,13 +294,13 @@ object StepVertex {
    * 
    * @return
    */
-  def createErrorStep: NextStepOut = {
-    NextStepOut(
-        ODBReadError().status,
-        ODBReadError().message,
-        None
-    )
-  }
+//  def createErrorStep: NextStepOut = {
+//    NextStepOut(
+//        ODBReadError().status,
+//        ODBReadError().message,
+//        None
+//    )
+//  }
   
   /**
    * @author Gennadi Heimann

@@ -43,6 +43,18 @@ object CurrentConfig {
   /**
    * @author Gennadi Heimann
    * 
+   * @version 0.0.2
+   * 
+   * @param StepCurrentConfigBO
+   * 
+   * @return Unit
+   */
+  def addFirstStep(firstStep: StepCurrentConfigBO): Unit = {
+    currentConfig.addFirstStep(firstStep)
+  }
+  /**
+   * @author Gennadi Heimann
+   * 
    * @version 0.0.1
    * 
    * Dieser neuer Schritt wird in die CurrentConfig hinzugefuegt
@@ -144,6 +156,19 @@ class CurrentConfig {
     val currentComponents: List[ComponentBO] = currentStep.get.components
     
     currentStep.get.components = currentComponents.::(component)
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.2
+   * 
+   * @param Option[StepCurrentConfig]
+   * 
+   * @return Unit
+   */
+  private def addFirstStep(firstStep: StepCurrentConfigBO): Unit = {
+    this.firstStep = Some(firstStep)
   }
   
   /**

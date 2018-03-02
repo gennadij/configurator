@@ -12,74 +12,6 @@
 
 \section{Logik Beschreibung}
 
-\subsection{Projekt Struktur}
-
-
-\begin{itemize}
-  \item \textbf{config}
-  \begin{itemize}
-    \item \textbf{Config.scala (class)}
-    \item \textbf{ConfigWeb.scala (trait)} Definition von der Schnittstelle
-    zwischen Client und Server
-  \end{itemize}
-  \item \textbf{currentConfig}
-  \begin{itemize}
-    \item \textbf{CurrentConfig.scala}
-    \item \textbf{StepCurrentConfig.scala}
-  \end{itemize}
-  \item \textbf{json}
-  \begin{itemize}
-    \item \textbf{JsonNames.scala}
-    \item \textbf{common}
-    \begin{itemize}
-      \item \textbf{JsonComponent.scala}
-      \item \textbf{JsonDependency.scala}
-      \item \textbf{JsonStatus.scala}
-      \item \textbf{JsonStep.scala}
-    \end{itemize}
-    \item \textbf{component}
-    \begin{itemize}
-      \item \textbf{JsonComponentIn.scala}
-      \item \textbf{JsonComponentOut.scala}
-      \item \textbf{JsonComponentParam.scala}
-      \item \textbf{JsonComponentResult.scala}
-      \item \textbf{JsonComponentStatus.scala}
-    \end{itemize}
-    \item \textbf{currentConfig}
-    \begin{itemize}
-      \item \textbf{JsonCurrentConfigIn.scala}
-      \item \textbf{JsonCurrentConfigIn.scala}
-      \item \textbf{JsonCurrentConfigParams.scala}
-      \item \textbf{JsonCurrentConfigResult.scala}
-      \item \textbf{JsonStepCurrentConfig.scala}
-    \end{itemize}
-    \item \textbf{nextStep}
-    \begin{itemize}
-      \item \textbf{JsonNextStepIn.scala}
-      \item \textbf{JsonNextStepOut.scala}
-      \item \textbf{JsonNextStepParams.scala}
-      \item \textbf{JsonNextStepResult.scala}
-    \end{itemize}
-    \item \textbf{startConfig}
-    \begin{itemize}
-      \item \textbf{JsonStartConfigIn.scala}
-      \item \textbf{JsonStartConfigOut.scala}
-      \item \textbf{JsonStartConfigParams.scala}
-      \item \textbf{JsonStartConfigResult.scala}
-    \end{itemize}
-    \item \textbf{persistence}
-    \begin{itemize}
-      \item \textbf{orientdb}
-      \begin{itemize}
-        \item \textbf{ComponentVertex.scala}
-        \item \textbf{PropertyKey.scala}
-        \item \textbf{StepVertex.scala}
-      \end{itemize}
-    \end{itemize}
-\end{itemize}
-\end{itemize}
-\subsection{Abh{\"a}ngigkeiten}
-
 Die Abh\"angigkeiten im Konfigurator bilden die Regel. Jede Komponente hat eine
 Ausgangsabh\"angigket (outDependency) und eine Eingangsabh\"angigket
 (inDependency). Die Ausgangsabh\"angigket bewirkt auf ihre Komponente mit der
@@ -190,7 +122,7 @@ unterschieden:\\\\
             Wenn der minimale Kriterium gleich Null und maximale Kriterium
             gr\"o\ss{}er Eins ist, kann der Benutzer ohne den Auswahl der
             Komponente zu dem n\"achsten wechseln.\\
-            \textbf{min == 0 and max $>$ 1}\\
+            \textbf{min == 0 and max $>$ 1} ist nicht erlaubt\\
             \textbf{min == 0 and max == 0} ist nicht erlaubt.
         \end{itemize}
     \item AllowNextComponent

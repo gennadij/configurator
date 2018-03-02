@@ -13,6 +13,8 @@ import models.json.component.JsonComponentIn
 import models.json.component.JsonComponentOut
 import models.logic.SelectedComponent
 import models.logic.SelectedComponent
+import models.logic.StartConfig
+import models.logic.NextStep
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -33,7 +35,7 @@ class Config extends Wrapper{
    * @return JsonStartConfigOut
    */
   def startConfig(jsonStartConfigIn: JsonStartConfigIn): JsonStartConfigOut = {
-    toJsonStartConfigOut(Persistence.startConfig(toStartConfigIn(jsonStartConfigIn)))
+    toJsonStartConfigOut(StartConfig.startConfig(toStartConfigIn(jsonStartConfigIn)))
   }
   
   /**
@@ -45,8 +47,8 @@ class Config extends Wrapper{
    * 
    * @return JsonNextStepOut
    */
-  def nextStep(jsonNextStepIn: JsonNextStepIn): JsonNextStepOut = {
-    toJsonNextStepOut(Persistence.nestStep(toNextStepIn(jsonNextStepIn)))
+  def nextStep: JsonNextStepOut = {
+    toJsonNextStepOut(NextStep.getNextStep)
   }
   
   /**

@@ -3,6 +3,7 @@ package models.json.nextStep
 import models.json.common.JsonStep
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import models.json.common.JsonStepStatus
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -11,15 +12,13 @@ import play.api.libs.functional.syntax._
  */
 
 case class JsonNextStepResult (
-    status: String,
-    message: String,
-    step: Option[JsonStep]
+    step: JsonStep,
+    status: JsonStepStatus
 )
 
 object JsonNextStepResult {
   implicit val writes: Writes[JsonNextStepResult] = (
-      (JsPath \ "status").write[String] and
-      (JsPath \ "message").write[String] and
-      (JsPath \ "step").write(Writes.optionWithNull[JsonStep])
+      (JsPath \ "step").write(Writes.of[JsonStep]) and 
+      (JsPath \ "status").write(Writes.of[JsonStepStatus])
   )(unlift(JsonNextStepResult.unapply))
 }

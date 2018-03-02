@@ -3,6 +3,7 @@ package models.json.startConfig
 import models.json.common.JsonStep
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import models.json.common.JsonStepStatus
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -12,16 +13,13 @@ import play.api.libs.functional.syntax._
  * result : {step: ...}
  */
 case class JsonStartConfigResult (
-    status: String,
-    message: String,
-    step: Option[JsonStep]
+    step: JsonStep,
+    status: JsonStepStatus
 )
 
 object JsonStartConfigResult {
-  import models.json.common.JsonStep.format
   implicit val writes: Writes[JsonStartConfigResult] = (
-      (JsPath \ "status").write[String] and
-      (JsPath \ "message").write[String] and
-      (JsPath \ "step").write(Writes.optionWithNull[JsonStep])
+      (JsPath \ "step").write(Writes.of[JsonStep]) and 
+      (JsPath \ "status").write(Writes.of[JsonStepStatus])
   )(unlift(JsonStartConfigResult.unapply))
 }
