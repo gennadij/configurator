@@ -68,10 +68,19 @@ class NextStepSpecs extends Specification with ConfigWeb with BeforeAfterAll{
       (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
       (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
       (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
-      
-//      val status = AllowNextComponent()
-//      (jsonComponentOut_1 \ "result" \ "status").asOpt[String].get === status.status
-//      (jsonComponentOut_1 \ "result" \ "message").asOpt[String].get === status.message
+      (jsonComponentOut_1 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
+      (jsonComponentOut_1 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === 
+        "Sie koennen weitere Komponente auswaelen"
+      (jsonComponentOut_1 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
+      (jsonComponentOut_1 \ "result" \ "status" \ "selectedComponent" \ "message").asOpt[String].get === 
+        "Die Komponente wurde erfolgreich in der aktuelle Konfiguration hinzugefuegt"
+      (jsonComponentOut_1 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "NOT_EXCLUDED_COMPONENT"
+      (jsonComponentOut_1 \ "result" \ "status" \ "excludeDependency" \ "message").asOpt[String].get === 
+        "Diese Komponente kann zu der Konfiguration hinzugefuegt werden"
+      (jsonComponentOut_1 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
+      (jsonComponentOut_1 \ "result" \ "status" \ "common" \ "message").asOpt[String].get === "Die Aktion ist erfolgreich"
+      (jsonComponentOut_1 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
+      (jsonComponentOut_1 \ "result" \ "status" \ "componentType" \ "message").asOpt[String].get === ""
       
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
@@ -101,10 +110,20 @@ class NextStepSpecs extends Specification with ConfigWeb with BeforeAfterAll{
       (((jsonComponentOut_2 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
       (((jsonComponentOut_2 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
       (((jsonComponentOut_2 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_2_user29_v016) ----> (C_1_3_user29_v016)"
-//      val status_2 = RequireNextStep()
-//      (jsonComponentOut_2 \ "result" \ "status").asOpt[String].get === status_2.status
-//      (jsonComponentOut_2 \ "result" \ "message").asOpt[String].get === status_2.message
-    
+      (jsonComponentOut_2 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
+      (jsonComponentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === 
+        "Es darf keine weitere Komponente ausgewaelt werden und es muss naechste Schhritt geladen werden"
+      (jsonComponentOut_2 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
+      (jsonComponentOut_2 \ "result" \ "status" \ "selectedComponent" \ "message").asOpt[String].get === 
+        "Die Komponente wurde erfolgreich in der aktuelle Konfiguration hinzugefuegt"
+      (jsonComponentOut_2 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "NOT_EXCLUDED_COMPONENT"
+      (jsonComponentOut_2 \ "result" \ "status" \ "excludeDependency" \ "message").asOpt[String].get === 
+        "Diese Komponente kann zu der Konfiguration hinzugefuegt werden"
+      (jsonComponentOut_2 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
+      (jsonComponentOut_2 \ "result" \ "status" \ "common" \ "message").asOpt[String].get === "Die Aktion ist erfolgreich"
+      (jsonComponentOut_2 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
+      (jsonComponentOut_2 \ "result" \ "status" \ "componentType" \ "message").asOpt[String].get === ""
+      
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       val jsonNextStepIn_2 : JsValue = Json.obj(
@@ -119,11 +138,13 @@ class NextStepSpecs extends Specification with ConfigWeb with BeforeAfterAll{
       (jsonNextStepOut_2 \ "json").asOpt[String].get === JsonNames.NEXT_STEP
       (jsonNextStepOut_2 \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S2_user29_v016"
       (jsonNextStepOut_2 \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 2
-      (((jsonNextStepOut_2 \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_2_1_user29_v016"
-      (((jsonNextStepOut_2 \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_2_2_user29_v016"
-//      val status_3 = NextStepSuccessful()
-//      (jsonNextStepOut_2 \ "result" \ "status").asOpt[String].get === status_3.status
-//      (jsonNextStepOut_2 \ "result" \ "message").asOpt[String].get === status_3.message
+      (((jsonNextStepOut_2 \ "result" \ "step" \ "components")(0)) \ "nameToShow").asOpt[String].get === "C_2_1_user29_v016"
+      (((jsonNextStepOut_2 \ "result" \ "step" \ "components")(1)) \ "nameToShow").asOpt[String].get === "C_2_2_user29_v016"
+      (jsonNextStepOut_2 \ "result" \ "status" \ "firstStep").asOpt[String] === None
+      (jsonNextStepOut_2 \ "result" \ "status" \ "nextStep" \ "status").asOpt[String].get === "NEXT_STEP_EXIST"
+      (jsonNextStepOut_2 \ "result" \ "status" \ "fatherStep").asOpt[String] === None
+      (jsonNextStepOut_2 \ "result" \ "status" \ "common" \ "status").asOpt[String].get === "SUCCESS"
+      
     }
   }
   

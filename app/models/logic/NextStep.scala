@@ -33,9 +33,7 @@ object NextStep{
    */
   def getNextStep(): NextStepOut = {
     new NextStep().getNextStep()
-    
   }
-  
 }
 
 
@@ -68,6 +66,12 @@ class NextStep {
             val components: Option[List[ComponentBO]] = Graph.getComponents(nextStep.stepId)
             components match {
               case Some(components) => {
+                lastStep.nextStep = Some(StepCurrentConfigBO(
+                    nextStep.stepId,
+                    nextStep.nameToShow,
+                    List(),
+                    None
+                ))
                 NextStepOut(
                    nextStep,
                    components
@@ -92,4 +96,20 @@ class NextStep {
         List()
     )
   }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param
+   * 
+   * @return
+   */
+    private def compareOneWithAll(list: Seq[String]): Boolean = {
+      list match {
+        case firstVertex :: rest => rest forall (_ == firstVertex)
+      }
+    }
+  
 }

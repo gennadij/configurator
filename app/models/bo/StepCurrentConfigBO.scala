@@ -1,7 +1,5 @@
 package models.bo
 
-import models.wrapper.common.Component
-
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
  * 
