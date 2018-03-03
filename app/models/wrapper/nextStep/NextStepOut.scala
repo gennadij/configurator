@@ -1,6 +1,5 @@
 package models.wrapper.nextStep
 
-import models.wrapper.common.Step
 import models.bo.StepBO
 import models.bo.ComponentBO
 

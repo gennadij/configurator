@@ -7,7 +7,6 @@ import models.wrapper.startConfig.StartConfigIn
 import models.wrapper.startConfig.StartConfigOut
 import models.wrapper.nextStep.NextStepIn
 import models.wrapper.nextStep.NextStepOut
-import models.persistence.db.orientdb.StepVertex
 import models.wrapper.component.ComponentOut
 import models.bo.ComponentBO
 import models.bo.StepBO

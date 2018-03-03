@@ -16,7 +16,7 @@ import akka.stream.Materializer
  * application's home page.
  */
 @Singleton
-class Controller @Inject()(cc: ControllerComponents) (implicit actorSystem: ActorSystem, mat: Materializer) extends AbstractController(cc) {
+class HomeController @Inject()(cc: ControllerComponents) (implicit actorSystem: ActorSystem, mat: Materializer) extends AbstractController(cc) {
 
   /**
    * Create an Action to render an HTML page.

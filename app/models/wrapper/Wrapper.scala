@@ -16,8 +16,6 @@ import models.wrapper.nextStep.NextStepOut
 import models.json.nextStep.JsonNextStepOut
 import models.json.nextStep.JsonNextStepResult
 import models.json.currentConfig.JsonCurrentConfigIn
-import models.wrapper.currentConfig.CurrentConfigIn
-import models.wrapper.currentConfig.CurrentConfigOut
 import models.json.currentConfig.JsonCurrentConfigOut
 import models.json.currentConfig.JsonCurrentConfigResult
 import play.api.Logger

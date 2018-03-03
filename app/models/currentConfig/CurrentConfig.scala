@@ -5,10 +5,6 @@ import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import models.json.common.JsonStep
 import models.json.currentConfig.JsonCurrentConfigIn
 import models.json.currentConfig.JsonCurrentConfigOut
-import models.wrapper.currentConfig.CurrentConfigIn
-import models.wrapper.currentConfig.CurrentConfigOut
-import models.wrapper.common.Step
-import models.wrapper.common.Component
 import play.api.Logger
 import models.bo.StepCurrentConfigBO
 import models.bo.ComponentBO
