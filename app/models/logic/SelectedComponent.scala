@@ -34,6 +34,9 @@ import models.status.step.NextStepExist
 import models.status.step.MultipleNextSteps
 import models.status.step.CommonErrorNextStep
 import models.status.component.ErrorComponentType
+import models.status.step.NextStepIncludeNoComponents
+import models.status.step.StepCurrentConfigBOIncludeNoSelectedComponents
+import models.status.step.StatusFatherStep
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -52,6 +55,7 @@ object SelectedComponent {
 class SelectedComponent(selectedComponentId: String) {
   
   private def verifySelectedComponent: ComponentOut = {
+    //    Logger.info(this.getClass.getSimpleName + ": ??? " + ???)
     
     val selectedComponentBO: Option[ComponentBO] = Persistence.getSelectedComponent(selectedComponentId)
     
@@ -69,31 +73,24 @@ class SelectedComponent(selectedComponentId: String) {
     val nextStep: StepBO = Persistence.getNextStep(selectedComponentBO.get.componentId)
     
     val commonStatusNextStep: Status = nextStep.status.common.get
-    
-    Logger.info(this.getClass.getSimpleName + ": commonStatusNextStep " + commonStatusNextStep)
 
-    val statusSelectedComponent: StatusSelectedComponent = SelectedComponentUtil.checkSelectedComponent(currentStep.get, selectedComponentId)
-      
-      val previousSelectedComponents: List[ComponentBO] = currentStep match {
+    val previousSelectedComponents: List[ComponentBO] = currentStep match {
         case Some(step) => step.components
         case None => List()
       }
-     
-//      Logger.info(this.getClass.getSimpleName + ": previousSelectedComponents " + previousSelectedComponents)
+    
+    val statusExcludeDependency: StatusExcludeDependency = SelectedComponentUtil.checkExcludeDependencies(
+          previousSelectedComponents map(_.componentId), 
+          selectedComponentBO.get.excludeDependenciesIn)
+          
+    val statusSelectedComponent: StatusSelectedComponent = 
+      SelectedComponentUtil.checkSelectedComponent(statusExcludeDependency, currentStep.get, selectedComponentId)
       
       val stausSelectionCriterium: StatusSelectionCriterium = 
           SelectedComponentUtil.checkSelectionCriterium(
               previousSelectedComponents.size, 
               fatherStepBO, 
               statusSelectedComponent)
-      
-//      Logger.info(this.getClass.getSimpleName + ": " + stausSelectionCriterium)
-      
-      val statusExcludeDependencies: StatusExcludeDependency = SelectedComponentUtil.checkExcludeDependencies(
-          currentStep.get, 
-          selectedComponentBO.get.excludeDependenciesIn)
-      
-//      val nextStepExistence: Boolean = SelectedComponentUtil.checkNextStepExistence(nextStep)
       
       val commonStatuses: List[Status] = 
         commonStatusSelectedComponent :: commonStatusFatherStep :: commonStatusNextStep :: Nil
@@ -105,23 +102,25 @@ class SelectedComponent(selectedComponentId: String) {
         case NextStepExist() => DefaultComponent()
         case MultipleNextSteps() => ErrorComponentType()
         case CommonErrorNextStep() => ErrorComponentType()
+        case NextStepIncludeNoComponents() => ErrorComponentType()
+        case StepCurrentConfigBOIncludeNoSelectedComponents() => ErrorComponentType()
       }
       
-      val status: StatusComponent = statusExcludeDependencies match {
+      val status: StatusComponent = statusExcludeDependency match {
         case NotExcludedComponent() => {
           StatusComponent(
             Some(stausSelectionCriterium), 
             Some(statusSelectedComponent), 
-            Some(statusExcludeDependencies), 
+            Some(statusExcludeDependency), 
             Some(commonStatus),
             Some(componentTypeStatus))
         }
         case ExcludedComponent() => {
           StatusComponent(
             Some(stausSelectionCriterium), 
-            Some(ErrorSelectedComponent()), 
-            Some(statusExcludeDependencies), 
-            Some(Error()),
+            Some(statusSelectedComponent), 
+            Some(statusExcludeDependency), 
+            Some(commonStatus),
             Some(componentTypeStatus))
         }
       }

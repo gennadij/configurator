@@ -24,6 +24,7 @@ import models.currentConfig.CurrentConfig
 import models.wrapper.component.ComponentOut
 import models.bo.ComponentBO
 import models.status.component.StatusComponent
+import models.status.component.NotAllowedComponent
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -42,9 +43,9 @@ object SelectedComponentUtil {
   }
   
   def checkExcludeDependencies(
-      currentStep: StepCurrentConfigBO, 
+      previousSelectedComponentIds: List[String], 
       inExcludeDependencies: List[DependencyBO]): StatusExcludeDependency = {
-    new SelectedComponentUtil().checkExcludeDependencies(currentStep, inExcludeDependencies)
+    new SelectedComponentUtil().checkExcludeDependencies(previousSelectedComponentIds, inExcludeDependencies)
   }
   
   def checkSelectionCriterium(
@@ -57,9 +58,10 @@ object SelectedComponentUtil {
   }
   
   def checkSelectedComponent(
+      statusExcludeDependency: StatusExcludeDependency,
       currentStep: StepCurrentConfigBO, 
       componentInId: String): StatusSelectedComponent = {
-    new SelectedComponentUtil().checkSelectedComponent(currentStep, componentInId)
+    new SelectedComponentUtil().checkSelectedComponent(statusExcludeDependency, currentStep, componentInId)
   }
   
   def defineStatusForSelectionCreterium(
@@ -153,12 +155,12 @@ class SelectedComponentUtil {
    * @return
    */
   private def checkExcludeDependencies(
-      currentStep: StepCurrentConfigBO, 
+      previousSelectedComponentIds: List[String], 
       inExcludeDependencies: List[DependencyBO]): StatusExcludeDependency = {
-    val selectedcomponentIds: List[String] = currentStep.components map (_.componentId)
+//    val selectedcomponentIds: List[String] = currentStep.components map (_.componentId)
     val inExcludeComponentIds: List[String] = inExcludeDependencies map (_.outId)
     
-    val excludeComponentsIds: List[String] = selectedcomponentIds flatMap { sCId => inExcludeComponentIds.filter{inECId => sCId == inECId} }
+    val excludeComponentsIds: List[String] = previousSelectedComponentIds flatMap { sCId => inExcludeComponentIds.filter{inECId => sCId == inECId} }
     
     excludeComponentsIds.size match {
       case count if count > 0 => ExcludedComponent()
@@ -187,6 +189,7 @@ class SelectedComponentUtil {
       case AddedComponent() => countOfSelectedComponents + 1
       case RemovedComponent() => countOfSelectedComponents
       case ErrorSelectedComponent() => countOfSelectedComponents
+      case NotAllowedComponent() => countOfSelectedComponents
     }
     
     val min: Int = fatherStep.selectionCriteriumMin
@@ -214,20 +217,25 @@ class SelectedComponentUtil {
    * 
    * @version 0.0.2
    * 
-   * @param StatusComponent
+   * @param 
    * 
-   * @return ComponentOut
+   * @return 
    */
   
   private def checkSelectedComponent(
+      statusExcludeDependency: StatusExcludeDependency,
       currentStep: StepCurrentConfigBO, 
       componentInId: String): StatusSelectedComponent = {
-    currentStep.components.exists(_.componentId == componentInId) match {
-      case true => {
-        CurrentConfig.removeComponent(currentStep.stepId, componentInId)
-        RemovedComponent()
-      }
-      case false => AddedComponent()
+    val componentIdExist: Boolean = currentStep.components.exists(_.componentId == componentInId)
+    statusExcludeDependency match {
+      case NotExcludedComponent() =>
+        componentIdExist match {
+          case true =>
+            CurrentConfig.removeComponent(currentStep.stepId, componentInId)
+            RemovedComponent()
+          case false => AddedComponent()
+        }
+      case ExcludedComponent() => NotAllowedComponent()
     }
   }
   

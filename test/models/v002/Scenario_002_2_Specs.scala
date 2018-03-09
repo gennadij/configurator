@@ -128,7 +128,7 @@ class Scenario_002_2_Specs  extends Specification with ConfigWeb with BeforeAfte
       (((componentOut_2 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
       (((componentOut_2 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
       
-      val statusSelectionCriterium_2 = RequireComponent()
+      val statusSelectionCriterium_2 = AllowNextComponent()
       (componentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "status").asOpt[String].get === statusSelectionCriterium_2.status
       (componentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === statusSelectionCriterium_2.message
       

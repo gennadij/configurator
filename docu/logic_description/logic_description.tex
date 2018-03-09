@@ -237,6 +237,27 @@ Der Server bekommt von dem Web-Client die ausgew\"ahlte Komponente.
     
 \end{enumerate}
 
+\subsection{Status}
+
+\begin{itemize}
+  \item SelectedComponent beschreibt der Status der ausgew\"ahlte Komponente
+  \begin{itemize}
+    \item REMOVED\_COMPONENT beschreibt der ausgew\"ahlte Komponente, die
+    zweites Mal ausgew\"ahlt wurde. Bei ersten Mal wird die Komponente zu der
+    Konfiguration hinzugef\"ugt, beim zweiten Mal wird die Komponente aus der
+    Konfiguration entfernt. (Abzuw\"ahlen)
+    \item ADDED\_COMPONENT beschreibt die Komponente die erstes Mal ausgew\"ahlt
+    wurde. Diese Komponente wird zu der Konfiguration hinzugefügt.
+    \item ERROR\_COMPONENT beschreibt die Komponente bei dem nach der Ausw\"ahl
+    einen allgemeinen Fehler passiert.
+    \item NOT_ALLOWED_COMPONENT beschreibt die Komponente die aufgrund der
+    Abh\"angigkeit nicht zu der Konfiguration hinzugef\"ugt werden kann.
+  \end{itemize}
+  \item SelectionCriterium beschreibt der Status der Komponente vor dem Auswahl.
+  \begin{itemize}
+    \item siehe Auswahlkriterium
+  \end{itemize}
+\end{itemize}
 
 
 

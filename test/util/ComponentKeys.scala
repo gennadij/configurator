@@ -1,4 +1,4 @@
-package models.common
+package util
 
 import org.junit.runner.RunWith
 import org.specs2.runner.JUnitRunner
@@ -11,6 +11,9 @@ import play.api.libs.json.Json
 import play.api.Logger
 import play.api.libs.json.JsValue
 import play.api.libs.json.JsObject
+import play.api.libs.json.JsLookupResult.jsLookupResultToJsLookup
+import play.api.libs.json.JsValue.jsValueToJsLookup
+import play.api.libs.json.Json.toJsFieldJsValueWrapper
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com

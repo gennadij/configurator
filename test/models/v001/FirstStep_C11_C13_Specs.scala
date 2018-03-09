@@ -108,17 +108,16 @@ class FirstStep_C11_C13_Specs extends Specification with ConfigWeb with BeforeAf
       
       (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
       (jsonComponentOut_2 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 0
-      (jsonComponentOut_2 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
+      (jsonComponentOut_2 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
       (jsonComponentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === 
-        "Es darf keine weitere Komponente ausgewaelt werden und es muss naechste Schhritt geladen werden"
-      (jsonComponentOut_2 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ERROR_COMPONENT"
-      (jsonComponentOut_2 \ "result" \ "status" \ "selectedComponent" \ "message").asOpt[String].get === 
-        "Die Komponente darf nicht in der aktuelle Konfiguration hinzugefuegt"
+        "Sie koennen weitere Komponente auswaelen"
+      (jsonComponentOut_2 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
+      (jsonComponentOut_2 \ "result" \ "status" \ "selectedComponent" \ "message").asOpt[String].get === ""
       (jsonComponentOut_2 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "EXCLUDED_COMPONENT"
       (jsonComponentOut_2 \ "result" \ "status" \ "excludeDependency" \ "message").asOpt[String].get === 
         "Diese Komponente darf nicht ausgewaehlt werden. Sie wird von einer anderen Komponente ausgeschlossen. Bitte waehlen Sie eine andere Komponente"
-      (jsonComponentOut_2 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "ERROR"
-      (jsonComponentOut_2 \ "result" \ "status" \ "common" \ "message").asOpt[String].get === "Die Aktion ist nicht erfolgreich"
+      (jsonComponentOut_2 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
+      (jsonComponentOut_2 \ "result" \ "status" \ "common" \ "message").asOpt[String].get === "Die Aktion ist erfolgreich"
       (jsonComponentOut_2 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (jsonComponentOut_2 \ "result" \ "status" \ "componentType" \ "message").asOpt[String].get === ""
     }
