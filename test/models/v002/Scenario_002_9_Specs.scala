@@ -94,10 +94,13 @@ class Scenario_002_9_Specs extends Specification with ConfigWeb with BeforeAfter
       val componentOut_3: JsValue = CommonFunction.selectComponent(wC, componentIdC13)
       
       (componentOut_3 \ "json").asOpt[String].get === JsonNames.COMPONENT
-      (componentOut_3 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 0
-//      (((componentOut_3 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
-//      (((componentOut_3 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
-//      (((componentOut_3 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_2_user29_v016) ----> (C_1_3_user29_v016)"
+      (componentOut_3 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 2
+      (((componentOut_3 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
+      (((componentOut_3 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
+      (((componentOut_3 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
+      (((componentOut_3 \ "result" \ "dependencies")(1)) \ "dependencyType").asOpt[String].get === "exclude"
+      (((componentOut_3 \ "result" \ "dependencies")(1)) \ "visualization").asOpt[String].get === "remove"
+      (((componentOut_3 \ "result" \ "dependencies")(1)) \ "nameToShow").asOpt[String].get === "(C_1_2_user29_v016) ----> (C_1_3_user29_v016)"
       (componentOut_3 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (componentOut_3 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
       (componentOut_3 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
@@ -121,7 +124,7 @@ class Scenario_002_9_Specs extends Specification with ConfigWeb with BeforeAfter
       (((componentOut_4 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
       (((componentOut_4 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
       (componentOut_4 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
-      (componentOut_4 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
+      (componentOut_4 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "REMOVED_COMPONENT"
       (componentOut_4 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
       (componentOut_4 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "NOT_EXCLUDED_COMPONENT"
       (componentOut_4 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
@@ -132,7 +135,7 @@ class Scenario_002_9_Specs extends Specification with ConfigWeb with BeforeAfter
       (jsonCurrentConfigOut_4 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_4 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
       (result_4 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
-      ((result_4 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_1_user29_v016")
+      ((result_4 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_2_user29_v016")
     }
   }
 }

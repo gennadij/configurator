@@ -29,7 +29,7 @@ class Scenario_002_5_Specs extends Specification with ConfigWeb with BeforeAfter
   }
   
   "Specification spezifiziert der NextStep der Konfiguration" >> {
-    "Es wird erster Step mit der Komponenten geladen und Component 1 ausgewaelt" >> {
+    "S1 -> C1 | S2 -> C1 | S3 -> C1" >> {
       val configUrl = "http://contig1/user29_v016"
       val startConfigIn = Json.obj(
           "json" -> JsonNames.START_CONFIG

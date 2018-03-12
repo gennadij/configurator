@@ -37,6 +37,8 @@ import models.status.component.ErrorComponentType
 import models.status.step.NextStepIncludeNoComponents
 import models.status.step.StepCurrentConfigBOIncludeNoSelectedComponents
 import models.status.step.StatusFatherStep
+import models.status.component.NotAllowedComponent
+import models.wrapper.dependency.Dependency
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -54,23 +56,32 @@ object SelectedComponent {
 
 class SelectedComponent(selectedComponentId: String) {
   
+  val selectedComponentBO: Option[ComponentBO] = Persistence.getSelectedComponent(selectedComponentId)
+  
+  val fatherStepBO: StepBO = Persistence.getFatherStep(selectedComponentBO.get.componentId)
+  
+  val currentStep: Option[StepCurrentConfigBO] = CurrentConfig.getCurrentStep(fatherStepBO.stepId)
+    
+  val nextStep: StepBO = Persistence.getNextStep(selectedComponentBO.get.componentId)
+  
+  
   private def verifySelectedComponent: ComponentOut = {
     //    Logger.info(this.getClass.getSimpleName + ": ??? " + ???)
     
-    val selectedComponentBO: Option[ComponentBO] = Persistence.getSelectedComponent(selectedComponentId)
+//    val selectedComponentBO: Option[ComponentBO] = Persistence.getSelectedComponent(selectedComponentId)
     
     val commonStatusSelectedComponent: Status = selectedComponentBO match {
       case Some(selectedComponentBO) => Success()
       case None => ODBReadError()
     }
     
-    val fatherStepBO: StepBO = Persistence.getFatherStep(selectedComponentBO.get.componentId)
+//    val fatherStepBO: StepBO = Persistence.getFatherStep(selectedComponentBO.get.componentId)
     
     val commonStatusFatherStep: Status = fatherStepBO.status.common.get
     
-    val currentStep: Option[StepCurrentConfigBO] = CurrentConfig.getCurrentStep(fatherStepBO.stepId)
-    
-    val nextStep: StepBO = Persistence.getNextStep(selectedComponentBO.get.componentId)
+//    val currentStep: Option[StepCurrentConfigBO] = CurrentConfig.getCurrentStep(fatherStepBO.stepId)
+//    
+//    val nextStep: StepBO = Persistence.getNextStep(selectedComponentBO.get.componentId)
     
     val commonStatusNextStep: Status = nextStep.status.common.get
 
@@ -86,11 +97,11 @@ class SelectedComponent(selectedComponentId: String) {
     val statusSelectedComponent: StatusSelectedComponent = 
       SelectedComponentUtil.checkSelectedComponent(statusExcludeDependency, currentStep.get, selectedComponentId)
       
-      val stausSelectionCriterium: StatusSelectionCriterium = 
-          SelectedComponentUtil.checkSelectionCriterium(
-              previousSelectedComponents.size, 
-              fatherStepBO, 
-              statusSelectedComponent)
+    val stausSelectionCriterium: StatusSelectionCriterium = 
+        SelectedComponentUtil.checkSelectionCriterium(
+            previousSelectedComponents.size, 
+            fatherStepBO, 
+            statusSelectedComponent)
       
       val commonStatuses: List[Status] = 
         commonStatusSelectedComponent :: commonStatusFatherStep :: commonStatusNextStep :: Nil
@@ -125,8 +136,37 @@ class SelectedComponent(selectedComponentId: String) {
         }
       }
       
-      val dependencies: List[DependencyBO] = 
-        selectedComponentBO.get.requireDependenciesOut ::: selectedComponentBO.get.excludeDependenciesOut
+    val dependencies: List[DependencyBO] = 
+      selectedComponentBO.get.requireDependenciesOut ::: selectedComponentBO.get.excludeDependenciesOut
+    
+    //                                   selectionCriterium           selectedComponent           excludeDependency                common          componentType
+    //Scenario 6
+    val statusCase1 = StatusComponent(Some(AllowNextComponent()), Some(AddedComponent()),      Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
+    //Scenario 7
+    val statusCase2 = StatusComponent(Some(RequireNextStep()),    Some(AddedComponent()),      Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
+    //Scenario 8
+    val statusCase3 = StatusComponent(Some(RequireNextStep()),    Some(NotAllowedComponent()), Some(ExcludedComponent()),    Some(Success()), Some(DefaultComponent()))
+    //Scenario 9
+    val statusCase4 = StatusComponent(Some(AllowNextComponent()), Some(RemovedComponent()),    Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
+    //Scenario 10
+    val statusCase5 = StatusComponent(Some(RequireComponent()),   Some(RemovedComponent()),    Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
+    //Scenario 2
+    val statusCase6 = StatusComponent(Some(RequireComponent()),   Some(RemovedComponent()),    Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
+    //Scenario 5
+    val statusCase7 = StatusComponent(Some(RequireNextStep()),    Some(AddedComponent()),      Some(NotExcludedComponent()), Some(Success()), Some(FinalComponent()))
+    
+    val statusCaseDefault = StatusComponent(_, _, _, _, _)
+    
+    status match {
+      case `statusCase1`       => println("Case 1 " + setCase1_2(statusCase1, dependencies))
+      case `statusCase2`       => println("Case 2 " + setCase1_2(statusCase2, dependencies))
+      case `statusCase3`       => println("Case 3 " + setCase3(statusCase3, dependencies))
+      case `statusCase4`       => println("Case 4 ")
+      case `statusCase5`       => println("Case 5 ")
+      case `statusCase6`       => println("Case 6 ")
+      case `statusCase7`       => println("Case 7 ")
+      case `statusCaseDefault` => println("Undefined Status")
+    }
     
     createComponentOut(
         status, 
@@ -135,6 +175,34 @@ class SelectedComponent(selectedComponentId: String) {
         selectedComponentBO.get.nameToShow, 
         fatherStepBO.stepId, 
         dependencies)
+  }
+  
+  private def setCase1_2(status: StatusComponent, dependencies: List[DependencyBO]): ComponentOut = {
+    //TODO Einstalten beim Einsatz
+//    val component: ComponentBO = ComponentBO(
+//            selectedComponentBO.get.componentId,
+//            selectedComponentBO.get.nameToShow,
+//            List.empty,
+//            List.empty,
+//            List.empty,
+//            List.empty
+//        )
+//        CurrentConfig.addComponent(currentStep.get, component)
+        ComponentOut(
+            selectedComponentBO.get.componentId,
+            fatherStepBO.stepId,
+            status,
+            dependencies
+        )
+  }
+  
+  private def setCase3(status: StatusComponent, dependencies: List[DependencyBO]): ComponentOut = {
+    ComponentOut(  
+        selectedComponentBO.get.componentId,
+        fatherStepBO.stepId,
+        status,
+        dependencies
+    )
   }
   
   /**
@@ -160,7 +228,7 @@ class SelectedComponent(selectedComponentId: String) {
             componentId,
             fatherStepId,
             status,
-            List()
+            dependencies
          )
       }
       case statusNotExcludedComponent: NotExcludedComponent => {

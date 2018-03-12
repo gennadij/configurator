@@ -187,7 +187,7 @@ class SelectedComponentUtil {
     
     val countOfComponents = statusSelectedComponent match {
       case AddedComponent() => countOfSelectedComponents + 1
-      case RemovedComponent() => countOfSelectedComponents
+      case RemovedComponent() => countOfSelectedComponents - 1
       case ErrorSelectedComponent() => countOfSelectedComponents
       case NotAllowedComponent() => countOfSelectedComponents
     }
