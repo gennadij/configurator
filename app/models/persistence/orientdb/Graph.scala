@@ -165,15 +165,18 @@ class Graph {
                 None,
                 Some(FatherStepExist()),
                 Some(Success())
-            )
+            ),
+            vFatherStep.getEdges(Direction.OUT, PropertyKeys.HAS_COMPONENT).asScala.toList map (hC => {
+              hC.getVertex(Direction.IN).asInstanceOf[OrientVertex].getIdentity.toString()
+            })
         )
       }
       case (None, FatherStepNotExist()) => 
-        createStepBO(StatusStep(None, None, Some(FatherStepNotExist()), Some(Error())))
+        createErrorStepBO(StatusStep(None, None, Some(FatherStepNotExist()), Some(Error())))
       case (None, ODBClassCastError()) => 
-        createStepBO(StatusStep(None, None, Some(CommonErrorFatherStep()), Some(ODBClassCastError())))
+        createErrorStepBO(StatusStep(None, None, Some(CommonErrorFatherStep()), Some(ODBClassCastError())))
       case (None, ODBReadError()) => 
-        createStepBO(StatusStep(None, None, Some(CommonErrorFatherStep()), Some(ODBReadError())))
+        createErrorStepBO(StatusStep(None, None, Some(CommonErrorFatherStep()), Some(ODBReadError())))
     }
   }
   
@@ -313,17 +316,20 @@ class Graph {
                 Some(NextStepExist()),
                 None,
                 Some(Success())
-            )
+            ),
+            vNextStep.getEdges(Direction.OUT, PropertyKeys.HAS_COMPONENT).asScala.toList map (hC => {
+              hC.getVertex(Direction.IN).asInstanceOf[OrientVertex].getIdentity.toString()
+            })
         )
       }
       case (None, MultipleNextSteps()) => 
-        createStepBO(StatusStep(None, Some(MultipleNextSteps()), None, Some(Error())))
+        createErrorStepBO(StatusStep(None, Some(MultipleNextSteps()), None, Some(Error())))
       case (None, NextStepNotExist()) => 
-        createStepBO(StatusStep(None, Some(NextStepNotExist()), None, Some(Success())))
+        createErrorStepBO(StatusStep(None, Some(NextStepNotExist()), None, Some(Success())))
       case (None, ODBClassCastError()) => 
-        createStepBO(StatusStep(None, Some(CommonErrorNextStep()), None, Some(ODBClassCastError())))
+        createErrorStepBO(StatusStep(None, Some(CommonErrorNextStep()), None, Some(ODBClassCastError())))
       case (None, ODBReadError()) => 
-        createStepBO(StatusStep(None, Some(CommonErrorNextStep()), None, Some(ODBReadError())))
+        createErrorStepBO(StatusStep(None, Some(CommonErrorNextStep()), None, Some(ODBReadError())))
     }
   }
   
@@ -382,16 +388,17 @@ class Graph {
                 None,
                 None,
                 Some(Success())
-            ))
+            ),
+            List())
       }
       case (None, MultipleFirstSteps()) => 
-        createStepBO(StatusStep(Some(MultipleFirstSteps()), None, None, Some(Error())))
+        createErrorStepBO(StatusStep(Some(MultipleFirstSteps()), None, None, Some(Error())))
       case (None, FirstStepNotExist()) => 
-        createStepBO(StatusStep(Some(FirstStepNotExist()), None, None, Some(Error())))
+        createErrorStepBO(StatusStep(Some(FirstStepNotExist()), None, None, Some(Error())))
       case (None, ODBClassCastError()) => 
-        createStepBO(StatusStep(Some(CommonErrorFirstStep()), None, None, Some(ODBClassCastError())))
+        createErrorStepBO(StatusStep(Some(CommonErrorFirstStep()), None, None, Some(ODBClassCastError())))
       case (None, ODBReadError()) => 
-        createStepBO(StatusStep(Some(CommonErrorFirstStep()), None, None, Some(ODBReadError())))
+        createErrorStepBO(StatusStep(Some(CommonErrorFirstStep()), None, None, Some(ODBReadError())))
     }
   }
   
@@ -405,8 +412,8 @@ class Graph {
    * 
    * @return StepBO
    */
-  private def createStepBO(s: StatusStep): StepBO = {
-    StepBO(status = s)
+  private def createErrorStepBO(s: StatusStep): StepBO = {
+    StepBO(status = s, componentIds = List())
   }
   
   /**

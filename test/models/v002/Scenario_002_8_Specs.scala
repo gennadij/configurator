@@ -97,10 +97,10 @@ class Scenario_002_8_Specs extends Specification with ConfigWeb with BeforeAfter
       (componentOut_3 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 2
       (((componentOut_3 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
       (((componentOut_3 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
-      (((componentOut_3 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
+      (((componentOut_3 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_3_user29_v016) ----> (C_1_1_user29_v016)"
       (((componentOut_3 \ "result" \ "dependencies")(1)) \ "dependencyType").asOpt[String].get === "exclude"
       (((componentOut_3 \ "result" \ "dependencies")(1)) \ "visualization").asOpt[String].get === "remove"
-      (((componentOut_3 \ "result" \ "dependencies")(1)) \ "nameToShow").asOpt[String].get === "(C_1_2_user29_v016) ----> (C_1_3_user29_v016)"
+      (((componentOut_3 \ "result" \ "dependencies")(1)) \ "nameToShow").asOpt[String].get === "(C_1_3_user29_v016) ----> (C_1_2_user29_v016)"
       (componentOut_3 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (componentOut_3 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
       (componentOut_3 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"

@@ -12,5 +12,6 @@ case class StepBO (
     nameToShow: String = "",
     selectionCriteriumMin: Int = -1,
     selectionCriteriumMax: Int = -1,
-    status: StatusStep
+    status: StatusStep,
+    componentIds: List[String]
 )

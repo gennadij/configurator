@@ -19,7 +19,7 @@ import util.CommonFunction
  * Created by Gennadi Heimann 22.12.2017
  */
 @RunWith(classOf[JUnitRunner])
-class Scenario_002_11_Specs extends Specification with ConfigWeb with BeforeAfterAll{
+class Scenario_002_12_Specs extends Specification with ConfigWeb with BeforeAfterAll{
 
   val wC = WebClient.init
   
@@ -28,7 +28,7 @@ class Scenario_002_11_Specs extends Specification with ConfigWeb with BeforeAfte
   def afterAll = {}
   
   "Specification spezifiziert der NextStep der Konfiguration" >> {
-    "S1 -> C1, C2, C3, C1, C2, C3" >> {
+    "S1 -> C1, C2, C3, C1, C2, C3, C1" >> {
       val configUrl = "http://contig1/user29_v016"
       
       val startConfigOut = CommonFunction.firstStep(wC, configUrl)
@@ -182,6 +182,31 @@ class Scenario_002_11_Specs extends Specification with ConfigWeb with BeforeAfte
       (result_6 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
       (result_6 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
       ((result_6 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_3_user29_v016")
+      
+      val componentOut_7: JsValue = CommonFunction.selectComponent(wC, componentIdC11)
+      
+      (componentOut_7 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_7 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
+      (((componentOut_7 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
+      (((componentOut_7 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
+      (((componentOut_7 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
+//      (((componentOut_7 \ "result" \ "dependencies")(1)) \ "dependencyType").asOpt[String].get === "exclude"
+//      (((componentOut_7 \ "result" \ "dependencies")(1)) \ "visualization").asOpt[String].get === "remove"
+//      (((componentOut_7 \ "result" \ "dependencies")(1)) \ "nameToShow").asOpt[String].get === "(C_1_3_user29_v016) ----> (C_1_2_user29_v016)"
+      (componentOut_7 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
+      (componentOut_7 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
+      //TODO muss REQUIRE_NEXT_STEP
+      (componentOut_7 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
+      (componentOut_7 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "EXCLUDED_COMPONENT"
+      (componentOut_7 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
+      
+      val jsonCurrentConfigOut_7: JsValue = CommonFunction.currentCongig(wC)
+      
+      val result_7 = (jsonCurrentConfigOut_7 \ "result")
+      (jsonCurrentConfigOut_7 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
+      (result_7 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
+      (result_7 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
+      ((result_7 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_3_user29_v016")
     }
   }
 }

@@ -99,9 +99,10 @@ class SelectedComponent(selectedComponentId: String) {
       
     val stausSelectionCriterium: StatusSelectionCriterium = 
         SelectedComponentUtil.checkSelectionCriterium(
-            previousSelectedComponents.size, 
+            previousSelectedComponents.size,
             fatherStepBO, 
-            statusSelectedComponent)
+            statusSelectedComponent,
+            selectedComponentBO.get)
       
       val commonStatuses: List[Status] = 
         commonStatusSelectedComponent :: commonStatusFatherStep :: commonStatusNextStep :: Nil
@@ -141,20 +142,23 @@ class SelectedComponent(selectedComponentId: String) {
     
     //                                   selectionCriterium           selectedComponent           excludeDependency                common          componentType
     //Scenario 6
-    val statusCase1 = StatusComponent(Some(AllowNextComponent()), Some(AddedComponent()),      Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
+    val statusCase1 = StatusComponent(Some(AllowNextComponent()),   Some(AddedComponent()),      Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
     //Scenario 7
-    val statusCase2 = StatusComponent(Some(RequireNextStep()),    Some(AddedComponent()),      Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
+    val statusCase2 = StatusComponent(Some(RequireNextStep()),      Some(AddedComponent()),      Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
     //Scenario 8
-    val statusCase3 = StatusComponent(Some(RequireNextStep()),    Some(NotAllowedComponent()), Some(ExcludedComponent()),    Some(Success()), Some(DefaultComponent()))
+    val statusCase3 = StatusComponent(Some(RequireNextStep()),      Some(NotAllowedComponent()), Some(ExcludedComponent()),    Some(Success()), Some(DefaultComponent()))
     //Scenario 9
-    val statusCase4 = StatusComponent(Some(AllowNextComponent()), Some(RemovedComponent()),    Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
+    val statusCase4 = StatusComponent(Some(AllowNextComponent()),   Some(RemovedComponent()),    Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
     //Scenario 10
-    val statusCase5 = StatusComponent(Some(RequireComponent()),   Some(RemovedComponent()),    Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
+    val statusCase5 = StatusComponent(Some(RequireComponent()),     Some(RemovedComponent()),    Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
     //Scenario 2
-    val statusCase6 = StatusComponent(Some(RequireComponent()),   Some(RemovedComponent()),    Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
+    val statusCase6 = StatusComponent(Some(RequireComponent()),     Some(RemovedComponent()),    Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
     //Scenario 5
-    val statusCase7 = StatusComponent(Some(RequireNextStep()),    Some(AddedComponent()),      Some(NotExcludedComponent()), Some(Success()), Some(FinalComponent()))
+    val statusCase7 = StatusComponent(Some(RequireNextStep()),      Some(AddedComponent()),      Some(NotExcludedComponent()), Some(Success()), Some(FinalComponent()))
     
+    val statusCase8 = StatusComponent(Some(RequireNextStep()),      Some(RemovedComponent()),    Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
+    
+    val statusCase9 = StatusComponent(Some(AllowNextComponent()),   Some(NotAllowedComponent()), Some(ExcludedComponent()),    Some(Success()), Some(DefaultComponent()))
     val statusCaseDefault = StatusComponent(_, _, _, _, _)
     
     status match {
@@ -165,6 +169,8 @@ class SelectedComponent(selectedComponentId: String) {
       case `statusCase5`       => println("Case 5 ")
       case `statusCase6`       => println("Case 6 ")
       case `statusCase7`       => println("Case 7 ")
+      case `statusCase8`       => println("Case 8 ")
+      case `statusCase9`       => println("Case 9 ")
       case `statusCaseDefault` => println("Undefined Status")
     }
     

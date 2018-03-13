@@ -51,10 +51,11 @@ object SelectedComponentUtil {
   def checkSelectionCriterium(
       countOfSelectedComponents: Int, 
       fatherStep: StepBO,
-      statusSelectedComponent: StatusSelectedComponent): StatusSelectionCriterium = {
+      statusSelectedComponent: StatusSelectedComponent,
+      selectedComponentBO: ComponentBO): StatusSelectionCriterium = {
     new SelectedComponentUtil().checkSelectionCriterium(
         countOfSelectedComponents, 
-        fatherStep, statusSelectedComponent)
+        fatherStep, statusSelectedComponent, selectedComponentBO)
   }
   
   def checkSelectedComponent(
@@ -181,11 +182,17 @@ class SelectedComponentUtil {
   private def checkSelectionCriterium(
       countOfSelectedComponents: Int, 
       fatherStep: StepBO,
-      statusSelectedComponent: StatusSelectedComponent): StatusSelectionCriterium = {
+      statusSelectedComponent: StatusSelectedComponent,
+      selectedComponentBO: ComponentBO): StatusSelectionCriterium = {
     //Ungepruefte Komponente, die noch nicht in der aktuellen Konfiguration hinzugefuegt wird
     
+    val countOfDependenciesIn: Int = selectedComponentBO.excludeDependenciesIn.size
     
-    val countOfComponents = statusSelectedComponent match {
+    val countOfSiblingComponents: Int = fatherStep.componentIds.size - 1
+    
+    val countOfComponents: Int = fatherStep.componentIds.size
+    
+    val countOfComponentsInCurrentConfig = statusSelectedComponent match {
       case AddedComponent() => countOfSelectedComponents + 1
       case RemovedComponent() => countOfSelectedComponents - 1
       case ErrorSelectedComponent() => countOfSelectedComponents
@@ -195,14 +202,23 @@ class SelectedComponentUtil {
     val min: Int = fatherStep.selectionCriteriumMin
     val max: Int = fatherStep.selectionCriteriumMax
     
+    println("countOfDependenciesIn " + countOfDependenciesIn)
+    println("countOfSiblingComponents " + countOfSiblingComponents)
+    println("countOfComponents " + countOfComponents)
+    println("countOfSelectedComponents " + countOfSelectedComponents)
+    println("countOfComponentsInCurrentConfig " + countOfComponentsInCurrentConfig)
+    
 //    Logger.info(this.getClass.getSimpleName + " countOfComponents : " + countOfComponents)
 //    Logger.info(this.getClass.getSimpleName + " selectionCriterium : " + min + " " + max)
+    if((countOfDependenciesIn + countOfComponentsInCurrentConfig) == countOfComponents) RequireNextStep()
+    else {
+      if(min > countOfComponentsInCurrentConfig && max > countOfComponentsInCurrentConfig) RequireComponent()
+      else if (min <= countOfComponentsInCurrentConfig && max == countOfComponentsInCurrentConfig) RequireNextStep()
+      else if (min <= countOfComponentsInCurrentConfig && max > countOfComponentsInCurrentConfig) AllowNextComponent()
+  //    else if (max < countOfComponents) ExcludeComponent()
+      else ExcludeComponent()
+    }
     
-    if(min > countOfComponents && max > countOfComponents) RequireComponent()
-    else if (min <= countOfComponents && max == countOfComponents) RequireNextStep()
-    else if (min <= countOfComponents && max > countOfComponents) AllowNextComponent()
-//    else if (max < countOfComponents) ExcludeComponent()
-    else ExcludeComponent()
     
 //    selectionCriterium match {
 //      case requireComponent if min > countOfComponents && max > countOfComponents => RequireComponent()
