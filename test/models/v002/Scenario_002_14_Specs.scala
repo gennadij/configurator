@@ -190,13 +190,9 @@ class Scenario_002_14_Specs extends Specification with ConfigWeb with BeforeAfte
       (((componentOut_7 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
       (((componentOut_7 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
       (((componentOut_7 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
-//      (((componentOut_7 \ "result" \ "dependencies")(1)) \ "dependencyType").asOpt[String].get === "exclude"
-//      (((componentOut_7 \ "result" \ "dependencies")(1)) \ "visualization").asOpt[String].get === "remove"
-//      (((componentOut_7 \ "result" \ "dependencies")(1)) \ "nameToShow").asOpt[String].get === "(C_1_3_user29_v016) ----> (C_1_2_user29_v016)"
       (componentOut_7 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (componentOut_7 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
-      //TODO muss REQUIRE_NEXT_STEP
-      (componentOut_7 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
+      (componentOut_7 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
       (componentOut_7 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "EXCLUDED_COMPONENT"
       (componentOut_7 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
       
@@ -215,13 +211,9 @@ class Scenario_002_14_Specs extends Specification with ConfigWeb with BeforeAfte
       (((componentOut_8 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
       (((componentOut_8 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
       (((componentOut_8 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_2_user29_v016) ----> (C_1_3_user29_v016)"
-//      (((componentOut_7 \ "result" \ "dependencies")(1)) \ "dependencyType").asOpt[String].get === "exclude"
-//      (((componentOut_7 \ "result" \ "dependencies")(1)) \ "visualization").asOpt[String].get === "remove"
-//      (((componentOut_7 \ "result" \ "dependencies")(1)) \ "nameToShow").asOpt[String].get === "(C_1_3_user29_v016) ----> (C_1_2_user29_v016)"
       (componentOut_8 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (componentOut_8 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
-      //TODO muss REQUIRE_NEXT_STEP
-      (componentOut_8 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
+      (componentOut_8 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
       (componentOut_8 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "EXCLUDED_COMPONENT"
       (componentOut_8 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
       
@@ -255,7 +247,6 @@ class Scenario_002_14_Specs extends Specification with ConfigWeb with BeforeAfte
       (jsonCurrentConfigOut_9 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_9 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
       (result_9 \ "step" \ "components").asOpt[List[JsValue]].get.size === 0
-//      ((result_9 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_3_user29_v016")
     }
   }
 }

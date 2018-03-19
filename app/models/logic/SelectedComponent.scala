@@ -68,39 +68,36 @@ class SelectedComponent(selectedComponentId: String) {
   private def verifySelectedComponent: ComponentOut = {
     //    Logger.info(this.getClass.getSimpleName + ": ??? " + ???)
     
-//    val selectedComponentBO: Option[ComponentBO] = Persistence.getSelectedComponent(selectedComponentId)
-    
     val commonStatusSelectedComponent: Status = selectedComponentBO match {
       case Some(selectedComponentBO) => Success()
       case None => ODBReadError()
     }
     
-//    val fatherStepBO: StepBO = Persistence.getFatherStep(selectedComponentBO.get.componentId)
-    
     val commonStatusFatherStep: Status = fatherStepBO.status.common.get
-    
-//    val currentStep: Option[StepCurrentConfigBO] = CurrentConfig.getCurrentStep(fatherStepBO.stepId)
-//    
-//    val nextStep: StepBO = Persistence.getNextStep(selectedComponentBO.get.componentId)
     
     val commonStatusNextStep: Status = nextStep.status.common.get
 
-    val previousSelectedComponents: List[ComponentBO] = currentStep match {
+    val previousSelectedComponentsBeforAddingCurrentSelectedComponent: List[ComponentBO] = currentStep match {
         case Some(step) => step.components
         case None => List()
       }
     
     val statusExcludeDependency: StatusExcludeDependency = SelectedComponentUtil.checkExcludeDependencies(
-          previousSelectedComponents map(_.componentId), 
+          previousSelectedComponentsBeforAddingCurrentSelectedComponent map(_.componentId), 
           selectedComponentBO.get.excludeDependenciesIn)
-          
+    
     val statusSelectedComponent: StatusSelectedComponent = 
-      SelectedComponentUtil.checkSelectedComponent(statusExcludeDependency, currentStep.get, selectedComponentId)
-      
+      SelectedComponentUtil.checkSelectedComponent(statusExcludeDependency, currentStep.get, selectedComponentBO.get)
+    
+    val previousSelectedComponentsAfterAddingCurrentSelectedComponent: List[ComponentBO] = currentStep match {
+        case Some(step) => step.components
+        case None => List()
+      }
+   
     val stausSelectionCriterium: StatusSelectionCriterium = 
         SelectedComponentUtil.checkSelectionCriterium(
-            previousSelectedComponents.size,
-            fatherStepBO, 
+            previousSelectedComponentsAfterAddingCurrentSelectedComponent,
+            fatherStepBO,
             statusSelectedComponent,
             selectedComponentBO.get)
       
@@ -152,7 +149,7 @@ class SelectedComponent(selectedComponentId: String) {
     //Scenario 10
     val statusCase5 = StatusComponent(Some(RequireComponent()),     Some(RemovedComponent()),    Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
     //Scenario 2
-    val statusCase6 = StatusComponent(Some(RequireComponent()),     Some(RemovedComponent()),    Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
+//    val statusCase6 = StatusComponent(Some(RequireComponent()),     Some(RemovedComponent()),    Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
     //Scenario 5
     val statusCase7 = StatusComponent(Some(RequireNextStep()),      Some(AddedComponent()),      Some(NotExcludedComponent()), Some(Success()), Some(FinalComponent()))
     
@@ -162,52 +159,34 @@ class SelectedComponent(selectedComponentId: String) {
     val statusCaseDefault = StatusComponent(_, _, _, _, _)
     
     status match {
-      case `statusCase1`       => println("Case 1 " + setCase1_2(statusCase1, dependencies))
-      case `statusCase2`       => println("Case 2 " + setCase1_2(statusCase2, dependencies))
-      case `statusCase3`       => println("Case 3 " + setCase3(statusCase3, dependencies))
-      case `statusCase4`       => println("Case 4 ")
-      case `statusCase5`       => println("Case 5 ")
-      case `statusCase6`       => println("Case 6 ")
-      case `statusCase7`       => println("Case 7 ")
-      case `statusCase8`       => println("Case 8 ")
-      case `statusCase9`       => println("Case 9 ")
-      case `statusCaseDefault` => println("Undefined Status")
+      case `statusCase1`       => println("Case 1 "); setCase1_2_7(statusCase1)
+      case `statusCase2`       => println("Case 2 "); setCase1_2_7(statusCase2)
+      case `statusCase3`       => println("Case 3 "); setCase3_4_5_8_9(statusCase3)
+      case `statusCase4`       => println("Case 4 "); setCase3_4_5_8_9(statusCase4)
+      case `statusCase5`       => println("Case 5 "); setCase3_4_5_8_9(statusCase5)
+//      case `statusCase6`       => println("Case 6 ")
+      case `statusCase7`       => println("Case 7 "); setCase1_2_7(statusCase7)
+      case `statusCase8`       => println("Case 8 "); setCase3_4_5_8_9(statusCase8)
+      case `statusCase9`       => println("Case 9 "); setCase3_4_5_8_9(statusCase9)
+      case `statusCaseDefault` => println("Undefined Status"); setCaseDefault
     }
-    
-    createComponentOut(
-        status, 
-        currentStep, 
-        selectedComponentBO.get.componentId, 
-        selectedComponentBO.get.nameToShow, 
-        fatherStepBO.stepId, 
-        dependencies)
   }
   
-  private def setCase1_2(status: StatusComponent, dependencies: List[DependencyBO]): ComponentOut = {
-    //TODO Einstalten beim Einsatz
-//    val component: ComponentBO = ComponentBO(
-//            selectedComponentBO.get.componentId,
-//            selectedComponentBO.get.nameToShow,
-//            List.empty,
-//            List.empty,
-//            List.empty,
-//            List.empty
-//        )
-//        CurrentConfig.addComponent(currentStep.get, component)
-        ComponentOut(
-            selectedComponentBO.get.componentId,
-            fatherStepBO.stepId,
-            status,
-            dependencies
-        )
-  }
-  
-  private def setCase3(status: StatusComponent, dependencies: List[DependencyBO]): ComponentOut = {
-    ComponentOut(  
-        selectedComponentBO.get.componentId,
-        fatherStepBO.stepId,
-        status,
-        dependencies
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.2
+   * 
+   * @param StatusComponent
+   * 
+   * @return ComponentOut
+   */
+  private def setCaseDefault: ComponentOut = {
+    ComponentOut(
+        "",
+        "",
+        StatusComponent(None, None, None, None, None),
+        List()
     )
   }
   
@@ -220,27 +199,52 @@ class SelectedComponent(selectedComponentId: String) {
    * 
    * @return ComponentOut
    */
-  private def createComponentOut(
-      status: StatusComponent, 
-      currentStep: Option[StepCurrentConfigBO],
-      componentId: String, 
-      componentNameToShow: String,
-      fatherStepId: String, 
-      dependencies: List[DependencyBO]): ComponentOut = {
-    
-    status.excludeDependency.get match {
-      case statusExcludedComponent: ExcludedComponent => {
-        ComponentOut(  
-            componentId,
-            fatherStepId,
-            status,
-            dependencies
-         )
-      }
-      case statusNotExcludedComponent: NotExcludedComponent => {
-        SelectedComponentUtil.defineStatusForSelectionCreterium(
-            status, currentStep, componentId, componentNameToShow, fatherStepId, dependencies)
-      }
-    }
+  private def setCase1_2_7(status: StatusComponent): ComponentOut = {
+    ComponentOut(
+        selectedComponentBO.get.componentId,
+        fatherStepBO.stepId,
+        status,
+        selectedComponentBO.get.requireDependenciesOut ::: selectedComponentBO.get.excludeDependenciesOut
+    )
   }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.2
+   * 
+   * @param StatusComponent
+   * 
+   * @return ComponentOut
+   */
+  private def setCase3_4_5_8_9(status: StatusComponent): ComponentOut = {
+    ComponentOut(  
+        selectedComponentBO.get.componentId,
+        fatherStepBO.stepId,
+        status,
+        selectedComponentBO.get.requireDependenciesOut ::: selectedComponentBO.get.excludeDependenciesOut
+    )
+  }
+  
+//  private def createComponentOut(
+//      status: StatusComponent, 
+//      currentStep: Option[StepCurrentConfigBO],
+//      selectedComponentBO: ComponentBO,
+//      fatherStepId: String): ComponentOut = {
+//    
+//    status.excludeDependency.get match {
+//      case statusExcludedComponent: ExcludedComponent => {
+//        ComponentOut(  
+//            selectedComponentBO.componentId,
+//            fatherStepId,
+//            status,
+//            selectedComponentBO.requireDependenciesOut ::: selectedComponentBO.excludeDependenciesOut
+//         )
+//      }
+//      case statusNotExcludedComponent: NotExcludedComponent => {
+//        SelectedComponentUtil.defineStatusForSelectionCreterium(
+//            status, currentStep, selectedComponentBO, fatherStepId)
+//      }
+//    }
+//  }
 }

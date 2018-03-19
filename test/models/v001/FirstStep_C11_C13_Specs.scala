@@ -30,7 +30,7 @@ class FirstStep_C11_C13_Specs extends Specification with ConfigWeb with BeforeAf
   }
   
   "Specification spezifiziert der NextStep der Konfiguration" >> {
-    "Es wird erster Step mit der Komponenten geladen und Component_1_1 und Componente_1_2  ausgewaelt" >> {
+    "Es wird erster Step mit der Komponenten geladen und Component_1_1 und Componente_1_3  ausgewaelt" >> {
       val configUrl = "http://contig1/user29_v016"
       val startConfigIn = Json.obj(
           "json" -> JsonNames.START_CONFIG
@@ -108,7 +108,7 @@ class FirstStep_C11_C13_Specs extends Specification with ConfigWeb with BeforeAf
       
       (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
       (jsonComponentOut_2 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 2
-      (jsonComponentOut_2 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
+      (jsonComponentOut_2 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
       (jsonComponentOut_2 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
       (jsonComponentOut_2 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "EXCLUDED_COMPONENT"
       (jsonComponentOut_2 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"

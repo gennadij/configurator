@@ -91,7 +91,8 @@ class NextStep {
   private def createErrorNextStepOut(s: StatusStep): NextStepOut = {
     NextStepOut(
         StepBO(
-            status = s
+            status = s,
+            componentIds = List()
         ),
         List()
     )

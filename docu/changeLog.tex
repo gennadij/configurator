@@ -31,37 +31,27 @@ SelectionCriterium bewertet kann.\\
 
 \subsubsection{}
 @created on     4.12.2017\\
-@finished on   \\
+@finished on   19.03.2018\\
 
 Die aktuelle Konfiguration beh\"alt gesamte Information \"uber die hinzugef\"gte
 Komponente. Dazu geh\"ohren alle Abh\"ngigkeiten und Einschr\"ankungen und
 Komponente mit $<exclude>$ Markierung.\\
 
 \subsubsection{}
-@created on 13.12.2017\\
-@finished on \\
-Jede Schritt in dem Konfigurator kann eine Abh\"angigkeit zu dem Schritt oder
-Komponente haben. Das bedeutet, dass geladene Schritt eine Komponente oder einen
-Schritt ausschlie\ss{}en oder fordern.\\
-
-\subsubsection{}
 @created on 18.12.2017\\
-@finished on \\
+@finished on 19.03.2018\\
 
 Bei dem Abschluss der Konfiguration muss auf die Konsistenz den letzten
 Schritte geachtet werden. Es kann sein, dass in einem Schritt paar Komponente
-ohne weiteren Schritt und paar mit weiterem Schritt vorhanden. (siehe
+ohne weiteren Schritt und paar mit weiterem Schritt haben. (siehe
 szenario\_3)\\
 
 \subsubsection{}
 @created on 20.12.2017\\
-@finished on \\
+@finished on 19.03.2018\\
 
 Bei der Auswahl der gleichen Komponente innerhalb eines Schrittes muss erkannt
 werden und eine Info an den Webclient gesendet.\\
-
-Bei der $<Dependency>$ werden die Parameter $<message>$ und $<status>$ nicht
-gebraucht. Sie k\"onnen auch gel\"oscht werden.\\
 
 \subsubsection{}
 @created on 21.12.2017\\
@@ -72,36 +62,16 @@ allen Status hinzuf\"ugen.\\
 
 \subsubsection{}
 @created on 21.12.2017\\
-@finished on \\
+@finished on 19.03.2018\\
 
 Abw\"ahlen der Komponente muss auch implimentiert werden. Die Komponente wird
-auch asu der $<CurrentConfig>$ entfernt.\\
-
-\subsubsection{}
-@created on 21.12.2017\\
-@finished on \\
-
-Bei der Aufruf von $<NextStepIn>$ der Web-Client braucht die ID vom vorherigen
-Schritt. Damit diese beim Bedarf vor dem neuen Schritt gel\"oscht werden kann.
-
-\subsubsection{}
-@created on 21.12.2017\\
-@finished on \\
-
-Einf\"uhrung von ODBOName. Es bei jeder Aktion nur einmal die Daten aus der DB
-geholt und in eien ODBOName Objekt gemapt. Die Aktion arbeitet nur mit diesem
-Objekt ohne zus\"atzlich in der DB abzufragen.
-
-\subsubsection{}
-@created on 13.02.2018\\
-@finished on \\
-
-In der ConfigVertex sollen die Konfigurationen von dem Datenbank einegegeben.
-Bei dem Laden von ersten Schritt werden diese Konfigurationen geladen.
+auch aus der $<CurrentConfig>$ entfernt.\\
 
 \subsection{Test}
 
 \subsubsection{Szenario v002-1}
+
+configUrl=http://contig1/user29\_v016\\
 
 Diese Szenario nur m\"oglich bei der Einstellung von
 $<configurationCourse=sequence>$.\\
@@ -132,6 +102,8 @@ $<configurationCourse=sequence>$.\\
 
 \subsubsection{Szenario 002-2}
 
+configUrl=http://contig1/user29\_v016\\
+
 Globale Einstellungen $<configurationCourse=sequence>$
 
 \begin{enumerate}
@@ -143,6 +115,8 @@ Globale Einstellungen $<configurationCourse=sequence>$
 \end{enumerate}
 
 \subsubsection{Szenario 002-3}
+
+configUrl=http://contig1/user29\_v016\\
 
 Globale Einstellungen $<configurationCourse=sequence>$
 
@@ -158,6 +132,8 @@ Globale Einstellungen $<configurationCourse=sequence>$
 
 \subsubsection{Szenario 002-4}
 
+configUrl=http://contig1/user29\_v016\\
+
 Globale Einstellungen $<configurationCourse=sequence>$
 
 \begin{enumerate}
@@ -171,6 +147,8 @@ Globale Einstellungen $<configurationCourse=sequence>$
 \end{enumerate}
 
 \subsubsection{Szenario 002-5}
+
+configUrl=http://contig1/user29\_v016\\
 
 Globale Einstellungen $<configurationCourse=sequence>$
 
@@ -189,6 +167,189 @@ Globale Einstellungen $<configurationCourse=sequence>$
   \item Client: Auswahl: $->$ n\"achste Schritt laden
   \item Server: Error -> Es existiert keiner weiteren Schritt
 \end{enumerate}
+
+\subsubsection{Szenario 002-6}
+
+configUrl=http://contig1/user29\_v016\\
+
+Schritt 1 $->$ Component 1\\
+
+Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ AddedComponent
+  \item SelectionCriterium $->$ AllowNextComponent
+  \item ExcludeDependency $->$ NotExcludeComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\subsubsection{Szenario 002-7}
+
+configUrl=http://contig1/user29\_v016\\
+
+\noindent Schritt 1 $->$ Component 1, Component 2\\
+
+\noindent Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ AddedComponent
+  \item SelectionCriterium $->$ RequireNextStep
+  \item ExcludeDependency $->$ NotExcludeComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\subsubsection{Szenario 002-8}
+
+configUrl=http://contig1/user29\_v016\\
+
+\noindent Schritt 1 $->$ Component 1, Component 2, Component 3\\
+
+\noindent Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ NotAllowedComponent
+  \item SelectionCriterium $->$ RequireNextStep
+  \item ExcludeDependency $->$ ExcludeComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\subsubsection{Szenario 002-9}
+
+configUrl=http://contig1/user29\_v016\\
+
+\noindent Schritt 1 $->$ Component 1, Component 2, Component 3, Component 1\\
+
+\noindent Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ RemovedComponent
+  \item SelectionCriterium $->$ AllowNextComponent
+  \item ExcludeDependency $->$ NotExcludedComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\subsubsection{Szenario 002-10}
+
+configUrl=http://contig1/user29\_v016\\
+
+\noindent Schritt 1 $->$ Component 1, Component 2, Component 3, Component 1,
+Component 2\\
+
+\noindent Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ RemovedComponent
+  \item SelectionCriterium $->$ RequireComponent
+  \item ExcludeDependency $->$ NotExcludeComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\subsubsection{Szenario 002-11}
+
+configUrl=http://contig1/user29\_v016\\
+
+\noindent Schritt 1 $->$ Component 1, Component 2, Component 3, Component 1,
+Component 2, Component 3\\
+
+\noindent Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ AddedComponent
+  \item SelectionCriterium $->$ RequireNextStep
+  \item ExcludeDependency $->$ NotExcludedComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\subsubsection{Szenario 002-12}
+
+configUrl=http://contig1/user29\_v016\\
+
+\noindent Schritt 1 $->$ Component 1, Component 2, Component 3, Component 1,
+Component 2, Component 3, Component 1\\
+
+\noindent Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ NotAllowedComponent
+  \item SelectionCriterium $->$ RequireNextStep
+  \item ExcludeDependency $->$ ExcludeComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\subsubsection{Szenario 002-13}
+
+configUrl=http://contig1/user29\_v016\\
+
+\noindent Schritt 1 $->$ Component 1, Component 2, Component 3, Component 1,
+Component 2, Component 3, Component 1, Component 2\\
+
+\noindent Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ NotAllowedComponent
+  \item SelectionCriterium $->$ RequireNextStep
+  \item ExcludeDependency $->$ ExcludeComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\subsubsection{Szenario 002-8}
+
+configUrl=http://contig1/user29\_v016\\
+
+\noindent Schritt 1 $->$ Component 1, Component 2, Component 3, Component 1,
+Component 2, Component 3, Component 1, Component 2, Component 3\\
+
+\noindent Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ RemovedComponent
+  \item SelectionCriterium $->$ RequireComponent
+  \item ExcludeDependency $->$ NotExcludeComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\section{v0.0.3}
+
+\subsection{Requirements}
+
+\subsubsection{}
+@created on 13.12.2017\\
+@finished on \\
+Jede Schritt in dem Konfigurator kann eine Abh\"angigkeit zu dem Schritt oder
+Komponente haben. Das bedeutet, dass geladene Schritt eine Komponente oder einen
+Schritt ausschlie\ss{}en oder fordern.\\
+
+\subsubsection{}
+@created on 21.12.2017\\
+@finished on \\
+
+Bei der Aufruf von $<NextStepIn>$ der Web-Client braucht die ID vom vorherigen
+Schritt. Damit diese beim Bedarf vor dem neuen Schritt gel\"oscht werden kann.
+
+\subsubsection{}
+@created on 21.12.2017\\
+@finished on \\
+
+Einf\"uhrung von ODBOName. Es bei jeder Aktion nur einmal die Daten aus der DB
+geholt und in eien ODBOName Objekt gemapt. Die Aktion arbeitet nur mit diesem
+Objekt ohne zus\"atzlich in der DB abzufragen.
+
+\subsubsection{}
+@created on 13.02.2018\\
+@finished on \\
+
+In der ConfigVertex sollen die Konfigurationen von dem Datenbank einegegeben.
+Bei dem Laden von ersten Schritt werden diese Konfigurationen geladen.
+
 \end{document}
 
 
