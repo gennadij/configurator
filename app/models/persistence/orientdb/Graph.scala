@@ -154,7 +154,7 @@ class Graph {
       }
     }
     
-    vFatherStep match {
+    (vFatherStep: @unchecked) match {
       case (Some(vFatherStep), FatherStepExist()) => {
         StepBO(
             vFatherStep.getIdentity.toString,
@@ -309,7 +309,7 @@ class Graph {
       }
     }
     
-    vNextStep match {
+    (vNextStep: @unchecked) match {
       case (Some(vNextStep), NextStepExist()) => {
         StepBO(
             vNextStep.getIdentity.toString,
@@ -381,7 +381,7 @@ class Graph {
       }
     }
     
-    vFirstStep match {
+    (vFirstStep: @unchecked) match {
       case (Some(vFirstStep), FirstStepExist()) => {
         StepBO(
             vFirstStep.getIdentity.toString(), 

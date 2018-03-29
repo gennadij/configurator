@@ -80,7 +80,7 @@ class SelectedComponent(selectedComponentId: String) {
       
       val fatherStep: StepBO = Persistence.getFatherStep(selectedComponentBO.componentId)
       
-      fatherStep.status match {
+      (fatherStep.status: @unchecked) match {
         case status @ StatusStep(None,None,Some(FatherStepExist()),Some(Success())) => verifySelectedComponent
         case status @ StatusStep(None, None, Some(FatherStepNotExist()), Some(Error())) => 
           ComponentOut(status = StatusComponent(None, None, None, status.common, None))
@@ -91,7 +91,7 @@ class SelectedComponent(selectedComponentId: String) {
       }
     }
     
-    selectedComponentBO.status.common match {
+    (selectedComponentBO.status.common: @unchecked) match {
       case status @ Some(Success()) => getSelectedComponentFromDB
       case status @ Some(Error()) => ComponentOut(status = StatusComponent(None, None, None, status, None))
       case status @ Some(ODBReadError()) => ComponentOut(status = StatusComponent(None, None, None, status, None))
@@ -202,7 +202,7 @@ class SelectedComponent(selectedComponentId: String) {
     
     val status: StatusComponent = selectedComponentStatusComponentType.status
     
-    status match {
+    (status: @unchecked) match {
       case `statusCase1`       => Logger.info(this.getClass.getSimpleName + " : Case1"); setCase1_2_3_4_5_6_7_8_9(selectedComponentStatusComponentType, fatherStep.stepId)
       case `statusCase2`       => Logger.info(this.getClass.getSimpleName + " : Case 2 "); setCase1_2_3_4_5_6_7_8_9(selectedComponentStatusComponentType, fatherStep.stepId)
       case `statusCase3`       => Logger.info(this.getClass.getSimpleName + " : Case 3 "); setCase1_2_3_4_5_6_7_8_9(selectedComponentStatusComponentType, fatherStep.stepId)
