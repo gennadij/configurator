@@ -58,4 +58,18 @@ object CommonFunction {
     jsonCurrentConfigOut
   }
   
+  def nextStep(wC: WebClient): JsValue = {
+    
+    val jsonNextStepIn : JsValue = Json.obj(
+        "json" -> JsonNames.NEXT_STEP
+    )
+      
+    val jsonNextStepOut = wC.handleMessage(jsonNextStepIn)
+      
+    Logger.info(this.getClass.getSimpleName + ": nextStepIn " + jsonNextStepIn)
+    Logger.info(this.getClass.getSimpleName + ": nextStepOut " + jsonNextStepOut)
+    
+    jsonNextStepOut
+  }
+  
 }

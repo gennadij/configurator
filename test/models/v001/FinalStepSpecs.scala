@@ -10,6 +10,7 @@ import play.api.libs.json.Json
 import models.json.JsonNames
 import play.api.Logger
 import play.api.libs.json.JsValue
+import util.CommonFunction
 
 
 /**
@@ -82,6 +83,8 @@ class FinalStepSpecs extends Specification with ConfigWeb with BeforeAfterAll{
       (componentOut_1 \ "result" \ "status" \ "componentType" \ "message").asOpt[String].get === ""
       
       Logger.info(this.getClass.getSimpleName + ": =================================================")
+      
+      Logger.info(this.getClass.getSimpleName + ": currentConfig " + CommonFunction.currentCongig(wC))
       
       val jsonNextStepIn_2 : JsValue = Json.obj(
           "json" -> JsonNames.NEXT_STEP

@@ -1,0 +1,320 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350) (preloaded format=pdflatex 2017.11.24)  20 MAR 2018 11:25
+entering extended mode
+**C:/Users/heimann/scala/projects/configurator/docu/changeLog.tex
+(C:/Users/heimann/scala/projects/configurator/docu/changeLog.tex
+LaTeX2e <2017-04-15>
+Babel <3.10> and hyphenation patterns for 1 language(s) loaded.
+(C:\Users\heimann\Desktop\dev\miktex\texmfs\install\tex\latex\base\article.cls
+Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
+(C:\Users\heimann\Desktop\dev\miktex\texmfs\install\tex\latex\base\size10.clo
+File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(C:\Users\heimann\Desktop\dev\miktex\texmfs\install\tex\latex\psnfss\pifont.sty
+Package: pifont 2005/04/12 PSNFSS-v9.2a Pi font support (SPQR) 
+LaTeX Font Info:    Try loading font information for U+pzd on input line 63.
+(C:\Users\heimann\Desktop\dev\miktex\texmfs\install\tex\latex\psnfss\upzd.fd
+File: upzd.fd 2001/06/04 font definitions for U/pzd.
+)
+LaTeX Font Info:    Try loading font information for U+psy on input line 64.
+
+(C:\Users\heimann\Desktop\dev\miktex\texmfs\install\tex\latex\psnfss\upsy.fd
+File: upsy.fd 2001/06/04 font definitions for U/psy.
+)
+! Font U/psy/m/n/10=psyr at 10.0pt not loadable: Metric (TFM) file not found.
+<to be read again> 
+                   relax 
+l.64 {\Pifont{psy}
+                  }
+? 
+)
+No file changeLog.aux.
+\openout1 = `changeLog.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 9.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 9.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 9.
+[1
+
+{C:/Users/heimann/Desktop/dev/miktex/texmfs/data/pdftex/config/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 13--15
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 17--19
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 25--27
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 33--35
+
+ []
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 38.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 38.
+
+Underfull \hbox (badness 10000) in paragraph at lines 36--39
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--43
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 44--48
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 50--52
+
+ []
+
+[1]
+Underfull \hbox (badness 10000) in paragraph at lines 53--55
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 57--59
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 60--62
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--66
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 67--69
+
+ []
+
+! Undefined control sequence.
+l.82 \checkmark
+                \\
+? 
+
+Underfull \hbox (badness 10000) in paragraph at lines 110--111
+
+ []
+
+
+Overfull \hbox (4.8019pt too wide) in paragraph at lines 112--114
+[]\OT1/cmr/m/n/10 Diese Szenari-o nur moglich bei der E-in-stel-lung von $\OML
+/cmm/m/it/10 < configurationCourse \OT1/cmr/m/n/10 =
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 112--114
+
+ []
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 141--142
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 155--156
+
+ []
+
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 171--172
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 187--188
+
+ []
+
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 209--210
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 211--212
+
+ []
+
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 216.
+
+(C:\Users\heimann\Desktop\dev\miktex\texmfs\install\tex\latex\base\omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 216.
+
+Underfull \hbox (badness 10000) in paragraph at lines 225--226
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 227--228
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 241--242
+
+ []
+
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 243--244
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 257--258
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 259--260
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 273--274
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 275--277
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 290--291
+
+ []
+
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 292--294
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 307--308
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 309--311
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 324--325
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 326--328
+
+ []
+
+[7]
+Underfull \hbox (badness 10000) in paragraph at lines 341--342
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 343--345
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 361--366
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 368--370
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 375--377
+
+ []
+
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 383--385
+
+ []
+
+
+Overfull \hbox (14.16731pt too wide) in paragraph at lines 386--388
+[]\OT1/cmr/m/n/10 In der Con-figVer-tex sollen die Kon-fig-u-ra-tio-nen von dem
+ Daten-bank ei-negegeben.
+ []
+
+[9] (changeLog.aux) ) 
+Here is how much of TeX's memory you used:
+ 297 strings out of 495222
+ 3882 string characters out of 3180586
+ 53235 words of memory out of 3000000
+ 3651 multiletter control sequences out of 15000+200000
+ 8255 words of font info for 29 fonts, out of 3000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 23i,6n,19p,186b,193s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Users/heimann/Desktop/dev/miktex/texmfs/install/fonts/
+type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/heimann/Desktop/dev/miktex/texmfs
+/install/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/heimann/Desktop/de
+v/miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/hei
+mann/Desktop/dev/miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmr10.pfb
+><C:/Users/heimann/Desktop/dev/miktex/texmfs/install/fonts/type1/public/amsfont
+s/cm/cmr12.pfb><C:/Users/heimann/Desktop/dev/miktex/texmfs/install/fonts/type1/
+public/amsfonts/cm/cmr17.pfb><C:/Users/heimann/Desktop/dev/miktex/texmfs/instal
+l/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on changeLog.pdf (10 pages, 101216 bytes).
+PDF statistics:
+ 63 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+

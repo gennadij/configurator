@@ -43,7 +43,7 @@ object Persistence {
    * 
    * @return List[ComponentBO]
    */
-  def getComponents(stepId: String): Option[List[ComponentBO]] = {
+  def getComponents(stepId: String): List[ComponentBO] = {
     Graph.getComponents(stepId)
   }
   
@@ -82,7 +82,7 @@ object Persistence {
    * 
    * @return 
    */
-  def getSelectedComponent(selectedComponentId: String): Option[ComponentBO] = {
+  def getSelectedComponent(selectedComponentId: String): ComponentBO = {
     Graph.getComponent(selectedComponentId)
   }
   

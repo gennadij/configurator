@@ -47,10 +47,16 @@ class StartConfig(configUrl: String) {
 
     val firstStep: StepBO = Persistence.getFirstStep(configUrl)
     
-    val components: List[ComponentBO] = Persistence.getComponents(firstStep.stepId) match {
-      case Some(components) => components
-      case None => List()
+    val components: List[ComponentBO] = firstStep.stepId match {
+      case "" => List()
+      case _ => Persistence.getComponents(firstStep.stepId)
     }
+    
+//    val components: List[ComponentBO] = Persistence.getComponents(firstStep.stepId) 
+//    match {
+//      case Some(components) => components
+//      case None => List()
+//    }
     
     
     

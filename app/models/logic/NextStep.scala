@@ -14,6 +14,9 @@ import models.status.step.StatusStep
 import models.status.Error
 import models.status.step.StepCurrentConfigBOIncludeNoSelectedComponents
 import models.status.step.NextStepIncludeNoComponents
+import models.status.Status
+import models.status.Success
+import play.api.Logger
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -54,6 +57,7 @@ class NextStep {
     
     val selectedComponents: List[ComponentBO] = lastStep.components
     
+    Logger.info(selectedComponents.toString())
     selectedComponents match {
       case List() => {
         createErrorNextStepOut(StatusStep(None, Some(StepCurrentConfigBOIncludeNoSelectedComponents()),
@@ -63,10 +67,11 @@ class NextStep {
         val nextStep: StepBO = Graph.getNextStep(selectedComponents.head.componentId)
         nextStep.status.nextStep match {
           case Some(NextStepExist()) => {
-            val components: Option[List[ComponentBO]] = Graph.getComponents(nextStep.stepId)
-            components match {
-              case Some(components) => {
-                lastStep.nextStep = Some(StepCurrentConfigBO(
+            val components: List[ComponentBO] = Graph.getComponents(nextStep.stepId)
+            val statusComponents: Boolean = components map { _.status.common.get } contains{ Success() }
+            statusComponents match {
+              case true => {
+              lastStep.nextStep = Some(StepCurrentConfigBO(
                     nextStep.stepId,
                     nextStep.nameToShow,
                     List(),
@@ -77,9 +82,11 @@ class NextStep {
                    components
                 )
               }
-              case None => createErrorNextStepOut(StatusStep(None, 
+              case false => {
+                createErrorNextStepOut(StatusStep(None, 
                   Some(NextStepIncludeNoComponents()),
                   None, Some(Error())))
+              }
             }
           }
           case _ => NextStepOut(nextStep, List())

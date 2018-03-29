@@ -12,8 +12,8 @@ import models.bo.DependencyBO
  * Created by Gennadi Heimann 13.11.2017
  */
 case class ComponentOut (
-    selectedComponentId: String,
-    stepId: String,
+    selectedComponentId: String = "",
+    stepId: String = "",
     status: StatusComponent,
-    dependencies: List[DependencyBO]
+    dependencies: List[DependencyBO] = List()
 )

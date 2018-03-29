@@ -32,6 +32,7 @@ import models.status.step.CommonErrorFirstStep
 import models.status.step.FatherStepExist
 import models.status.step.FatherStepNotExist
 import models.status.step.CommonErrorFatherStep
+import models.status.component.StatusComponent
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -63,7 +64,7 @@ object Graph{
    * 
    * @return OrientVertex
    */
-  def getComponent(componentId: String): Option[ComponentBO] = {
+  def getComponent(componentId: String): ComponentBO = {
     new Graph().getComponent(componentId)
   }
   
@@ -102,7 +103,7 @@ object Graph{
    * 
    * @return Option[List[ComponentBO]]
    */
-  def getComponents(stepId: String): Option[List[ComponentBO]] = {
+  def getComponents(stepId: String): List[ComponentBO] = {
     new Graph().getComponents(stepId)
   }
   
@@ -189,40 +190,41 @@ class Graph {
    * 
    * @return List[ComponentBO]
    */
-  private def getComponents(stepId: String): Option[List[ComponentBO]] = {
+  private def getComponents(stepId: String): List[ComponentBO] = {
     
     val graph: OrientGraph = Database.getFactory().getTx
     
-    val vComponents: (Option[List[OrientVertex]], Status) = try{
+    try{
       val vStep: OrientVertex = graph.getVertex(stepId)
       val eHasComponents: List[Edge] = vStep.getEdges(Direction.OUT).asScala.toList
       val vComponents: List[OrientVertex] = eHasComponents.map(_.getVertex(Direction.IN).asInstanceOf[OrientVertex])
-      (Some(vComponents), Success())
+      vComponents.map(vC => {
+        ComponentBO(
+            vC.getIdentity.toString,
+            vC.getProperty(PropertyKeys.NAME_TO_SHOW),
+            StatusComponent(None, None , None, Some(Success()), None),
+            List(), List(), List(), List()
+        )
+      })
     }catch{
       case e2 : ClassCastException => {
         graph.rollback()
         Logger.error(e2.printStackTrace().toString)
-        (None, ODBClassCastError())
+        List(ComponentBO(
+            "", "",
+            StatusComponent(None, None , None, Some(ODBClassCastError()), None),
+            List(), List(), List(), List()
+        ))
       }
       case e1: Exception => {
         graph.rollback()
         Logger.error(e1.printStackTrace().toString)
-        (None, ODBReadError())
+        List(ComponentBO(
+            "", "",
+            StatusComponent(None, None , None, Some(ODBReadError()), None),
+            List(), List(), List(), List()
+        ))
       }
-    }
-    
-    vComponents match {
-      case (Some(vComponents), Success()) => {
-        Some(vComponents.map(vC => {
-          ComponentBO(
-              vC.getIdentity.toString,
-              vC.getProperty(PropertyKeys.NAME_TO_SHOW),
-              List(), List(), List(), List()
-          )
-        }))
-      }
-      case (None, ODBClassCastError()) => None
-      case (None, ODBReadError()) => None
     }
   }
   
@@ -235,39 +237,42 @@ class Graph {
    * 
    * @return ComponentOut
    */
-  private def getComponent(componentId: String): Option[ComponentBO] = {
+  private def getComponent(componentId: String): ComponentBO = {
     
     val graph: OrientGraph = Database.getFactory().getTx
     
-    val vComponent: Option[OrientVertex] = try{
+    
+    
+    try{
+      val vComponent = graph.getVertex(componentId)
       
-      Some(graph.getVertex(componentId))
-      
+      ComponentBO(
+          vComponent.getIdentity.toString,
+          vComponent.getProperty(PropertyKeys.NAME_TO_SHOW),
+          StatusComponent(None, None, None, Some(Success()), None),
+          getComponentDependenciesOut(vComponent) filter {_.dependencyType == PropertyKeys.EXCLUDE},
+          getComponentDependenciesIn(vComponent) filter {_.dependencyType == PropertyKeys.EXCLUDE},
+          getComponentDependenciesOut(vComponent) filter {_.dependencyType == PropertyKeys.REQUIRE},
+          getComponentDependenciesIn(vComponent) filter {_.dependencyType == PropertyKeys.REQUIRE}
+      )
+    
     }catch{
       case e2 : ClassCastException => {
         graph.rollback()
         Logger.error(e2.printStackTrace().toString)
-        None
+        ComponentBO(
+            "", "", StatusComponent(None, None, None, Some(ODBClassCastError()), None),
+            List(), List(), List(), List()
+        )
       }
       case e1: Exception => {
         graph.rollback()
         Logger.error(e1.printStackTrace().toString)
-        None
+        ComponentBO(
+            "", "", StatusComponent(None, None, None, Some(ODBReadError()), None),
+            List(), List(), List(), List()
+        )
       }
-    }
-    
-    vComponent match {
-      case Some(vComponent) => {
-        Some(ComponentBO(
-            vComponent.getIdentity.toString,
-            vComponent.getProperty(PropertyKeys.NAME_TO_SHOW),
-            getComponentDependenciesOut(vComponent) filter {_.dependencyType == PropertyKeys.EXCLUDE},
-            getComponentDependenciesIn(vComponent) filter {_.dependencyType == PropertyKeys.EXCLUDE},
-            getComponentDependenciesOut(vComponent) filter {_.dependencyType == PropertyKeys.REQUIRE},
-            getComponentDependenciesIn(vComponent) filter {_.dependencyType == PropertyKeys.REQUIRE}
-        ))
-      }
-      case None => None
     }
   }
   
