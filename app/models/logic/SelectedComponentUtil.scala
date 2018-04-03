@@ -37,155 +37,44 @@ import models.status.component.DefaultComponent
 
 object SelectedComponentUtil {
   
-  def checkCommonStatus(commonStatuses: List[Status]): Status = {
-    new SelectedComponentUtil().checkCommonStatus(commonStatuses)
-  }
-  
-  def checkNextStepExistence(nextStep: Option[StepBO]): Boolean = {
-    new SelectedComponentUtil().checkNextStepExistence(nextStep)
-  }
-  
-  def checkExcludeDependencies(
-      currentStep: Option[StepCurrentConfigBO], 
-      inExcludeDependencies: List[DependencyBO]): StatusExcludeDependency = {
-    new SelectedComponentUtil().checkExcludeDependencies(currentStep, inExcludeDependencies)
-  }
-  
-  def checkSelectionCriterium(
-      currentStep: Option[StepCurrentConfigBO],
-      fatherStep: StepBO,
-      selectedComponentBO: ComponentBO): ComponentBO = {
-    new SelectedComponentUtil().checkSelectionCriterium(
-        currentStep, fatherStep, selectedComponentBO)
-  }
-  
-  def checkSelectedComponentInCurrentConfig(
-      statusExcludeDependency: StatusExcludeDependency,
-      currentStep: StepCurrentConfigBO, 
-      selectedComponentBO: ComponentBO): StatusSelectedComponent = {
-    new SelectedComponentUtil().checkSelectedComponentInCurrentConfig(statusExcludeDependency, currentStep, selectedComponentBO)
+  def checkStatusSelectedComponent(currentStep: Option[StepCurrentConfigBO], 
+      selectedComponent: ComponentBO, fatherstep: StepBO): ComponentBO = {
+    new SelectedComponentUtil().checkStatusSelectedComponent(currentStep, selectedComponent, fatherstep)
   }
 }
 
 class SelectedComponentUtil {
+  
   /**
    * @author Gennadi Heimann
-   * 
-   * Priority of Status
-   * 
-   * 1. ODBReadError
-   * 
-   * 2. ClassCastError
-   * 
-   * 3. Error
-   * 
-   * 4. Success
    * 
    * @version 0.0.2
    * 
-   * @param List[Status]
-   * 
-   * @return Status
-   */
-  private def checkCommonStatus(commonStatuses: List[Status]): Status = {
-    
-    val oDBReadErrorStatuses: List[Status] = commonStatuses.filter(_.isInstanceOf[ODBReadError])
-    
-    val classCastErrorStatus: List[Status] = commonStatuses.filter(_.isInstanceOf[ODBClassCastError])
-    
-    val errorStatus: List[Status] = commonStatuses.filter(_.isInstanceOf[Error])
-    
-    val successStatus: List[Status] = commonStatuses.filter(_.isInstanceOf[Success])
-    
-    def checkclassCastErrorStatus(classCastErrorStatus: List[Status]): Status = classCastErrorStatus match {
-      case List() => checkErrorStatus(errorStatus)
-      case _ => ODBClassCastError()
-    }
-    
-    def checkErrorStatus(errorStatus: List[Status]): Status = errorStatus match {
-      case List() => checkSuccessStatus(successStatus)
-      case _ => Error()
-    }
-    
-    def checkSuccessStatus(successStatus: List[Status]): Status = successStatus match {
-      case List() => Error()
-      case _ => Success()
-    }
-    
-    oDBReadErrorStatuses match {
-      case List() => checkclassCastErrorStatus(classCastErrorStatus)
-      case _ => ODBReadError()
-    }
-  }
-  
-  /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.1
-   * 
    * @param 
    * 
-   * @return
+   * @return 
    */
-  private def checkNextStepExistence(nextStep: Option[StepBO]): Boolean = {
-    nextStep match {
-      case Some(nextStep) => true
-      case None => false
-    }
-  }
-  
-  /**
-   * @author Gennadi Heimann
-   * 
-   * Prueft ob die ausgewaelte Komponente schliesst eine von der Komponente in der aktuellen Konfiguration aus
-   * 
-   * @version 0.0.1
-   * 
-   * @param 
-   * 
-   * @return
-   */
-  private def checkExcludeDependencies(
-      currentStep: Option[StepCurrentConfigBO], 
-      inExcludeDependencies: List[DependencyBO]): StatusExcludeDependency = {
+  private def checkStatusSelectedComponent(currentStep: Option[StepCurrentConfigBO], 
+      selectedComponent: ComponentBO, fatherStep: StepBO): ComponentBO = {
+    
     val selectedcomponentIds: List[String] = currentStep match {
       case Some(step) => step.components map (_.componentId)
       case None => List()
     }
       
-    val inExcludeComponentIds: List[String] = inExcludeDependencies map (_.outId)
+    val inExcludeComponentIds: List[String] = selectedComponent.excludeDependenciesIn map (_.outId)
     
-    val excludeComponentsIds: List[String] = selectedcomponentIds flatMap { sCId => inExcludeComponentIds.filter{inECId => sCId == inECId} }
+    val excludeComponentsIds: List[String] = 
+      selectedcomponentIds flatMap { sCId => inExcludeComponentIds.filter{inECId => sCId == inECId} }
     
-    excludeComponentsIds.size match {
-      case count if count > 0 => ExcludedComponent()
-      case count if count == 0 => NotExcludedComponent()
-    }
-  }
-  
-  /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.1
-   * 
-   * @param 
-   * 
-   * @return
-   */
-  
-  private def checkSelectionCriterium(
-      currentStep: Option[StepCurrentConfigBO], 
-      fatherStep: StepBO,
-      selectedComponentBO: ComponentBO): ComponentBO = {
-    
-    val statusSelectedComponent: StatusSelectedComponent = selectedComponentBO.status.selectedComponent.get
+//    val statusSelectedComponent: StatusSelectedComponent = selectedComponent.status.selectedComponent.get
     
     val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = currentStep match {
-        case Some(step) => step.components
-        case None => List()
-      }
+      case Some(step) => step.components
+      case None => List()
+    }
     
-    val currentConfigWithTempSelectedComponent: List[ComponentBO] = previousSelectedComponentsInCurrentConfig :+ selectedComponentBO
+    val currentConfigWithTempSelectedComponent: List[ComponentBO] = previousSelectedComponentsInCurrentConfig :+ selectedComponent
     
     val outExcludedDependencyIds: List[String] = currentConfigWithTempSelectedComponent flatMap (pSC => {
       pSC.excludeDependenciesOut map (_.inId)
@@ -206,104 +95,134 @@ class SelectedComponentUtil {
     
     val countOfComponentsInCurrentConfig = currentConfigWithTempSelectedComponent.size
     
-    val statusExcludeDependency: StatusExcludeDependency = selectedComponentBO.status.excludeDependency.get
+    excludeComponentsIds.size match {
+      case count if count > 0 => {
+        //STATUS EXCLUDED_COMPONENT
+        caseExcludeComponent(selectedComponent, unselectedExcludedComponents, 
+            previousSelectedComponentsInCurrentConfig, fatherStep)
+      }
+      case count if count == 0 => {
+        //STATUS NOT_EXCLUDED_COMPONENT
+        
+        caseNotExcludeComponent(currentStep, selectedComponent, unselectedExcludedComponents, 
+            previousSelectedComponentsInCurrentConfig, countOfComponentsInCurrentConfig, fatherStep, 
+            outExcludedDependencyIdsWithOutDupplicate, currentConfigWithTempSelectedComponent)
+      }
+    }
+  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.2
+   * 
+   * @param 
+   * 
+   * @return 
+   */
+  private def caseExcludeComponent(selectedComponent: ComponentBO, unselectedExcludedComponents: List[String],
+      previousSelectedComponentsInCurrentConfig: List[ComponentBO], fatherStep: StepBO): ComponentBO = {
+    unselectedExcludedComponents match {
+      case List() => {
+        selectedComponent.copy(status = StatusComponent(
+            Some(RequireNextStep()),
+            Some(NotAllowedComponent()),
+            Some(ExcludedComponent()),
+            Some(Success()),
+            Some(DefaultComponent())
+        ))
+      }
+      case _ => {
+        selectedComponent.copy(status = StatusComponent(
+            Some(setSelectionCriteriumStatus(previousSelectedComponentsInCurrentConfig.size, fatherStep)),
+            Some(NotAllowedComponent()),
+            Some(ExcludedComponent()),
+            Some(Success()),
+            Some(DefaultComponent())
+        ))
+      }
+    }
+  }
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.2
+   * 
+   * @param 
+   * 
+   * @return 
+   */
+  private def caseNotExcludeComponent(currentStep: Option[StepCurrentConfigBO], selectedComponent: ComponentBO,
+      unselectedExcludedComponents: List[String], previousSelectedComponentsInCurrentConfig: List[ComponentBO],
+      countOfComponentsInCurrentConfig: Int, fatherStep: StepBO, 
+      outExcludedDependencyIdsWithOutDupplicate: Set[String], currentConfigWithTempSelectedComponent: List[ComponentBO]): ComponentBO = {
     
-    statusExcludeDependency match{
-      case ExcludedComponent() => {
-        unselectedExcludedComponents match {
-          case List() => {
-            selectedComponentBO.copy(status = StatusComponent(
-                Some(RequireNextStep()),
-                Some(NotAllowedComponent()),
-                Some(statusExcludeDependency),
-                Some(Success()),
-                Some(DefaultComponent())
-            ))
-          }
-          case _ => {
-            selectedComponentBO.copy(status = StatusComponent(
-                Some(setSelectionCriteriumStatus(previousSelectedComponentsInCurrentConfig.size, fatherStep)),
-                Some(NotAllowedComponent()),
-                Some(statusExcludeDependency),
-                Some(Success()),
-                Some(DefaultComponent())
-            ))
-          }
+    val componentIdExist: Boolean = currentStep.get.components.exists(_.componentId == selectedComponent.componentId)
+    
+    componentIdExist match {
+      case true =>
+        //STATUS REMOVED_COMPONENT
+        CurrentConfig.removeComponent(currentStep.get.stepId, selectedComponent.componentId)
+        
+        val countOfComponentsInCurrentConfig: Int = currentStep match {
+          case Some(step) => step.components.size
+          case None => 0
         }
         
-      }
-      case NotExcludedComponent() => {
-        statusSelectedComponent match {
-          case AddedComponent() => {
-            unselectedExcludedComponents match {
-              case List() => {
-                val component = selectedComponentBO.copy(status = StatusComponent(
-                    Some(RequireNextStep()),
-                    Some(statusSelectedComponent),
-                    Some(statusExcludeDependency),
+        selectedComponent.copy(status = StatusComponent(
+            Some(setSelectionCriteriumStatus(countOfComponentsInCurrentConfig, fatherStep)),
+            Some(RemovedComponent()),
+            Some(NotExcludedComponent()),
+            Some(Success()),
+            Some(DefaultComponent())
+        ))
+      case false => {
+        //STATUS ADDED_COMPONENT
+        unselectedExcludedComponents match {
+          case List() => {
+            //STATUS NOT_ALLOWED_COMPONENT
+            outExcludedDependencyIdsWithOutDupplicate.size match {
+              case 0 => {
+                val countOfComponentsInCurrentConfig: Int = currentStep match {
+                  case Some(step) => step.components.size
+                  case None => 0
+                }
+                val component = selectedComponent.copy(status = StatusComponent(
+                    Some(setSelectionCriteriumStatus(currentConfigWithTempSelectedComponent.size, fatherStep)),
+                    Some(NotAllowedComponent()),
+                    Some(NotExcludedComponent()),
                     Some(Success()),
                     Some(DefaultComponent())
                 ))
-                 
-                CurrentConfig.addComponent(currentStep.get, component)
-                
                 component
               }
               case _ => {
-                val component = selectedComponentBO.copy(status = StatusComponent(
-                    Some(setSelectionCriteriumStatus(countOfComponentsInCurrentConfig, fatherStep)),
-                    Some(statusSelectedComponent),
-                    Some(statusExcludeDependency),
+                val component = selectedComponent.copy(status = StatusComponent(
+                    Some(RequireNextStep()),
+                    Some(AddedComponent()),
+                    Some(NotExcludedComponent()),
                     Some(Success()),
                     Some(DefaultComponent())
                 ))
-                
+             
                 CurrentConfig.addComponent(currentStep.get, component)
                 
                 component
               }
             }
           }
-          case RemovedComponent() => {
-            selectedComponentBO.copy(status = StatusComponent(
-                    Some(setSelectionCriteriumStatus(previousSelectedComponentsInCurrentConfig.size, fatherStep)),
-                    Some(statusSelectedComponent),
-                    Some(statusExcludeDependency),
-                    Some(Success()),
-                    Some(DefaultComponent())
-                ))
-          }
-          case ErrorSelectedComponent() => {
-            selectedComponentBO.copy(status = StatusComponent(
-                    Some(setSelectionCriteriumStatus(previousSelectedComponentsInCurrentConfig.size, fatherStep)),
-                    Some(statusSelectedComponent),
-                    Some(statusExcludeDependency),
-                    Some(Success()),
-                    Some(DefaultComponent())
-                ))
-          }
-          case NotAllowedComponent() => {
-            unselectedExcludedComponents match {
-              case List() => {
-                selectedComponentBO.copy(status = StatusComponent(
-                    Some(RequireNextStep()),
-                    Some(statusSelectedComponent),
-                    Some(statusExcludeDependency),
-                    Some(Success()),
-                    Some(DefaultComponent())
-                    
-                ))
-              }
-              case _ => {
-                selectedComponentBO.copy(status = StatusComponent(
-                    Some(setSelectionCriteriumStatus(countOfComponentsInCurrentConfig, fatherStep)),
-                    Some(statusSelectedComponent),
-                    Some(statusExcludeDependency),
-                    Some(Success()),
-                    Some(DefaultComponent())
-                ))              
-              }
-            }
+          case _ => {
+            val component = selectedComponent.copy(status = StatusComponent(
+                Some(setSelectionCriteriumStatus(countOfComponentsInCurrentConfig, fatherStep)),
+                Some(AddedComponent()),
+                Some(NotExcludedComponent()),
+                Some(Success()),
+                Some(DefaultComponent())
+            ))
+            
+            CurrentConfig.addComponent(currentStep.get, component)
+            
+            component
           }
         }
       }
@@ -317,12 +236,291 @@ class SelectedComponentUtil {
     
     countOfComponents match {
       case count if min > count && max > count =>    RequireComponent()
-      case count if min <= count && max == count =>  RequireNextStep()
+      case count if min <= count && max <= count =>  RequireNextStep()
       case count if min <= count && max > count =>   AllowNextComponent()
-      case count if max < count =>                   ExcludeComponent()
+//      case count if max < count =>                   ExcludeComponent()
       case _ =>                                      ErrorSelectionCriterium()
     }
   }
+}
+
+
+//  def checkCommonStatus(commonStatuses: List[Status]): Status = {
+//    new SelectedComponentUtil().checkCommonStatus(commonStatuses)
+//  }
+  
+//  def checkNextStepExistence(nextStep: Option[StepBO]): Boolean = {
+//    new SelectedComponentUtil().checkNextStepExistence(nextStep)
+//  }
+  
+//  def checkExcludeDependencies(
+//      currentStep: Option[StepCurrentConfigBO], 
+//      inExcludeDependencies: List[DependencyBO]): StatusExcludeDependency = {
+//    new SelectedComponentUtil().checkExcludeDependencies(currentStep, inExcludeDependencies)
+//  }
+//  
+//  def checkSelectionCriterium(
+//      currentStep: Option[StepCurrentConfigBO],
+//      fatherStep: StepBO,
+//      selectedComponentBO: ComponentBO): ComponentBO = {
+//    new SelectedComponentUtil().checkSelectionCriterium(
+//        currentStep, fatherStep, selectedComponentBO)
+//  }
+//  
+//  def checkSelectedComponentInCurrentConfig(
+//      statusExcludeDependency: StatusExcludeDependency,
+//      currentStep: StepCurrentConfigBO, 
+//      selectedComponentBO: ComponentBO): StatusSelectedComponent = {
+//    new SelectedComponentUtil().checkSelectedComponentInCurrentConfig(statusExcludeDependency, currentStep, selectedComponentBO)
+//  }
+
+
+
+//  /**
+//   * @author Gennadi Heimann
+//   * 
+//   * @version 0.0.2
+//   * 
+//   * @param List[Status]
+//   * 
+//   * @return Status
+//   */
+//  private def checkCommonStatus(commonStatuses: List[Status]): Status = {
+//    
+//    val oDBReadErrorStatuses: List[Status] = commonStatuses.filter(_.isInstanceOf[ODBReadError])
+//    
+//    val classCastErrorStatus: List[Status] = commonStatuses.filter(_.isInstanceOf[ODBClassCastError])
+//    
+//    val errorStatus: List[Status] = commonStatuses.filter(_.isInstanceOf[Error])
+//    
+//    val successStatus: List[Status] = commonStatuses.filter(_.isInstanceOf[Success])
+//    
+//    def checkclassCastErrorStatus(classCastErrorStatus: List[Status]): Status = classCastErrorStatus match {
+//      case List() => checkErrorStatus(errorStatus)
+//      case _ => ODBClassCastError()
+//    }
+//    
+//    def checkErrorStatus(errorStatus: List[Status]): Status = errorStatus match {
+//      case List() => checkSuccessStatus(successStatus)
+//      case _ => Error()
+//    }
+//    
+//    def checkSuccessStatus(successStatus: List[Status]): Status = successStatus match {
+//      case List() => Error()
+//      case _ => Success()
+//    }
+//    
+//    oDBReadErrorStatuses match {
+//      case List() => checkclassCastErrorStatus(classCastErrorStatus)
+//      case _ => ODBReadError()
+//    }
+//  }
+  
+//  /**
+//   * @author Gennadi Heimann
+//   * 
+//   * @version 0.0.1
+//   * 
+//   * @param 
+//   * 
+//   * @return
+//   */
+//  private def checkNextStepExistence(nextStep: Option[StepBO]): Boolean = {
+//    nextStep match {
+//      case Some(nextStep) => true
+//      case None => false
+//    }
+//  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * Prueft ob die ausgewaelte Komponente schliesst eine von der Komponente in der aktuellen Konfiguration aus
+   * 
+   * @version 0.0.1
+   * 
+   * @param 
+   * 
+   * @return
+   */
+//  private def checkExcludeDependencies(
+//      currentStep: Option[StepCurrentConfigBO], 
+//      inExcludeDependencies: List[DependencyBO]): StatusExcludeDependency = {
+//    val selectedcomponentIds: List[String] = currentStep match {
+//      case Some(step) => step.components map (_.componentId)
+//      case None => List()
+//    }
+//      
+//    val inExcludeComponentIds: List[String] = inExcludeDependencies map (_.outId)
+//    
+//    val excludeComponentsIds: List[String] = selectedcomponentIds flatMap { sCId => inExcludeComponentIds.filter{inECId => sCId == inECId} }
+//    
+//    
+//    
+//    excludeComponentsIds.size match {
+//      case count if count > 0 => {
+//        
+//        
+//        
+//        
+//        ExcludedComponent()
+//      }
+//      case count if count == 0 => {
+//        
+//        
+//        
+//        
+//        NotExcludedComponent()
+//      }
+//    }
+//  }
+  
+  /**
+   * @author Gennadi Heimann
+   * 
+   * @version 0.0.1
+   * 
+   * @param 
+   * 
+   * @return
+   */
+  
+//  private def checkSelectionCriterium(
+//      currentStep: Option[StepCurrentConfigBO], 
+//      fatherStep: StepBO,
+//      selectedComponentBO: ComponentBO): ComponentBO = {
+//    
+//    val statusSelectedComponent: StatusSelectedComponent = selectedComponentBO.status.selectedComponent.get
+//    
+//    val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = currentStep match {
+//        case Some(step) => step.components
+//        case None => List()
+//      }
+//    
+//    val currentConfigWithTempSelectedComponent: List[ComponentBO] = previousSelectedComponentsInCurrentConfig :+ selectedComponentBO
+//    
+//    val outExcludedDependencyIds: List[String] = currentConfigWithTempSelectedComponent flatMap (pSC => {
+//      pSC.excludeDependenciesOut map (_.inId)
+//    })
+//    
+//    val outExcludedDependencyIdsWithOutDupplicate = outExcludedDependencyIds.toSet
+//    
+//    val unselectedComponentsIds: List[String] = fatherStep.componentIds filterNot (c => {
+//      currentConfigWithTempSelectedComponent.map(_.componentId).contains(c)
+//    })
+//
+//    val unselectedExcludedComponents: List[String] = unselectedComponentsIds.filterNot(uC => {
+//      outExcludedDependencyIdsWithOutDupplicate.contains(uC)
+//    })
+//    
+////    Logger.info(this.getClass.getSimpleName + " countOfComponents : " + countOfComponents)
+////    Logger.info(this.getClass.getSimpleName + " selectionCriterium : " + min + " " + max)
+//    
+//    val countOfComponentsInCurrentConfig = currentConfigWithTempSelectedComponent.size
+//    
+//    val statusExcludeDependency: StatusExcludeDependency = selectedComponentBO.status.excludeDependency.get
+//    
+//    statusExcludeDependency match{
+//      case ExcludedComponent() => {
+//        unselectedExcludedComponents match {
+//          case List() => {
+//            selectedComponentBO.copy(status = StatusComponent(
+//                Some(RequireNextStep()),
+//                Some(NotAllowedComponent()),
+//                Some(statusExcludeDependency),
+//                Some(Success()),
+//                Some(DefaultComponent())
+//            ))
+//          }
+//          case _ => {
+//            selectedComponentBO.copy(status = StatusComponent(
+//                Some(setSelectionCriteriumStatus(previousSelectedComponentsInCurrentConfig.size, fatherStep)),
+//                Some(NotAllowedComponent()),
+//                Some(statusExcludeDependency),
+//                Some(Success()),
+//                Some(DefaultComponent())
+//            ))
+//          }
+//        }
+//      }
+//      case NotExcludedComponent() => {
+//        statusSelectedComponent match {
+//          case AddedComponent() => {
+//            unselectedExcludedComponents match {
+//              case List() => {
+//                val component = selectedComponentBO.copy(status = StatusComponent(
+//                    Some(RequireNextStep()),
+//                    Some(statusSelectedComponent),
+//                    Some(statusExcludeDependency),
+//                    Some(Success()),
+//                    Some(DefaultComponent())
+//                ))
+//                 
+//                CurrentConfig.addComponent(currentStep.get, component)
+//                
+//                component
+//              }
+//              case _ => {
+//                val component = selectedComponentBO.copy(status = StatusComponent(
+//                    Some(setSelectionCriteriumStatus(countOfComponentsInCurrentConfig, fatherStep)),
+//                    Some(statusSelectedComponent),
+//                    Some(statusExcludeDependency),
+//                    Some(Success()),
+//                    Some(DefaultComponent())
+//                ))
+//                
+//                CurrentConfig.addComponent(currentStep.get, component)
+//                
+//                component
+//              }
+//            }
+//          }
+//          case RemovedComponent() => {
+//            selectedComponentBO.copy(status = StatusComponent(
+//                    Some(setSelectionCriteriumStatus(previousSelectedComponentsInCurrentConfig.size, fatherStep)),
+//                    Some(statusSelectedComponent),
+//                    Some(statusExcludeDependency),
+//                    Some(Success()),
+//                    Some(DefaultComponent())
+//                ))
+//          }
+//          case ErrorSelectedComponent() => {
+//            selectedComponentBO.copy(status = StatusComponent(
+//                    Some(setSelectionCriteriumStatus(previousSelectedComponentsInCurrentConfig.size, fatherStep)),
+//                    Some(statusSelectedComponent),
+//                    Some(statusExcludeDependency),
+//                    Some(Success()),
+//                    Some(DefaultComponent())
+//                ))
+//          }
+//          case NotAllowedComponent() => {
+//            unselectedExcludedComponents match {
+//              case List() => {
+//                selectedComponentBO.copy(status = StatusComponent(
+//                    Some(RequireNextStep()),
+//                    Some(statusSelectedComponent),
+//                    Some(statusExcludeDependency),
+//                    Some(Success()),
+//                    Some(DefaultComponent())
+//                    
+//                ))
+//              }
+//              case _ => {
+//                selectedComponentBO.copy(status = StatusComponent(
+//                    Some(setSelectionCriteriumStatus(countOfComponentsInCurrentConfig, fatherStep)),
+//                    Some(statusSelectedComponent),
+//                    Some(statusExcludeDependency),
+//                    Some(Success()),
+//                    Some(DefaultComponent())
+//                ))              
+//              }
+//            }
+//          }
+//        }
+//      }
+//    }
+//  }
+
   
   /**
    * @author Gennadi Heimann
@@ -334,34 +532,17 @@ class SelectedComponentUtil {
    * @return 
    */
   
-  private def checkSelectedComponentInCurrentConfig(
-      statusExcludeDependency: StatusExcludeDependency,
-      currentStep: StepCurrentConfigBO, 
-      selectedComponentBO: ComponentBO): StatusSelectedComponent = {
-    //TODO v0.0.3 Status Require Dependency => wird in der v0.0.3 implementiert
-    val componentIdExist: Boolean = currentStep.components.exists(_.componentId == selectedComponentBO.componentId)
-    
-    componentIdExist match {
-      case true =>
-        CurrentConfig.removeComponent(currentStep.stepId, selectedComponentBO.componentId)
-        RemovedComponent()
-      case false => AddedComponent()
-    }
-  }
-//    statusExcludeDependency match {
-//      case NotExcludedComponent() =>
-//        componentIdExist match {
-//          case true =>
-//            CurrentConfig.removeComponent(currentStep.stepId, selectedComponentBO.componentId)
-//            RemovedComponent()
-//          case false => {
-//
-//            CurrentConfig.addComponent(currentStep, selectedComponentBO)
-//            CurrentConfig.printCurrentConfig
-//            AddedComponent()
-//          }
-//        }
-//      case ExcludedComponent() => NotAllowedComponent()
+//  private def checkSelectedComponentInCurrentConfig(
+//      statusExcludeDependency: StatusExcludeDependency,
+//      currentStep: StepCurrentConfigBO, 
+//      selectedComponentBO: ComponentBO): StatusSelectedComponent = {
+//    //TODO v0.0.3 Status Require Dependency => wird in der v0.0.3 implementiert
+//    val componentIdExist: Boolean = currentStep.components.exists(_.componentId == selectedComponentBO.componentId)
+//    
+//    componentIdExist match {
+//      case true =>
+//        CurrentConfig.removeComponent(currentStep.stepId, selectedComponentBO.componentId)
+//        RemovedComponent()
+//      case false => AddedComponent()
 //    }
 //  }
-}

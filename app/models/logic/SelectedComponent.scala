@@ -136,24 +136,24 @@ class SelectedComponent(selectedComponentId: String) {
   }
   
   private def verifyStatusFromSelectedComponent(
-  currentStep: Option[StepCurrentConfigBO], selectedComponent: ComponentBO, 
-  fatherStep: StepBO, nextStep: StepBO): ComponentOut = {
+      currentStep: Option[StepCurrentConfigBO], selectedComponent: ComponentBO, 
+      fatherStep: StepBO, nextStep: StepBO): ComponentOut = {
 
-    val statusExcludeDependency: StatusExcludeDependency = SelectedComponentUtil.checkExcludeDependencies(
-      currentStep, 
-      selectedComponent.excludeDependenciesIn)
-      
-      val statusSelectedComponent: StatusSelectedComponent = 
-        SelectedComponentUtil.checkSelectedComponentInCurrentConfig(statusExcludeDependency, currentStep.get, selectedComponent)
-      
-      //update Status in ComponenteBO
-      val selectedComponentBOUpdated_1: ComponentBO = selectedComponent.copy(
-          status = StatusComponent(
-              None, Some(statusSelectedComponent), Some(statusExcludeDependency), 
-              selectedComponent.status.common, None))
-      
-      val selectedComponentStatusSelectionCriterium: ComponentBO = 
-        SelectedComponentUtil.checkSelectionCriterium(currentStep, fatherStep, selectedComponentBOUpdated_1)
+//    val statusExcludeDependency: StatusExcludeDependency = SelectedComponentUtil.checkExcludeDependencies(
+//      currentStep, 
+//      selectedComponent.excludeDependenciesIn)
+//      
+//      val statusSelectedComponent: StatusSelectedComponent = 
+//        SelectedComponentUtil.checkSelectedComponentInCurrentConfig(statusExcludeDependency, currentStep.get, selectedComponent)
+//      
+//      //update Status in ComponenteBO
+//      val selectedComponentBOUpdated_1: ComponentBO = selectedComponent.copy(
+//          status = StatusComponent(
+//              None, Some(statusSelectedComponent), Some(statusExcludeDependency), 
+//              selectedComponent.status.common, None))
+//      
+//      val selectedComponentStatusSelectionCriterium: ComponentBO = 
+//        SelectedComponentUtil.checkSelectionCriterium(currentStep, fatherStep, selectedComponentBOUpdated_1)
       
       
       
@@ -166,12 +166,15 @@ class SelectedComponent(selectedComponentId: String) {
         case StepCurrentConfigBOIncludeNoSelectedComponents() => ErrorComponentType()
       }
       
-      val selectedComponentStatusComponentType = selectedComponentStatusSelectionCriterium copy (
+      val statusSelectedComponent: ComponentBO = 
+        SelectedComponentUtil.checkStatusSelectedComponent(currentStep, selectedComponent, fatherStep)
+      
+      val selectedComponentStatusComponentType = statusSelectedComponent copy (
           status = StatusComponent(
-              selectedComponentStatusSelectionCriterium.status.selectionCriterium,
-              selectedComponentStatusSelectionCriterium.status.selectedComponent,
-              selectedComponentStatusSelectionCriterium.status.excludeDependency,
-              selectedComponentStatusSelectionCriterium.status.common,
+              statusSelectedComponent.status.selectionCriterium,
+              statusSelectedComponent.status.selectedComponent,
+              statusSelectedComponent.status.excludeDependency,
+              statusSelectedComponent.status.common,
               Some(componentTypeStatus)
           )
       )
@@ -190,8 +193,8 @@ class SelectedComponent(selectedComponentId: String) {
     val statusCase4 = StatusComponent(Some(AllowNextComponent()),   Some(RemovedComponent()),    Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
     //Scenario 10
     val statusCase5 = StatusComponent(Some(RequireComponent()),     Some(RemovedComponent()),    Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
-    //Scenario 2
-//    val statusCase6 = StatusComponent(Some(RequireComponent()),     Some(RemovedComponent()),    Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
+    //Scenario 16
+    val statusCase6 = StatusComponent(Some(RequireNextStep()),      Some(NotAllowedComponent()), Some(NotExcludedComponent()), Some(Success()), Some(DefaultComponent()))
     //Scenario 5
     val statusCase7 = StatusComponent(Some(RequireNextStep()),      Some(AddedComponent()),      Some(NotExcludedComponent()), Some(Success()), Some(FinalComponent()))
     
@@ -203,12 +206,12 @@ class SelectedComponent(selectedComponentId: String) {
     val status: StatusComponent = selectedComponentStatusComponentType.status
     
     (status: @unchecked) match {
-      case `statusCase1`       => Logger.info(this.getClass.getSimpleName + " : Case1"); setCase1_2_3_4_5_6_7_8_9(selectedComponentStatusComponentType, fatherStep.stepId)
+      case `statusCase1`       => Logger.info(this.getClass.getSimpleName + " : Case 1"); setCase1_2_3_4_5_6_7_8_9(selectedComponentStatusComponentType, fatherStep.stepId)
       case `statusCase2`       => Logger.info(this.getClass.getSimpleName + " : Case 2 "); setCase1_2_3_4_5_6_7_8_9(selectedComponentStatusComponentType, fatherStep.stepId)
       case `statusCase3`       => Logger.info(this.getClass.getSimpleName + " : Case 3 "); setCase1_2_3_4_5_6_7_8_9(selectedComponentStatusComponentType, fatherStep.stepId)
       case `statusCase4`       => Logger.info(this.getClass.getSimpleName + " : Case 4 "); setCase1_2_3_4_5_6_7_8_9(selectedComponentStatusComponentType, fatherStep.stepId)
       case `statusCase5`       => Logger.info(this.getClass.getSimpleName + " : Case 5 "); setCase1_2_3_4_5_6_7_8_9(selectedComponentStatusComponentType, fatherStep.stepId)
-//      case `statusCase6`       => println("Case 6 ")
+      case `statusCase6`       => Logger.info(this.getClass.getSimpleName + " : Case 5 "); setCase1_2_3_4_5_6_7_8_9(selectedComponentStatusComponentType, fatherStep.stepId)
       case `statusCase7`       => Logger.info(this.getClass.getSimpleName + " : Case 7 "); setCase1_2_3_4_5_6_7_8_9(selectedComponentStatusComponentType, fatherStep.stepId)
       case `statusCase8`       => Logger.info(this.getClass.getSimpleName + " : Case 8 "); setCase1_2_3_4_5_6_7_8_9(selectedComponentStatusComponentType, fatherStep.stepId)
       case `statusCase9`       => Logger.info(this.getClass.getSimpleName + " : Case 9 "); setCase1_2_3_4_5_6_7_8_9(selectedComponentStatusComponentType, fatherStep.stepId)
