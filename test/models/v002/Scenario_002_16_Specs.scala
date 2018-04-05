@@ -174,7 +174,7 @@ class Scenario_002_16_Specs extends Specification with ConfigWeb with BeforeAfte
 //      (((componentOut4_21 \ "result" \ "dependencies")(1)) \ "nameToShow").asOpt[String].get === "(C_1_3_user29_v016) ----> (C_1_2_user29_v016)"
       (componentOut4_22 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (componentOut4_22 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
-      (componentOut4_22 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
+      (componentOut4_22 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "NOT_ALLOW_NEXT_COMPONENT"
       (componentOut4_22 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "NOT_EXCLUDED_COMPONENT"
       (componentOut4_22 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
       

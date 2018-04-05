@@ -14,8 +14,8 @@ sealed abstract class StatusSelectionCriterium extends Status
  * 
  * Created by Gennadi Heimann Nov 19, 2017
  */
-case class ExcludeComponent() extends StatusSelectionCriterium {
-  def status: String = "EXCLUDE_COMPONENT"
+case class NotAllowNextComponent() extends StatusSelectionCriterium {
+  def status: String = "NOT_ALLOW_NEXT_COMPONENT"
   def message: String = "Komponent darf nicht verwendet werden"
 }
 
