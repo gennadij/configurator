@@ -182,7 +182,7 @@ class SelectedComponentUtil {
               selectedComponent, currentStep)
           case NotAllowNextComponent() => {
             selectedComponent.copy(status = StatusComponent(
-                Some(NotAllowNextComponent()),
+                Some(RequireNextStep()),
                 Some(NotAllowedComponent()),
                 Some(NotExcludedComponent()),
                 Some(Success()),
