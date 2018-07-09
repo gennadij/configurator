@@ -9,7 +9,13 @@ lazy val server = (project in file("server")).settings(commonSettings).settings(
   libraryDependencies ++= Seq(
     "com.vmunier" %% "scalajs-scripts" % "1.1.2",
     guice,
-    specs2 % Test
+    specs2 % Test,
+
+    "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test,
+
+    "org.specs2" % "specs2-junit_2.12" % "3.8.6" % "test",
+
+    "com.orientechnologies" % "orientdb-graphdb" % "3.0.1"
   ),
   // Compile the project before generating Eclipse files, so that generated .scala or .class files for views and routes are present
   EclipseKeys.preTasks := Seq(compile in Compile)
@@ -19,7 +25,14 @@ lazy val server = (project in file("server")).settings(commonSettings).settings(
 lazy val client = (project in file("client")).settings(commonSettings).settings(
   scalaJSUseMainModuleInitializer := true,
   libraryDependencies ++= Seq(
-    "org.scala-js" %%% "scalajs-dom" % "0.9.5"
+    "org.scala-js" %%% "scalajs-dom" % "0.9.5",
+    "be.doeraene" %%% "scalajs-jquery" % "0.9.4",
+    "com.typesafe.play" %% "play-json" % "2.6.9"
+  ),
+  skip in packageJSDependencies := false,
+  jsDependencies ++= Seq(
+    "org.webjars" % "jquery" % "2.1.4" / "2.1.4/jquery.js",
+    "org.webjars" % "jquery-ui" % "1.11.4" / "jquery-ui.js" dependsOn "jquery.js"
   )
 ).enablePlugins(ScalaJSPlugin, ScalaJSWeb).
   dependsOn(sharedJs)
@@ -33,7 +46,8 @@ lazy val sharedJs = shared.js
 
 lazy val commonSettings = Seq(
   scalaVersion := "2.12.5",
-  organization := "genericConfig"
+  organization := "genericConfig",
+  libraryDependencies += "com.typesafe.play" %% "play-json" % "2.6.9"
 )
 
 // loads the server project at sbt startup
