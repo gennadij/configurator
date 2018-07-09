@@ -1,4 +1,4 @@
-package models.json.startConfig
+package org.shared.startConfig.json
 
 import play.api.libs.json.Json
 

@@ -1,6 +1,6 @@
 package models.json.component
 
-import models.json.JsonNames
+import org.shared.common.JsonNames
 import play.api.libs.json.Json
 
 /**

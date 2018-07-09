@@ -1,13 +1,9 @@
 package models.logic
 
-import models.wrapper.startConfig.StartConfigOut
-import models.wrapper.startConfig.StartConfigIn
-import models.persistence.Persistence
-import models.bo.StepBO
-import models.bo.ComponentBO
-import models.bo.StepCurrentConfigBO
+import models.bo.{ComponentBO, StepBO, StepCurrentConfigBO}
 import models.currentConfig.CurrentConfig
-import models.json.startConfig.JsonStartConfigOut
+import models.persistence.Persistence
+import models.wrapper.startConfig.{StartConfigIn, StartConfigOut}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -22,7 +18,7 @@ object StartConfig{
    * 
    * @version 0.0.2
    * 
-   * @param StartConfigIn
+   * @param startConfigIn: StartConfigIn
    * 
    * @return StartConfigOut
    */
@@ -38,8 +34,6 @@ class StartConfig(configUrl: String) {
    * @author Gennadi Heimann
    * 
    * @version 0.0.2
-   * 
-   * @param 
    * 
    * @return StartConfigOut
    */

@@ -1,7 +1,6 @@
 package models.wrapper
 
 import models.wrapper.startConfig.StartConfigIn
-import models.json.startConfig.JsonStartConfigIn
 import models.json.startConfig.JsonStartConfigOut
 import models.wrapper.startConfig.StartConfigOut
 import models.json.startConfig.JsonStartConfigResult
@@ -30,6 +29,7 @@ import models.json.component.JsonComponentStatus
 import models.json.common.JsonStatus
 import models.status.component.StatusComponent
 import models.json.common.JsonStepStatus
+import org.shared.startConfig.json.{JsonStartConfigIn, JsonStartConfigOut, JsonStartConfigResult}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com

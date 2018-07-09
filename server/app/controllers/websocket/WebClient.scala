@@ -1,6 +1,7 @@
 package controllers.websocket
 
-import models.config.{Config, ConfigWeb}
+import controllers.MessageHandler
+import models.config.Config
 import play.api.libs.json.JsValue
 
 /**
@@ -15,7 +16,7 @@ object WebClient {
   }
 }
 
-class WebClient extends ConfigWeb{
+class WebClient extends MessageHandler{
   val client = new Config()
   
   def handleMessage(receivedMessage: JsValue): JsValue = {

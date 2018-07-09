@@ -1,20 +1,12 @@
 package models.config
 
-import models.wrapper.Wrapper
-import models.json.startConfig.JsonStartConfigOut
-import models.json.startConfig.JsonStartConfigIn
-import models.persistence.Persistence
-import models.json.nextStep.JsonNextStepIn
-import models.json.nextStep.JsonNextStepOut
-import models.json.currentConfig.JsonCurrentConfigIn
-import models.json.currentConfig.JsonCurrentConfigOut
 import models.currentConfig.CurrentConfig
-import models.json.component.JsonComponentIn
-import models.json.component.JsonComponentOut
-import models.logic.SelectedComponent
-import models.logic.SelectedComponent
-import models.logic.StartConfig
-import models.logic.NextStep
+import models.json.component.{JsonComponentIn, JsonComponentOut}
+import models.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
+import models.json.nextStep.JsonNextStepOut
+import models.logic.{NextStep, SelectedComponent, StartConfig}
+import models.wrapper.Wrapper
+import org.shared.startConfig.json.{JsonStartConfigIn, JsonStartConfigOut}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -30,7 +22,7 @@ class Config extends Wrapper{
    * 
    * @version 0.0.1
    * 
-   * @param JsonStartConfigIn
+   * @param jsonStartConfigIn: JsonStartConfigIn
    * 
    * @return JsonStartConfigOut
    */
@@ -43,12 +35,10 @@ class Config extends Wrapper{
    * 
    * @version 0.0.1
    * 
-   * @param JsonNextStepIn
-   * 
    * @return JsonNextStepOut
    */
   def nextStep: JsonNextStepOut = {
-    toJsonNextStepOut(NextStep.getNextStep)
+    toJsonNextStepOut(NextStep.getNextStep())
   }
   
   /**
@@ -56,7 +46,7 @@ class Config extends Wrapper{
    * 
    * @version 0.0.1
    * 
-   * @param JsonCurrentConfigIn
+   * @param jsonCurrentConfigIn: JsonCurrentConfigIn
    * 
    * @return JsonCurrentConfigOut
    */
@@ -69,9 +59,9 @@ class Config extends Wrapper{
    * 
    * @version 0.0.1
    * 
-   * @param JsonCurrentConfigIn
+   * @param jsonComponentIn: JsonComponentIn
    * 
-   * @return JsonCurrentConfigOut
+   * @return JsonComponentOut
    */
   def component(jsonComponentIn: JsonComponentIn): JsonComponentOut = {
     toJsonComponentOut(SelectedComponent.verifySelectedComponent(jsonComponentIn.params.componentId))

@@ -3,8 +3,7 @@
 # ~~~~
 
 # Home page
-#GET        /                             controllers.Application.index
-GET         /                             controllers.HomeController.index
+GET         /                                    controllers.HomeController.index
 GET         /configurator                        controllers.HomeController.websocket
 
 # Prefix must match `play.assets.urlPrefix`

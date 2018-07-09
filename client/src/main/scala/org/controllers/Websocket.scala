@@ -24,8 +24,10 @@ object Websocket {
     
     socket.onopen = { (e: dom.Event) => {
       println("Websocket open")
-      val getUser = """{"json" : "test"}"""
-//        Json.toJson(
+      val getUser = """{"json" : "StartConfig", "params": {"configUrl" : "http://config/client_013"}}"""
+      // username = user_v016_4_client
+      // configUrl = http://config/client_013
+      //        Json.toJson(
 //          JsonUserIn(
 //              JsonNames.GET_USER,
 //              JsonUserParams(

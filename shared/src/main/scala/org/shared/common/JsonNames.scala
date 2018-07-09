@@ -1,7 +1,7 @@
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
  */
-package models.json
+package org.shared.common
 
 /**
  * Created by Gennadi Heimann 23.12.2016
@@ -12,4 +12,5 @@ object JsonNames {
   val NEXT_STEP: String = "NextStep"
   val CURRENT_CONFIG: String = "CurrentConfig"
   val COMPONENT: String = "Component"
+  val ERROR: String = "error"
 }

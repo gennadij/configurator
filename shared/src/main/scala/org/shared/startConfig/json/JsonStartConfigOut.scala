@@ -1,7 +1,7 @@
-package models.json.startConfig
+package org.shared.startConfig.json
 
+import org.shared.common.JsonNames
 import play.api.libs.json.Json
-import models.json.JsonNames
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com

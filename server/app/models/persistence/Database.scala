@@ -19,8 +19,6 @@ object Database {
    * 
    * @version 0.0.1
    * 
-   * @param
-   * 
    * @return
    */
   
@@ -28,26 +26,6 @@ object Database {
     
     new Database("OrientDB").getFactory()
   }
-  
-  /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.1
-   * 
-   * @param SQL-Query -> SQL-Command that start with select
-   * 
-   * @return OrientDynaElementIterable
-   */
-  
-//  def executeSQLQuery(sqlQuery: String): Any = {
-//    new Database().executeSQLQuery(sqlQuery)
-//  }
-//  
-//  def getGraph: OrientGraph = {
-//    new Database().getGraph
-//  }
-
-
 }
 
 class Database(name: String) {
@@ -62,36 +40,7 @@ class Database(name: String) {
         new OrientGraphFactory(uri, testDB.username, testDB.password)
     }
   }
-  
-//  private def getGraph = {
-//    val activeDb = TestDB()
-//    val uri = "remote:localhost/" + activeDb.dbName
-//    val graphFactory = new OrientGraphFactory(uri, activeDb.username, activeDb.password)
-//    graphFactory.getTx
-//  }
-//  
-//  def executeSQLQuery(sql: String): Any = {
-//    
-//    val graph: OrientGraph = getGraph
-//    
-//    val result: Any = try {
-//		  val result: OrientDynaElementIterable = graph.command(new OCommandSQL(sql)).execute()
-//		  graph.commit()
-//		  result
-//		}catch{
-//		  case e: Exception => 
-//		    graph.rollback()
-//		    e
-//		}finally {
-//		  graph.shutdown()
-//		}
-//		
-//		result
-//  }
-  
 }
-
-
 
 case class TestDB() {
     def dbName: String = "testDB"

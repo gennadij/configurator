@@ -1,9 +1,7 @@
-package models.json.startConfig
+package org.shared.startConfig.json
 
-import models.json.common.JsonStep
-import play.api.libs.json._
 import play.api.libs.functional.syntax._
-import models.json.common.JsonStepStatus
+import play.api.libs.json._
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com

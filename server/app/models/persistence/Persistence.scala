@@ -2,7 +2,6 @@ package models.persistence
 
 import scala.collection.JavaConversions._
 import models.json.startConfig.JsonStartConfigOut
-import models.json.startConfig.JsonStartConfigIn
 import models.wrapper.startConfig.StartConfigIn
 import models.wrapper.startConfig.StartConfigOut
 import models.wrapper.nextStep.NextStepIn
@@ -11,6 +10,7 @@ import models.wrapper.component.ComponentOut
 import models.bo.ComponentBO
 import models.bo.StepBO
 import models.persistence.orientdb.Graph
+import org.shared.startConfig.json.JsonStartConfigIn
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
