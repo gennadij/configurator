@@ -1,6 +1,8 @@
 package org.controllers
 
 import org.scalajs.dom
+import org.shared.common.JsonNames
+import org.shared.startConfig.json.{JsonStartConfigIn, JsonStartConfigParams}
 import play.api.libs.json._
 
 //import scala.collection.JavaConverters._
@@ -24,20 +26,15 @@ object Websocket {
     
     socket.onopen = { (e: dom.Event) => {
       println("Websocket open")
-      val getUser = """{"json" : "StartConfig", "params": {"configUrl" : "http://config/client_013"}}"""
-      // username = user_v016_4_client
-      // configUrl = http://config/client_013
-      //        Json.toJson(
-//          JsonUserIn(
-//              JsonNames.GET_USER,
-//              JsonUserParams(
-//                  "user_v016_4_client",
-//                  "user_v016_4_client"
-//              )
-//          )
-//      ).toString
-      println("OUT -> " + getUser)
-      socket.send(getUser)
+
+      val startConfig = Json.toJson(JsonStartConfigIn(
+        json = JsonNames.START_CONFIG,
+        params = JsonStartConfigParams(
+          configUrl = "http://config/client_013"
+        )
+      )).toString()
+      println("OUT -> " + startConfig)
+      socket.send(startConfig)
       }
     }
     

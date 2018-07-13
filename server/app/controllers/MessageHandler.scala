@@ -1,107 +1,190 @@
 package controllers
 
-import models.config.Config
-import models.json.component.{JsonComponentIn, JsonComponentOut}
-import models.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
-import models.json.nextStep.{JsonNextStepIn, JsonNextStepOut}
+import controllers.genericConfig.GenericConfigurator
 import org.shared.common.JsonNames
+import org.shared.component.json.{JsonComponentIn, JsonComponentOut}
+import org.shared.currentConfig.json.{JsonCurrentConfigIn, JsonCurrentConfigOut}
 import org.shared.error.{JsonErrorIn, JsonErrorParams}
-import org.shared.startConfig.json.{JsonStartConfigIn, JsonStartConfigOut}
+import org.shared.nextStep.json.JsonNextStepIn
+import org.shared.startConfig.json.JsonStartConfigIn
 import play.api.Logger
 import play.api.libs.json._
 
 /**
- * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
- * 
- * Created by Gennadi Heimann 23.12.2016
- */
+  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
+  *
+  * Created by Gennadi Heimann 23.12.2016
+  */
+//old
+//trait MessageHandler {
+//
+//  /**
+//    * @author Gennadi Heimann
+//    * @version 0.0.1
+//    * @param receivedMessage : JsValue, client: Config
+//    * @return JsValue
+//    */
+//  def handleMessage(receivedMessage: JsValue, client: Config): JsValue = {
+//    (receivedMessage \ "json").asOpt[String] match {
+//      case Some("StartConfig") => startConfig(receivedMessage, client)
+//      case Some("NextStep") => nextStep(receivedMessage, client)
+//      case Some("CurrentConfig") => currentConfig(receivedMessage, client)
+//      case Some("Component") => component(receivedMessage, client)
+//      case _ => Json.obj("error" -> "keinen Treffer")
+//    }
+//  }
+//
+//  /**
+//    * @author Gennadi Heimann
+//    * @version 0.0.1
+//    * @param receivedMessage : JsValue, client: Config
+//    * @return JsValue
+//    */
+//  private def startConfig(receivedMessage: JsValue, client: Config): JsValue = {
+//    val jsonStartConfigIn: JsResult[JsonStartConfigIn] = Json.fromJson[JsonStartConfigIn](receivedMessage)
+//    jsonStartConfigIn match {
+//      case s: JsSuccess[JsonStartConfigIn] => Json.toJson(client.startConfig(jsonStartConfigIn.get))
+//      case e: JsError => jsonError(JsonNames.START_CONFIG, e)
+//    }
+//  }
+//
+//  /**
+//    * @author Gennadi Heimann
+//    * @version 0.0.1
+//    * @param receiveMessage : JsValue, client: Config
+//    * @return JsValue
+//    */
+//  private def nextStep(receiveMessage: JsValue, client: Config): JsValue = {
+//    val jsonNextStepIn: JsResult[JsonNextStepIn] = Json.fromJson[JsonNextStepIn](receiveMessage)
+//    jsonNextStepIn match {
+//      case s: JsSuccess[JsonNextStepIn] => Json.toJson(client.nextStep)
+//      case e: JsError => jsonError(JsonNames.NEXT_STEP, e)
+//    }
+//  }
+//
+//  /**
+//    * @author Gennadi Heimann
+//    * @version 0.0.1
+//    * @param JsValue , Config
+//    * @return JsValue
+//    */
+//  private def currentConfig(receivedMessage: JsValue, client: Config): JsValue = {
+//    val jsonCurrentConfigIn: JsResult[JsonCurrentConfigIn] = Json.fromJson[JsonCurrentConfigIn](receivedMessage)
+//    jsonCurrentConfigIn match {
+//      case s: JsSuccess[JsonCurrentConfigIn] => s
+//      case e: JsError => Logger.error("Errors -> " + JsonNames.CURRENT_CONFIG + ": " + JsError.toJson(e).toString())
+//    }
+//    val jsonCurrentConfigOut: JsonCurrentConfigOut = client.currentConfig(jsonCurrentConfigIn.get)
+//    Json.toJson(jsonCurrentConfigOut)
+//  }
+//
+//  def component(receivedMessage: JsValue, client: Config): JsValue = {
+//    val jsonComponentIn: JsResult[JsonComponentIn] = Json.fromJson[JsonComponentIn](receivedMessage)
+//    jsonComponentIn match {
+//      case s: JsSuccess[JsonComponentIn] => s
+//      case e: JsError => Logger.error("Errors -> " + JsonNames.CURRENT_CONFIG + ": " + JsError.toJson(e).toString())
+//    }
+//    val jsonComponentOut: JsonComponentOut = client.component(jsonComponentIn.get)
+//    Json.toJson(jsonComponentOut)
+//  }
+//
+//  private def jsonError(errorText: String, e: JsError): JsValue = {
+//    val error = JsonErrorIn(
+//      JsonNames.ERROR,
+//      JsonErrorParams(
+//        "Errors -> " + errorText + " : " + JsError.toJson(e).toString()
+//      )
+//    )
+//    Logger.error(error.toString)
+//    Json.toJson(error)
+//  }
+//}
 
-trait MessageHandler {
-  
+//new
+trait MessageHandler extends GenericConfigurator{
+
   /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.1
-   * 
-   * @param receivedMessage: JsValue, client: Config
-   * 
-   * @return JsValue
-   */
-  def handleMessage(receivedMessage: JsValue, client: Config): JsValue = {
+    * @author Gennadi Heimann
+    * @version 0.0.1
+    * @param receivedMessage : JsValue, client: Config
+    * @return JsValue
+    */
+  def handleMessage(receivedMessage: JsValue): JsValue = {
     (receivedMessage \ "json").asOpt[String] match {
-      case Some("StartConfig") => startConfig(receivedMessage, client)
-      case Some("NextStep") => nextStep(receivedMessage, client)
-      case Some("CurrentConfig") => currentConfig(receivedMessage, client)
-      case Some("Component") => component(receivedMessage, client)
+      case Some("StartConfig") => startConfig(receivedMessage)
+      case Some("NextStep") => nextStep(receivedMessage)
+      case Some("CurrentConfig") => currentConfig(receivedMessage)
+      case Some("Component") => component(receivedMessage)
       case _ => Json.obj("error" -> "keinen Treffer")
     }
   }
 
   /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.1
-   * 
-   * @param receivedMessage: JsValue, client: Config
-   * 
-   * @return JsValue
-   */
-  private def startConfig(receivedMessage: JsValue, client: Config): JsValue = {
+    * @author Gennadi Heimann
+    * @version 0.0.1
+    * @param receivedMessage : JsValue
+    * @return JsValue
+    */
+  private def startConfig(receivedMessage: JsValue): JsValue = {
     val jsonStartConfigIn: JsResult[JsonStartConfigIn] = Json.fromJson[JsonStartConfigIn](receivedMessage)
     jsonStartConfigIn match {
-      case s: JsSuccess[JsonStartConfigIn] => Json.toJson(client.startConfig(jsonStartConfigIn.get))
+      case s: JsSuccess[JsonStartConfigIn] => Json.toJson(startConfig(jsonStartConfigIn.get))
       case e: JsError => jsonError(JsonNames.START_CONFIG, e)
     }
   }
-  
+
   /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.1
-   * 
-   * @param receiveMessage: JsValue, client: Config
-   * 
-   * @return JsValue
-   */
-  private def nextStep(receiveMessage: JsValue, client: Config): JsValue = {
+    * @author Gennadi Heimann
+    * @version 0.0.1
+    * @param receiveMessage : JsValue
+    * @return JsValue
+    */
+  private def nextStep(receiveMessage: JsValue): JsValue = {
     val jsonNextStepIn: JsResult[JsonNextStepIn] = Json.fromJson[JsonNextStepIn](receiveMessage)
     jsonNextStepIn match {
-      case s : JsSuccess[JsonNextStepIn] => s
-      case e : JsError => Logger.error("Errors -> " + JsonNames.NEXT_STEP + ": " + JsError.toJson(e).toString())
+      case s: JsSuccess[JsonNextStepIn] => Json.toJson(getNextStep)
+      case e: JsError => jsonError(JsonNames.NEXT_STEP, e)
     }
-    val jsonNextStepOut: JsonNextStepOut = client.nextStep
-    Json.toJson(jsonNextStepOut)
   }
-  
+
   /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.1
-   * 
-   * @param JsValue, Config
-   * 
-   * @return JsValue
-   */
-  private def currentConfig(receivedMessage: JsValue, client: Config): JsValue = {
+    * @author Gennadi Heimann
+    * @version 0.0.1
+    * @param receivedMessage: JsValue
+    * @return JsValue
+    */
+  private def currentConfig(receivedMessage: JsValue): JsValue = {
     val jsonCurrentConfigIn: JsResult[JsonCurrentConfigIn] = Json.fromJson[JsonCurrentConfigIn](receivedMessage)
     jsonCurrentConfigIn match {
       case s: JsSuccess[JsonCurrentConfigIn] => s
       case e: JsError => Logger.error("Errors -> " + JsonNames.CURRENT_CONFIG + ": " + JsError.toJson(e).toString())
     }
-    val jsonCurrentConfigOut: JsonCurrentConfigOut = client.currentConfig(jsonCurrentConfigIn.get)
+    val jsonCurrentConfigOut: JsonCurrentConfigOut = currentConfig(jsonCurrentConfigIn.get)
     Json.toJson(jsonCurrentConfigOut)
   }
-  
-  def component(receivedMessage: JsValue, client: Config): JsValue = {
+
+  /**
+    * @author Gennadi Heimann
+    * @version 0.0.1
+    * @param receivedMessage: JsValue
+    * @return JsValue
+    */
+  def component(receivedMessage: JsValue): JsValue = {
     val jsonComponentIn: JsResult[JsonComponentIn] = Json.fromJson[JsonComponentIn](receivedMessage)
     jsonComponentIn match {
       case s: JsSuccess[JsonComponentIn] => s
       case e: JsError => Logger.error("Errors -> " + JsonNames.CURRENT_CONFIG + ": " + JsError.toJson(e).toString())
     }
-    val jsonComponentOut: JsonComponentOut = client.component(jsonComponentIn.get)
+    val jsonComponentOut: JsonComponentOut = component(jsonComponentIn.get)
     Json.toJson(jsonComponentOut)
   }
 
+  /**
+    * @author Gennadi Heimann
+    * @version 0.0.3
+    * @param errorText: String, e: JsError
+    * @return JsValue
+    */
   private def jsonError(errorText: String, e: JsError): JsValue = {
     val error = JsonErrorIn(
       JsonNames.ERROR,

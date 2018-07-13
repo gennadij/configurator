@@ -1,6 +1,6 @@
 package models.bo
 
-import models.status.step.StatusStep
+import org.shared.common.status.step.StatusStep
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -8,10 +8,10 @@ import models.status.step.StatusStep
  * Created by Gennadi Heimann 09.02.2018
  */
 case class StepBO (
-    stepId: String = "",
-    nameToShow: String = "",
-    selectionCriteriumMin: Int = -1,
-    selectionCriteriumMax: Int = -1,
+    stepId: Option[String] = None,
+    nameToShow: Option[String] = None,
+    selectionCriteriumMin: Option[Int] = None,
+    selectionCriteriumMax: Option[Int] = None,
     status: StatusStep,
-    componentIds: List[String]
+    componentIds: Option[List[String]] = None
 )

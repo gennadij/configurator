@@ -1,21 +1,11 @@
 package models.logic
 
-import models.bo.StepCurrentConfigBO
+import models.bo.{ComponentBO, ContainerComponentBO, StepBO, StepCurrentConfigBO}
 import models.currentConfig.CurrentConfig
-import models.bo.ComponentBO
-import models.bo.StepBO
-import models.status.step.MultipleNextSteps
-import models.status.step.NextStepNotExist
-import models.status.step.CommonErrorNextStep
-import models.status.step.NextStepExist
-import models.wrapper.nextStep.NextStepOut
 import models.persistence.orientdb.Graph
-import models.status.step.StatusStep
-import models.status.Error
-import models.status.step.StepCurrentConfigBOIncludeNoSelectedComponents
-import models.status.step.NextStepIncludeNoComponents
-import models.status.Status
-import models.status.Success
+import models.wrapper.nextStep.NextStepOut
+import org.shared.common.status.step._
+import org.shared.common.status.{Error, Success}
 import play.api.Logger
 
 /**
@@ -30,12 +20,10 @@ object NextStep{
    * 
    * @version 0.0.2
    * 
-   * @param 
-   * 
    * @return NextStepOut
    */
-  def getNextStep(): NextStepOut = {
-    new NextStep().getNextStep()
+  def getNextStep: NextStepOut = {
+    new NextStep().getNextStep
   }
 }
 
@@ -47,16 +35,14 @@ class NextStep {
    * 
    * @version 0.0.2
    * 
-   * @param 
-   * 
    * @return NextStepOut
    */
-  private def getNextStep(): NextStepOut = {
+  private def getNextStep: NextStepOut = {
     
     val lastStep: StepCurrentConfigBO = CurrentConfig.getLastStep
     
-    val selectedComponents: List[ComponentBO] = lastStep.components
-    
+    val selectedComponents: List[ComponentBO] = ???
+      //lastStep.components.get
     Logger.info(selectedComponents.toString())
     selectedComponents match {
       case List() => {
@@ -64,17 +50,19 @@ class NextStep {
             None, Some(Error())))
       }
       case _ => {
-        val nextStep: StepBO = Graph.getNextStep(selectedComponents.head.componentId)
+        val nextStep: StepBO = Graph.getNextStep(selectedComponents.head.componentId.get)
         nextStep.status.nextStep match {
           case Some(NextStepExist()) => {
-            val components: List[ComponentBO] = Graph.getComponents(nextStep.stepId)
-            val statusComponents: Boolean = components map { _.status.common.get } contains{ Success() }
+            val components: List[ContainerComponentBO] = ???
+//              Graph.getComponents(nextStep.stepId.get)
+            val statusComponents: Boolean = ???
+//              components map { _.status.common.get } contains{ Success() }
             statusComponents match {
               case true => {
               lastStep.nextStep = Some(StepCurrentConfigBO(
-                    nextStep.stepId,
-                    nextStep.nameToShow,
-                    List(),
+                    nextStep.stepId.get,
+                    nextStep.nameToShow.get,
+                None,
                     None
                 ))
                 NextStepOut(
@@ -99,7 +87,7 @@ class NextStep {
     NextStepOut(
         StepBO(
             status = s,
-            componentIds = List()
+            componentIds = None
         ),
         List()
     )

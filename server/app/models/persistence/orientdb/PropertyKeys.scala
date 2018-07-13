@@ -1,8 +1,7 @@
 package models.persistence.orientdb
 
 object PropertyKeys {
-  
-  val HAS_FIRST_STEP = "hasFirstStep"
+
   val CONFIG_URL = "configUrl"
   val ADMIN_USER = "AdminUser"
   val COMPONENT = "Component"

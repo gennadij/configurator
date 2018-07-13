@@ -17,5 +17,5 @@ case class JsonStartConfigOut (
 )
 
 object JsonStartConfigOut {
-  implicit val format = Json.writes[JsonStartConfigOut]
+  implicit val format = Json.format[JsonStartConfigOut]
 }

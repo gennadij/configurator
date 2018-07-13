@@ -1,38 +1,24 @@
-//package org.controllers
-//
-//import org.genericConfig.admin.client.component.Component
-//import play.api.libs.json.JsValue
-//import play.api.libs.json.Json
-//import play.api.libs.json.JsResult
-//import play.api.libs.json.JsSuccess
-//import play.api.libs.json.JsError
-//import org.scalajs.dom.raw.WebSocket
-//import org.genericConfig.admin.client.config.GetConfig
-//import org.genericConfig.admin.shared.common.json.JsonNames
-//import org.genericConfig.admin.shared.config.json._
-//import org.genericConfig.admin.shared.configTree.json.JsonConfigTreeOut
-//import org.genericConfig.admin.client.config.CreateConfig
-//import org.genericConfig.admin.client.config.DeleteConfig
-//import org.genericConfig.admin.client.config.EditConfig
-//import org.genericConfig.admin.client.configTree.ConfigTree
-//import org.genericConfig.admin.shared.step.json.JsonStepOut
-//import org.genericConfig.admin.client.step.AddStep
-//import org.genericConfig.admin.client.user.GetUser
-//import org.genericConfig.admin.shared.component.json.{JsonComponentIn, JsonComponentOut}
-//import org.genericConfig.admin.shared.error.json.{JsonErrorIn, JsonErrorParams}
-//import org.genericConfig.admin.shared.user.json.JsonUserOut
-//
-///**
-// * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
-// *
-// * Created by Gennadi Heimann 25.04.2018
-// */
-//class AdminClienWeb(websocket: WebSocket) {
-//
-//
-//  def handleMessage(receivedMessage: JsValue) = {
-//    (receivedMessage \ "json").asOpt[String] match {
-//      case Some(JsonNames.ADD_USER) => ??? //register(receivedMessage, admin)
+package org.controllers
+
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
+import play.api.libs.json.JsResult
+import play.api.libs.json.JsSuccess
+import play.api.libs.json.JsError
+import org.scalajs.dom.raw.WebSocket
+import org.shared.common.JsonNames
+import org.shared.startConfig.json.JsonStartConfigOut
+
+/**
+ * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
+ *
+ * Created by Gennadi Heimann 25.04.2018
+ */
+class MessageHandler(websocket: WebSocket) {
+
+
+  def handleMessage(receivedMessage: JsValue) = (receivedMessage \ "json").asOpt[String] match {
+    case Some(JsonNames.START_CONFIG) => startConfig(receivedMessage)
 //      case Some(JsonNames.GET_USER) => getUser(receivedMessage)
 //      case Some(JsonNames.ADD_CONFIG) => addConfig(receivedMessage)
 //      case Some(JsonNames.GET_CONFIGS) => getConfigs(receivedMessage)
@@ -44,19 +30,18 @@
 //      case Some(JsonNames.CONNECT_COMPONENT_TO_STEP) => ??? //connectComponentToStep(receivedMessage, admin)
 //      case Some(JsonNames.CREATE_DEPENDENCY) => ??? //createDependency(receivedMessage, admin)
 //      case Some(JsonNames.VISUAL_PROPOSAL_FOR_ADDITIONAL_STEPS_IN_ON_LEVEL) => ???
-////        visualProposalForAdditionalStepsInOneLevel(receivedMessage, admin)
-//      case _ => Json.obj("error" -> "keinen Treffer")
-//    }
-//  }
-//
-//  private def addComponent(receivedMessage: JsValue): Unit = {
-//    val jsonComponentOut: JsResult[JsonComponentOut] = Json.fromJson[JsonComponentOut](receivedMessage)
-//    jsonComponentOut match {
-//      case jCOut: JsSuccess[JsonComponentOut] => new Component(websocket).updateStatus(jCOut.value)
-//      case e: JsError => println("Errors -> " + JsonNames.ADD_COMPONENT + ": " + JsError.toJson(e).toString())
-//    }
-//  }
-//
+//        visualProposalForAdditionalStepsInOneLevel(receivedMessage, admin)
+    case _ => Json.obj("error" -> "keinen Treffer")
+  }
+
+  private def startConfig(receivedMessage: JsValue): Unit = {
+    val jsonComponentOut: JsResult[JsonStartConfigOut] = Json.fromJson[JsonStartConfigOut](receivedMessage)
+    jsonComponentOut match {
+      case jCOut: JsSuccess[JsonStartConfigOut] => ??? //new Component(websocket).updateStatus(jCOut.value)
+      case e: JsError => println("Errors -> " + JsonNames.START_CONFIG + ": " + JsError.toJson(e).toString())
+    }
+  }
+
 //  private def getUser(receivedMessage: JsValue): Unit = {
 //    val getUserOut: JsResult[JsonUserOut] = Json.fromJson[JsonUserOut](receivedMessage)
 //    getUserOut match {
@@ -117,4 +102,4 @@
 //    }
 //    new AddStep(websocket).updateStatus(addFirstStepOut.get)
 //  }
-//}
+}

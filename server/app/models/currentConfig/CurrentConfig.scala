@@ -1,13 +1,7 @@
 package models.currentConfig
 
-import scala.collection.mutable.Map 
-import com.tinkerpop.blueprints.impls.orient.OrientVertex
-import models.json.common.JsonStep
-import models.json.currentConfig.JsonCurrentConfigIn
-import models.json.currentConfig.JsonCurrentConfigOut
+import models.bo.{ContainerComponentBO, StepCurrentConfigBO}
 import play.api.Logger
-import models.bo.StepCurrentConfigBO
-import models.bo.ComponentBO
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -29,7 +23,7 @@ object CurrentConfig {
    * 
    * @return
    */
-  def addComponent(step: StepCurrentConfigBO, component: ComponentBO): Unit = {
+  def addComponent(step: StepCurrentConfigBO, component: ContainerComponentBO): Unit = {
     // es wird geprueft ob der Step schon angelegt war
     // Die erste Komponente in dem Schritt wird ohne Pruefung des SelectionCriterium hinzugefuegt
     // Die Abhaengigkeiten werden weiterhin jedes mal geprueft
@@ -105,8 +99,6 @@ object CurrentConfig {
    * 
    * @version 0.0.1
    * 
-   * @param 
-   * 
    * @return StepCurrentConfig
    */
   def getLastStep: StepCurrentConfigBO = {
@@ -122,7 +114,7 @@ object CurrentConfig {
    * 
    * @return Unit
    */
-  def removeComponent(stepId: String, componentId: String): List[ComponentBO] = {
+  def removeComponent(stepId: String, componentId: String): List[ContainerComponentBO] = {
     currentConfig.removeComponent(stepId, componentId)
   }
 }
@@ -145,13 +137,14 @@ class CurrentConfig {
    * 
    * @return Unit
    */
-  private def addComponent(step: StepCurrentConfigBO, component: ComponentBO): Unit = {
+  private def addComponent(step: StepCurrentConfigBO, component: ContainerComponentBO): Unit = {
     
     val currentStep: Option[StepCurrentConfigBO] = getStep(step.stepId)
     
-    val currentComponents: List[ComponentBO] = currentStep.get.components
-    
-    currentStep.get.components = currentComponents.::(component)
+//    val currentComponents: List[ContainerComponentBO] = currentStep.get.components.get
+//
+//    currentStep.get.components = currentComponents.::(component)
+    ???
   }
   
   /**
@@ -293,17 +286,18 @@ class CurrentConfig {
    * @return Unit
    */
   private def getNextStep(step: Option[StepCurrentConfigBO]): Unit = {
-    step.get.nextStep match {
-      case Some(nextStep) => {
-        Logger.info(step.get.getClass.hashCode() + " -> " + step.get.stepId + " -> " + step.get.nameToShow)
-        step.get.components.reverse foreach {component => Logger.info("====" + component.hashCode() + "-" + component.componentId + " -> " + component.nameToShow)}
-        getNextStep(step.get.nextStep)
-      }
-      case None => {
-        Logger.info(step.get.getClass.hashCode() + " -> " + step.get.stepId + " -> " + step.get.nameToShow)
-        step.get.components.reverse foreach {component => Logger.info("====" + component.hashCode() + "-" + component.componentId + " -> " + component.nameToShow)}
-      }
-    }
+//    step.get.nextStep match {
+//      case Some(nextStep) => {
+//        Logger.info(step.get.getClass.hashCode() + " -> " + step.get.stepId + " -> " + step.get.nameToShow)
+//        step.get.components.reverse foreach {component => Logger.info("====" + component.hashCode() + "-" + component.componentId + " -> " + component.nameToShow)}
+//        getNextStep(step.get.nextStep)
+//      }
+//      case None => {
+//        Logger.info(step.get.getClass.hashCode() + " -> " + step.get.stepId + " -> " + step.get.nameToShow)
+//        step.get.components.reverse foreach {component => Logger.info("====" + component.hashCode() + "-" + component.componentId + " -> " + component.nameToShow)}
+//      }
+//    }
+    ???
   }
   
   
@@ -316,13 +310,14 @@ class CurrentConfig {
    * 
    * @return Unit
    */
-  private def removeComponent(stepId: String, componentId: String): List[ComponentBO] = {
+  private def removeComponent(stepId: String, componentId: String): List[ContainerComponentBO] = {
     val step: Option[StepCurrentConfigBO] = getCurrentStep(stepId)
 //    Logger.info(this.getClass.getSimpleName + ": " + step.get.components + " " + componentId)
 //    Logger.info("Step with deleted component " + step.get.getClass.hashCode())
-    step.get.components = step.get.components.filterNot(_.componentId == componentId)
+//    step.get.components = step.get.components.filterNot(_.componentId == componentId)
 //    Logger.info("Step with deleted component " + step.get.components)
 //    printCurrentConfig
-    step.get.components
+//    step.get.components
+    ???
   }
 }

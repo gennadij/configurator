@@ -15,5 +15,5 @@ case class JsonStartConfigIn (
 )
 
 object JsonStartConfigIn {
-  implicit val format = Json.reads[JsonStartConfigIn]
+  implicit val format = Json.format[JsonStartConfigIn]
 }

@@ -6,8 +6,8 @@ package models.bo
  * Created by Gennadi Heimann 18.11.2017
  */
 case class StepCurrentConfigBO (
-    stepId: String,
-    nameToShow: String,
-    var components: List[ComponentBO],
-    var nextStep: Option[StepCurrentConfigBO]
+                                 stepId: String,
+                                 nameToShow: String,
+                                 var components: Option[ContainerComponentBO] = None,
+                                 var nextStep: Option[StepCurrentConfigBO] = None
 )
