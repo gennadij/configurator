@@ -1,13 +1,13 @@
 package models.v001
 
+import controllers.MessageHandler
+import controllers.websocket.WebClient
 import org.junit.runner.RunWith
+import org.shared.common.JsonNames
 import org.specs2.runner.JUnitRunner
 import org.specs2.mutable.Specification
-import models.genericConfig.ConfigWeb
 import org.specs2.specification.BeforeAfterAll
-import models.websocket.WebClient
 import play.api.libs.json.Json
-import models.json.JsonNames
 import play.api.libs.json.JsValue
 import play.api.Logger
 
@@ -18,19 +18,19 @@ import play.api.Logger
  */
 
 @RunWith(classOf[JUnitRunner])
-class StartConfigSpecs extends Specification with ConfigWeb with BeforeAfterAll{
+class StartConfigSpecs extends Specification with MessageHandler with BeforeAfterAll{
 
-  val wC = WebClient.init
+  val wC: WebClient = WebClient.init
   
-  def beforeAll() = {
+  def beforeAll(): Unit = {
   }
   
-  def afterAll() = {
+  def afterAll(): Unit = {
   }
   
   "Specification spezifiziert das Start der Konfiguration" >> {
     "Es wird erster Step mit der Komponenten geladen" >> {
-      val configUrl = "http://contig1/user29_v016"
+      val configUrl = "http://config/client_013"
       val startConfigIn = Json.obj(
           "json" -> JsonNames.START_CONFIG
           ,"params" -> Json.obj(
@@ -47,11 +47,11 @@ class StartConfigSpecs extends Specification with ConfigWeb with BeforeAfterAll{
       
       
       (startConfigOut \ "json").asOpt[String].get === JsonNames.START_CONFIG
-      (startConfigOut \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S1_user29_v016"
+      (startConfigOut \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S1"
       (startConfigOut \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 3
-      (((startConfigOut \ "result" \ "step" \ "components")(0)) \ "nameToShow") .asOpt[String].get === "C_1_1_user29_v016"
-      (((startConfigOut \ "result" \ "step" \ "components")(1)) \ "nameToShow") .asOpt[String].get === "C_1_2_user29_v016"
-      (((startConfigOut \ "result" \ "step" \ "components")(2)) \ "nameToShow") .asOpt[String].get === "C_1_3_user29_v016"
+      ((startConfigOut \ "result" \ "step" \ "components")(0) \ "nameToShow") .asOpt[String].get === "C11"
+      ((startConfigOut \ "result" \ "step" \ "components")(1) \ "nameToShow") .asOpt[String].get === "C12"
+      ((startConfigOut \ "result" \ "step" \ "components")(2) \ "nameToShow") .asOpt[String].get === "C13"
       (startConfigOut \ "result" \ "status" \ "firstStep" \ "status").asOpt[String].get === "FIRST_STEP_EXIST"
       (startConfigOut \ "result" \ "status" \ "firstStep" \ "message").asOpt[String].get === ""
       (startConfigOut \ "result" \ "status" \ "nextStep").asOpt[String] === None

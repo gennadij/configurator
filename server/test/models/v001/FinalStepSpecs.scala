@@ -1,13 +1,13 @@
 package models.v001
 
+import controllers.MessageHandler
+import controllers.websocket.WebClient
 import org.specs2.runner.JUnitRunner
 import org.junit.runner.RunWith
+import org.shared.common.JsonNames
 import org.specs2.mutable.Specification
-import models.genericConfig.ConfigWeb
 import org.specs2.specification.BeforeAfterAll
-import models.websocket.WebClient
 import play.api.libs.json.Json
-import models.json.JsonNames
 import play.api.Logger
 import play.api.libs.json.JsValue
 import util.CommonFunction
@@ -19,7 +19,7 @@ import util.CommonFunction
  * Created by Gennadi Heimann 10.11.2017
  */
 @RunWith(classOf[JUnitRunner])
-class FinalStepSpecs extends Specification with ConfigWeb with BeforeAfterAll{
+class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterAll{
   
   val wC: WebClient = WebClient.init
   

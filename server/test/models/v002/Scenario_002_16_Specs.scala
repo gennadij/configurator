@@ -1,17 +1,17 @@
 package models.v002
 
+import controllers.MessageHandler
+import controllers.websocket.WebClient
 import org.specs2.runner.JUnitRunner
 import org.junit.runner.RunWith
 import org.specs2.mutable.Specification
-import models.genericConfig.ConfigWeb
 import org.specs2.specification.BeforeAfterAll
 import play.api.libs.json.Json
-import models.json.JsonNames
 import play.api.Logger
 import play.api.libs.json.JsValue
 import models.persistence.orientdb.PropertyKeys
 import util.CommonFunction
-import models.websocket.WebClient
+import org.shared.common.JsonNames
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -19,7 +19,7 @@ import models.websocket.WebClient
  * Created by Gennadi Heimann 22.12.2017
  */
 @RunWith(classOf[JUnitRunner])
-class Scenario_002_16_Specs extends Specification with ConfigWeb with BeforeAfterAll{
+class Scenario_002_16_Specs extends Specification with MessageHandler with BeforeAfterAll{
 
   val wC = WebClient.init
   

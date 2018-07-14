@@ -1,13 +1,13 @@
 package models.v001
 
+import controllers.MessageHandler
+import controllers.websocket.WebClient
 import org.junit.runner.RunWith
+import org.shared.common.JsonNames
 import org.specs2.runner.JUnitRunner
 import org.specs2.mutable.Specification
-import models.genericConfig.ConfigWeb
 import org.specs2.specification.BeforeAfterAll
-import models.websocket.WebClient
 import play.api.libs.json.Json
-import models.json.JsonNames
 import play.api.libs.json.JsValue
 import play.api.Logger
 
@@ -17,30 +17,30 @@ import play.api.Logger
  * Created by Gennadi Heimann 08.11.2017
  */
 @RunWith(classOf[JUnitRunner])
-class StartConfigWithDefectURLSpecs extends Specification with ConfigWeb with BeforeAfterAll{
+class StartConfigWithDefectURLSpecs extends Specification with MessageHandler with BeforeAfterAll{
 
-  val wC = WebClient.init
+  val wC: WebClient = WebClient.init
   
-  def beforeAll() = {
+  def beforeAll(): Unit = {
   }
   
-  def afterAll() = {
+  def afterAll(): Unit = {
   }
   
   "Specification spezifiziert das Start der Konfiguration mit defektem URL" >> {
     "Es wird keinen Step geladen" >> {
-      val configUrl = "http://contig1/user29_v0"
+      val configUrl = "http://config/client_01"
       val startConfigIn = Json.obj(
           "json" -> JsonNames.START_CONFIG
           ,"params" -> Json.obj(
                "configUrl" -> configUrl
            )
       )
-      
-      
+
+      Logger.info(startConfigIn.toString())
       
       val startConfigOut = wC.handleMessage(startConfigIn)
-      Logger.info(startConfigIn.toString())
+
       Logger.info(startConfigOut.toString())
       
       

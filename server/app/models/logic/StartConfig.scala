@@ -4,6 +4,7 @@ import models.bo.{ContainerComponentBO, StartConfigBO, StepBO, StepCurrentConfig
 import models.currentConfig.CurrentConfig
 import models.persistence.Persistence
 import org.shared.common.status.Success
+import play.api.Logger
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -36,35 +37,46 @@ class StartConfig(configUrl: Option[String]) {
 
     val firstStep: StepBO = Persistence.getFirstStep(configUrl.get)
 
-    val componentsBO: ContainerComponentBO = Persistence.getComponents(firstStep.stepId.get)
+    firstStep.stepId match {
+      case Some(stepId) =>
+        val componentsBO: ContainerComponentBO = Persistence.getComponents(stepId)
 
-    val firstStepIdHash = RidToHash.setIdAndHash(firstStep.stepId.get)._2
+        val firstStepIdHash = RidToHash.setIdAndHash(stepId)._2
 
-    val firstStepCurrentConfig: StepCurrentConfigBO = StepCurrentConfigBO(
-      firstStepIdHash,
-      firstStep.nameToShow.get
-    )
+        val firstStepWithHashId = firstStep.copy(stepId = Some(firstStepIdHash))
 
-    // Fuege den ersten Schritt zu der aktuelle Konfiguration hinzu
-    CurrentConfig.addFirstStep(firstStepCurrentConfig)
+        val firstStepCurrentConfig: StepCurrentConfigBO = StepCurrentConfigBO(
+          firstStepIdHash,
+          firstStep.nameToShow.get
+        )
 
-    //convert ids to hash
-    val firstStepWithHashId = firstStep.copy(stepId = Some(firstStepIdHash))
+        // Fuege den ersten Schritt zu der aktuelle Konfiguration hinzu
+        CurrentConfig.addFirstStep(firstStepCurrentConfig)
 
-    val componentsBOWithHashId = componentsBO.status.get.common match {
-      case Some(Success()) =>
-        ContainerComponentBO(
-          status = componentsBO.status,
-          componentsBO.components map (c => {
-            c.copy(componentId = Some(RidToHash.setIdAndHash(c.componentId.get)._2))
-          }))
-      case None => componentsBO
+        val componentsBOWithHashId = componentsBO.status.get.common match {
+          case Some(Success()) =>
+            ContainerComponentBO(
+              status = componentsBO.status,
+              componentsBO.components map (c => {
+                c.copy(componentId = Some(RidToHash.setIdAndHash(c.componentId.get)._2))
+              }))
+          case None => componentsBO
+        }
+
+
+        StartConfigBO(
+          step = Some(firstStepWithHashId),
+          components = Some(componentsBOWithHashId)
+        )
+
+      case None =>
+        StartConfigBO(
+          step = Some(firstStep),
+          components = None
+        )
     }
 
 
-    StartConfigBO(
-      step = Some(firstStepWithHashId),
-      components = Some(componentsBOWithHashId)
-    )
+
   }
 }

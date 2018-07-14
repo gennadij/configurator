@@ -296,11 +296,11 @@ class Graph(graph: OrientGraph) {
             case eHasConfigsCount if eHasConfigsCount == 1 =>
               val vFirstStep: OrientVertex = eHasConfigs.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]
               (Some(vFirstStep), FirstStepExist(), Success())
-            case eHasConfigsCount if eHasConfigsCount > 1 => (None, MultipleFirstSteps(), Success())
-            case eHasConfigsCount if eHasConfigsCount < 1 => (None, FirstStepNotExist(), Success())
+            case eHasConfigsCount if eHasConfigsCount > 1 => (None, MultipleFirstSteps(), Error())
+            case eHasConfigsCount if eHasConfigsCount < 1 => (None, FirstStepNotExist(), Error())
           }
-        case vConfigsCount if vConfigsCount > 1 => (None, MultipleFirstSteps(), Success())
-        case vConfigsCount if vConfigsCount < 1 => (None, FirstStepNotExist(), Success())
+        case vConfigsCount if vConfigsCount > 1 => (None, MultipleFirstSteps(), Error())
+        case vConfigsCount if vConfigsCount < 1 => (None, FirstStepNotExist(), Error())
       }
     } catch {
       case e2: ClassCastException =>

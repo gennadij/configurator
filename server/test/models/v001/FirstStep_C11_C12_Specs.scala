@@ -18,12 +18,12 @@ import play.api.libs.json.{JsValue, Json}
 @RunWith(classOf[JUnitRunner])
 class FirstStep_C11_C12_Specs extends Specification with MessageHandler with BeforeAfterAll{
 
-  val wC = WebClient.init
+  val wC: WebClient = WebClient.init
   
-  def beforeAll() = {
+  def beforeAll(): Unit = {
   }
   
-  def afterAll() = {
+  def afterAll(): Unit = {
   }
   
   "Specification spezifiziert der NextStep der Konfiguration" >> {

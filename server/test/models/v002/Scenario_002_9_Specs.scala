@@ -1,16 +1,16 @@
 package models.v002
 
+import controllers.MessageHandler
+import controllers.websocket.WebClient
 import org.specs2.runner.JUnitRunner
 import org.junit.runner.RunWith
 import org.specs2.mutable.Specification
-import models.genericConfig.ConfigWeb
 import org.specs2.specification.BeforeAfterAll
-import models.websocket.WebClient
 import play.api.libs.json.Json
-import models.json.JsonNames
 import play.api.Logger
 import play.api.libs.json.JsValue
 import models.persistence.orientdb.PropertyKeys
+import org.shared.common.JsonNames
 import util.CommonFunction
 
 /**
@@ -19,7 +19,7 @@ import util.CommonFunction
  * Created by Gennadi Heimann 22.12.2017
  */
 @RunWith(classOf[JUnitRunner])
-class Scenario_002_9_Specs extends Specification with ConfigWeb with BeforeAfterAll{
+class Scenario_002_9_Specs extends Specification with MessageHandler with BeforeAfterAll{
 
   val wC = WebClient.init
   
@@ -42,7 +42,7 @@ class Scenario_002_9_Specs extends Specification with ConfigWeb with BeforeAfter
       
       (componentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
       (componentOut_1 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
-      (((componentOut_1 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
+      ((componentOut_1 \ "result" \ "dependencies")(0) \ "dependencyType").asOpt[String].get === "exclude"
       (((componentOut_1 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
       (((componentOut_1 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
       (componentOut_1 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"

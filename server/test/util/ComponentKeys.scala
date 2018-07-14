@@ -1,12 +1,12 @@
 package util
 
+import controllers.MessageHandler
+import controllers.websocket.WebClient
 import org.junit.runner.RunWith
 import org.specs2.runner.JUnitRunner
 import org.specs2.mutable.Specification
-import models.genericConfig.ConfigWeb
 import org.specs2.specification.BeforeAfterAll
-import models.websocket.WebClient
-import models.json.JsonNames
+import org.shared.common.JsonNames
 import play.api.libs.json.Json
 import play.api.Logger
 import play.api.libs.json.JsValue
@@ -22,7 +22,7 @@ import play.api.libs.json.Json.toJsFieldJsValueWrapper
  */
 
 @RunWith(classOf[JUnitRunner])
-class ComponentKeys extends Specification with ConfigWeb with BeforeAfterAll {
+class ComponentKeys extends Specification with MessageHandler with BeforeAfterAll {
   val wC = WebClient.init
   
   def beforeAll() = {

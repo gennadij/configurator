@@ -1,9 +1,9 @@
 package util
 
+import controllers.websocket.WebClient
+import org.shared.common.JsonNames
 import play.api.libs.json.JsValue
-import models.websocket.WebClient
 import play.api.libs.json.Json
-import models.json.JsonNames
 import play.api.Logger
 
 /**
