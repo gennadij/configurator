@@ -61,7 +61,7 @@ trait GenericConfigurator extends Wrapper{
    * 
    * @return JsonComponentOut
    */
-  def component(jsonComponentIn: JsonComponentIn): JsonComponentOut = {
+  def selectedComponent(jsonComponentIn: JsonComponentIn): JsonComponentOut = {
     toJsonComponentOut(SelectedComponent.verifySelectedComponent(jsonComponentIn.params.componentId))
   }
 }

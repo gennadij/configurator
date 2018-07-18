@@ -8,6 +8,6 @@ package models.bo
 case class StepCurrentConfigBO (
                                  stepId: String,
                                  nameToShow: String,
-                                 var components: Option[ContainerComponentBO] = None,
+                                 var components: List[ComponentBO] = List(),
                                  var nextStep: Option[StepCurrentConfigBO] = None
 )

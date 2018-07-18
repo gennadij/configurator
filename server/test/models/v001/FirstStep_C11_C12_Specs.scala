@@ -2,8 +2,10 @@ package models.v001
 
 import controllers.MessageHandler
 import controllers.websocket.WebClient
+import models.logic.RidToHash
 import org.junit.runner.RunWith
 import org.shared.common.JsonNames
+import org.shared.startConfig.json.JsonStartConfigOut
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
@@ -35,19 +37,20 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
                "configUrl" -> configUrl
            )
       )
-      
-      val startConfigOut = wC.handleClientMessage(startConfigIn)
-      
+
       Logger.info("StartConfigIn " + startConfigIn)
+
+      val startConfigOut: JsValue = wC.handleClientMessage(startConfigIn)
+
       Logger.info("StartConfigOut " + startConfigOut)
-      
+
+      val sCOut = Json.fromJson[JsonStartConfigOut](startConfigOut)
+
       //User hat ausgewaelt
-      val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_1_user29_v016")
-            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
+      val componentIdC11: String = sCOut.get.result.step.components.filter(comp => comp.nameToShow == "C11")
+            .map(_.componentId).head
       
-      Logger.info(this.getClass.getSimpleName + ": componentIdC11" + componentIdC11)
-      val componentIds: List[String] = List(componentIdC11)
+      Logger.info(this.getClass.getSimpleName + ": componentIdC11 " + componentIdC11)
       
       val jsonComponentIn_1: JsValue = Json.obj(
           "json" -> JsonNames.COMPONENT
@@ -55,6 +58,8 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
                "componentId" -> componentIdC11
            )
       )
+
+      Logger.info(this.getClass.getSimpleName + RidToHash.printHashes)
       
       val jsonComponentOut_1: JsValue = wC.handleClientMessage(jsonComponentIn_1)
       
@@ -64,9 +69,9 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
       (jsonComponentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
       (jsonComponentOut_1 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
       ((jsonComponentOut_1 \ "result" \ "dependencies")(0) \ "dependencyType").asOpt[String].get === "exclude"
-      ((jsonComponentOut_1 \ "result" \ "dependencies")(0) \ "visualization").asOpt[String].get === "remove"
+      ((jsonComponentOut_1 \ "result" \ "dependencies")(0) \ "visualization").asOpt[String].get === "undef"
       ((jsonComponentOut_1 \ "result" \ "dependencies")(0) \ "nameToShow").asOpt[String].get ===
-        "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
+        "(C11) ----> (C13)"
       (jsonComponentOut_1 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
       (jsonComponentOut_1 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === 
         "Sie koennen weitere Komponente auswaelen"
@@ -108,8 +113,8 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
       (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
       (jsonComponentOut_2 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
       ((jsonComponentOut_2 \ "result" \ "dependencies")(0) \ "dependencyType").asOpt[String].get === "exclude"
-      ((jsonComponentOut_2 \ "result" \ "dependencies")(0) \ "visualization").asOpt[String].get === "remove"
-      ((jsonComponentOut_2 \ "result" \ "dependencies")(0) \ "nameToShow").asOpt[String].get === "(C_1_2_user29_v016) ----> (C_1_3_user29_v016)"
+      ((jsonComponentOut_2 \ "result" \ "dependencies")(0) \ "visualization").asOpt[String].get === "undef"
+      ((jsonComponentOut_2 \ "result" \ "dependencies")(0) \ "nameToShow").asOpt[String].get === "(C12) ----> (C13)"
       
 //      val status_2 = RequireNextStep()
 //      (jsonComponentOut_2 \ "result" \ "status").asOpt[String].get === status_2.status

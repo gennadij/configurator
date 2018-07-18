@@ -1,10 +1,9 @@
 package models.logic
 
-import models.bo.{ContainerComponentBO, StartConfigBO, StepBO, StepCurrentConfigBO}
+import models.bo._
 import models.currentConfig.CurrentConfig
 import models.persistence.Persistence
 import org.shared.common.status.Success
-import play.api.Logger
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -39,7 +38,7 @@ class StartConfig(configUrl: Option[String]) {
 
     firstStep.stepId match {
       case Some(stepId) =>
-        val componentsBO: ContainerComponentBO = Persistence.getComponents(stepId)
+        val componentsForSelectionBO: ComponentsForSelectionBO = Persistence.getComponents(stepId)
 
         val firstStepIdHash = RidToHash.setIdAndHash(stepId)._2
 
@@ -53,26 +52,26 @@ class StartConfig(configUrl: Option[String]) {
         // Fuege den ersten Schritt zu der aktuelle Konfiguration hinzu
         CurrentConfig.addFirstStep(firstStepCurrentConfig)
 
-        val componentsBOWithHashId = componentsBO.status.get.common match {
+        val componentsBOWithHashId: ComponentsForSelectionBO = componentsForSelectionBO.status.get.common match {
           case Some(Success()) =>
-            ContainerComponentBO(
-              status = componentsBO.status,
-              componentsBO.components map (c => {
+            ComponentsForSelectionBO(
+              status = componentsForSelectionBO.status,
+              componentsForSelectionBO.components map (c => {
                 c.copy(componentId = Some(RidToHash.setIdAndHash(c.componentId.get)._2))
               }))
-          case None => componentsBO
+          case None => componentsForSelectionBO
         }
 
 
         StartConfigBO(
           step = Some(firstStepWithHashId),
-          components = Some(componentsBOWithHashId)
+          componentsForSelection = Some(componentsBOWithHashId)
         )
 
       case None =>
         StartConfigBO(
           step = Some(firstStep),
-          components = None
+          componentsForSelection = None
         )
     }
 

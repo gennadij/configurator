@@ -1,5 +1,7 @@
 \documentclass{article}
 
+\usepackage[utf8]{inputenc}
+
 \begin{document}
 
 \begin{titlepage}
@@ -17,13 +19,13 @@
 @created on     14.11.2017\\
 @finished on   21.12.2017\\
 
-Der n\"achste Schritt wird erst freigegeben, wenn alle Abh\"angigkeiten 
-der Komponenten gepr\"uft sind. Beim Prufen von der ausgew\"ahlte 
-Komponente wird auch die SelectionCriterium gepr\"uft, wieviel Komponenten 
-in dem Schritt ausgew\"ahlt werden k\"onnen.
+Der nächste Schritt wird erst freigegeben, wenn alle Abhängigkeiten 
+der Komponenten geprüft sind. Beim Prüfen von der ausgewählte 
+Komponente wird auch die SelectionCriterium geprüft, wieviel Komponenten 
+in dem Schritt ausgewählt werden können.
 
-Die ausgew\"ahlte Komponente wird in der CurrentConfig gesichert, damit das
-SelectionCriterium bewertet kann.\\
+Die ausgewählte Komponente wird in der CurrentConfig gesichert, damit das
+SelectionCriterium bewertet weden kann.\\
 
 \section{v0.0.2}
 
@@ -33,8 +35,8 @@ SelectionCriterium bewertet kann.\\
 @created on     4.12.2017\\
 @finished on   19.03.2018\\
 
-Die aktuelle Konfiguration beh\"alt gesamte Information \"uber die hinzugef\"gte
-Komponente. Dazu geh\"ohren alle Abh\"ngigkeiten und Einschr\"ankungen und
+Die aktuelle Konfiguration behält gesamte Information über die hinzugefügte
+Komponente. Dazu gehören alle Abhängigkeiten und Einschränkungen und
 Komponente mit $<exclude>$ Markierung.\\
 
 \subsubsection{}
@@ -50,8 +52,8 @@ szenario\_3)\\
 @created on 20.12.2017\\
 @finished on 19.03.2018\\
 
-Bei der Auswahl der gleichen Komponente innerhalb eines Schrittes muss erkannt
-werden und eine Info an den Webclient gesendet.\\
+Bei der Auswahl der gleichen Komponente innerhalb eines Schrittes muss 
+diese Änderung erkannt werden und eine Info an den Webclient gesendet.\\
 
 \subsubsection{}
 @created on 21.12.2017\\
@@ -114,7 +116,14 @@ configUrl=http://contig1/user29\_v016\\
 Diese Szenario nur m\"oglich bei der Einstellung von
 $<configurationCourse=sequence>$.\\
 
-\noindent Es gibt folgende Verl\"afe: $<sequence>, <sabstitute>$
+\noindent Es gibt folgende Verläfe: $<sequence>, <sabstitute>$. 
+Diese Verläufe beziehen sich in großen Ganzen nur auf der Verhalten des Clients des Konfigurators.
+Bei der $<sequence>$ werden die nächste Schritte an der vorherige Schritt angehängt, 
+so dass der Benutzer alle abgearbeitete Schritte sieht. Bei der $<sabstitute>$ der 
+nächste Schritt ersetzt den vorherigen. Der Server benötigt die Information ob der 
+vorherige Schritte durch der Auswahl des Benutzers (z.B. Button vorherige Schritt) geladen 
+werden soll ($<sabstitute>$) oder der Benutzer die Änderung in den vorherigen Schritten 
+sofort vornehmen kann, da er visualisiert ist ($<sequence>$). 
 
 \begin{enumerate}
   \item Server: Start Konfiguration $->$ Schritt 1

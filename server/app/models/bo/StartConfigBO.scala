@@ -6,8 +6,8 @@ package models.bo
   * Created by Gennadi Heimann 10.07.2018
   */
 case class StartConfigBO (
-                         configUrl: Option[String] = None,
-                         step: Option[StepBO] = None,
-                         components: Option[ContainerComponentBO] = None
+                           configUrl: Option[String] = None,
+                           step: Option[StepBO] = None,
+                           componentsForSelection: Option[ComponentsForSelectionBO] = None
 
 )

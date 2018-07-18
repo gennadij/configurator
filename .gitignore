@@ -30,3 +30,6 @@ shared/.jvm
 .cache
 .target
 bin/
+
+# docu
+docu/*.synctex.gz

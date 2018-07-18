@@ -1,11 +1,10 @@
 package models.logic
 
-import models.bo.{ComponentBO, ContainerComponentBO, StepBO, StepCurrentConfigBO}
+import models.bo.{ComponentBO, SelectedComponentBO, StepBO, StepCurrentConfigBO}
 import models.currentConfig.CurrentConfig
-import models.persistence.orientdb.Graph
 import models.wrapper.nextStep.NextStepOut
+import org.shared.common.status.Error
 import org.shared.common.status.step._
-import org.shared.common.status.{Error, Success}
 import play.api.Logger
 
 /**
@@ -45,41 +44,36 @@ class NextStep {
       //lastStep.components.get
     Logger.info(selectedComponents.toString())
     selectedComponents match {
-      case List() => {
+      case List() =>
         createErrorNextStepOut(StatusStep(None, Some(StepCurrentConfigBOIncludeNoSelectedComponents()),
             None, Some(Error())))
-      }
-      case _ => {
-        val nextStep: StepBO = Graph.getNextStep(selectedComponents.head.componentId.get)
+      case _ =>
+        val nextStep: StepBO = ??? //Graph.getNextStep(selectedComponents.head.componentId.get)
         nextStep.status.nextStep match {
-          case Some(NextStepExist()) => {
-            val components: List[ContainerComponentBO] = ???
-//              Graph.getComponents(nextStep.stepId.get)
-            val statusComponents: Boolean = ???
-//              components map { _.status.common.get } contains{ Success() }
+          case Some(NextStepExist()) =>
+            val components: List[SelectedComponentBO] = ???
+            //              Graph.getComponents(nextStep.stepId.get)
+                        val statusComponents: Boolean = ???
+            //              components map { _.status.common.get } contains{ Success() }
             statusComponents match {
-              case true => {
-              lastStep.nextStep = Some(StepCurrentConfigBO(
-                    nextStep.stepId.get,
-                    nextStep.nameToShow.get,
-                None,
-                    None
-                ))
+              case true =>
+                lastStep.nextStep = Some(StepCurrentConfigBO(
+                      nextStep.stepId.get,
+                      nextStep.nameToShow.get,
+                  List(),
+                      None
+                  ))
                 NextStepOut(
                    nextStep,
                    components
                 )
-              }
-              case false => {
-                createErrorNextStepOut(StatusStep(None, 
+              case false =>
+                createErrorNextStepOut(StatusStep(None,
                   Some(NextStepIncludeNoComponents()),
                   None, Some(Error())))
-              }
             }
-          }
           case _ => NextStepOut(nextStep, List())
         }
-      }
     }
   }
   
@@ -98,9 +92,9 @@ class NextStep {
    * 
    * @version 0.0.1
    * 
-   * @param
+   * @param list: Seq[String]
    * 
-   * @return
+   * @return Boolean
    */
     private def compareOneWithAll(list: Seq[String]): Boolean = {
       list match {

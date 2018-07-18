@@ -1,7 +1,7 @@
 package models.wrapper.nextStep
 
 import models.bo.StepBO
-import models.bo.ContainerComponentBO
+import models.bo.SelectedComponentBO
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -10,5 +10,5 @@ import models.bo.ContainerComponentBO
  */
 case class NextStepOut (
     step: StepBO,
-    components: List[ContainerComponentBO]
+    components: List[SelectedComponentBO]
 )

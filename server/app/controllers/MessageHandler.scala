@@ -2,7 +2,7 @@ package controllers
 
 import controllers.genericConfig.GenericConfigurator
 import org.shared.common.JsonNames
-import org.shared.component.json.{JsonComponentIn, JsonComponentOut}
+import org.shared.component.json.JsonComponentIn
 import org.shared.currentConfig.json.{JsonCurrentConfigIn, JsonCurrentConfigOut}
 import org.shared.error.{JsonErrorIn, JsonErrorParams}
 import org.shared.nextStep.json.JsonNextStepIn
@@ -114,8 +114,8 @@ trait MessageHandler extends GenericConfigurator{
       case Some("StartConfig") => startConfig(receivedMessage)
       case Some("NextStep") => nextStep(receivedMessage)
       case Some("CurrentConfig") => currentConfig(receivedMessage)
-      case Some("Component") => component(receivedMessage)
-      case _ => Json.obj("error" -> "keinen Treffer")
+      case Some("Component") => selectedComponent(receivedMessage)
+      case error => jsonError(errorText = "Input JSON is not permitted")
     }
   }
 
@@ -169,14 +169,12 @@ trait MessageHandler extends GenericConfigurator{
     * @param receivedMessage: JsValue
     * @return JsValue
     */
-  def component(receivedMessage: JsValue): JsValue = {
+  def selectedComponent(receivedMessage: JsValue): JsValue = {
     val jsonComponentIn: JsResult[JsonComponentIn] = Json.fromJson[JsonComponentIn](receivedMessage)
     jsonComponentIn match {
-      case s: JsSuccess[JsonComponentIn] => s
-      case e: JsError => Logger.error("Errors -> " + JsonNames.CURRENT_CONFIG + ": " + JsError.toJson(e).toString())
+      case s: JsSuccess[JsonComponentIn] => Json.toJson(selectedComponent(jsonComponentIn.get))
+      case e: JsError => jsonError(JsonNames.COMPONENT, e)
     }
-    val jsonComponentOut: JsonComponentOut = component(jsonComponentIn.get)
-    Json.toJson(jsonComponentOut)
   }
 
   /**
@@ -194,5 +192,22 @@ trait MessageHandler extends GenericConfigurator{
     )
     Logger.error(error.toString)
     Json.toJson(error)
+  }
+
+  /**
+    * @author Gennadi Heimann
+    * @version 0.0.3
+    * @param errorText: String, e: JsError
+    * @return JsValue
+    */
+  private def jsonError(errorText: String): JsValue = {
+    Logger.error(errorText)
+
+    Json.toJson(JsonErrorIn(
+      JsonNames.ERROR,
+      JsonErrorParams(
+        message = errorText
+      )
+    ))
   }
 }

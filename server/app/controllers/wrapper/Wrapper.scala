@@ -44,7 +44,7 @@ trait Wrapper {
             JsonStep(
               startConfigBO.step.get.stepId.get,
               startConfigBO.step.get.nameToShow.get,
-              startConfigBO.components.get.components map (component => {
+              startConfigBO.componentsForSelection.get.components map (component => {
                 JsonComponent(
                   component.componentId.get,
                   component.nameToShow.get
@@ -108,13 +108,14 @@ trait Wrapper {
         JsonStep(
           nextStepOut.step.stepId.get,
           nextStepOut.step.nameToShow.get,
-          nextStepOut.components.head.components map (component => {
-            JsonComponent(
-              component.componentId.get,
-              component.nameToShow.get
-            )
-          })
-        ),
+//          nextStepOut.components.head.components map (component => {
+//            JsonComponent(
+//              component.componentId.get,
+//              component.nameToShow.get
+//            )
+//          })
+//        )
+          List()),
         JsonStepStatus(
           nextStep = Some(JsonStatus(
             nextStepOut.step.status.nextStep.get.status,
@@ -158,7 +159,7 @@ trait Wrapper {
         Some(JsonStepCurrentConfig(
           nextStep.stepId,
           nextStep.nameToShow,
-          nextStep.components.get.components map (c => {
+          nextStep.components map (c => {
             JsonComponent(
               c.componentId.get,
               c.nameToShow.get

@@ -7,7 +7,7 @@ import org.shared.component.status.StatusComponent
   *
   * Created by Gennadi Heimann 09.02.2018
   */
-case class ContainerComponentBO(
+case class SelectedComponentBO(
                         status: Option[StatusComponent] = None,
-                        components: List[ComponentBO] = List()
+                        component: Option[ComponentBO] = None
                       )
