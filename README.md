@@ -1,10 +1,10 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This README is still under construction
 
 ### Generische Konfigurator ###
 ## Beschreibung
-Dieser Konfigurat Konzopiert und entwickelt fÃ¼r die verschieden AnwendungsmÃ¶glichkeiten.
+Dieser Konfigurat Konzopiert und entwickelt für die verschieden Anwendungsmöglichkeiten.
 Damit kann man einen Produktkonfigurator oder verschiedene Firmenprozesse abbilden.
 Im generischem Konfigurator wird nur die Logik des Konfigurationsprozesses und 
 minimale Visualisierung implementiert. 
