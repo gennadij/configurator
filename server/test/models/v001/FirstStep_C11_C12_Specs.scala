@@ -92,7 +92,7 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
       //User hat ausgewaelt
       val componentIdC12: String = 
         (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_2_user29_v016")
+            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C12")
             .map(comp => {(comp \ "componentId").asOpt[String].get}).head
       
       
@@ -115,10 +115,6 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
       ((jsonComponentOut_2 \ "result" \ "dependencies")(0) \ "dependencyType").asOpt[String].get === "exclude"
       ((jsonComponentOut_2 \ "result" \ "dependencies")(0) \ "visualization").asOpt[String].get === "undef"
       ((jsonComponentOut_2 \ "result" \ "dependencies")(0) \ "nameToShow").asOpt[String].get === "(C12) ----> (C13)"
-      
-//      val status_2 = RequireNextStep()
-//      (jsonComponentOut_2 \ "result" \ "status").asOpt[String].get === status_2.status
-//      (jsonComponentOut_2 \ "result" \ "message").asOpt[String].get === status_2.message
     }
   }
   

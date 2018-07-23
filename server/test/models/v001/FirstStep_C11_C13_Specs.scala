@@ -5,6 +5,7 @@ import controllers.websocket.WebClient
 import org.specs2.runner.JUnitRunner
 import org.junit.runner.RunWith
 import org.shared.common.JsonNames
+import org.shared.startConfig.json.JsonStartConfigOut
 import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeAfterAll
 import play.api.libs.json.Json
@@ -31,7 +32,7 @@ class FirstStep_C11_C13_Specs extends Specification with MessageHandler with Bef
   
   "Specification spezifiziert der NextStep der Konfiguration" >> {
     "Es wird erster Step mit der Komponenten geladen und Component_1_1 und Componente_1_3  ausgewaelt" >> {
-      val configUrl = "http://contig1/user29_v016"
+      val configUrl = "http://config/client_013"
       val startConfigIn = Json.obj(
           "json" -> JsonNames.START_CONFIG
           ,"params" -> Json.obj(
@@ -43,13 +44,15 @@ class FirstStep_C11_C13_Specs extends Specification with MessageHandler with Bef
       
       Logger.info("StartConfigIn " + startConfigIn)
       Logger.info("StartConfigOut " + startConfigOut)
-      
+
+      val sCOut = Json.fromJson[JsonStartConfigOut](startConfigOut)
+
       //User hat ausgewaelt
-      val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_1_user29_v016")
-            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
+      val componentIdC11: String = sCOut.get.result.step.components.filter(comp => comp.nameToShow == "C11")
+        .map(_.componentId).head
       
       Logger.info(this.getClass.getSimpleName + ": componentIdC11" + componentIdC11)
+
       val componentIds: List[String] = List(componentIdC11)
       
       val jsonComponentIn_1: JsValue = Json.obj(
@@ -67,8 +70,8 @@ class FirstStep_C11_C13_Specs extends Specification with MessageHandler with Bef
       (jsonComponentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
       (jsonComponentOut_1 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
       (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
-      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
-      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
+      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "undef"
+      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C11) ----> (C13)"
       (jsonComponentOut_1 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
       (jsonComponentOut_1 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === 
         "Sie koennen weitere Komponente auswaelen"
@@ -85,19 +88,18 @@ class FirstStep_C11_C13_Specs extends Specification with MessageHandler with Bef
       
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
+      val sCOut_2 = Json.fromJson[JsonStartConfigOut](startConfigOut)
+
       //User hat ausgewaelt
-      
-      val componentIdC12: String = 
-        (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_3_user29_v016")
-            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
-      
-      Logger.info(this.getClass.getSimpleName + ": componentIdC12 " + componentIdC12)
+      val componentIdC13: String = sCOut_2.get.result.step.components.filter(comp => comp.nameToShow == "C13")
+        .map(_.componentId).head
+
+      Logger.info(this.getClass.getSimpleName + ": componentIdC13 " + componentIdC13)
       
       val jsonComponentIn_2: JsValue = Json.obj(
           "json" -> JsonNames.COMPONENT
           ,"params" -> Json.obj(
-               "componentId" -> componentIdC12
+               "componentId" -> componentIdC13
            )
       )
       
