@@ -12,6 +12,6 @@ case class StepBO (
     nameToShow: Option[String] = None,
     selectionCriteriumMin: Option[Int] = None,
     selectionCriteriumMax: Option[Int] = None,
-    status: StatusStep,
+    status: Option[StatusStep] = None,
     componentIds: Option[List[String]] = None
 )

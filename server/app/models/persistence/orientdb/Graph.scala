@@ -112,9 +112,11 @@ class Graph(graph: Option[OrientGraph]) {
       val eHasComponents: List[OrientEdge] =
         vComponent.getEdges(Direction.IN, PropertyKeys.HAS_COMPONENT).asScala.toList map {_.asInstanceOf[OrientEdge]}
 
-      eHasComponents map (eHasComponent => {eHasComponent.getVertex(Direction.OUT)}) match {
-        case List() => (None, FatherStepNotExist(), Error())
-        case vFS => (Some(vFS.head), FatherStepExist(), Success())
+      val vFatherSteps : List[OrientVertex]= eHasComponents map (eHasComponent => {eHasComponent.getVertex(Direction.OUT)})
+      vFatherSteps.size match {
+        case s if s == 0 => (None, FatherStepNotExist(), Error())
+        case s if s == 1 => (Some(vFatherSteps.head), FatherStepExist(), Success())
+        case s if s >  1 => (None, MultipleFatherSteps(), Error())
       }
     } catch {
       case e2: ClassCastException =>
@@ -248,7 +250,7 @@ class Graph(graph: Option[OrientGraph]) {
     * @return StepBO
     */
   private def createErrorStepBO(s: StatusStep): StepBO = {
-    StepBO(status = s, componentIds = None)
+    StepBO(status = Some(s), componentIds = None)
   }
 
   /**

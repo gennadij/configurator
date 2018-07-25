@@ -60,6 +60,7 @@ class StartConfig(configUrl: Option[String]) {
                 c.copy(componentId = Some(RidToHash.setIdAndHash(c.componentId.get)._2))
               }))
           case None => componentsForSelectionBO
+          case status => componentsForSelectionBO
         }
 
 

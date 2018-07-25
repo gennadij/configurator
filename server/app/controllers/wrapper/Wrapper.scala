@@ -1,7 +1,6 @@
 package controllers.wrapper
 
-import models.bo.{StartConfigBO, StepCurrentConfigBO}
-import models.wrapper.component.ComponentOut
+import models.bo.{SelectedComponentBO, StartConfigBO, StepCurrentConfigBO}
 import models.wrapper.nextStep.{NextStepIn, NextStepOut}
 import org.shared.common.json._
 import org.shared.component.json.{JsonComponentOut, JsonComponentResult, JsonComponentStatus}
@@ -53,11 +52,11 @@ trait Wrapper {
             ),
             JsonStepStatus(
               firstStep = Some(JsonStatus(
-                startConfigBO.step.get.status.firstStep.get.status,
-                startConfigBO.step.get.status.firstStep.get.message)),
+                startConfigBO.step.get.status.get.firstStep.get.status,
+                startConfigBO.step.get.status.get.firstStep.get.message)),
               common = Some(JsonStatus(
-                startConfigBO.step.get.status.common.get.status,
-                startConfigBO.step.get.status.common.get.message))
+                startConfigBO.step.get.status.get.common.get.status,
+                startConfigBO.step.get.status.get.common.get.message))
             )
 
           )
@@ -72,11 +71,11 @@ trait Wrapper {
             ),
             JsonStepStatus(
               firstStep = Some(JsonStatus(
-                startConfigBO.step.get.status.firstStep.get.status,
-                startConfigBO.step.get.status.firstStep.get.message)),
+                startConfigBO.step.get.status.get.firstStep.get.status,
+                startConfigBO.step.get.status.get.firstStep.get.message)),
               common = Some(JsonStatus(
-                startConfigBO.step.get.status.common.get.status,
-                startConfigBO.step.get.status.common.get.message))
+                startConfigBO.step.get.status.get.common.get.status,
+                startConfigBO.step.get.status.get.common.get.message))
             )
 
           )
@@ -118,12 +117,12 @@ trait Wrapper {
           List()),
         JsonStepStatus(
           nextStep = Some(JsonStatus(
-            nextStepOut.step.status.nextStep.get.status,
-            nextStepOut.step.status.nextStep.get.message
+            nextStepOut.step.status.get.nextStep.get.status,
+            nextStepOut.step.status.get.nextStep.get.message
           )),
           common = Some(JsonStatus(
-            nextStepOut.step.status.common.get.status,
-            nextStepOut.step.status.common.get.message
+            nextStepOut.step.status.get.common.get.status,
+            nextStepOut.step.status.get.common.get.message
           ))
         )
       )
@@ -174,16 +173,16 @@ trait Wrapper {
   /**
     * @author Gennadi Heimann
     * @version 0.0.1
-    * @param componentOut : ComponentOut
+    * @param selectedComponentBO : ComponentOut
     * @return ComponentIn
     */
-  def toJsonComponentOut(componentOut: ComponentOut): JsonComponentOut = {
+  def toJsonComponentOut(selectedComponentBO: SelectedComponentBO): JsonComponentOut = {
 
-    val status: StatusComponent = componentOut.status
+    val status: StatusComponent = selectedComponentBO.status.get
     JsonComponentOut(
       result = JsonComponentResult(
-        componentOut.selectedComponentId,
-        componentOut.stepId,
+        selectedComponentBO.component.get.componentId.get,
+        selectedComponentBO.fatherStep.get.stepId.get,
         JsonComponentStatus(
           status.selectionCriterium match {
             case Some(status) =>
@@ -226,17 +225,18 @@ trait Wrapper {
             case None => None
           }
         ),
-        componentOut.dependencies map (d => {
-          JsonDependency(
-            d.outId,
-            d.inId,
-            d.dependencyType,
-            d.visualization,
-            d.nameToShow,
-            "",
-            ""
-          )
-        })
+        List()
+//        selectedComponentBO.dependencies map (d => {
+//          JsonDependency(
+//            d.outId,
+//            d.inId,
+//            d.dependencyType,
+//            d.visualization,
+//            d.nameToShow,
+//            "",
+//            ""
+//          )
+//        })
       )
     )
   }

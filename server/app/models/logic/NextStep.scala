@@ -49,7 +49,7 @@ class NextStep {
             None, Some(Error())))
       case _ =>
         val nextStep: StepBO = ??? //Graph.getNextStep(selectedComponents.head.componentId.get)
-        nextStep.status.nextStep match {
+        nextStep.status.get.nextStep match {
           case Some(NextStepExist()) =>
             val components: List[SelectedComponentBO] = ???
             //              Graph.getComponents(nextStep.stepId.get)
@@ -80,7 +80,7 @@ class NextStep {
   private def createErrorNextStepOut(s: StatusStep): NextStepOut = {
     NextStepOut(
         StepBO(
-            status = s,
+            status = Some(s),
             componentIds = None
         ),
         List()

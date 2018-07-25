@@ -9,5 +9,8 @@ import org.shared.component.status.StatusComponent
   */
 case class SelectedComponentBO(
                         status: Option[StatusComponent] = None,
-                        component: Option[ComponentBO] = None
+                        component: Option[ComponentBO] = None,
+                        fatherStep: Option[StepBO] = None,
+                        nextStep: Option[StepBO] = None,
+                        currentStep: Option[StepCurrentConfigBO] = None
                       )

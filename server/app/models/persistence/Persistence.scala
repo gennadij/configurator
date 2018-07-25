@@ -35,18 +35,18 @@ object Persistence {
           nameToShow = Some(fS.getProperty(PropertyKeys.NAME_TO_SHOW).toString),
           selectionCriteriumMin = Some(fS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN)),
           selectionCriteriumMax = Some(fS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX)),
-          status = StatusStep(
+          status = Some(StatusStep(
             firstStep = Some(FirstStepExist()),
             common = Some(Success())
           )
-        )
+        ))
       case None =>
         StepBO(
-          status = StatusStep(
+          status = Some(StatusStep(
             firstStep = Some(statusFirstStep),
             common = Some(statusCommon)
           )
-        )
+        ))
     }
   }
 
@@ -149,17 +149,17 @@ object Persistence {
           Some(vFS.getProperty(PropertyKeys.NAME_TO_SHOW).toString),
           Some(vFS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN).toString.toInt),
           Some(vFS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX).toString.toInt),
-          StatusStep(
+          Some(StatusStep(
             None,
             None,
             Some(FatherStepExist()),
             Some(Success())
-          ),
+          )),
           Some(vFS.getEdges(Direction.OUT, PropertyKeys.HAS_COMPONENT).asScala.toList map (hC => {
             hC.getVertex(Direction.IN).asInstanceOf[OrientVertex].getIdentity.toString()
           }))
         )
-      case _ => StepBO(status = StatusStep(fatherStep = Some(statusFatherStep), common = Some(statusCommen)))
+      case _ => StepBO(status = Some(StatusStep(fatherStep = Some(statusFatherStep), common = Some(statusCommen))))
     }
   }
 
@@ -180,19 +180,19 @@ object Persistence {
           nameToShow = Some(vNS.getProperty(PropertyKeys.NAME_TO_SHOW).toString),
           selectionCriteriumMin = Some(vNS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN).toString.toInt),
           selectionCriteriumMax = Some(vNS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX).toString.toInt),
-          status = StatusStep(
+          status = Some(StatusStep(
             firstStep = None,
             nextStep = Some(NextStepExist()),
             fatherStep = None,
             common = Some(Success())
-          ),
+          )),
           componentIds = Some(vNS.getEdges(Direction.OUT, PropertyKeys.HAS_COMPONENT).asScala.toList map (hC => {
             hC.getVertex(Direction.IN).asInstanceOf[OrientVertex].getIdentity.toString()
           }))
         )
       case None => statusNextStep match {
         case _ =>
-          StepBO(status = StatusStep(nextStep = Some(statusNextStep), common = Some(statusCommon)))
+          StepBO(status = Some(StatusStep(nextStep = Some(statusNextStep), common = Some(statusCommon))))
       }
     }
   }
