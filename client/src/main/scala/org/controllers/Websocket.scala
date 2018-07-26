@@ -5,13 +5,16 @@ import org.shared.common.JsonNames
 import org.shared.startConfig.json.{JsonStartConfigIn, JsonStartConfigParams}
 import play.api.libs.json._
 
+import scala.util.matching.Regex
+
 //import scala.collection.JavaConverters._
 
 
+//noinspection ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses
 object Websocket {
   val url = "ws://localhost:9000/configurator"
 	val socket = new dom.WebSocket(url)
-  val numPattern = "[0-9]+".r
+  val numPattern: Regex = "[0-9]+".r
   
   def main(args: Array[String]): Unit = {
     

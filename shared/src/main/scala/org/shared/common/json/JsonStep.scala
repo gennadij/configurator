@@ -1,6 +1,6 @@
 package org.shared.common.json
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -18,5 +18,5 @@ case class JsonStep (
 )
 
 object JsonStep {
-  implicit val format = Json.format[JsonStep]
+  implicit val format: OFormat[JsonStep] = Json.format[JsonStep]
 }

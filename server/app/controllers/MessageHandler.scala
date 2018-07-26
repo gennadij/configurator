@@ -115,7 +115,7 @@ trait MessageHandler extends GenericConfigurator{
       case Some("NextStep") => nextStep(receivedMessage)
       case Some("CurrentConfig") => currentConfig(receivedMessage)
       case Some("Component") => selectedComponent(receivedMessage)
-      case error => jsonError(errorText = "Input JSON is not permitted")
+      case _ => jsonError(errorText = "Input JSON is not permitted")
     }
   }
 
@@ -128,7 +128,7 @@ trait MessageHandler extends GenericConfigurator{
   private def startConfig(receivedMessage: JsValue): JsValue = {
     val jsonStartConfigIn: JsResult[JsonStartConfigIn] = Json.fromJson[JsonStartConfigIn](receivedMessage)
     jsonStartConfigIn match {
-      case s: JsSuccess[JsonStartConfigIn] => Json.toJson(startConfig(jsonStartConfigIn.get))
+      case _: JsSuccess[JsonStartConfigIn] => Json.toJson(startConfig(jsonStartConfigIn.get))
       case e: JsError => jsonError(JsonNames.START_CONFIG, e)
     }
   }
@@ -142,7 +142,7 @@ trait MessageHandler extends GenericConfigurator{
   private def nextStep(receiveMessage: JsValue): JsValue = {
     val jsonNextStepIn: JsResult[JsonNextStepIn] = Json.fromJson[JsonNextStepIn](receiveMessage)
     jsonNextStepIn match {
-      case s: JsSuccess[JsonNextStepIn] => Json.toJson(getNextStep)
+      case _: JsSuccess[JsonNextStepIn] => Json.toJson(getNextStep)
       case e: JsError => jsonError(JsonNames.NEXT_STEP, e)
     }
   }
@@ -172,7 +172,7 @@ trait MessageHandler extends GenericConfigurator{
   def selectedComponent(receivedMessage: JsValue): JsValue = {
     val jsonComponentIn: JsResult[JsonComponentIn] = Json.fromJson[JsonComponentIn](receivedMessage)
     jsonComponentIn match {
-      case s: JsSuccess[JsonComponentIn] => Json.toJson(selectedComponent(jsonComponentIn.get))
+      case _: JsSuccess[JsonComponentIn] => Json.toJson(selectedComponent(jsonComponentIn.get))
       case e: JsError => jsonError(JsonNames.COMPONENT, e)
     }
   }

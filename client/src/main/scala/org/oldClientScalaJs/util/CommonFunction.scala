@@ -19,7 +19,7 @@ class CommonFunction {
   
   
   private def getStatus(status: Option[Status]): String = status match {
-    case Some(status) => status.status
+    case Some(s) => s.status
     case None => "None"
   }
 }

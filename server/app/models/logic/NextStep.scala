@@ -55,22 +55,21 @@ class NextStep {
             //              Graph.getComponents(nextStep.stepId.get)
                         val statusComponents: Boolean = ???
             //              components map { _.status.common.get } contains{ Success() }
-            statusComponents match {
-              case true =>
-                lastStep.nextStep = Some(StepCurrentConfigBO(
-                      nextStep.stepId.get,
-                      nextStep.nameToShow.get,
-                  List(),
-                      None
-                  ))
-                NextStepOut(
-                   nextStep,
-                   components
-                )
-              case false =>
-                createErrorNextStepOut(StatusStep(None,
-                  Some(NextStepIncludeNoComponents()),
-                  None, Some(Error())))
+            if (statusComponents) {
+              lastStep.nextStep = Some(StepCurrentConfigBO(
+                nextStep.stepId.get,
+                nextStep.nameToShow.get,
+                List(),
+                None
+              ))
+              NextStepOut(
+                nextStep,
+                components
+              )
+            } else {
+              createErrorNextStepOut(StatusStep(None,
+                Some(NextStepIncludeNoComponents()),
+                None, Some(Error())))
             }
           case _ => NextStepOut(nextStep, List())
         }

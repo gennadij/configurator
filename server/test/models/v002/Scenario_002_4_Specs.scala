@@ -19,15 +19,16 @@ import org.shared.component.status._
  * 
  * Created by Gennadi Heimann 03.01.2018
  */
+//noinspection ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses
 @RunWith(classOf[JUnitRunner])
 class Scenario_002_4_Specs  extends Specification with MessageHandler with BeforeAfterAll{
 
-  val wC = WebClient.init
+  val wC: WebClient = WebClient.init
   
-  def beforeAll() = {
+  def beforeAll(): Unit = {
   }
   
-  def afterAll() = {
+  def afterAll(): Unit = {
   }
   
   "Specification spezifiziert CurrentConfig bei der doppeltem Auswahl der Komponente " >> {
@@ -178,9 +179,9 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
       
       (componentOut_3 \ "json").asOpt[String].get === JsonNames.COMPONENT
       (componentOut_3 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
-      (((componentOut_3 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
-      (((componentOut_3 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
-      (((componentOut_3 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_2_user29_v016) ----> (C_1_3_user29_v016)"
+      ((componentOut_3 \ "result" \ "dependencies")(0) \ "dependencyType").asOpt[String].get === "exclude"
+      ((componentOut_3 \ "result" \ "dependencies")(0) \ "visualization").asOpt[String].get === "remove"
+      ((componentOut_3 \ "result" \ "dependencies")(0) \ "nameToShow").asOpt[String].get === "(C_1_2_user29_v016) ----> (C_1_3_user29_v016)"
       
       val statusSelectionCriterium_3 = RequireNextStep()
       (componentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "status").asOpt[String].get === statusSelectionCriterium_3.status

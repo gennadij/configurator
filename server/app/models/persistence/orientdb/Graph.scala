@@ -25,7 +25,7 @@ object Graph {
     * @return StepBO
     */
   def getFatherStep(componentId: String): (Option[OrientVertex], StatusFatherStep, Status) = {
-    val graph: OrientGraph = Database.getFactory().getTx
+    val graph: OrientGraph = Database.getFactory.getTx
     new Graph(Some(graph)).getFatherStep(componentId)
   }
 
@@ -36,7 +36,7 @@ object Graph {
     * @return ComponentBO
     */
   def getComponent(componentId: String): (Option[OrientVertex], Status) = {
-    val graph: OrientGraph = Database.getFactory().getTx
+    val graph: OrientGraph = Database.getFactory.getTx
     new Graph(Some(graph)).getComponent(componentId)
   }
 
@@ -47,7 +47,7 @@ object Graph {
     * @return StepBO
     */
   def getNextStep(componentId: String): (Option[OrientVertex], StatusNextStep, Status) = {
-    val graph: OrientGraph = Database.getFactory().getTx
+    val graph: OrientGraph = Database.getFactory.getTx
     new Graph(Some(graph)).getNextStep(componentId)
   }
 
@@ -58,7 +58,7 @@ object Graph {
     * @return OrientVertex
     */
   def getFirstStep(configUrl: String): (Option[OrientVertex], StatusFirstStep, Status) = {
-    val graph: OrientGraph = Database.getFactory().getTx
+    val graph: OrientGraph = Database.getFactory.getTx
     new Graph(Some(graph)).getFirstStep(configUrl)
   }
 
@@ -69,7 +69,7 @@ object Graph {
     * @return List[ComponentBO]
     */
   def getComponents(stepId: String): (Option[List[OrientVertex]], Status) = {
-    val graph: OrientGraph = Database.getFactory().getTx
+    val graph: OrientGraph = Database.getFactory.getTx
     new Graph(Some(graph)).getComponents(stepId)
   }
 
@@ -233,6 +233,7 @@ class Graph(graph: Option[OrientGraph]) {
     } catch {
       case e2: ClassCastException =>
         graph.get.rollback()
+        Logger.error(e2.printStackTrace().toString)
         (None, CommonErrorFirstStep(), ODBClassCastError())
       case e1: Exception =>
         graph.get.rollback()

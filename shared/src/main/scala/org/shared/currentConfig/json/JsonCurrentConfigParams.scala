@@ -1,6 +1,6 @@
 package org.shared.currentConfig.json
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, Reads}
 
 /**
  * Created by Gennadi Heimann on 24.02.2017
@@ -13,5 +13,5 @@ case class JsonCurrentConfigParams (
 )
   
 object JsonCurrentConfigParams {
-  implicit val format = Json.reads[JsonCurrentConfigParams]
+  implicit val format: Reads[JsonCurrentConfigParams] = Json.reads[JsonCurrentConfigParams]
 }

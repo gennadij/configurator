@@ -19,15 +19,16 @@ import org.shared.component.status._
  * 
  * Created by Gennadi Heimann 03.01.2018
  */
+//noinspection ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses
 @RunWith(classOf[JUnitRunner])
 class Scenario_002_2_Specs  extends Specification with MessageHandler with BeforeAfterAll{
 
-  val wC = WebClient.init
+  val wC: WebClient = WebClient.init
   
-  def beforeAll() = {
+  def beforeAll(): Unit = {
   }
   
-  def afterAll() = {
+  def afterAll(): Unit = {
   }
   
   "Scenario 002_2 -> Specification spezifiziert CurrentConfig bei der doppeltem Auswahl der Komponente " >> {

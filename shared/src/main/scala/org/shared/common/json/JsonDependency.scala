@@ -1,6 +1,6 @@
 package org.shared.common.json
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OWrites}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -18,5 +18,5 @@ case class JsonDependency (
 )
 
 object JsonDependency {
-  implicit val format = Json.writes[JsonDependency]
+  implicit val format: OWrites[JsonDependency] = Json.writes[JsonDependency]
 }

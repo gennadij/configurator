@@ -56,7 +56,7 @@ object RidToHash {
     bigInt.toString(16)
   }
 
-  def printHashes: Unit = {
+  def printHashes(): Unit = {
     idHash foreach(iH => Logger.info("id: " + iH._1 + " -> " + "hash: " + iH._2))
   }
 }

@@ -17,14 +17,15 @@ import util.CommonFunction
  * 
  * Created by Gennadi Heimann 22.12.2017
  */
+//noinspection ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses
 @RunWith(classOf[JUnitRunner])
 class Scenario_002_6_Specs extends Specification with MessageHandler with BeforeAfterAll{
 
-  val wC = WebClient.init
+  val wC: WebClient = WebClient.init
   
-  def beforeAll = {}
+  def beforeAll: Unit = {}
   
-  def afterAll = {}
+  def afterAll: Unit = {}
   
   "Specification spezifiziert der NextStep der Konfiguration" >> {
     "S1 -> C1" >> {

@@ -1,7 +1,7 @@
 package org.shared.currentConfig.json
 
 import org.shared.common.JsonNames
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OWrites}
 
 /**
  * Created by Gennadi Heimann on 24.02.2017
@@ -15,5 +15,5 @@ case class JsonCurrentConfigOut (
 )
 
 object JsonCurrentConfigOut {
-  implicit val format = Json.writes[JsonCurrentConfigOut]
+  implicit val format: OWrites[JsonCurrentConfigOut] = Json.writes[JsonCurrentConfigOut]
 }

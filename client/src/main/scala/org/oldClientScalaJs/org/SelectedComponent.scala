@@ -3,7 +3,7 @@ package org.oldClientScalaJs.org
 import org.oldClientScalaJs.util.CommonFunction
 import org.oldClientScalaJs.wrapper.ComponentIn
 import org.scalajs.dom.raw.WebSocket
-import org.scalajs.jquery.jQuery
+import org.scalajs.jquery.{JQuery, jQuery}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -12,7 +12,7 @@ import org.scalajs.jquery.jQuery
  */
 
 object SelectedComponent{
-  def setSelectedComponent(socket: WebSocket, selectedComponentIn: ComponentIn) = {
+  def setSelectedComponent(socket: WebSocket, selectedComponentIn: ComponentIn): Any = {
 //    new SelectedComponent(socket, selectedComponentIn).setSelectedComponent
     new SelectedComponent(socket, selectedComponentIn).setSelectedComponent
   }
@@ -34,7 +34,7 @@ class SelectedComponent(socket: WebSocket, selectedComponentIn: ComponentIn) {
   private val excludeComponents: List[String] = selectedComponentIn.dependencies.toList map (_.inId)
   
   
-  private def setSelectedComponent1 = {
+  private def setSelectedComponent1() = {
     
     //            SelectedComponent         SelectionCriterium      ExcludeDependency      statusCommon      ComponentType
 		val case1 = ("ADDED_COMPONENT",       "ALLOW_NEXT_COMPONENT", "NOT_EXCLUDED_COMPONENT", "SUCCESS",   "DEFAULT_COMPONENT")
@@ -54,31 +54,31 @@ class SelectedComponent(socket: WebSocket, selectedComponentIn: ComponentIn) {
     }
   }
   
-  private def setCase1 = {
+  private def setCase1() = {
     updateHtmlNextStepButton
     updateColorByExcludeComponents("#FF69B4")
     updateColorByComponent("#00FA9A")
     updateHtmlStatus
   }
     
-  private def setCase2 = {
+  private def setCase2() = {
     updateHtmlNextStepButton
     updateColorByExcludeComponents("#FF69B4")
     updateColorByComponent("#00FA9A")
     updateHtmlStatus
   }
   
-  private def setCase3 = {
+  private def setCase3() = {
     updateHtmlStatus
   }
   
-  private def setCase4 = {
+  private def setCase4(): Unit = {
     updateHtmlStatus
     updateColorByComponent("#FFFFFF")
     updateColorByExcludeComponents("#FF69B4")
   }
   
-  private def setSelectedComponent = {
+  private def setSelectedComponent() = {
     statusCommon match {
       case "SUCCESS" => {
         statusSelectedComponent match {
@@ -108,7 +108,7 @@ class SelectedComponent(socket: WebSocket, selectedComponentIn: ComponentIn) {
 
   
   
-  private def setComponentType = {
+  private def setComponentType() = {
     statusComponentType match {
       case "DEFAULT_COMPONENT" => {
         updateHtmlNextStepButton
@@ -128,7 +128,7 @@ class SelectedComponent(socket: WebSocket, selectedComponentIn: ComponentIn) {
     }
   }
   
-  private def updateHtmlStatus = {
+  private def updateHtmlStatus() = {
     jQuery(s"#message_component_1_$stepId").length match {
       case 0 => {
         createHtmlComponentStatus
@@ -153,7 +153,7 @@ class SelectedComponent(socket: WebSocket, selectedComponentIn: ComponentIn) {
       .append(jQuery(s"<p id=message_component_5_$stepId> <b>Component Status Common:</b> "  + statusCommon + " </p>"))
   }
   
-  private def deleteHtmlComponentStatus = {
+  private def deleteHtmlComponentStatus() = {
     jQuery(s"#message_component_1_$stepId").remove()
     jQuery(s"#message_component_2_$stepId").remove()
     jQuery(s"#message_component_3_$stepId").remove()
@@ -161,24 +161,24 @@ class SelectedComponent(socket: WebSocket, selectedComponentIn: ComponentIn) {
     jQuery(s"#message_component_5_$stepId").remove()
   }
   
-  def updateColorByComponent(color: String) = {
+  def updateColorByComponent(color: String): JQuery = {
     jQuery(s"#$componentId").css("background-color", color)
   }
   
-  def updateColorByExcludeComponents(color: String) = {
+  def updateColorByExcludeComponents(color: String): Unit = {
     excludeComponents foreach (c => {
       jQuery(s"#$c").css("background-color", color)
     })
   }
   
-  def updateHtmlNextStepButton = {
+  def updateHtmlNextStepButton(): Any = {
     if (jQuery(s"#nextStep_$stepId").length == 0) {
       jQuery(s"<button id='nextStep_$stepId' type='button'>Naechsten Schritt laden</button>").appendTo(s"#$stepId")
       jQuery(s"#nextStep_$stepId").on("click", () => requireNextStep())
     }
   }
   
-  def requireNextStep() = {
+  def requireNextStep(): Unit = {
     val json: String = "{\"json\":\"NextStep\",\"params\":{}}"
     println("Sende: " + json)
     socket.send(json)

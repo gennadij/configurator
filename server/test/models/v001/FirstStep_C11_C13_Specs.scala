@@ -18,16 +18,17 @@ import play.api.libs.json.JsValue
  * 
  * Created by Gennadi Heimann 04.12.2017
  */
+//noinspection ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses
 
 @RunWith(classOf[JUnitRunner])
 class FirstStep_C11_C13_Specs extends Specification with MessageHandler with BeforeAfterAll{
 
-  val wC = WebClient.init
+  val wC: WebClient = WebClient.init
   
-  def beforeAll() = {
+  def beforeAll(): Unit = {
   }
   
-  def afterAll() = {
+  def afterAll(): Unit = {
   }
   
   "Specification spezifiziert der NextStep der Konfiguration" >> {
@@ -53,8 +54,6 @@ class FirstStep_C11_C13_Specs extends Specification with MessageHandler with Bef
       
       Logger.info(this.getClass.getSimpleName + ": componentIdC11" + componentIdC11)
 
-      val componentIds: List[String] = List(componentIdC11)
-      
       val jsonComponentIn_1: JsValue = Json.obj(
           "json" -> JsonNames.COMPONENT
           ,"params" -> Json.obj(

@@ -13,7 +13,7 @@ import scala.scalajs.js.Dynamic
 object CurrentConfig {
   
   
-  def setCurrentConfig(jsonResult: Dynamic) = {
+  def setCurrentConfig(jsonResult: Dynamic): Unit = {
     val currentConfigIn: CurrentConfigIn = Wrapper.jsonToCurrentConfigIn(jsonResult)
     if (jQuery("#currentConfig").length != 0) {
       jQuery("#currentConfig").remove()

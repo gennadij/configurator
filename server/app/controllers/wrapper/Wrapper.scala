@@ -37,7 +37,7 @@ trait Wrapper {
   def toJsonStartConfigOut(startConfigBO: StartConfigBO): JsonStartConfigOut = {
 
     startConfigBO.step.get.stepId match {
-      case Some(stepId) =>
+      case Some(_) =>
         JsonStartConfigOut(
           result = JsonStartConfigResult(
             JsonStep(
@@ -185,42 +185,42 @@ trait Wrapper {
         selectedComponentBO.fatherStep.get.stepId.get,
         JsonComponentStatus(
           status.selectionCriterium match {
-            case Some(status) =>
+            case Some(s) =>
               Some(JsonStatus(
-                status.status,
-                status.message
+                s.status,
+                s.message
               ))
             case None => None
           },
           status.selectedComponent match {
-            case Some(status) =>
+            case Some(s) =>
               Some(JsonStatus(
-                status.status,
-                status.message
+                s.status,
+                s.message
               ))
             case None => None
           },
           status.excludeDependency match {
-            case Some(status) =>
+            case Some(s) =>
               Some(JsonStatus(
-                status.status,
-                status.message
+                s.status,
+                s.message
               ))
             case None => None
           },
           status.common match {
-            case Some(status) =>
+            case Some(s) =>
               Some(JsonStatus(
-                status.status,
-                status.message
+                s.status,
+                s.message
               ))
             case None => None
           },
           status.componentType match {
-            case Some(status) =>
+            case Some(s) =>
               Some(JsonStatus(
-                status.status,
-                status.message
+                s.status,
+                s.message
               ))
             case None => None
           }

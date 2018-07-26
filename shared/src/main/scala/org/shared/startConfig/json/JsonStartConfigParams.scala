@@ -1,6 +1,6 @@
 package org.shared.startConfig.json
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -15,5 +15,5 @@ case class JsonStartConfigParams (
 )
 
 object JsonStartConfigParams {
-  implicit val format = Json.format[JsonStartConfigParams]
+  implicit val format: OFormat[JsonStartConfigParams] = Json.format[JsonStartConfigParams]
 }

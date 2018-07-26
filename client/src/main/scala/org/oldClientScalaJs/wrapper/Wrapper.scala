@@ -2,6 +2,7 @@ package org.oldClientScalaJs.wrapper
 
 import scala.scalajs.js.Dynamic
 import scala.scalajs._
+import scala.util.matching.Regex
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -10,7 +11,7 @@ import scala.scalajs._
  */
 object Wrapper {
   
-  val numPattern = "[0-9]+".r
+  val numPattern: Regex = "[0-9]+".r
   
   def jsonToStepIn(jsonResult: Dynamic): StepIn = {
     val components: js.Array[Component] = 

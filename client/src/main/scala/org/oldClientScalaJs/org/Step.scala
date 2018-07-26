@@ -12,7 +12,7 @@ import org.scalajs.jquery.{JQuery, jQuery}
  */
 object Step {
   
-  def setFirstStep(socket: WebSocket, step: StepIn) = {
+  def setFirstStep(socket: WebSocket, step: StepIn): Unit = {
     new Step(socket, step).setStepArea
   }
 //  val classStep: String = "'step'"
@@ -82,7 +82,7 @@ class Step(socket: WebSocket, stepIn: StepIn) {
   private val statusFatherStep = CommonFunction.getStatus(stepIn.status.fatherStep)
   private val statusCommon = CommonFunction.getStatus(stepIn.status.common)
   
-  private def setStepArea = {
+  private def setStepArea(): Unit = {
     val stepArea: JQuery = jQuery(createStepAreaHtmlDev).appendTo(jQuery("section"))
     components.foreach(c => {
 	    val componentId: String = c.componentId
@@ -114,7 +114,7 @@ class Step(socket: WebSocket, stepIn: StepIn) {
     s"<div id=$divId class='component'> <p> $nameToShow <p> </div>"
   }
   
-  private def selectComponent(socket: WebSocket, componentId: String) = {
+  private def selectComponent(socket: WebSocket, componentId: String): Unit = {
     val json: String = "{\"json\":\"Component\",\"params\":{\"componentId\":\"" + componentId + "\"}}"
     println("Send => " + json)
     socket.send(json)

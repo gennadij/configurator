@@ -1,7 +1,7 @@
 package org.shared.nextStep.json
 
 import org.shared.common.JsonNames
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, Reads}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -14,5 +14,5 @@ case class JsonNextStepIn (
 )
 
 object JsonNextStepIn {
-  implicit val format = Json.reads[JsonNextStepIn]
+  implicit val format: Reads[JsonNextStepIn] = Json.reads[JsonNextStepIn]
 }

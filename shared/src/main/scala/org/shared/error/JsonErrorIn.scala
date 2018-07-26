@@ -1,6 +1,6 @@
 package org.shared.error
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -13,5 +13,5 @@ case class JsonErrorIn (
 )
 
 object JsonErrorIn {
-  implicit val format = Json.format[JsonErrorIn]
+  implicit val format: OFormat[JsonErrorIn] = Json.format[JsonErrorIn]
 }

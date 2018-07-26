@@ -1,10 +1,6 @@
 package models.persistence
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraphFactory
-import com.tinkerpop.blueprints.impls.orient.OrientGraph
-import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
-import com.orientechnologies.orient.core.sql.OCommandSQL
-import play.api.Logger
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -22,22 +18,23 @@ object Database {
    * @return
    */
   
-  def getFactory(): OrientGraphFactory = {
+  def getFactory: OrientGraphFactory = {
     
-    new Database("OrientDB").getFactory()
+    new Database("OrientDB").getFactory
   }
 }
 
 class Database(name: String) {
   
-  private def getFactory(): OrientGraphFactory = {
+  private def getFactory: OrientGraphFactory = {
     
     val db = TestDB()
     
     db match {
       case testDB: TestDB => 
         val uri = "remote:localhost/" + testDB.dbName
-        new OrientGraphFactory(uri, testDB.username, testDB.password)
+        val factory = new OrientGraphFactory(uri, testDB.username, testDB.password)
+        factory
     }
   }
 }

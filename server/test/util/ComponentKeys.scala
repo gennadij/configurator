@@ -20,15 +20,16 @@ import play.api.libs.json.Json.toJsFieldJsValueWrapper
  * 
  * Created by Gennadi Heimann 23.02.2018
  */
+//noinspection ExistsEquals,ScalaUnnecessaryParentheses
 
 @RunWith(classOf[JUnitRunner])
 class ComponentKeys extends Specification with MessageHandler with BeforeAfterAll {
-  val wC = WebClient.init
+  val wC: WebClient = WebClient.init
   
-  def beforeAll() = {
+  def beforeAll(): Unit = {
   }
   
-  def afterAll() = {
+  def afterAll(): Unit = {
   }
   
   "Specification spezifiziert der NextStep der Konfiguration" >> {
@@ -47,9 +48,7 @@ class ComponentKeys extends Specification with MessageHandler with BeforeAfterAl
       val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
             .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_1_user29_v016")
             .map(comp => {(comp \ "componentId").asOpt[String].get}).head
-      
-      val componentIds: List[String] = List(componentIdC11)
-      
+
       val jsonComponentIn_1: JsValue = Json.obj(
           "json" -> JsonNames.COMPONENT
           ,"params" -> Json.obj(
@@ -61,8 +60,9 @@ class ComponentKeys extends Specification with MessageHandler with BeforeAfterAl
       
       Logger.info(this.getClass.getSimpleName + ": ComponentIn_1 " + jsonComponentIn_1)
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_1 " + jsonComponentOut_1)
-      
-      
+
+
+      //noinspection ScalaUnnecessaryParentheses
       (jsonComponentOut_1).asOpt[JsObject].get.keys === Set("json", "result")
       
       (jsonComponentOut_1 \ "result").asOpt[JsObject].get.keys === 
@@ -70,20 +70,22 @@ class ComponentKeys extends Specification with MessageHandler with BeforeAfterAl
       
       (jsonComponentOut_1 \ "result"\ "dependencies").asOpt[List[JsObject]].get.map(_.keys) === 
         List(Set("outId", "inId", "dependencyType", "visualization", "nameToShow", "status", "message"))
-      
+
+      //noinspection ExistsEquals
       (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.exists(_ == "selectionCriterium") === true
       (jsonComponentOut_1 \ "result"\ "status" \ "selectionCriterium").asOpt[JsObject].get.keys === Set("status", "message")
       
-      (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.exists(_ == "componentType") === true
+      (jsonComponentOut_1 \ "result" \ "status").asOpt[JsObject].get.keys.contains("componentType") === true
       (jsonComponentOut_1 \ "result"\ "status" \ "componentType").asOpt[JsObject].get.keys === Set("status", "message")
       
-      (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.exists(_ == "common") === true
+      (jsonComponentOut_1 \ "result" \ "status").asOpt[JsObject].get.keys.contains("common") === true
       (jsonComponentOut_1 \ "result"\ "status" \ "common").asOpt[JsObject].get.keys === Set("status", "message")
-      
+
+      //noinspection ExistsEquals
       (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.exists(_ == "selectedComponent") === true
       (jsonComponentOut_1 \ "result"\ "status" \ "selectedComponent").asOpt[JsObject].get.keys === Set("status", "message")
       
-      (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.exists(_ == "excludeDependency") === true
+      (jsonComponentOut_1 \ "result" \ "status").asOpt[JsObject].get.keys.contains("excludeDependency") === true
       (jsonComponentOut_1 \ "result"\ "status" \ "excludeDependency").asOpt[JsObject].get.keys === Set("status", "message")
       
       (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.size === 5

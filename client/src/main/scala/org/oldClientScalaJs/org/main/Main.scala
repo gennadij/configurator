@@ -3,17 +3,19 @@ package org.oldClientScalaJs.org.main
 import org.oldClientScalaJs.org.{CurrentConfig, SelectedComponent, Step}
 import org.oldClientScalaJs.wrapper.{ComponentStatus, StepIn, Wrapper}
 import org.scalajs.dom
-import org.scalajs.jquery.jQuery
+import org.scalajs.jquery.{JQuery, jQuery}
 
 import scala.scalajs.js.{Dynamic, JSON}
+import scala.util.matching.Regex
 
 //import scala.collection.JavaConverters._
 
 
+//noinspection ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses
 object Main {
   val url = ??? //"ws://localhost:9000/configurator"
 		  val socket = new dom.WebSocket(url)
-  val numPattern = "[0-9]+".r
+  val numPattern: Regex = "[0-9]+".r
   
   def main_(args: Array[String]): Unit = {
     
@@ -63,7 +65,7 @@ object Main {
     }
   }
   
-  def updateStatus(stepId: String, status: ComponentStatus) = {
+  def updateStatus(stepId: String, status: ComponentStatus): JQuery = {
 //    println("updateStatus")
 //    val html: String = s"<div id='message_component_$stepId'> </div>"
     
@@ -101,7 +103,7 @@ object Main {
 //    })
 //  }
   
-  def requireNextStep() = {
+  def requireNextStep(): Unit = {
     
     val json: String = "{\"json\":\"NextStep\",\"params\":{\"componentIds\":\"[]\"}}"
     println("Sende: " + json)

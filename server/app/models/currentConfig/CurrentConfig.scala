@@ -241,7 +241,7 @@ class CurrentConfig {
       stepA
     }else{
       stepA.get.nextStep match {
-        case Some(nS) => getStepRecursive(stepA.get.nextStep, stepId)
+        case Some(_) => getStepRecursive(stepA.get.nextStep, stepId)
         case None => None
       }
     }
@@ -267,7 +267,7 @@ class CurrentConfig {
    */
   private def getNextStep(step: Option[StepCurrentConfigBO]): Unit = {
     step.get.nextStep match {
-      case Some(nextStep) =>
+      case Some(_) =>
         Logger.info(step.get.getClass.hashCode() + " -> " + step.get.stepId + " -> " + step.get.nameToShow)
         step.get.components.reverse foreach {component => Logger.info("====" + component.hashCode() + "-" + component.componentId + " -> " + component.nameToShow)}
         getNextStep(step.get.nextStep)

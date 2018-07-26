@@ -18,14 +18,15 @@ import util.CommonFunction
  * 
  * Created by Gennadi Heimann 22.12.2017
  */
+//noinspection ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses
 @RunWith(classOf[JUnitRunner])
 class Scenario_002_9_Specs extends Specification with MessageHandler with BeforeAfterAll{
 
-  val wC = WebClient.init
+  val wC: WebClient = WebClient.init
   
-  def beforeAll = {}
+  def beforeAll: Unit = {}
   
-  def afterAll = {}
+  def afterAll: Unit = {}
   
   "Specification spezifiziert der NextStep der Konfiguration" >> {
     "S1 -> C1, C2, C3, C1" >> {
@@ -95,12 +96,12 @@ class Scenario_002_9_Specs extends Specification with MessageHandler with Before
       
       (componentOut_3 \ "json").asOpt[String].get === JsonNames.COMPONENT
       (componentOut_3 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 2
-      (((componentOut_3 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
-      (((componentOut_3 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
-      (((componentOut_3 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_3_user29_v016) ----> (C_1_1_user29_v016)"
-      (((componentOut_3 \ "result" \ "dependencies")(1)) \ "dependencyType").asOpt[String].get === "exclude"
-      (((componentOut_3 \ "result" \ "dependencies")(1)) \ "visualization").asOpt[String].get === "remove"
-      (((componentOut_3 \ "result" \ "dependencies")(1)) \ "nameToShow").asOpt[String].get === "(C_1_3_user29_v016) ----> (C_1_2_user29_v016)"
+      ((componentOut_3 \ "result" \ "dependencies")(0) \ "dependencyType").asOpt[String].get === "exclude"
+      ((componentOut_3 \ "result" \ "dependencies")(0) \ "visualization").asOpt[String].get === "remove"
+      ((componentOut_3 \ "result" \ "dependencies")(0) \ "nameToShow").asOpt[String].get === "(C_1_3_user29_v016) ----> (C_1_1_user29_v016)"
+      ((componentOut_3 \ "result" \ "dependencies")(1) \ "dependencyType").asOpt[String].get === "exclude"
+      ((componentOut_3 \ "result" \ "dependencies")(1) \ "visualization").asOpt[String].get === "remove"
+      ((componentOut_3 \ "result" \ "dependencies")(1) \ "nameToShow").asOpt[String].get === "(C_1_3_user29_v016) ----> (C_1_2_user29_v016)"
       (componentOut_3 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (componentOut_3 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
       (componentOut_3 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"

@@ -13,7 +13,7 @@ class StartPage {
   val idStartConfigButton: String = "startConfigButton"
   val idWilcomeText: String = "wilcomeText"
   
-  def setStartPage(socket: WebSocket) = {
+  def setStartPage(socket: WebSocket): Unit = {
     jQuery(createStartConfigHtml).appendTo("body")
     jQuery(s"#$idStartConfigButton").on("click", () => startConfig(socket))
     startConfig(socket)
@@ -27,7 +27,7 @@ class StartPage {
     socket.send(startConfigIn)
   }
   
-  def createStartConfigHtml = {
+  def createStartConfigHtml: String = {
     s"<h1 id='$idWilcomeText'> Wilkommen zu der Konfiguration</h1>" + 
     s"<button id='$idStartConfigButton' type='button'>Konfiguration starten</button>"
   }

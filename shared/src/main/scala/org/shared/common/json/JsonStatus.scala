@@ -1,6 +1,6 @@
 package org.shared.common.json
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -13,5 +13,5 @@ case class JsonStatus (
 )
 
 object JsonStatus {
-  implicit val formatJsonStatus = Json.format[JsonStatus]
+  implicit val formatJsonStatus: OFormat[JsonStatus] = Json.format[JsonStatus]
 }
