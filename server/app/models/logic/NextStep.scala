@@ -1,104 +1,87 @@
 package models.logic
 
-import models.bo.{ComponentBO, SelectedComponentBO, StepBO, StepCurrentConfigBO}
+import models.bo._
 import models.currentConfig.CurrentConfig
-import models.wrapper.nextStep.NextStepOut
-import org.shared.common.status.Error
+import models.persistence.Persistence
 import org.shared.common.status.step._
-import play.api.Logger
+import org.shared.common.status.{Error, Success}
 
 /**
- * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
- * 
- * Created by Gennadi Heimann 01.03.2018
- */
-object NextStep{
-  
+  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
+  *
+  * Created by Gennadi Heimann 01.03.2018
+  */
+object NextStep {
+
   /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.2
-   * 
-   * @return NextStepOut
-   */
-  def getNextStep: NextStepOut = {
+    * @author Gennadi Heimann
+    * @version 0.0.2
+    * @return NextStepOut
+    */
+  def getNextStep: NextStepBO = {
     new NextStep().getNextStep
   }
 }
 
 
 class NextStep {
-  
+
   /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.2
-   * 
-   * @return NextStepOut
-   */
-  private def getNextStep: NextStepOut = {
-    
+    * @author Gennadi Heimann
+    * @version 0.0.2
+    * @return NextStepOut
+    */
+  private def getNextStep: NextStepBO = {
+
     val lastStep: StepCurrentConfigBO = CurrentConfig.getLastStep
-    
-    val selectedComponents: List[ComponentBO] = ???
-      //lastStep.components.get
-    Logger.info(selectedComponents.toString())
+
+    val selectedComponents: List[ComponentBO] = lastStep.components
+
     selectedComponents match {
       case List() =>
         createErrorNextStepOut(StatusStep(None, Some(StepCurrentConfigBOIncludeNoSelectedComponents()),
-            None, Some(Error())))
+          None, Some(Error())))
       case _ =>
-        val nextStep: StepBO = ??? //Graph.getNextStep(selectedComponents.head.componentId.get)
+        val nextStep: StepBO = Persistence.getNextStep(selectedComponents.head.componentId.get)
         nextStep.status.get.nextStep match {
           case Some(NextStepExist()) =>
-            val components: List[SelectedComponentBO] = ???
-            //              Graph.getComponents(nextStep.stepId.get)
-                        val statusComponents: Boolean = ???
-            //              components map { _.status.common.get } contains{ Success() }
-            if (statusComponents) {
-              lastStep.nextStep = Some(StepCurrentConfigBO(
-                nextStep.stepId.get,
-                nextStep.nameToShow.get,
-                List(),
-                None
-              ))
-              NextStepOut(
-                nextStep,
-                components
-              )
-            } else {
-              createErrorNextStepOut(StatusStep(None,
-                Some(NextStepIncludeNoComponents()),
-                None, Some(Error())))
+            val componentsForSelectionBO: ComponentsForSelectionBO = Persistence.getComponents(nextStep.stepId.get)
+            componentsForSelectionBO.status.get.common match {
+              case Some(Success()) =>
+                lastStep.nextStep = Some(StepCurrentConfigBO(
+                  nextStep.stepId.get,
+                  nextStep.nameToShow.get,
+                  List(),
+                  None
+                ))
+                NextStepBO(
+                  step = Some(nextStep),
+                  componentsForSelection = Some(componentsForSelectionBO)
+                )
+              case _ =>
+                createErrorNextStepOut(StatusStep(None,
+                  Some(NextStepIncludeNoComponents()),
+                  None, Some(Error())))
             }
-          case _ => NextStepOut(nextStep, List())
+          case _ => NextStepBO(step = Some(nextStep))
         }
     }
   }
-  
-  private def createErrorNextStepOut(s: StatusStep): NextStepOut = {
-    NextStepOut(
-        StepBO(
-            status = Some(s),
-            componentIds = None
-        ),
-        List()
-    )
+
+  private def createErrorNextStepOut(s: StatusStep): NextStepBO = {
+    NextStepBO(step = Some(StepBO(status = Some(s))))
   }
-  
+
   /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.1
-   * 
-   * @param list: Seq[String]
-   * 
-   * @return Boolean
-   */
-    private def compareOneWithAll(list: Seq[String]): Boolean = {
-      list match {
-        case firstVertex :: rest => rest forall (_ == firstVertex)
-      }
+    * @author Gennadi Heimann
+    * @version 0.0.1
+    * @param list : Seq[String]
+    * @return Boolean
+    */
+  private def compareOneWithAll(list: Seq[String]): Boolean = {
+    list match {
+      case firstVertex :: rest => rest forall (_ == firstVertex)
     }
-  
+  }
+
 }

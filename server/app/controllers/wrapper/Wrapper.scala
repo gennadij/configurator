@@ -1,12 +1,11 @@
 package controllers.wrapper
 
-import models.bo.{SelectedComponentBO, StartConfigBO, StepCurrentConfigBO}
-import models.wrapper.nextStep.{NextStepIn, NextStepOut}
+import models.bo.{NextStepBO, SelectedComponentBO, StartConfigBO, StepCurrentConfigBO}
 import org.shared.common.json._
 import org.shared.component.json.{JsonComponentOut, JsonComponentResult, JsonComponentStatus}
 import org.shared.component.status.StatusComponent
 import org.shared.currentConfig.json.{JsonCurrentConfigIn, JsonCurrentConfigOut, JsonCurrentConfigResult, JsonStepCurrentConfig}
-import org.shared.nextStep.json.{JsonNextStepIn, JsonNextStepOut, JsonNextStepResult}
+import org.shared.nextStep.json.{JsonNextStepOut, JsonNextStepResult}
 import org.shared.startConfig.json.{JsonStartConfigIn, JsonStartConfigOut, JsonStartConfigResult}
 
 /**
@@ -85,44 +84,35 @@ trait Wrapper {
 
   }
 
-  /**
-    * @author Gennadi Heimann
-    * @version 0.0.1
-    * @param jsonNextStepIn : JsonNextStepIn
-    * @return NextStepIn
-    */
-  def toNextStepIn(jsonNextStepIn: JsonNextStepIn): NextStepIn = {
-    NextStepIn()
-  }
+//  /**
+//    * @author Gennadi Heimann
+//    * @version 0.0.1
+//    * @param jsonNextStepIn : JsonNextStepIn
+//    * @return NextStepIn
+//    */
+//  def toNextStepIn(jsonNextStepIn: JsonNextStepIn)
 
   /**
     * @author Gennadi Heimann
     * @version 0.0.1
-    * @param nextStepOut : NextStepOut
+    * @param nextStepBO : NextStepOut
     * @return JsonNextStepOut
     */
-  def toJsonNextStepOut(nextStepOut: NextStepOut): JsonNextStepOut = {
+  def toJsonNextStepOut(nextStepBO: NextStepBO): JsonNextStepOut = {
     JsonNextStepOut(
       result = JsonNextStepResult(
         JsonStep(
-          nextStepOut.step.stepId.get,
-          nextStepOut.step.nameToShow.get,
-//          nextStepOut.components.head.components map (component => {
-//            JsonComponent(
-//              component.componentId.get,
-//              component.nameToShow.get
-//            )
-//          })
-//        )
+          nextStepBO.step.get.stepId.get,
+          nextStepBO.step.get.nameToShow.get,
           List()),
         JsonStepStatus(
           nextStep = Some(JsonStatus(
-            nextStepOut.step.status.get.nextStep.get.status,
-            nextStepOut.step.status.get.nextStep.get.message
+            nextStepBO.step.get.status.get.nextStep.get.status,
+            nextStepBO.step.get.status.get.nextStep.get.message
           )),
           common = Some(JsonStatus(
-            nextStepOut.step.status.get.common.get.status,
-            nextStepOut.step.status.get.common.get.message
+            nextStepBO.step.get.status.get.common.get.status,
+            nextStepBO.step.get.status.get.common.get.message
           ))
         )
       )

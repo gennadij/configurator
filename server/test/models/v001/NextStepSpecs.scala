@@ -5,6 +5,7 @@ import controllers.websocket.WebClient
 import org.specs2.runner.JUnitRunner
 import org.junit.runner.RunWith
 import org.shared.common.JsonNames
+import org.shared.startConfig.json.JsonStartConfigOut
 import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeAfterAll
 import play.api.libs.json.Json
@@ -43,11 +44,16 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       
       Logger.info("StartConfigIn " + startConfigIn)
       Logger.info("StartConfigOut " + startConfigOut)
-      
+
+      val sCOut = Json.fromJson[JsonStartConfigOut](startConfigOut)
+
       //User hat ausgewaelt
-      val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_1_user29_v016")
-            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
+
+      val componentIdC11: String = sCOut.get.result.step.components.filter(comp => comp.nameToShow == "C11")
+        .map(_.componentId).head
+//      val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
+//            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_1_user29_v016")
+//            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
       
       Logger.info(this.getClass.getSimpleName + ": componentIdC11" + componentIdC11)
 
@@ -64,10 +70,10 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_1 " + jsonComponentOut_1)
       
       (jsonComponentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
-      (jsonComponentOut_1 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
-      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
-      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
-      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
+//      (jsonComponentOut_1 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
+//      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
+//      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
+//      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
       (jsonComponentOut_1 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
       (jsonComponentOut_1 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === 
         "Sie koennen weitere Komponente auswaelen"
@@ -85,10 +91,14 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       //User hat ausgewaelt
-      val componentIdC12: String = 
-        (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_2_user29_v016")
-            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
+
+      val componentIdC12: String = sCOut.get.result.step.components.filter(comp => comp.nameToShow == "C12")
+        .map(_.componentId).head
+
+//      val componentIdC12: String =
+//        (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
+//            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_2_user29_v016")
+//            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
       
       
       Logger.info(this.getClass.getSimpleName + ": componentIdC12 " + componentIdC12)
@@ -106,10 +116,10 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_2 " + jsonComponentOut_2)
       
       (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
-      (jsonComponentOut_2 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
-      (((jsonComponentOut_2 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
-      (((jsonComponentOut_2 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
-      (((jsonComponentOut_2 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_2_user29_v016) ----> (C_1_3_user29_v016)"
+//      (jsonComponentOut_2 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
+//      (((jsonComponentOut_2 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
+//      (((jsonComponentOut_2 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
+//      (((jsonComponentOut_2 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_2_user29_v016) ----> (C_1_3_user29_v016)"
       (jsonComponentOut_2 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
       (jsonComponentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === 
         "Es darf keine weitere Komponente ausgewaelt werden und es muss naechste Schhritt geladen werden"
