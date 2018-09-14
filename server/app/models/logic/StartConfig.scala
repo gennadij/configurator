@@ -40,12 +40,8 @@ class StartConfig(configUrl: Option[String]) {
       case Some(stepId) =>
         val componentsForSelectionBO: ComponentsForSelectionBO = Persistence.getComponents(stepId)
 
-        val firstStepIdHash = RidToHash.setIdAndHash(stepId)._2
-
-        val firstStepWithHashId = firstStep.copy(stepId = Some(firstStepIdHash))
-
         val firstStepCurrentConfig: StepCurrentConfigBO = StepCurrentConfigBO(
-          firstStepIdHash,
+          stepId,
           firstStep.nameToShow.get
         )
 
@@ -56,16 +52,14 @@ class StartConfig(configUrl: Option[String]) {
           case Some(Success()) =>
             ComponentsForSelectionBO(
               status = componentsForSelectionBO.status,
-              componentsForSelectionBO.components map (c => {
-                c.copy(componentId = Some(RidToHash.setIdAndHash(c.componentId.get)._2))
-              }))
+              components =  componentsForSelectionBO.components
+            )
           case None => componentsForSelectionBO
           case _ => componentsForSelectionBO
         }
 
-
         StartConfigBO(
-          step = Some(firstStepWithHashId),
+          step = Some(firstStep),
           componentsForSelection = Some(componentsBOWithHashId)
         )
 
@@ -75,8 +69,5 @@ class StartConfig(configUrl: Option[String]) {
           componentsForSelection = None
         )
     }
-
-
-
   }
 }

@@ -1,4 +1,4 @@
-package models.logic
+package controllers.wrapper
 
 import play.api.Logger
 
@@ -6,15 +6,15 @@ import scala.collection.mutable
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
- * 
+ *
  * Created by Gennadi Heimann 25.05.2018
  */
-object RidToHash {
-  
-  
+trait RidToHash {
+
+
   var idHash: mutable.Map[String, String] = scala.collection.mutable.Map[String, String]()
-  
-  
+
+
   def setIdAndHash(id: String): (String, String) = if (idHash.exists(_._1 == id)) {
 //    idHash.foreach(item => Logger.info("Item" + item.toString))
     (id, calculateHash(id))
@@ -24,7 +24,7 @@ object RidToHash {
 //    idHash.foreach(item => Logger.info("Item" + item.toString))
     (id, hash)
   }
-  
+
   def getRId(hash: String): Option[String] = {
     val item = idHash.find(_._2 == hash )
     item match {
@@ -34,7 +34,7 @@ object RidToHash {
 
 
   }
-  
+
   def getHash(id: String): Option[String] = {
     val item = idHash.find(_._1 == id)
     item match {
@@ -42,11 +42,11 @@ object RidToHash {
       case None => None
     }
   }
-  
+
   def cleanMap: mutable.Map[String, String] = {
     idHash.empty
   }
-  
+
   def calculateHash(id: String): String = {
     import java.math.BigInteger
     import java.security.MessageDigest

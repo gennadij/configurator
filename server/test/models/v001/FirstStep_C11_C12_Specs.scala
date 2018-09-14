@@ -2,7 +2,7 @@ package models.v001
 
 import controllers.MessageHandler
 import controllers.websocket.WebClient
-import models.logic.RidToHash
+import controllers.wrapper.RidToHash
 import org.junit.runner.RunWith
 import org.shared.common.JsonNames
 import org.shared.startConfig.json.JsonStartConfigOut

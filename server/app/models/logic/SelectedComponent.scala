@@ -1,5 +1,6 @@
 package models.logic
 
+import controllers.wrapper.RidToHash
 import models.bo._
 import models.currentConfig.CurrentConfig
 import models.persistence.Persistence

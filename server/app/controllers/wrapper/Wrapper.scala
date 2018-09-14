@@ -13,7 +13,7 @@ import org.shared.startConfig.json.{JsonStartConfigIn, JsonStartConfigOut, JsonS
   *
   * Created by Gennadi Heimann 26.10.2017
   */
-trait Wrapper {
+trait Wrapper extends RIDConverter {
 
   /**
     * @author Gennadi Heimann
@@ -35,14 +35,16 @@ trait Wrapper {
     */
   def toJsonStartConfigOut(startConfigBO: StartConfigBO): JsonStartConfigOut = {
 
-    startConfigBO.step.get.stepId match {
+    val convertedIdsStartConfigBO: StartConfigBO = convertedIdsStartConfigBO(startConfigBO)
+
+    convertedIdsStartConfigBO.step.get.stepId match {
       case Some(_) =>
         JsonStartConfigOut(
           result = JsonStartConfigResult(
             JsonStep(
-              startConfigBO.step.get.stepId.get,
-              startConfigBO.step.get.nameToShow.get,
-              startConfigBO.componentsForSelection.get.components map (component => {
+              convertedIdsStartConfigBO.step.get.stepId.get,
+              convertedIdsStartConfigBO.step.get.nameToShow.get,
+              convertedIdsStartConfigBO.componentsForSelection.get.components map (component => {
                 JsonComponent(
                   component.componentId.get,
                   component.nameToShow.get
@@ -51,11 +53,11 @@ trait Wrapper {
             ),
             JsonStepStatus(
               firstStep = Some(JsonStatus(
-                startConfigBO.step.get.status.get.firstStep.get.status,
-                startConfigBO.step.get.status.get.firstStep.get.message)),
+                convertedIdsStartConfigBO.step.get.status.get.firstStep.get.status,
+                convertedIdsStartConfigBO.step.get.status.get.firstStep.get.message)),
               common = Some(JsonStatus(
-                startConfigBO.step.get.status.get.common.get.status,
-                startConfigBO.step.get.status.get.common.get.message))
+                convertedIdsStartConfigBO.step.get.status.get.common.get.status,
+                convertedIdsStartConfigBO.step.get.status.get.common.get.message))
             )
 
           )
