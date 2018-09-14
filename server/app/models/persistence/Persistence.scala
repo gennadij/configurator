@@ -137,7 +137,7 @@ object Persistence {
     * @param componentId: String
     * @return StepBO
     */
-  def getFatherStep(componentId: String): StepBO = {
+  def getCurrentStep(componentId: String): StepBO = {
     val (vFatherStep: Option[OrientVertex], statusFatherStep: StatusFatherStep, statusCommen: Status) =
       Graph.getFatherStep(componentId)
 

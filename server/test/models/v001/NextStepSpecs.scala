@@ -32,7 +32,8 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
   "Specification spezifiziert der NextStep der Konfiguration" >> {
     "Es wird erster Step mit der Komponenten geladen und Component_1_1 und Componente_1_2  ausgewaelt"  + 
     " und naechste Step geladen">> {
-      val configUrl = "http://contig1/user29_v016"
+      val configUrl = "http://config/client_013"
+
       val startConfigIn = Json.obj(
           "json" -> JsonNames.START_CONFIG
           ,"params" -> Json.obj(

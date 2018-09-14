@@ -113,8 +113,6 @@ class SelectedComponentUtil {
     val possibleComponentToSelect: List[String] = getFurtherPossibleComponentToSelect(currentConfigWithTempSelectedComponent,
       selectedComponentBO, previousSelectedComponentsInCurrentConfig)
 
-    println("possibleComponentToSelect  " + possibleComponentToSelect)
-
     val countOfComponentsInCurrentConfigWithTempSelectedComponent = currentConfigWithTempSelectedComponent.size
 
     if (componentIdExist) {

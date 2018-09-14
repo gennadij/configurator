@@ -34,13 +34,15 @@ class SelectedComponent(selectedComponentId: String) {
 
     val selectedComponentBO: SelectedComponentBO = Persistence.getSelectedComponent(selectedComponentRid)
 
-    val sCExtendedOfFatherStepBO: SelectedComponentBO = getFatherStep(selectedComponentBO)
+    val sCExtendedOfCurrentAndNextStep = getCurrentAndNextStepFromPersistence(selectedComponentBO)
 
-    val sCExtendedOfNextStep: SelectedComponentBO = getNextStep(sCExtendedOfFatherStepBO)
+//    val sCExtendedOfCurrentStepBO: SelectedComponentBO = getCurrentStepFromDB(selectedComponentBO)
 
-    val sCExtendedOfFatherStepWithHashId = convertRidToHashIn(sCExtendedOfNextStep)
+//    val sCExtendedOfNextStep: SelectedComponentBO = getNextStepFromDB(sCExtendedOfCurrentStepBO)
 
-    val sCExtendedOfCurrentStep = getCurrentStep(sCExtendedOfFatherStepWithHashId)
+    val sCExtendedOfFatherStepWithHashId = convertRidToHashIn(sCExtendedOfCurrentAndNextStep)
+
+    val sCExtendedOfCurrentStep = getCurrentStepFromCurrentConfig(sCExtendedOfFatherStepWithHashId)
 
     val sCExtendedOfVerifiedStatsComponentTyp = verifyStatusComponentType(sCExtendedOfCurrentStep)
 
@@ -77,12 +79,33 @@ class SelectedComponent(selectedComponentId: String) {
     * @author Gennadi Heimann
     * @version 0.0.3
     * @param selectedComponentBO : SelectedComponentBO
-    * @return StepBO
+    * @return selectedComponentBO
     */
-  private def getFatherStep(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private def getCurrentAndNextStepFromPersistence(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
     selectedComponentBO.status.get.common match {
       case Some(Success()) =>
-        val fatherStepBO: StepBO = Persistence.getFatherStep(selectedComponentBO.component.get.componentId.get)
+
+        val fatherStepBO: StepBO = Persistence.getCurrentStep(selectedComponentBO.component.get.componentId.get)
+
+        val nextStep: StepBO = Persistence.getNextStep(selectedComponentBO.component.get.componentId.get)
+
+        selectedComponentBO.copy(fatherStep = Some(fatherStepBO), nextStep = Some(nextStep))
+
+      case status => selectedComponentBO.copy(status = Some(StatusComponent(common = status)))
+    }
+  }
+
+
+  /**
+    * @author Gennadi Heimann
+    * @version 0.0.3
+    * @param selectedComponentBO : SelectedComponentBO
+    * @return StepBO
+    */
+  private def getCurrentStepFromDB(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+    selectedComponentBO.status.get.common match {
+      case Some(Success()) =>
+        val fatherStepBO: StepBO = Persistence.getCurrentStep(selectedComponentBO.component.get.componentId.get)
         selectedComponentBO.copy(fatherStep = Some(fatherStepBO))
       case status => selectedComponentBO.copy(status = Some(StatusComponent(common = status)))
     }
@@ -94,7 +117,7 @@ class SelectedComponent(selectedComponentId: String) {
     * @param selectedComponentBO : SelectedComponentBO
     * @return StepBO
     */
-  private def getNextStep(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private def getNextStepFromDB(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
     selectedComponentBO.status.get.common match {
       case Some(Success()) =>
         val nextStep: StepBO = Persistence.getNextStep(selectedComponentBO.component.get.componentId.get)
@@ -109,7 +132,7 @@ class SelectedComponent(selectedComponentId: String) {
     * @param selectedComponentBO : SelectedComponentBO
     * @return StepBO
     */
-  private def getCurrentStep(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private def getCurrentStepFromCurrentConfig(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
     selectedComponentBO.fatherStep.get.status.get.fatherStep match {
       case Some(FatherStepExist()) =>
 
