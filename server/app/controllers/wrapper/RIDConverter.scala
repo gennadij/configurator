@@ -13,7 +13,7 @@ trait RIDConverter extends RidToHash {
   /**
     * @author Gennadi Heimann
     * @version 0.0.3
-    * @param selectedComponentBO: SelectedComponentBO
+    * @param startConfigBO: StartConfigBO
     * @return SelectedComponentBO
     */
   def convertRIDforStartConfig(startConfigBO: StartConfigBO): StartConfigBO = {

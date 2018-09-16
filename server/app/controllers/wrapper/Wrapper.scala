@@ -35,7 +35,7 @@ trait Wrapper extends RIDConverter {
     */
   def toJsonStartConfigOut(startConfigBO: StartConfigBO): JsonStartConfigOut = {
 
-    val convertedIdsStartConfigBO: StartConfigBO = convertedIdsStartConfigBO(startConfigBO)
+    val convertedIdsStartConfigBO: StartConfigBO = convertRIDforStartConfig(startConfigBO)
 
     convertedIdsStartConfigBO.step.get.stepId match {
       case Some(_) =>
@@ -169,7 +169,7 @@ trait Wrapper extends RIDConverter {
     * @return ComponentIn
     */
 
-  def toSelectedComponentBO(jsonComponent: JsonComponent)
+  def toSelectedComponentBO(jsonComponent: JsonComponent) = ???
 
   /**
     * @author Gennadi Heimann

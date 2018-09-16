@@ -24,8 +24,8 @@ lazy val client = (project in file("client")).settings(commonSettings).settings(
   scalaJSUseMainModuleInitializer := true,
   libraryDependencies ++= Seq(
     "org.scala-js" %%% "scalajs-dom" % "0.9.5",
-	"be.doeraene" %%% "scalajs-jquery" % "0.9.1",
-	"com.typesafe.play" %%% "play-json" % "2.6.9"
+	  "be.doeraene" %%% "scalajs-jquery" % "0.9.1",
+	  "com.typesafe.play" %%% "play-json" % "2.6.9"
   ),
   skip in packageJSDependencies := false,
   jsDependencies ++= Seq(
@@ -43,7 +43,7 @@ lazy val sharedJs = shared.js
 
 
 lazy val commonSettings = Seq(
-  scalaVersion := "2.12.5",
+  scalaVersion := "2.12.6",
   organization := "org.genericConfig"
 )
 

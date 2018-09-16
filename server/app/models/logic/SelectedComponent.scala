@@ -31,7 +31,7 @@ class SelectedComponent(selectedComponentId: String) {
     */
   private def selectedComponent: SelectedComponentBO = {
 
-    val selectedComponentRid: String = RidToHash.getRId(selectedComponentId).get
+    val selectedComponentRid: String = ??? //RidToHash.getRId(selectedComponentId).get
 
     val selectedComponentBO: SelectedComponentBO = Persistence.getSelectedComponent(selectedComponentRid)
 
@@ -60,10 +60,10 @@ class SelectedComponent(selectedComponentId: String) {
 
     selectedComponentBO.fatherStep.get.status.get.fatherStep match {
       case Some(FatherStepExist()) =>
-        val fatherStepIdHash: Option[String] = RidToHash.getHash(selectedComponentBO.fatherStep.get.stepId.get)
+        val fatherStepIdHash: Option[String] = ??? //RidToHash.getHash(selectedComponentBO.fatherStep.get.stepId.get)
 
         val componentIdsHash: List[String] = selectedComponentBO.fatherStep.get.componentIds.get map (id => {
-          RidToHash.getHash(id).get
+          ??? //RidToHash.getHash(id).get
         })
 
         selectedComponentBO.copy(fatherStep =
