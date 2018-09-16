@@ -168,6 +168,15 @@ trait Wrapper extends RIDConverter {
     * @param selectedComponentBO : ComponentOut
     * @return ComponentIn
     */
+
+  def toSelectedComponentBO(jsonComponent: JsonComponent)
+
+  /**
+    * @author Gennadi Heimann
+    * @version 0.0.1
+    * @param selectedComponentBO : ComponentOut
+    * @return ComponentIn
+    */
   def toJsonComponentOut(selectedComponentBO: SelectedComponentBO): JsonComponentOut = {
 
     val status: StatusComponent = selectedComponentBO.status.get
