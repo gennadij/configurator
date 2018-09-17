@@ -1,6 +1,8 @@
 package models.persistence
 
-import com.tinkerpop.blueprints.impls.orient.OrientGraphFactory
+import com.orientechnologies.orient.core.exception.ODatabaseException
+import com.tinkerpop.blueprints.impls.orient.{OrientGraph, OrientGraphFactory}
+import play.api.Logger
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -18,23 +20,30 @@ object Database {
    * @return
    */
   
-  def getFactory: OrientGraphFactory = {
+  def getFactory: (Option[OrientGraph], String) = {
     
-    new Database("OrientDB").getFactory
+    new Database().getFactory
   }
 }
 
-class Database(name: String) {
+class Database() {
   
-  private def getFactory: OrientGraphFactory = {
+  private def getFactory: (Option[OrientGraph], String) = {
     
     val db = TestDB()
     
     db match {
-      case testDB: TestDB => 
+      case testDB: TestDB =>
         val uri = "remote:localhost/" + testDB.dbName
         val factory = new OrientGraphFactory(uri, testDB.username, testDB.password)
-        factory
+        try {
+          (Some(factory.getTx), "Datebase is open")
+        }catch {
+          case e : ODatabaseException =>
+            val errorMesage = e.getMessage
+            Logger.error(e.printStackTrace().toString)
+            (None, errorMesage)
+        }
     }
   }
 }

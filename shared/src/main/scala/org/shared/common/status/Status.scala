@@ -34,3 +34,8 @@ case class ODBReadError() extends Status{
   def status: String = "ODB_READE_ERROR"
   def message: String = "Beim Laden hat einen Fehler in Datenbank aufgetreten"
 }
+
+case class ODBConnectionError() extends Status{
+  def status: String = "ODB_CONNECTION_ERROR"
+  def message: String = "Die Datentenbank kann nich verbunden werden"
+}

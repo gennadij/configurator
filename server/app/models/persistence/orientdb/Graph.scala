@@ -18,6 +18,7 @@ import scala.collection.JavaConverters._
 
 object Graph {
 
+
   /**
     * @author Gennadi Heimann
     * @version 0.0.2
@@ -25,8 +26,11 @@ object Graph {
     * @return StepBO
     */
   def getFatherStep(componentId: String): (Option[OrientVertex], StatusFatherStep, Status) = {
-    val graph: OrientGraph = Database.getFactory.getTx
-    new Graph(Some(graph)).getFatherStep(componentId)
+    val graph: (Option[OrientGraph], String) = Database.getFactory
+    graph._1 match {
+      case Some(g) => new Graph(Some(g)).getCurrentStep(componentId)
+      case None => (None, CommonErrorFatherStep(), ODBConnectionError())
+    }
   }
 
   /**
@@ -36,8 +40,11 @@ object Graph {
     * @return ComponentBO
     */
   def getComponent(componentId: String): (Option[OrientVertex], Status) = {
-    val graph: OrientGraph = Database.getFactory.getTx
-    new Graph(Some(graph)).getComponent(componentId)
+    val graph: (Option[OrientGraph], String) = Database.getFactory
+    graph._1 match {
+      case Some(g) => new Graph(Some(g)).getComponent(componentId)
+      case None => (None, ODBConnectionError())
+    }
   }
 
   /**
@@ -47,8 +54,11 @@ object Graph {
     * @return StepBO
     */
   def getNextStep(componentId: String): (Option[OrientVertex], StatusNextStep, Status) = {
-    val graph: OrientGraph = Database.getFactory.getTx
-    new Graph(Some(graph)).getNextStep(componentId)
+    val graph: (Option[OrientGraph], String) = Database.getFactory
+    graph._1 match {
+      case Some(g) => new Graph(Some(g)).getNextStep(componentId)
+      case None => (None, CommonErrorNextStep(), ODBConnectionError())
+    }
   }
 
   /**
@@ -58,8 +68,11 @@ object Graph {
     * @return OrientVertex
     */
   def getFirstStep(configUrl: String): (Option[OrientVertex], StatusFirstStep, Status) = {
-    val graph: OrientGraph = Database.getFactory.getTx
-    new Graph(Some(graph)).getFirstStep(configUrl)
+    val graph: (Option[OrientGraph], String) = Database.getFactory
+    graph._1 match {
+      case Some(g) => new Graph(Some(g)).getFirstStep(configUrl)
+      case None => (None, CommonErrorFirstStep(), ODBConnectionError())
+    }
   }
 
   /**
@@ -69,8 +82,11 @@ object Graph {
     * @return List[ComponentBO]
     */
   def getComponents(stepId: String): (Option[List[OrientVertex]], Status) = {
-    val graph: OrientGraph = Database.getFactory.getTx
-    new Graph(Some(graph)).getComponents(stepId)
+    val graph: (Option[OrientGraph], String) = Database.getFactory
+    graph._1 match {
+      case Some(g) => new Graph(Some(g)).getComponents(stepId)
+      case None => (None, ODBConnectionError())
+    }
   }
 
   /**
@@ -104,7 +120,7 @@ class Graph(graph: Option[OrientGraph]) {
     * @param componentId : String
     * @return OrientVertex
     */
-  private def getFatherStep(componentId: String): (Option[OrientVertex], StatusFatherStep, Status) = {
+  private def getCurrentStep(componentId: String): (Option[OrientVertex], StatusFatherStep, Status) = {
 
     try {
       val vComponent = graph.get.getVertex(componentId)

@@ -2,7 +2,7 @@ package controllers.wrapper
 
 import models.bo.{NextStepBO, SelectedComponentBO, StartConfigBO, StepCurrentConfigBO}
 import org.shared.common.json._
-import org.shared.component.json.{JsonComponentOut, JsonComponentResult, JsonComponentStatus}
+import org.shared.component.json.{JsonComponentIn, JsonComponentOut, JsonComponentResult, JsonComponentStatus}
 import org.shared.component.status.StatusComponent
 import org.shared.currentConfig.json.{JsonCurrentConfigIn, JsonCurrentConfigOut, JsonCurrentConfigResult, JsonStepCurrentConfig}
 import org.shared.nextStep.json.{JsonNextStepOut, JsonNextStepResult}
@@ -169,7 +169,10 @@ trait Wrapper extends RIDConverter {
     * @return ComponentIn
     */
 
-  def toSelectedComponentBO(jsonComponent: JsonComponent) = ???
+  def toSelectedComponentBO(jsonComponentIn: JsonComponentIn): SelectedComponentBO = {
+    val selectedComponentBOWithHashId = ???
+    ???
+  }
 
   /**
     * @author Gennadi Heimann
