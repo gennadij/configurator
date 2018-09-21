@@ -1,7 +1,8 @@
 package controllers.wrapper
 
-import models.bo.{ComponentsForSelectionBO, StartConfigBO, StepBO}
+import models.bo._
 import org.shared.common.status.Success
+import org.shared.component.json.JsonComponentIn
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -16,7 +17,7 @@ trait RIDConverter extends RidToHash {
     * @param startConfigBO: StartConfigBO
     * @return SelectedComponentBO
     */
-  def convertRIDforStartConfig(startConfigBO: StartConfigBO): StartConfigBO = {
+  private[wrapper] def convertRidToHashforStartConfig(startConfigBO: StartConfigBO): StartConfigBO = {
     startConfigBO.step.get.status.get.common match {
       case Some(Success()) =>
         val stepIdHash: String = setIdAndHash(startConfigBO.step.get.stepId.get)._2
@@ -38,6 +39,61 @@ trait RIDConverter extends RidToHash {
 
       case _ => startConfigBO
     }
+  }
 
+  /**
+    * @author Gennadi Heimann
+    * @version 0.0.3
+    * @param jsonComponentIn: JsonComponentIn
+    * @return SelectedComponentBO
+    */
+  private[wrapper] def convertHashIdToRidForSelectedComponentBO(jsonComponentIn: JsonComponentIn): SelectedComponentBO = {
+
+    val componentRid: String = getRId(jsonComponentIn.params.componentId) match {
+      case Some(id) => id
+      case None => ""
+    }
+
+    SelectedComponentBO(
+      component = Some(ComponentBO(
+        componentId = Some(componentRid)
+      ))
+    )
+  }
+
+  /**
+    * @author Gennadi Heimann
+    * @version 0.0.3
+    * @param selectedComponentBO : SelectedComponentBO
+    * @return SelectedComponentBO
+    */
+  private[wrapper] def convertRidToHashForSelectedComponentBO(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+
+    val stepIdHash: Option[String] = selectedComponentBO.currentStep.get.stepId match {
+      //TODO SelectedComponent convert
+      case Some(sId) => getHash(sId)
+      case None => None
+    }
+
+    val selectedComponentIdHash: Option[String] = selectedComponentBO.component.get.componentId match {
+      case Some(cId) => getHash(cId)
+      case None => None
+    }
+
+    selectedComponentBO.copy(
+      component = Some(selectedComponentBO.component.get.copy(componentId = selectedComponentIdHash)),
+      currentStep = Some(selectedComponentBO.currentStep.get.copy(
+        stepId = stepIdHash)))
+
+    //        selectedComponentBO.currentStep.get.componentIds match {
+    //          case Some(cId) =>
+    //            val cIdsHash = cId.map (id => {getHash(id).get})
+    //            selectedComponentBO.copy(
+    //              currentStep = Some(selectedComponentBO.currentStep.get.copy(
+    //                stepId = getHash(sId), componentIds = Some(cIdsHash))))
+    //          case None => selectedComponentBO.copy(
+    //            currentStep = Some(selectedComponentBO.currentStep.get.copy(
+    //              stepId = None, componentIds = Some(List()))))
+    //        }
   }
 }

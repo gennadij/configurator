@@ -7,24 +7,24 @@ import org.shared.common.status.Status
  * 
  * Created by Gennadi Heimann 26.02.2018
  */
-sealed abstract class StatusFatherStep extends Status
+sealed abstract class StatusCurrentStep extends Status
 
-case class FatherStepNotExist() extends StatusFatherStep{
+case class CurrentStepNotExist() extends StatusCurrentStep{
   def status: String = "FATHER_STEP_NOT_EXIST"
   def message: String = ""
 }
 
-case class FatherStepExist() extends StatusFatherStep{
+case class CurrentStepExist() extends StatusCurrentStep{
   def status: String = "FATHER_STEP_EXIST"
   def message: String = ""
 }
 
-case class MultipleFatherSteps() extends StatusFatherStep{
+case class MultipleCurrentSteps() extends StatusCurrentStep{
   def status: String = "MULTIPLE_FATHER_STEPS"
   def message: String = ""
 }
 
-case class CommonErrorFatherStep() extends StatusFatherStep{
+case class CommonErrorCurrentStep() extends StatusCurrentStep{
   def status: String = "COMMON_ERROR_FATHER_STEP"
   def message: String = ""
 }

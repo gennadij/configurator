@@ -35,7 +35,7 @@ trait Wrapper extends RIDConverter {
     */
   def toJsonStartConfigOut(startConfigBO: StartConfigBO): JsonStartConfigOut = {
 
-    val convertedIdsStartConfigBO: StartConfigBO = convertRIDforStartConfig(startConfigBO)
+    val convertedIdsStartConfigBO: StartConfigBO = convertRidToHashforStartConfig(startConfigBO)
 
     convertedIdsStartConfigBO.step.get.stepId match {
       case Some(_) =>
@@ -169,10 +169,8 @@ trait Wrapper extends RIDConverter {
     * @return ComponentIn
     */
 
-  def toSelectedComponentBO(jsonComponentIn: JsonComponentIn): SelectedComponentBO = {
-    val selectedComponentBOWithHashId = ???
-    ???
-  }
+  def toSelectedComponentBO(jsonComponentIn: JsonComponentIn): SelectedComponentBO =
+    convertHashIdToRidForSelectedComponentBO(jsonComponentIn)
 
   /**
     * @author Gennadi Heimann
@@ -182,11 +180,13 @@ trait Wrapper extends RIDConverter {
     */
   def toJsonComponentOut(selectedComponentBO: SelectedComponentBO): JsonComponentOut = {
 
-    val status: StatusComponent = selectedComponentBO.status.get
+    val selectedComponentWithHash: SelectedComponentBO = convertRidToHashForSelectedComponentBO(selectedComponentBO)
+
+    val status: StatusComponent = selectedComponentWithHash.status.get
     JsonComponentOut(
       result = JsonComponentResult(
-        selectedComponentBO.component.get.componentId.get,
-        selectedComponentBO.fatherStep.get.stepId.get,
+        selectedComponentWithHash.component.get.componentId.get,
+        selectedComponentWithHash.currentStep.get.stepId.get,
         JsonComponentStatus(
           status.selectionCriterium match {
             case Some(s) =>

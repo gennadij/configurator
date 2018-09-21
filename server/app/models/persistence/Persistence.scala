@@ -138,8 +138,8 @@ object Persistence {
     * @return StepBO
     */
   def getCurrentStep(componentId: String): StepBO = {
-    val (vFatherStep: Option[OrientVertex], statusFatherStep: StatusFatherStep, statusCommen: Status) =
-      Graph.getFatherStep(componentId)
+    val (vFatherStep: Option[OrientVertex], statusFatherStep: StatusCurrentStep, statusCommen: Status) =
+      Graph.getCurrentStep(componentId)
 
 
     vFatherStep match {
@@ -152,14 +152,14 @@ object Persistence {
           Some(StatusStep(
             None,
             None,
-            Some(FatherStepExist()),
+            Some(CurrentStepExist()),
             Some(Success())
           )),
           Some(vFS.getEdges(Direction.OUT, PropertyKeys.HAS_COMPONENT).asScala.toList map (hC => {
             hC.getVertex(Direction.IN).asInstanceOf[OrientVertex].getIdentity.toString()
           }))
         )
-      case _ => StepBO(status = Some(StatusStep(fatherStep = Some(statusFatherStep), common = Some(statusCommen))))
+      case _ => StepBO(status = Some(StatusStep(currentStep = Some(statusFatherStep), common = Some(statusCommen))))
     }
   }
 
@@ -183,7 +183,7 @@ object Persistence {
           status = Some(StatusStep(
             firstStep = None,
             nextStep = Some(NextStepExist()),
-            fatherStep = None,
+            currentStep = None,
             common = Some(Success())
           )),
           componentIds = Some(vNS.getEdges(Direction.OUT, PropertyKeys.HAS_COMPONENT).asScala.toList map (hC => {

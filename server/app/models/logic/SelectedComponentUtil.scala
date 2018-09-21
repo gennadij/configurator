@@ -29,7 +29,7 @@ class SelectedComponentUtil {
     */
   private def checkStatusSelectedComponent(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
 
-    val selectedComponentIdsFromCurrentConfig: List[String] = selectedComponentBO.currentStep match {
+    val selectedComponentIdsFromCurrentConfig: List[String] = selectedComponentBO.currentStepCurrentConfig match {
       case Some(step) => step.components map (_.componentId.get)
       case None => List()
     }
@@ -60,7 +60,7 @@ class SelectedComponentUtil {
   private def caseExcludedComponent(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
 
 
-    val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.currentStep match {
+    val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.currentStepCurrentConfig match {
       case Some(step) => step.components
       case None => List()
     }
@@ -82,7 +82,7 @@ class SelectedComponentUtil {
         )))
       case _ =>
         selectedComponentBO.copy(status = Some(StatusComponent(
-          Some(getSelectionCriteriumStatus(previousSelectedComponentsInCurrentConfig.size, selectedComponentBO.fatherStep.get)),
+          Some(getSelectionCriteriumStatus(previousSelectedComponentsInCurrentConfig.size, selectedComponentBO.currentStep.get)),
           Some(NotAllowedComponent()),
           Some(ExcludedComponent()),
           Some(Success()),
@@ -100,9 +100,9 @@ class SelectedComponentUtil {
   private def caseNotExcludedComponent(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
 
     val componentIdExist: Boolean =
-      selectedComponentBO.currentStep.get.components.exists(_.componentId.get == selectedComponentBO.component.get.componentId.get)
+      selectedComponentBO.currentStepCurrentConfig.get.components.exists(_.componentId.get == selectedComponentBO.component.get.componentId.get)
 
-    val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.currentStep match {
+    val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.currentStepCurrentConfig match {
       case Some(step) => step.components
       case None => List()
     }
@@ -116,15 +116,15 @@ class SelectedComponentUtil {
     val countOfComponentsInCurrentConfigWithTempSelectedComponent = currentConfigWithTempSelectedComponent.size
 
     if (componentIdExist) {
-      CurrentConfig.removeComponent(selectedComponentBO.currentStep.get.stepId, selectedComponentBO.component.get.componentId.get)
+      CurrentConfig.removeComponent(selectedComponentBO.currentStepCurrentConfig.get.stepId, selectedComponentBO.component.get.componentId.get)
 
-      val countOfComponentsInCurrentConfig: Int = selectedComponentBO.currentStep match {
+      val countOfComponentsInCurrentConfig: Int = selectedComponentBO.currentStepCurrentConfig match {
         case Some(step) => step.components.size
         case None => 0
       }
 
       selectedComponentBO.copy(status = Some(StatusComponent(
-        Some(getSelectionCriteriumStatus(countOfComponentsInCurrentConfig, selectedComponentBO.fatherStep.get)),
+        Some(getSelectionCriteriumStatus(countOfComponentsInCurrentConfig, selectedComponentBO.currentStep.get)),
         Some(RemovedComponent()),
         Some(NotExcludedComponent()),
         Some(Success()),
@@ -132,10 +132,10 @@ class SelectedComponentUtil {
       )))
     } else {
       //STATUS ADDED_COMPONENT
-      getSelectionCriteriumStatus(countOfComponentsInCurrentConfigWithTempSelectedComponent, selectedComponentBO.fatherStep.get) match {
+      getSelectionCriteriumStatus(countOfComponentsInCurrentConfigWithTempSelectedComponent, selectedComponentBO.currentStep.get) match {
         case RequireComponent() => getComponentBOByStatusRequireComponent(possibleComponentToSelect,
           selectedComponentBO)
-        case RequireNextStep() => getComponentBOByStatusRequireNextStep(selectedComponentBO, selectedComponentBO.currentStep)
+        case RequireNextStep() => getComponentBOByStatusRequireNextStep(selectedComponentBO, selectedComponentBO.currentStepCurrentConfig)
         case AllowNextComponent() => getComponentBOByStatusAllowNextComponent(possibleComponentToSelect,
           selectedComponentBO)
         case NotAllowNextComponent() =>
@@ -178,7 +178,7 @@ class SelectedComponentUtil {
           Some(DefaultComponent())
         )))
 
-        CurrentConfig.addComponent(selectedComponentBO.currentStep.get, component.component.get)
+        CurrentConfig.addComponent(selectedComponentBO.currentStepCurrentConfig.get, component.component.get)
 
         component
       case _ =>
@@ -190,7 +190,7 @@ class SelectedComponentUtil {
           Some(DefaultComponent())
         )))
 
-        CurrentConfig.addComponent(selectedComponentBO.currentStep.get, component.component.get)
+        CurrentConfig.addComponent(selectedComponentBO.currentStepCurrentConfig.get, component.component.get)
 
         component
     }
@@ -238,7 +238,7 @@ class SelectedComponentUtil {
           Some(DefaultComponent())
         )))
 
-        CurrentConfig.addComponent(selectedComponentBO.currentStep.get, component.component.get)
+        CurrentConfig.addComponent(selectedComponentBO.currentStepCurrentConfig.get, component.component.get)
 
         component
       case _ =>
@@ -250,7 +250,7 @@ class SelectedComponentUtil {
           Some(DefaultComponent())
         )))
 
-        CurrentConfig.addComponent(selectedComponentBO.currentStep.get, component.component.get)
+        CurrentConfig.addComponent(selectedComponentBO.currentStepCurrentConfig.get, component.component.get)
 
         component
     }
@@ -271,7 +271,7 @@ class SelectedComponentUtil {
       pSC.excludeDependenciesOut.get map (_.inId)
     })).toSet
 
-    val unselectedComponentsIds: List[String] = selectedComponentBO.fatherStep.get.componentIds.get filterNot (c => {
+    val unselectedComponentsIds: List[String] = selectedComponentBO.currentStep.get.componentIds.get filterNot (c => {
       currentConfigWithTempSelectedComponent.map(_.componentId.get).contains(c)
     })
 
@@ -280,7 +280,7 @@ class SelectedComponentUtil {
     })
 
     val filteredComponents: List[String] =
-      selectedComponentBO.fatherStep.get.componentIds.get filterNot (c => {
+      selectedComponentBO.currentStep.get.componentIds.get filterNot (c => {
         unselectedExcludedComponents :+ selectedComponentBO.component.get.componentId.get
       }.contains(c))
 

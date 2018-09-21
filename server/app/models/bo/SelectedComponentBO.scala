@@ -8,9 +8,9 @@ import org.shared.component.status.StatusComponent
   * Created by Gennadi Heimann 09.02.2018
   */
 case class SelectedComponentBO(
-                        status: Option[StatusComponent] = None,
-                        component: Option[ComponentBO] = None,
-                        fatherStep: Option[StepBO] = None,
-                        nextStep: Option[StepBO] = None,
-                        currentStep: Option[StepCurrentConfigBO] = None
+                                status: Option[StatusComponent] = None,
+                                component: Option[ComponentBO] = None,
+                                currentStep: Option[StepBO] = None,
+                                nextStep: Option[StepBO] = None,
+                                currentStepCurrentConfig: Option[StepCurrentConfigBO] = None
                       )

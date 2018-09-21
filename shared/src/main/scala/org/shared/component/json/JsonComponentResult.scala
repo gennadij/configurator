@@ -12,7 +12,10 @@ case class JsonComponentResult (
     selectedComponentId: String,
     stepId: String,
     status: JsonComponentStatus,
-    dependencies: List[JsonDependency]
+    excludeDependenciesOut: Option[List[JsonDependency]] = None,
+    excludeDependenciesIn: Option[List[JsonDependency]] = None,
+    requireDependenciesOut: Option[List[JsonDependency]] = None,
+    requireDependenciesIn: Option[List[JsonDependency]] = None
 )
 
 

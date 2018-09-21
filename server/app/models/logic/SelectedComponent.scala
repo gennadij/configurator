@@ -1,11 +1,10 @@
 package models.logic
 
-import controllers.wrapper.RidToHash
 import models.bo._
 import models.currentConfig.CurrentConfig
 import models.persistence.Persistence
-import org.shared.common.status.{Error, Success}
 import org.shared.common.status.step._
+import org.shared.common.status.{Error, Success}
 import org.shared.component.status._
 import play.api.Logger
 
@@ -17,12 +16,12 @@ import play.api.Logger
 
 object SelectedComponent {
 
-  def verifySelectedComponent(selectedComponentId: String): SelectedComponentBO = {
-    new SelectedComponent(selectedComponentId).selectedComponent
+  def verifySelectedComponent(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+    new SelectedComponent(selectedComponentBO).selectedComponent
   }
 }
 
-class SelectedComponent(selectedComponentId: String) {
+class SelectedComponent(selectedComponentBO: SelectedComponentBO) {
 
   /**
     * @author Gennadi Heimann
@@ -31,50 +30,20 @@ class SelectedComponent(selectedComponentId: String) {
     */
   private def selectedComponent: SelectedComponentBO = {
 
-    val selectedComponentRid: String = ??? //RidToHash.getRId(selectedComponentId).get
+    val selectedComponentId: String = selectedComponentBO.component.get.componentId.get
 
-    val selectedComponentBO: SelectedComponentBO = Persistence.getSelectedComponent(selectedComponentRid)
+    val sCBO: SelectedComponentBO = Persistence.getSelectedComponent(selectedComponentId)
 
-    val sCExtendedOfCurrentAndNextStep = getCurrentAndNextStepFromPersistence(selectedComponentBO)
+    val sCExtendedOfCurrentAndNextStep = getCurrentAndNextStepFromPersistence(sCBO)
 
-//    val sCExtendedOfCurrentStepBO: SelectedComponentBO = getCurrentStepFromDB(selectedComponentBO)
-
-//    val sCExtendedOfNextStep: SelectedComponentBO = getNextStepFromDB(sCExtendedOfCurrentStepBO)
-
-    val sCExtendedOfFatherStepWithHashId = convertRidToHashIn(sCExtendedOfCurrentAndNextStep)
-
-    val sCExtendedOfCurrentStep = getCurrentStepFromCurrentConfig(sCExtendedOfFatherStepWithHashId)
+    val sCExtendedOfCurrentStep = getCurrentStepFromCurrentConfig(sCExtendedOfCurrentAndNextStep)
 
     val sCExtendedOfVerifiedStatsComponentTyp = verifyStatusComponentType(sCExtendedOfCurrentStep)
 
     verifyStatusFromSelectedComponent(sCExtendedOfVerifiedStatsComponentTyp)
   }
 
-  /**
-    * @author Gennadi Heimann
-    * @version 0.0.3
-    * @param selectedComponentBO : SelectedComponentBO
-    * @return StepBO
-    */
-  private def convertRidToHashIn(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
 
-    selectedComponentBO.fatherStep.get.status.get.fatherStep match {
-      case Some(FatherStepExist()) =>
-        val fatherStepIdHash: Option[String] = ??? //RidToHash.getHash(selectedComponentBO.fatherStep.get.stepId.get)
-
-        val componentIdsHash: List[String] = selectedComponentBO.fatherStep.get.componentIds.get map (id => {
-          ??? //RidToHash.getHash(id).get
-        })
-
-        selectedComponentBO.copy(fatherStep =
-          Some(selectedComponentBO.fatherStep.get.copy(stepId = fatherStepIdHash, componentIds = Some(componentIdsHash))))
-      case Some(_) =>
-        selectedComponentBO.copy(status = Some(StatusComponent(common = Some(selectedComponentBO.fatherStep.get.status.get.fatherStep.get))))
-      case None =>
-        selectedComponentBO.copy(status = Some(StatusComponent(common = Some(Error()))))
-
-    }
-  }
 
   /**
     * @author Gennadi Heimann
@@ -86,43 +55,12 @@ class SelectedComponent(selectedComponentId: String) {
     selectedComponentBO.status.get.common match {
       case Some(Success()) =>
 
-        val fatherStepBO: StepBO = Persistence.getCurrentStep(selectedComponentBO.component.get.componentId.get)
+        val currentStepBO: StepBO = Persistence.getCurrentStep(selectedComponentBO.component.get.componentId.get)
 
         val nextStep: StepBO = Persistence.getNextStep(selectedComponentBO.component.get.componentId.get)
 
-        selectedComponentBO.copy(fatherStep = Some(fatherStepBO), nextStep = Some(nextStep))
+        selectedComponentBO.copy(currentStep = Some(currentStepBO), nextStep = Some(nextStep))
 
-      case status => selectedComponentBO.copy(status = Some(StatusComponent(common = status)))
-    }
-  }
-
-
-  /**
-    * @author Gennadi Heimann
-    * @version 0.0.3
-    * @param selectedComponentBO : SelectedComponentBO
-    * @return StepBO
-    */
-  private def getCurrentStepFromDB(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
-    selectedComponentBO.status.get.common match {
-      case Some(Success()) =>
-        val fatherStepBO: StepBO = Persistence.getCurrentStep(selectedComponentBO.component.get.componentId.get)
-        selectedComponentBO.copy(fatherStep = Some(fatherStepBO))
-      case status => selectedComponentBO.copy(status = Some(StatusComponent(common = status)))
-    }
-  }
-
-  /**
-    * @author Gennadi Heimann
-    * @version 0.0.3
-    * @param selectedComponentBO : SelectedComponentBO
-    * @return StepBO
-    */
-  private def getNextStepFromDB(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
-    selectedComponentBO.status.get.common match {
-      case Some(Success()) =>
-        val nextStep: StepBO = Persistence.getNextStep(selectedComponentBO.component.get.componentId.get)
-        selectedComponentBO.copy(nextStep = Some(nextStep))
       case status => selectedComponentBO.copy(status = Some(StatusComponent(common = status)))
     }
   }
@@ -134,15 +72,16 @@ class SelectedComponent(selectedComponentId: String) {
     * @return StepBO
     */
   private def getCurrentStepFromCurrentConfig(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
-    selectedComponentBO.fatherStep.get.status.get.fatherStep match {
-      case Some(FatherStepExist()) =>
+    selectedComponentBO.currentStep.get.status.get.currentStep match {
+      case Some(CurrentStepExist()) =>
 
-        val currentStep: Option[StepCurrentConfigBO] = CurrentConfig.getCurrentStep(selectedComponentBO.fatherStep.get.stepId.get)
+        val currentStepCurrentConfig: Option[StepCurrentConfigBO] =
+          CurrentConfig.getCurrentStep(selectedComponentBO.currentStep.get.stepId.get)
 
-        selectedComponentBO.copy(currentStep = currentStep)
+        selectedComponentBO.copy(currentStepCurrentConfig = currentStepCurrentConfig)
 
       case Some(_) =>
-        selectedComponentBO.copy(status = Some(StatusComponent(common = Some(selectedComponentBO.fatherStep.get.status.get.fatherStep.get))))
+        selectedComponentBO.copy(status = Some(StatusComponent(common = Some(selectedComponentBO.currentStep.get.status.get.currentStep.get))))
       case None =>
         selectedComponentBO.copy(status = Some(StatusComponent(common = Some(Error()))))
 
@@ -194,16 +133,15 @@ class SelectedComponent(selectedComponentId: String) {
   private def setCase1_2_3_4_5_6_7_8_9_10(selectedComponent: SelectedComponentBO, fatherStepId: String): SelectedComponentBO = {
     SelectedComponentBO(
       status = selectedComponent.status,
-      component = Some(ComponentBO(componentId = selectedComponent.component.get.componentId)),
-      fatherStep = Some(StepBO(stepId = Some(fatherStepId)))
+      component = Some(ComponentBO(
+        componentId = selectedComponent.component.get.componentId,
+        excludeDependenciesOut = selectedComponent.component.get.excludeDependenciesOut,
+        excludeDependenciesIn = selectedComponent.component.get.excludeDependenciesIn,
+        requireDependenciesOut = selectedComponent.component.get.requireDependenciesOut,
+        requireDependenciesIn = selectedComponent.component.get.requireDependenciesIn)
+      ),
+      currentStep = Some(StepBO(stepId = Some(fatherStepId)))
     )
-
-    //    ComponentOut(
-    //      selectedComponent.component.get.componentId.get,
-    //      fatherStepId,
-    //      selectedComponent.status.get,
-    //      selectedComponent.component.get.requireDependenciesOut.get ::: selectedComponent.component.get.excludeDependenciesOut.get
-    //    )
   }
 
   private def verifyStatusFromSelectedComponent(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
@@ -251,25 +189,25 @@ class SelectedComponent(selectedComponentId: String) {
 
     (status: @unchecked) match {
       case `statusCase1` => Logger.info(this.getClass.getSimpleName + " : Case 1")
-        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.fatherStep.get.stepId.get)
+        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.currentStep.get.stepId.get)
       case `statusCase2` => Logger.info(this.getClass.getSimpleName + " : Case 2 ")
-        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.fatherStep.get.stepId.get)
+        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.currentStep.get.stepId.get)
       case `statusCase3` => Logger.info(this.getClass.getSimpleName + " : Case 3 ")
-        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.fatherStep.get.stepId.get)
+        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.currentStep.get.stepId.get)
       case `statusCase4` => Logger.info(this.getClass.getSimpleName + " : Case 4 ")
-        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.fatherStep.get.stepId.get)
+        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.currentStep.get.stepId.get)
       case `statusCase5` => Logger.info(this.getClass.getSimpleName + " : Case 5 ")
-        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.fatherStep.get.stepId.get)
+        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.currentStep.get.stepId.get)
       case `statusCase6` => Logger.info(this.getClass.getSimpleName + " : Case 5 ")
-        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.fatherStep.get.stepId.get)
+        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.currentStep.get.stepId.get)
       case `statusCase7` => Logger.info(this.getClass.getSimpleName + " : Case 7 ")
-        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.fatherStep.get.stepId.get)
+        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.currentStep.get.stepId.get)
       case `statusCase8` => Logger.info(this.getClass.getSimpleName + " : Case 8 ")
-        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.fatherStep.get.stepId.get)
+        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.currentStep.get.stepId.get)
       case `statusCase9` => Logger.info(this.getClass.getSimpleName + " : Case 9 ")
-        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.fatherStep.get.stepId.get)
+        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.currentStep.get.stepId.get)
       case `statusCase10` => Logger.info(this.getClass.getSimpleName + " : Case 10 ")
-        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.fatherStep.get.stepId.get)
+        setCase1_2_3_4_5_6_7_8_9_10(selectedComponentStatusComponentType, selectedComponentBO.currentStep.get.stepId.get)
       case `statusCaseDefault` => println("Undefined Status")
         setCaseDefault()
     }

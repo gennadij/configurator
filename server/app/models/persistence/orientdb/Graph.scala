@@ -25,11 +25,11 @@ object Graph {
     * @param componentId : String
     * @return StepBO
     */
-  def getFatherStep(componentId: String): (Option[OrientVertex], StatusFatherStep, Status) = {
+  def getCurrentStep(componentId: String): (Option[OrientVertex], StatusCurrentStep, Status) = {
     val graph: (Option[OrientGraph], String) = Database.getFactory
     graph._1 match {
       case Some(g) => new Graph(Some(g)).getCurrentStep(componentId)
-      case None => (None, CommonErrorFatherStep(), ODBConnectionError())
+      case None => (None, CommonErrorCurrentStep(), ODBConnectionError())
     }
   }
 
@@ -120,7 +120,7 @@ class Graph(graph: Option[OrientGraph]) {
     * @param componentId : String
     * @return OrientVertex
     */
-  private def getCurrentStep(componentId: String): (Option[OrientVertex], StatusFatherStep, Status) = {
+  private def getCurrentStep(componentId: String): (Option[OrientVertex], StatusCurrentStep, Status) = {
 
     try {
       val vComponent = graph.get.getVertex(componentId)
@@ -130,19 +130,19 @@ class Graph(graph: Option[OrientGraph]) {
 
       val vFatherSteps : List[OrientVertex]= eHasComponents map (eHasComponent => {eHasComponent.getVertex(Direction.OUT)})
       vFatherSteps.size match {
-        case s if s == 0 => (None, FatherStepNotExist(), Error())
-        case s if s == 1 => (Some(vFatherSteps.head), FatherStepExist(), Success())
-        case s if s >  1 => (None, MultipleFatherSteps(), Error())
+        case s if s == 0 => (None, CurrentStepNotExist(), Error())
+        case s if s == 1 => (Some(vFatherSteps.head), CurrentStepExist(), Success())
+        case s if s >  1 => (None, MultipleCurrentSteps(), Error())
       }
     } catch {
       case e2: ClassCastException =>
         graph.get.rollback()
         Logger.error(e2.printStackTrace().toString)
-        (None, CommonErrorFatherStep(), ODBClassCastError())
+        (None, CommonErrorCurrentStep(), ODBClassCastError())
       case e1: Exception =>
         graph.get.rollback()
         Logger.error(e1.printStackTrace().toString)
-        (None, CommonErrorFatherStep(), ODBReadError())
+        (None, CommonErrorCurrentStep(), ODBReadError())
     }
   }
 
