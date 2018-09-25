@@ -12,9 +12,7 @@ case class JsonDependency (
     inId: String,
     dependencyType: String,
     visualization: String,
-    nameToShow: String,
-    status: String,
-    message: String
+    nameToShow: String
 )
 
 object JsonDependency {

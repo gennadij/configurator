@@ -1,7 +1,8 @@
 package org.shared.component.json
 
 import org.shared.common.json.JsonDependency
-import play.api.libs.json.{Json, OWrites}
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Writes}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -20,5 +21,13 @@ case class JsonComponentResult (
 
 
 object JsonComponentResult{
-   implicit val format: OWrites[JsonComponentResult] = Json.writes[JsonComponentResult]
+   implicit val writerJsonComponentResult: Writes[JsonComponentResult] = (
+     (JsPath \ "selectedComponentId").write[String] and
+       (JsPath \ "stepId").write[String] and
+       (JsPath \ "status").write[JsonComponentStatus] and
+       (JsPath \ "excludeDependenciesOut").write(Writes.optionWithNull[List[JsonDependency]]) and
+       (JsPath \ "excludeDependenciesIn").write(Writes.optionWithNull[List[JsonDependency]]) and
+       (JsPath \ "requireDependenciesOut").write(Writes.optionWithNull[List[JsonDependency]]) and
+       (JsPath \ "requireDependenciesIn").write(Writes.optionWithNull[List[JsonDependency]])
+     )(unlift(JsonComponentResult.unapply))
 }

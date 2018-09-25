@@ -1,6 +1,6 @@
 package controllers.wrapper
 
-import models.bo.{NextStepBO, SelectedComponentBO, StartConfigBO, StepCurrentConfigBO}
+import models.bo._
 import org.shared.common.json._
 import org.shared.component.json.{JsonComponentIn, JsonComponentOut, JsonComponentResult, JsonComponentStatus}
 import org.shared.component.status.StatusComponent
@@ -229,19 +229,27 @@ trait Wrapper extends RIDConverter {
             case None => None
           }
         ),
-        List()
-//        selectedComponentBO.dependencies map (d => {
-//          JsonDependency(
-//            d.outId,
-//            d.inId,
-//            d.dependencyType,
-//            d.visualization,
-//            d.nameToShow,
-//            "",
-//            ""
-//          )
-//        })
+        excludeDependenciesOut = toJsonDependency(selectedComponentWithHash.component.get.excludeDependenciesOut),
+        excludeDependenciesIn = toJsonDependency(selectedComponentWithHash.component.get.requireDependenciesIn),
+        requireDependenciesOut = toJsonDependency(selectedComponentWithHash.component.get.requireDependenciesOut),
+        requireDependenciesIn = toJsonDependency(selectedComponentWithHash.component.get.requireDependenciesIn)
       )
     )
+  }
+
+  def toJsonDependency(dependencyBOs: Option[List[DependencyBO]]): Option[List[JsonDependency]] = {
+    dependencyBOs match {
+      case Some(dependencyBO) => Some(
+        dependencyBO map {dBO =>
+          JsonDependency(
+            outId = dBO.outId,
+            inId = dBO.inId,
+            dependencyType = dBO.dependencyType,
+            visualization = dBO.visualization,
+            nameToShow = dBO.nameToShow
+          )
+        })
+      case None => None
+    }
   }
 }
