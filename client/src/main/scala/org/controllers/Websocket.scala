@@ -23,7 +23,7 @@ object Websocket {
       (e: dom.MessageEvent) => {
         println("IN -> " + e.data.toString())
         val jsValue: JsValue = Json.parse(e.data.toString())
-//        new AdminClienWeb(socket).handleMessage(jsValue)
+        new MessageHandler(socket).handleMessage(jsValue)
       }
     }
     

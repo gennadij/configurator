@@ -1,0 +1,116 @@
+@charset "ISO-8859-1";
+
+section {
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+#status {
+    background-color: #F7F8E0;
+    position:absolute;
+    top : 1%;
+    left : 1%;
+    overflow:hidden;
+    z-index:-10;
+    border-color : #282828 ;
+    border-style : solid;
+    border-width : medium;
+    border-radius : 10px;
+    padding : 10px;
+}
+#main {
+    overflow-x: auto;
+    overflow-y: auto;
+	background-color: #F7F8E0;
+	position:absolute;
+    top : 10%;
+    bottom : 1%;
+    left : 1%;
+    right : 1%;
+    z-index:-10;
+    border-color : #282828 ;
+    border-style : solid;
+    border-width : medium;
+    border-radius : 10px;
+}
+
+#text_for_config {
+    background-color: #F8E0F7;
+    text-align:left;
+    padding : 10px;
+    margin : 10px;
+	border-color : grey;
+    border-style : solid;
+    border-width : medium;
+    border-radius : 10px;
+    width: 50%;
+}
+
+.config {
+overflow-y: auto;
+	padding : 10px;
+}
+
+.config:before, .config:after {
+content: "";
+display: table;
+}
+
+.area:config {
+clear: both;
+}
+
+.step{
+    overflow-x: auto;
+    overflow-y: auto;
+	background-color: #9FF781;
+	text-align:left;
+    padding : 10px;
+    margin : 10px;
+    border-color : grey;
+    border-style : solid;
+    border-width : medium;
+    border-radius : 10px;
+    width: 90%;
+}
+
+.component{
+    overflow-x: auto;
+    overflow-y: auto;
+	background-color: #58D3F7;
+    text-align:left;
+    padding : 10px;
+    margin : 10px;
+    border-color : grey;
+    border-style : solid;
+    border-width : medium;
+    border-radius : 10px;
+    width: 90%;
+}
+
+.nextStep{
+    overflow-x: auto;
+    overflow-y: auto;
+	background-color: #F2F5A9;
+    text-align:left;
+    padding : 10px;
+    margin : 10px;
+    border-color : grey;
+    border-style : solid;
+    border-width : medium;
+    border-radius : 10px;
+    width: 20%;
+}
+
+.button{
+    float: left;
+    background-color: #E0ECF8;
+    text-align:left;
+    padding : 3px;
+    margin : 3px;
+    border-color : grey;
+    border-style : solid;
+    border-width : medium;
+    border-radius : 10px;
+    width: 200px;
+}

@@ -1,7 +1,7 @@
 package org.shared.component.json
 
 import org.shared.common.JsonNames
-import play.api.libs.json.{Json, Reads}
+import play.api.libs.json.{Format, Json}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -14,5 +14,5 @@ case class JsonComponentIn (
 )
 
 object JsonComponentIn{
-  implicit val format: Reads[JsonComponentIn] = Json.reads[JsonComponentIn]
+  implicit val format: Format[JsonComponentIn] = Json.format[JsonComponentIn]
 }

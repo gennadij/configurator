@@ -1,5 +1,6 @@
 package org.controllers
 
+import org.models.StartConfg
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import play.api.libs.json.JsResult
@@ -37,7 +38,7 @@ class MessageHandler(websocket: WebSocket) {
   private def startConfig(receivedMessage: JsValue): Unit = {
     val jsonComponentOut: JsResult[JsonStartConfigOut] = Json.fromJson[JsonStartConfigOut](receivedMessage)
     jsonComponentOut match {
-      case jCOut: JsSuccess[JsonStartConfigOut] => ??? //new Component(websocket).updateStatus(jCOut.value)
+      case jCOut: JsSuccess[JsonStartConfigOut] => new StartConfg(jCOut.value, websocket).startConfig
       case e: JsError => println("Errors -> " + JsonNames.START_CONFIG + ": " + JsError.toJson(e).toString())
     }
   }
