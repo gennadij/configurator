@@ -70,7 +70,6 @@ trait RIDConverter extends RidToHash {
   private[wrapper] def convertRidToHashForSelectedComponentBO(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
 
     val stepIdHash: Option[String] = selectedComponentBO.currentStep.get.stepId match {
-      //TODO SelectedComponent convert
       case Some(sId) => getHash(sId)
       case None => None
     }
@@ -80,20 +79,42 @@ trait RIDConverter extends RidToHash {
       case None => None
     }
 
+    val excludeDependencyInHashId: Option[List[DependencyBO]] = selectedComponentBO.component.get.excludeDependenciesIn match {
+      case Some(dependencies) => Some(dependencies map {
+        d => {d.copy(outId = getHash(d.outId).get, inId = getHash(d.outId).get)}
+      })
+      case None => None
+    }
+
+    val excludeDependencyOutHashId: Option[List[DependencyBO]] = selectedComponentBO.component.get.excludeDependenciesOut match {
+      case Some(dependencies) => Some(dependencies map {
+        d => {d.copy(outId = getHash(d.outId).get, inId = getHash(d.outId).get)}
+      })
+      case None => None
+    }
+
+    val requireDependencyOutHashId: Option[List[DependencyBO]] = selectedComponentBO.component.get.requireDependenciesOut match {
+      case Some(dependencies) => Some(dependencies map {
+        d => {d.copy(outId = getHash(d.outId).get, inId = getHash(d.outId).get)}
+      })
+      case None => None
+    }
+
+    val requireDependencyInHashId: Option[List[DependencyBO]] = selectedComponentBO.component.get.requireDependenciesIn match {
+      case Some(dependencies) => Some(dependencies map {
+        d => {d.copy(outId = getHash(d.outId).get, inId = getHash(d.outId).get)}
+      })
+      case None => None
+    }
+
     selectedComponentBO.copy(
-      component = Some(selectedComponentBO.component.get.copy(componentId = selectedComponentIdHash)),
+      component = Some(selectedComponentBO.component.get.copy(
+        componentId = selectedComponentIdHash,
+        excludeDependenciesOut = excludeDependencyOutHashId,
+        excludeDependenciesIn = excludeDependencyInHashId,
+        requireDependenciesOut = requireDependencyOutHashId,
+        requireDependenciesIn = requireDependencyInHashId)),
       currentStep = Some(selectedComponentBO.currentStep.get.copy(
         stepId = stepIdHash)))
-
-    //        selectedComponentBO.currentStep.get.componentIds match {
-    //          case Some(cId) =>
-    //            val cIdsHash = cId.map (id => {getHash(id).get})
-    //            selectedComponentBO.copy(
-    //              currentStep = Some(selectedComponentBO.currentStep.get.copy(
-    //                stepId = getHash(sId), componentIds = Some(cIdsHash))))
-    //          case None => selectedComponentBO.copy(
-    //            currentStep = Some(selectedComponentBO.currentStep.get.copy(
-    //              stepId = None, componentIds = Some(List()))))
-    //        }
   }
 }

@@ -29,7 +29,7 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
   }
   
   "Specification spezifiziert der NextStep der Konfiguration" >> {
-    "Es wird erster Step mit der Komponenten geladen und Component_1_1 und Componente_1_2  ausgewaelt   ++++" >> {
+    "Es wird erster Step mit der Komponenten geladen und Component_1_1 und Componente_1_2  ausgewaelt" >> {
 
       val configUrl = "http://config/client_013"
       val startConfigIn = Json.obj(
@@ -68,11 +68,11 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
       (jsonComponentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
       (jsonComponentOut_1 \ "result" \ "selectedComponentId").asOpt[String].get.size must be_>=(30)
       (jsonComponentOut_1 \ "result" \ "stepId").asOpt[String].get.size must be_>=(30)
-//      (jsonComponentOut_1 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
-//      ((jsonComponentOut_1 \ "result" \ "dependencies")(0) \ "dependencyType").asOpt[String].get === "exclude"
-//      ((jsonComponentOut_1 \ "result" \ "dependencies")(0) \ "visualization").asOpt[String].get === "undef"
-//      ((jsonComponentOut_1 \ "result" \ "dependencies")(0) \ "nameToShow").asOpt[String].get ===
-//        "(C11) ----> (C13)"
+      (jsonComponentOut_1 \ "result" \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
+      ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"
+      ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "visualization").asOpt[String].get === "undef"
+      ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "nameToShow").asOpt[String].get ===
+        "(C11) ----> (C13)"
 
       (jsonComponentOut_1 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
       (jsonComponentOut_1 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get ===
@@ -117,10 +117,10 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
       (jsonComponentOut_2 \ "result" \ "selectedComponentId").asOpt[String].get.size must be_>=(30)
       (jsonComponentOut_2 \ "result" \ "stepId").asOpt[String].get.size must be_>=(30)
 
-//      (jsonComponentOut_2 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
-//      ((jsonComponentOut_2 \ "result" \ "dependencies")(0) \ "dependencyType").asOpt[String].get === "exclude"
-//      ((jsonComponentOut_2 \ "result" \ "dependencies")(0) \ "visualization").asOpt[String].get === "undef"
-//      ((jsonComponentOut_2 \ "result" \ "dependencies")(0) \ "nameToShow").asOpt[String].get === "(C12) ----> (C13)"
+      (jsonComponentOut_2 \ "result" \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
+      ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"
+      ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "visualization").asOpt[String].get === "undef"
+      ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "nameToShow").asOpt[String].get === "(C12) ----> (C13)"
 
       (jsonComponentOut_2 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === RequireNextStep().status
       (jsonComponentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get ===
