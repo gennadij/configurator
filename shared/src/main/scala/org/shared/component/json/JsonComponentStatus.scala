@@ -18,11 +18,11 @@ case class JsonComponentStatus (
 )
 
 object JsonComponentStatus {
-  implicit val writerJsonComponentStatus: Writes[JsonComponentStatus] = (
-    (JsPath \ "selectionCriterium").write(Writes.optionWithNull[JsonStatus]) and
-    (JsPath \ "selectedComponent").write(Writes.optionWithNull[JsonStatus]) and
-    (JsPath \ "excludeDependency").write(Writes.optionWithNull[JsonStatus]) and
-    (JsPath \ "common").write(Writes.optionWithNull[JsonStatus]) and
-    (JsPath \ "componentType").write(Writes.optionWithNull[JsonStatus])
-  )(unlift(JsonComponentStatus.unapply))
+  implicit val writerJsonComponentStatus: Format[JsonComponentStatus] = (
+    (JsPath \ "selectionCriterium").format(Format.optionWithNull[JsonStatus]) and
+    (JsPath \ "selectedComponent").format(Format.optionWithNull[JsonStatus]) and
+    (JsPath \ "excludeDependency").format(Format.optionWithNull[JsonStatus]) and
+    (JsPath \ "common").format(Format.optionWithNull[JsonStatus]) and
+    (JsPath \ "componentType").format(Format.optionWithNull[JsonStatus])
+  )(JsonComponentStatus.apply, unlift(JsonComponentStatus.unapply))
 }

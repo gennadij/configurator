@@ -14,12 +14,15 @@ import play.api.libs.json.Json
   */
 class StartConfg(jsonStartConfigOut: JsonStartConfigOut, webSocket: WebSocket) {
 
-
-
   def startConfig = {
     println("===startConfig===")
 
-    new DrawStartConfig(jsonStartConfigOut.result.step).drawStartConfig()
+    val drawStartConfig: DrawStartConfig =
+      new DrawStartConfig(jsonStartConfigOut.result.step, jsonStartConfigOut.result.status)
+
+    drawStartConfig.drawStartConfig()
+
+    drawStartConfig.drawStatus
 
     jsonStartConfigOut.result.step.components foreach{
       comp => {
@@ -39,8 +42,4 @@ class StartConfg(jsonStartConfigOut: JsonStartConfigOut, webSocket: WebSocket) {
 
     webSocket.send(jsonComponent)
   }
-
-
-
-
 }

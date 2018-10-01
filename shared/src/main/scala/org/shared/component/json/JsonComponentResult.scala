@@ -2,7 +2,7 @@ package org.shared.component.json
 
 import org.shared.common.json.JsonDependency
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Writes}
+import play.api.libs.json.{Format, JsPath}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -21,13 +21,13 @@ case class JsonComponentResult (
 
 
 object JsonComponentResult{
-   implicit val writerJsonComponentResult: Writes[JsonComponentResult] = (
-     (JsPath \ "selectedComponentId").write[String] and
-       (JsPath \ "stepId").write[String] and
-       (JsPath \ "status").write[JsonComponentStatus] and
-       (JsPath \ "excludeDependenciesOut").write(Writes.optionWithNull[List[JsonDependency]]) and
-       (JsPath \ "excludeDependenciesIn").write(Writes.optionWithNull[List[JsonDependency]]) and
-       (JsPath \ "requireDependenciesOut").write(Writes.optionWithNull[List[JsonDependency]]) and
-       (JsPath \ "requireDependenciesIn").write(Writes.optionWithNull[List[JsonDependency]])
-     )(unlift(JsonComponentResult.unapply))
+   implicit val writerJsonComponentResult: Format[JsonComponentResult] = (
+     (JsPath \ "selectedComponentId").format[String] and
+       (JsPath \ "stepId").format[String] and
+       (JsPath \ "status").format[JsonComponentStatus] and
+       (JsPath \ "excludeDependenciesOut").format(Format.optionWithNull[List[JsonDependency]]) and
+       (JsPath \ "excludeDependenciesIn").format(Format.optionWithNull[List[JsonDependency]]) and
+       (JsPath \ "requireDependenciesOut").format(Format.optionWithNull[List[JsonDependency]]) and
+       (JsPath \ "requireDependenciesIn").format(Format.optionWithNull[List[JsonDependency]])
+     )(JsonComponentResult.apply, unlift(JsonComponentResult.unapply))
 }

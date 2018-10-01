@@ -1,7 +1,7 @@
 package org.views
 
-import org.scalajs.jquery.jQuery
-import org.shared.common.json.{JsonComponent, JsonStep}
+import org.scalajs.jquery.{JQuery, jQuery}
+import org.shared.common.json.{JsonComponent, JsonStep, JsonStepStatus}
 import org.util.HtmlElementIds
 
 import scala.collection.mutable
@@ -11,11 +11,11 @@ import scala.collection.mutable
   *
   * Created by Gennadi Heimann 28.09.2018
   */
-class DrawStartConfig(jsonStep: JsonStep) {
+class DrawStartConfig(jsonStep: JsonStep, jsonStepStatus: JsonStepStatus) {
 
   var componentIds: mutable.ListBuffer[String] = scala.collection.mutable.ListBuffer()
 
-  def drawStartConfig() = {
+  def drawStartConfig(): JQuery = {
 
     val htmlMain =
       "<div id='main' class='main'> " +
@@ -29,13 +29,21 @@ class DrawStartConfig(jsonStep: JsonStep) {
     jQuery(stepsHtml).appendTo(jQuery(HtmlElementIds.mainJQuery))
   }
 
+  def drawStatus = {
+    val htmlHeader =
+      s"<dev id='status' class='status'>" +
+        jsonStepStatus.firstStep.get.status +
+        " , " +
+        jsonStepStatus.common.get.status +
+        "</dev>"
 
+    jQuery("#status").remove()
+    jQuery(htmlHeader).appendTo(jQuery("header"))
+  }
 
   private def drawNewMain(html: String) = {
     jQuery(html).appendTo(jQuery(HtmlElementIds.section))
   }
-
-
 
   private def drawStep(step: JsonStep) = {
     val htmlComponents = drawComponents(step.components)
@@ -68,6 +76,6 @@ class DrawStartConfig(jsonStep: JsonStep) {
         "</div>"
     }
 
-      htmlComponents
+    htmlComponents
   }
 }

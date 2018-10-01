@@ -1,7 +1,7 @@
 package org.shared.component.json
 
 import org.shared.common.JsonNames
-import play.api.libs.json.{Json, OWrites}
+import play.api.libs.json.{Format, Json}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -14,5 +14,5 @@ case class JsonComponentOut (
 )
 
 object JsonComponentOut {
-  implicit val format: OWrites[JsonComponentOut] = Json.writes[JsonComponentOut]
+  implicit val format: Format[JsonComponentOut] = Json.format[JsonComponentOut]
 }

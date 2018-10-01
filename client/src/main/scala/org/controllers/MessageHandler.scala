@@ -1,14 +1,11 @@
 package org.controllers
 
-import org.models.StartConfg
-import play.api.libs.json.JsValue
-import play.api.libs.json.Json
-import play.api.libs.json.JsResult
-import play.api.libs.json.JsSuccess
-import play.api.libs.json.JsError
+import org.models.{SelectedComponent, StartConfg}
 import org.scalajs.dom.raw.WebSocket
 import org.shared.common.JsonNames
+import org.shared.component.json.JsonComponentOut
 import org.shared.startConfig.json.JsonStartConfigOut
+import play.api.libs.json._
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -20,7 +17,7 @@ class MessageHandler(websocket: WebSocket) {
 
   def handleMessage(receivedMessage: JsValue) = (receivedMessage \ "json").asOpt[String] match {
     case Some(JsonNames.START_CONFIG) => startConfig(receivedMessage)
-//      case Some(JsonNames.GET_USER) => getUser(receivedMessage)
+    case Some(JsonNames.COMPONENT) => selectedComponent(receivedMessage)
 //      case Some(JsonNames.ADD_CONFIG) => addConfig(receivedMessage)
 //      case Some(JsonNames.GET_CONFIGS) => getConfigs(receivedMessage)
 //      case Some(JsonNames.DELET_CONFIG) => deleteConfig(receivedMessage)
@@ -36,9 +33,17 @@ class MessageHandler(websocket: WebSocket) {
   }
 
   private def startConfig(receivedMessage: JsValue): Unit = {
-    val jsonComponentOut: JsResult[JsonStartConfigOut] = Json.fromJson[JsonStartConfigOut](receivedMessage)
+    val jsonStartConfigOut: JsResult[JsonStartConfigOut] = Json.fromJson[JsonStartConfigOut](receivedMessage)
+    jsonStartConfigOut match {
+      case jSCOut: JsSuccess[JsonStartConfigOut] => new StartConfg(jSCOut.value, websocket).startConfig
+      case e: JsError => println("Errors -> " + JsonNames.START_CONFIG + ": " + JsError.toJson(e).toString())
+    }
+  }
+
+  private def selectedComponent(receivedMessage: JsValue): Unit = {
+    val jsonComponentOut: JsResult[JsonComponentOut] = Json.fromJson[JsonComponentOut](receivedMessage)
     jsonComponentOut match {
-      case jCOut: JsSuccess[JsonStartConfigOut] => new StartConfg(jCOut.value, websocket).startConfig
+      case jCOut: JsSuccess[JsonComponentOut] => new SelectedComponent(jCOut.value, websocket).selectedComponent
       case e: JsError => println("Errors -> " + JsonNames.START_CONFIG + ": " + JsError.toJson(e).toString())
     }
   }
