@@ -138,28 +138,28 @@ object Persistence {
     * @return StepBO
     */
   def getCurrentStep(componentId: String): StepBO = {
-    val (vFatherStep: Option[OrientVertex], statusFatherStep: StatusCurrentStep, statusCommen: Status) =
+    val (vCurrentStep: Option[OrientVertex], statusCurrentStep: StatusCurrentStep, statusCommen: Status) =
       Graph.getCurrentStep(componentId)
 
-
-    vFatherStep match {
-      case Some(vFS) =>
+    //TODO Status FirstSetep und CurrentStep zusammenführen
+    vCurrentStep match {
+      case Some(vCS) =>
         StepBO(
-          Some(vFS.getIdentity.toString),
-          Some(vFS.getProperty(PropertyKeys.NAME_TO_SHOW).toString),
-          Some(vFS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN).toString.toInt),
-          Some(vFS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX).toString.toInt),
+          Some(vCS.getIdentity.toString),
+          Some(vCS.getProperty(PropertyKeys.NAME_TO_SHOW).toString),
+          Some(vCS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN).toString.toInt),
+          Some(vCS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX).toString.toInt),
           Some(StatusStep(
             None,
             None,
             Some(CurrentStepExist()),
             Some(Success())
           )),
-          Some(vFS.getEdges(Direction.OUT, PropertyKeys.HAS_COMPONENT).asScala.toList map (hC => {
+          Some(vCS.getEdges(Direction.OUT, PropertyKeys.HAS_COMPONENT).asScala.toList map (hC => {
             hC.getVertex(Direction.IN).asInstanceOf[OrientVertex].getIdentity.toString()
           }))
         )
-      case _ => StepBO(status = Some(StatusStep(currentStep = Some(statusFatherStep), common = Some(statusCommen))))
+      case _ => StepBO(status = Some(StatusStep(currentStep = Some(statusCurrentStep), common = Some(statusCommen))))
     }
   }
 

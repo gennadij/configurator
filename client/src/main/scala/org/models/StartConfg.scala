@@ -4,7 +4,7 @@ import org.scalajs.dom.raw.WebSocket
 import org.scalajs.jquery.jQuery
 import org.shared.component.json.{JsonComponentIn, JsonComponentParam}
 import org.shared.startConfig.json.JsonStartConfigOut
-import org.views.DrawStartConfig
+import org.views.{DrawCurrentConfig, DrawStartConfig}
 import play.api.libs.json.Json
 
 /**
@@ -23,6 +23,8 @@ class StartConfg(jsonStartConfigOut: JsonStartConfigOut, webSocket: WebSocket) {
     drawStartConfig.drawStartConfig()
 
     drawStartConfig.drawStatus
+
+    new DrawCurrentConfig().drawCurrentConfig
 
     jsonStartConfigOut.result.step.components foreach{
       comp => {

@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>12</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>588</x>
+      <y>0</y>
+      <w>312</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>Der Benutzer wählt die Komponent aus.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>588</x>
+      <y>72</y>
+      <w>312</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Die SelectedComponent wird aus der 
+DB geholt.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>588</x>
+      <y>156</y>
+      <w>312</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>commomStatus-&gt; Success or 
+ODBConnectionError or 
+ODBReadError or 
+ODBClassCastError</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>732</x>
+      <y>24</y>
+      <w>36</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>456</x>
+      <y>300</y>
+      <w>252</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Es wird aus DB Current- und 
+NextStep gelesen.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>60</x>
+      <y>684</y>
+      <w>192</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>StepCurrentConfig
+-&gt;ID
+-&gt;nameToSchow
+-&gt;components(List)
+-&gt;nextStep
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>0</x>
+      <y>1452</y>
+      <w>168</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>C
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>972</x>
+      <y>0</y>
+      <w>228</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>component
+-&gt;ID
+-&gt;NameToSchow
+-&gt;excludeDependenciesOut
+-&gt;excludeDependencisIn
+-&gt;requireDependenciesOut
+-&gt;requireDependenciesIn
+status
+-&gt;commonStatus
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>888</x>
+      <y>84</y>
+      <w>108</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;70.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>732</x>
+      <y>300</y>
+      <w>396</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>Dieses Status wird in den SelectedComponentBO 
+geschrieben und an Benutzer gesendet</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>720</x>
+      <y>120</y>
+      <w>36</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;30.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>576</x>
+      <y>228</y>
+      <w>108</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=Success
+fg=green</panel_attributes>
+    <additional_attributes>10.0;60.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>792</x>
+      <y>228</y>
+      <w>516</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=ODBConnectionError or ODBReadError or ODBClassCastError
+fg=red</panel_attributes>
+    <additional_attributes>60.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>108</x>
+      <y>432</y>
+      <w>444</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>CurrentStep hat folgende Statuse
+1. CommonErrorCurrentStep, ODBConnectionError
+2. CommonErrorCurrentStep, ODBClassCastError
+3. CommonErrorCurrentStep, ODBReadError
+4. CurrentStepNotExist, Error
+5. CurrentStepExist, Success
+6. MultipleCurrentSteps, Error</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>132</x>
+      <y>120</y>
+      <w>204</w>
+      <h>228</h>
+    </coordinates>
+    <panel_attributes>CurrentStep
+step
+-&gt;ID
+-&gt;NameToSchow
+-&gt;SelectionCriteriumMIN
+-&gt;SelectionCriteriumMAX
+-&gt;status
+---&gt;firstStep
+---&gt;nextsStep
+---&gt;currentStep
+---&gt;common
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>348</y>
+      <w>252</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;70.0;190.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>324</x>
+      <y>300</y>
+      <w>156</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;110.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>360</x>
+      <y>24</y>
+      <w>204</w>
+      <h>228</h>
+    </coordinates>
+    <panel_attributes>NextStep
+step
+-&gt;ID
+-&gt;NameToSchow
+-&gt;SelectionCriteriumMIN
+-&gt;SelectionCriteriumMAX
+-&gt;status
+---&gt;firstStep
+---&gt;nextsStep
+---&gt;currentStep
+---&gt;common
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>468</x>
+      <y>240</y>
+      <w>36</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>432</y>
+      <w>444</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>NextStep hat folgende Statuse
+1. CommonErrorNextStep, ODBConnectionError
+2. CommonErrorNextStep, ODBClassCastError
+3. CommonErrorNextStep, ODBReadError
+4. NextStepNotExist, Error
+5. NextStepExist, Success
+6. MultipleNextSteps, Error</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>588</x>
+      <y>348</y>
+      <w>204</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>150.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>324</x>
+      <y>696</y>
+      <w>384</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Current- und NextStep werden in 
+das Objekt SelectedComponentBO abgelegt.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>600</y>
+      <w>204</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>150.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>564</x>
+      <y>600</y>
+      <w>156</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;80.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>108</x>
+      <y>876</y>
+      <w>360</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>Aus dem CurrentConfig wird der Step mit 
+vorher ausgewählten Compoonents gelesen.
+Wenn keinen  Step gelesen werden kann, wird 
+None geschrieben. (Z.B erste Step)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>300</x>
+      <y>744</y>
+      <w>360</w>
+      <h>156</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=CurrentStepExist, Success and 
+NextStepExist, Success
+fg=green</panel_attributes>
+    <additional_attributes>10.0;110.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>672</x>
+      <y>744</y>
+      <w>120</w>
+      <h>132</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=rest
+fg=red</panel_attributes>
+    <additional_attributes>80.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>516</x>
+      <y>852</y>
+      <w>396</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Dieses Status wird in den SelectedComponentBO 
+geschrieben und an Benutzer gesendet</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>156</x>
+      <y>780</y>
+      <w>72</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>40.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+</diagram>

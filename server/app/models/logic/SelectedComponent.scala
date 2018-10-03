@@ -34,13 +34,206 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO) {
 
     val sCBO: SelectedComponentBO = Persistence.getSelectedComponent(selectedComponentId)
 
-    val sCExtendedOfCurrentAndNextStep = getCurrentAndNextStepFromPersistence(sCBO)
+    sCBO.status.get.common.get match {
+      case Success() =>
 
-    val sCExtendedOfCurrentStep = getCurrentStepFromCurrentConfig(sCExtendedOfCurrentAndNextStep)
+        val sCExtendedOfCurrentAndNextStep = getCurrentAndNextStepFromPersistence(sCBO)
 
-    val sCExtendedOfVerifiedStatsComponentTyp = verifyStatusComponentType(sCExtendedOfCurrentStep)
+        val (statusCurrentStep, statusNextStep): (StatusCurrentStep ,StatusNextStep) =
+          (sCExtendedOfCurrentAndNextStep.currentStep.get.status.get.currentStep.get,
+            sCExtendedOfCurrentAndNextStep.nextStep.get.status.get.nextStep.get)
 
-    verifyStatusFromSelectedComponent(sCExtendedOfVerifiedStatsComponentTyp)
+        (statusCurrentStep, statusNextStep) match {
+          case (CurrentStepExist(), NextStepExist()) =>
+
+            val sCExtendedOfCurrentStep = getCurrentStepFromCurrentConfig(sCExtendedOfCurrentAndNextStep)
+
+            // Status Component Typ
+            val sCExtendedOfStatusComponentTyp = verifyStatusComponentType(sCExtendedOfCurrentStep)
+
+            //Test -->
+
+            //Status Exclude Dependency
+            val sCExtendedOfStatusExcludeDependency = verifyStatusExcludeDependency(sCExtendedOfStatusComponentTyp)
+
+            //Status Selection Criterium
+            val sCExtendedOfStatusSelectionCriterium = verifyStatusSelectionCriterium(sCExtendedOfStatusExcludeDependency)
+
+            // Status Selected Component
+            val sCExtendedOFStatusSelectedComponent_Test = verifyStatusSelectedComponent_Test(sCExtendedOfStatusSelectionCriterium)
+
+            verifyStatusSelectedComponent(sCExtendedOFStatusSelectedComponent_Test)
+
+          //Test <--
+
+          //    val sCExtendedOfStatusSelectedComponent: SelectedComponentBO =
+          //      SelectedComponentUtil.checkStatusSelectedComponent(selectedComponentBO)
+          //
+          //    verifyStatusSelectedComponent(sCExtendedOfStatusComponentTyp)
+          case _ => sCExtendedOfCurrentAndNextStep
+        }
+      case _ => sCBO
+    }
+  }
+
+  private def verifyStatusSelectionCriterium(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+    selectedComponentBO.status.get.excludeDependency.get match {
+      case ExcludedComponent() =>
+        val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.currentStepCurrentConfig match {
+          case Some(step) => step.components
+          case None => List()
+        }
+
+        val currentConfigWithTempSelectedComponent: List[ComponentBO] =
+          previousSelectedComponentsInCurrentConfig :+ selectedComponentBO.component.get
+
+        val possibleComponentToSelect: List[String] =
+          new SelectedComponentUtil().getFurtherPossibleComponentToSelect(currentConfigWithTempSelectedComponent,
+          selectedComponentBO, previousSelectedComponentsInCurrentConfig)
+
+        possibleComponentToSelect match {
+          case List() =>
+            //RequireNextStep
+            val status = selectedComponentBO.status.get.copy(selectionCriterium = Some(RequireNextStep()))
+            selectedComponentBO.copy(status = Some(status))
+          case _ =>
+            val statusSC: StatusSelectionCriterium =
+              new SelectedComponentUtil().getSelectionCriteriumStatus(previousSelectedComponentsInCurrentConfig.size,
+                selectedComponentBO.currentStep.get)
+            val status = selectedComponentBO.status.get.copy(selectionCriterium = Some(statusSC))
+            selectedComponentBO.copy(status = Some(status))
+        }
+
+      case NotExcludedComponent() =>
+        val componentIdExist: Boolean =
+          selectedComponentBO.currentStepCurrentConfig.get.components.exists(_.componentId.get == selectedComponentBO.component.get.componentId.get)
+
+        if (componentIdExist) {
+          val countOfComponentsInCurrentConfig: Int = selectedComponentBO.currentStepCurrentConfig match {
+            case Some(step) => step.components.size
+            case None => 0
+          }
+
+          val statusSC: StatusSelectionCriterium =
+            new SelectedComponentUtil().
+              getSelectionCriteriumStatus(countOfComponentsInCurrentConfig, selectedComponentBO.currentStep.get)
+
+          val status = selectedComponentBO.status.get.copy(selectionCriterium = Some(statusSC))
+          selectedComponentBO.copy(status = Some(status))
+
+        }else{
+
+          val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.currentStepCurrentConfig match {
+            case Some(step) => step.components
+            case None => List()
+          }
+
+          val currentConfigWithTempSelectedComponent: List[ComponentBO] =
+            previousSelectedComponentsInCurrentConfig :+ selectedComponentBO.component.get
+
+          val possibleComponentToSelect: List[String] =
+            new SelectedComponentUtil().getFurtherPossibleComponentToSelect(currentConfigWithTempSelectedComponent,
+            selectedComponentBO, previousSelectedComponentsInCurrentConfig)
+
+          val countOfComponentsInCurrentConfigWithTempSelectedComponent = currentConfigWithTempSelectedComponent.size
+
+          val statusSC: StatusSelectionCriterium = new SelectedComponentUtil().
+            getSelectionCriteriumStatus(countOfComponentsInCurrentConfigWithTempSelectedComponent,
+              selectedComponentBO.currentStep.get)
+
+          val status = selectedComponentBO.status.get.copy(selectionCriterium = Some(statusSC))
+          selectedComponentBO.copy(status = Some(status))
+        }
+    }
+  }
+
+
+  private def verifyStatusSelectedComponent_Test(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+    selectedComponentBO.status.get.excludeDependency.get match {
+      case ExcludedComponent() =>
+        val status = selectedComponentBO.status.get.copy(selectedComponent = Some(NotAllowedComponent()))
+
+        selectedComponentBO.copy(status = Some(status))
+
+      case NotExcludedComponent() =>
+        val componentIdExist: Boolean =
+          selectedComponentBO.currentStepCurrentConfig.get.components
+            .exists(_.componentId.get == selectedComponentBO.component.get.componentId.get)
+
+        if(componentIdExist) {
+          //Die Komponente muss aus der CurrentConfig gelöscht werden
+          CurrentConfig.removeComponent(selectedComponentBO.currentStepCurrentConfig.get.stepId,
+            selectedComponentBO.component.get.componentId.get)
+
+          val status = selectedComponentBO.status.get.copy(selectedComponent = Some(RemovedComponent()))
+
+          selectedComponentBO.copy(status = Some(status))
+
+        }else {
+
+          // TODO Zweimal ausgeführt wird -->
+          val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.currentStepCurrentConfig match {
+            case Some(step) => step.components
+            case None => List()
+          }
+
+          val currentConfigWithTempSelectedComponent: List[ComponentBO] =
+            previousSelectedComponentsInCurrentConfig :+ selectedComponentBO.component.get
+
+          val possibleComponentToSelect: List[String] =
+            new SelectedComponentUtil().getFurtherPossibleComponentToSelect(currentConfigWithTempSelectedComponent,
+              selectedComponentBO, previousSelectedComponentsInCurrentConfig)
+          //TODO <--
+
+          selectedComponentBO.status.get.selectionCriterium.get match {
+            case RequireComponent() => new SelectedComponentUtil().getComponentBOByStatusRequireComponent(possibleComponentToSelect,
+              selectedComponentBO)
+            case RequireNextStep() => new SelectedComponentUtil().getComponentBOByStatusRequireNextStep(selectedComponentBO, selectedComponentBO.currentStepCurrentConfig)
+            case AllowNextComponent() => new SelectedComponentUtil().getComponentBOByStatusAllowNextComponent(possibleComponentToSelect,
+              selectedComponentBO)
+            case NotAllowNextComponent() =>
+              selectedComponentBO.copy(status = Some(StatusComponent(
+                Some(RequireNextStep()),
+                Some(NotAllowedComponent()),
+                Some(NotExcludedComponent()),
+                Some(Success()),
+                Some(DefaultComponent())
+              )))
+            case ErrorSelectionCriterium() =>
+              selectedComponentBO.copy(status = Some(StatusComponent(
+                Some(ErrorSelectionCriterium()),
+                Some(NotAllowedComponent()),
+                Some(NotExcludedComponent()),
+                Some(Error()),
+                Some(DefaultComponent())
+              )))
+          }
+        }
+    }
+  }
+
+  private def verifyStatusExcludeDependency(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+
+    val selectedComponentIdsFromCurrentConfig: List[String] = selectedComponentBO.currentStepCurrentConfig match {
+      case Some(step) => step.components map (_.componentId.get)
+      case None => List()
+    }
+
+    val excludeComponentsIds: List[String] =
+      selectedComponentIdsFromCurrentConfig flatMap {
+        sCId => (selectedComponentBO.component.get.excludeDependenciesIn.get map (_.outId)).filter { inECId => sCId == inECId }
+      }
+    val status = selectedComponentBO.status.get
+    excludeComponentsIds match {
+      case List() =>
+        val statusNotExcludedComponent: StatusComponent =
+          selectedComponentBO.status.get.copy(excludeDependency = Some(NotExcludedComponent()))
+        selectedComponentBO.copy(status = Some(statusNotExcludedComponent))
+      case _ =>
+        val statusExcludedComponent: StatusComponent =
+          selectedComponentBO.status.get.copy(excludeDependency = Some(ExcludedComponent()))
+        selectedComponentBO.copy(status = Some(statusExcludedComponent))
+    }
   }
 
 
@@ -52,17 +245,12 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO) {
     * @return selectedComponentBO
     */
   private def getCurrentAndNextStepFromPersistence(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
-    selectedComponentBO.status.get.common match {
-      case Some(Success()) =>
 
-        val currentStepBO: StepBO = Persistence.getCurrentStep(selectedComponentBO.component.get.componentId.get)
+    val currentStepBO: StepBO = Persistence.getCurrentStep(selectedComponentBO.component.get.componentId.get)
 
-        val nextStep: StepBO = Persistence.getNextStep(selectedComponentBO.component.get.componentId.get)
+    val nextStep: StepBO = Persistence.getNextStep(selectedComponentBO.component.get.componentId.get)
 
-        selectedComponentBO.copy(currentStep = Some(currentStepBO), nextStep = Some(nextStep))
-
-      case status => selectedComponentBO.copy(status = Some(StatusComponent(common = status)))
-    }
+    selectedComponentBO.copy(currentStep = Some(currentStepBO), nextStep = Some(nextStep))
   }
 
   /**
@@ -72,20 +260,11 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO) {
     * @return StepBO
     */
   private def getCurrentStepFromCurrentConfig(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
-    selectedComponentBO.currentStep.get.status.get.currentStep match {
-      case Some(CurrentStepExist()) =>
 
-        val currentStepCurrentConfig: Option[StepCurrentConfigBO] =
-          CurrentConfig.getCurrentStep(selectedComponentBO.currentStep.get.stepId.get)
+    val currentStepCurrentConfig: Option[StepCurrentConfigBO] =
+      CurrentConfig.getCurrentStep(selectedComponentBO.currentStep.get.stepId.get)
 
-        selectedComponentBO.copy(currentStepCurrentConfig = currentStepCurrentConfig)
-
-      case Some(_) =>
-        selectedComponentBO.copy(status = Some(StatusComponent(common = Some(selectedComponentBO.currentStep.get.status.get.currentStep.get))))
-      case None =>
-        selectedComponentBO.copy(status = Some(StatusComponent(common = Some(Error()))))
-
-    }
+    selectedComponentBO.copy(currentStepCurrentConfig = currentStepCurrentConfig)
   }
 
   /**
@@ -96,7 +275,7 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO) {
     */
   private def verifyStatusComponentType(selectedComponentBO: SelectedComponentBO):SelectedComponentBO = {
 
-
+    //TODO NextStepNotExist -> commonStatus = SUCCESS
     val componentTypeStatus: StatusComponentType = selectedComponentBO.nextStep.get.status.get.nextStep.get match {
       case NextStepNotExist() => FinalComponent()
       case NextStepExist() => DefaultComponent()
@@ -144,19 +323,24 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO) {
     )
   }
 
-  private def verifyStatusFromSelectedComponent(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private def verifyStatusSelectedComponent(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
 
-    val statusSelectedComponent: SelectedComponentBO = SelectedComponentUtil.checkStatusSelectedComponent(selectedComponentBO)
 
-    val selectedComponentStatusComponentType: SelectedComponentBO = statusSelectedComponent copy (
-      status = Some(StatusComponent(
-        statusSelectedComponent.status.get.selectionCriterium,
-        statusSelectedComponent.status.get.selectedComponent,
-        statusSelectedComponent.status.get.excludeDependency,
-        statusSelectedComponent.status.get.common,
-        statusSelectedComponent.status.get.componentType
-      ))
-      )
+    //Test -->
+//    val statusSelectedComponent: SelectedComponentBO = SelectedComponentUtil.checkStatusSelectedComponent(selectedComponentBO)
+
+//    val selectedComponentStatusComponentType: SelectedComponentBO = statusSelectedComponent copy (
+//      status = Some(StatusComponent(
+//        statusSelectedComponent.status.get.selectionCriterium,
+//        statusSelectedComponent.status.get.selectedComponent,
+//        statusSelectedComponent.status.get.excludeDependency,
+//        statusSelectedComponent.status.get.common,
+//        statusSelectedComponent.status.get.componentType
+//      ))
+//      )
+    //Test <--
+
+    val selectedComponentStatusComponentType: SelectedComponentBO = selectedComponentBO
 
     val dependencies: List[DependencyBO] =
       selectedComponentStatusComponentType.component.get.requireDependenciesOut.get ::: selectedComponentStatusComponentType.component.get.excludeDependenciesOut.get

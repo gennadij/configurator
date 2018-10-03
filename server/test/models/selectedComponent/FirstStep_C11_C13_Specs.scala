@@ -4,6 +4,8 @@ import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
 import org.shared.common.JsonNames
+import org.shared.common.status.Success
+import org.shared.component.status._
 import org.shared.startConfig.json.JsonStartConfigOut
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
@@ -70,20 +72,13 @@ class FirstStep_C11_C13_Specs extends Specification with MessageHandler with Bef
       (((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0)) \ "dependencyType").asOpt[String].get === "exclude"
       (((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0)) \ "visualization").asOpt[String].get === "undef"
       (((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0)) \ "nameToShow").asOpt[String].get === "(C11) ----> (C13)"
-      (jsonComponentOut_1 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
-      (jsonComponentOut_1 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === 
-        "Sie koennen weitere Komponente auswaelen"
-      (jsonComponentOut_1 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
-      (jsonComponentOut_1 \ "result" \ "status" \ "selectedComponent" \ "message").asOpt[String].get === 
-        "Die Komponente wurde erfolgreich in der aktuelle Konfiguration hinzugefuegt"
-      (jsonComponentOut_1 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "NOT_EXCLUDED_COMPONENT"
-      (jsonComponentOut_1 \ "result" \ "status" \ "excludeDependency" \ "message").asOpt[String].get === 
-        "Diese Komponente kann zu der Konfiguration hinzugefuegt werden"
-      (jsonComponentOut_1 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
-      (jsonComponentOut_1 \ "result" \ "status" \ "common" \ "message").asOpt[String].get === "Die Aktion ist erfolgreich"
-      (jsonComponentOut_1 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
-      (jsonComponentOut_1 \ "result" \ "status" \ "componentType" \ "message").asOpt[String].get === ""
-      
+      val status_1 = (jsonComponentOut_1 \ "result" \ "status")
+      (status_1 \"selectionCriterium" \ "status").asOpt[String].get === AllowNextComponent().status
+      (status_1 \"selectedComponent" \ "status").asOpt[String].get === AddedComponent().status
+      (status_1 \"excludeDependency" \ "status").asOpt[String].get === NotExcludedComponent().status
+      (status_1 \"common" \ "status").asOpt[String].get === Success().status
+      (status_1 \"componentType" \ "status").asOpt[String].get === DefaultComponent().status
+
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       val sCOut_2 = Json.fromJson[JsonStartConfigOut](startConfigOut)
@@ -108,11 +103,12 @@ class FirstStep_C11_C13_Specs extends Specification with MessageHandler with Bef
       
       (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
       (jsonComponentOut_2 \ "result" \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 2
-      (jsonComponentOut_2 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
-      (jsonComponentOut_2 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
-      (jsonComponentOut_2 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "EXCLUDED_COMPONENT"
-      (jsonComponentOut_2 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
-      (jsonComponentOut_2 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
+      val status_2 = (jsonComponentOut_2 \ "result" \ "status")
+      (status_2 \"selectionCriterium" \ "status").asOpt[String].get === AllowNextComponent().status
+      (status_2 \"selectedComponent" \ "status").asOpt[String].get === NotAllowedComponent().status
+      (status_2 \"excludeDependency" \ "status").asOpt[String].get === ExcludedComponent().status
+      (status_2 \"common" \ "status").asOpt[String].get === Success().status
+      (status_2 \"componentType" \ "status").asOpt[String].get === DefaultComponent().status
     }
   }
 }

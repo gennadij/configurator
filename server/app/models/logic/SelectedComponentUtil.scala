@@ -4,7 +4,6 @@ import models.bo.{ComponentBO, SelectedComponentBO, StepBO, StepCurrentConfigBO}
 import models.currentConfig.CurrentConfig
 import org.shared.common.status.{Error, Success}
 import org.shared.component.status._
-import play.api.Logger
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -38,8 +37,6 @@ class SelectedComponentUtil {
       selectedComponentIdsFromCurrentConfig flatMap {
         sCId => (selectedComponentBO.component.get.excludeDependenciesIn.get map (_.outId)).filter { inECId => sCId == inECId }
       }
-
-    Logger.info(this.getClass.getSimpleName + ": excludeComponentsIds " + excludeComponentsIds)
 
     excludeComponentsIds match {
       case List() =>
@@ -166,7 +163,7 @@ class SelectedComponentUtil {
     *        currentStep: Option[StepCurrentConfigBO]
     * @return SelectedComponentBO
     */
-  private def getComponentBOByStatusRequireComponent(possibleComponentToSelect: List[String],
+  def getComponentBOByStatusRequireComponent(possibleComponentToSelect: List[String],
                                                      selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
     possibleComponentToSelect match {
       case List() =>
@@ -203,7 +200,7 @@ class SelectedComponentUtil {
     *        currentStep: Option[StepCurrentConfigBO]
     * @return SelectedComponentBO
     */
-  private def getComponentBOByStatusRequireNextStep(selectedComponentBO: SelectedComponentBO,
+  def getComponentBOByStatusRequireNextStep(selectedComponentBO: SelectedComponentBO,
                                                     currentStep: Option[StepCurrentConfigBO]): SelectedComponentBO = {
     val component = selectedComponentBO.copy(status = Some(StatusComponent(
       Some(RequireNextStep()),
@@ -226,7 +223,7 @@ class SelectedComponentUtil {
     *        currentStep: Option[StepCurrentConfigBO]
     * @return
     */
-  private def getComponentBOByStatusAllowNextComponent(possibleComponentToSelect: List[String],
+  def getComponentBOByStatusAllowNextComponent(possibleComponentToSelect: List[String],
                                                        selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
     possibleComponentToSelect match {
       case List() =>
@@ -263,7 +260,7 @@ class SelectedComponentUtil {
     *                                               fatherStep: StepBO, selectedComponentBO: SelectedComponentBO,
     * @return List[String]
     */
-  private def getFurtherPossibleComponentToSelect(currentConfigWithTempSelectedComponent: List[ComponentBO],
+  def getFurtherPossibleComponentToSelect(currentConfigWithTempSelectedComponent: List[ComponentBO],
                                                   selectedComponentBO: SelectedComponentBO,
                                                   previousSelectedComponentsInCurrentConfig: List[ComponentBO]): List[String] = {
 
@@ -293,7 +290,7 @@ class SelectedComponentUtil {
     * @param countOfComponents : Int, fatherStep: StepBO
     * @return StatusSelectionCriterium
     */
-  private def getSelectionCriteriumStatus(countOfComponents: Int, fatherStep: StepBO): StatusSelectionCriterium = {
+  def getSelectionCriteriumStatus(countOfComponents: Int, fatherStep: StepBO): StatusSelectionCriterium = {
 
     val min: Int = fatherStep.selectionCriteriumMin.get
     val max: Int = fatherStep.selectionCriteriumMax.get
