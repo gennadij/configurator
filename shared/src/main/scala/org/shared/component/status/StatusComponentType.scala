@@ -19,7 +19,7 @@ case class FinalComponent() extends StatusComponentType {
   def message: String = ""
 }
 
-case class ErrorComponentType() extends StatusComponentType {
-  def status: String = "ERROR_COMPONENT"
-  def message: String = ""
-}
+//case class ErrorComponentType() extends StatusComponentType {
+//  def status: String = "ERROR_COMPONENT"
+//  def message: String = ""
+//}

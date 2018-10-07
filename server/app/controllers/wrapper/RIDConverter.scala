@@ -55,7 +55,7 @@ trait RIDConverter extends RidToHash {
     }
 
     SelectedComponentBO(
-      component = Some(ComponentBO(
+      selectedComponent = Some(ComponentBO(
         componentId = Some(componentRid)
       ))
     )
@@ -74,33 +74,33 @@ trait RIDConverter extends RidToHash {
       case None => None
     }
 
-    val selectedComponentIdHash: Option[String] = selectedComponentBO.component.get.componentId match {
+    val selectedComponentIdHash: Option[String] = selectedComponentBO.selectedComponent.get.componentId match {
       case Some(cId) => getHash(cId)
       case None => None
     }
 
-    val excludeDependencyInHashId: Option[List[DependencyBO]] = selectedComponentBO.component.get.excludeDependenciesIn match {
+    val excludeDependencyInHashId: Option[List[DependencyBO]] = selectedComponentBO.selectedComponent.get.excludeDependenciesIn match {
       case Some(dependencies) => Some(dependencies map {
         d => {d.copy(outId = getHash(d.outId).get, inId = getHash(d.outId).get)}
       })
       case None => None
     }
 
-    val excludeDependencyOutHashId: Option[List[DependencyBO]] = selectedComponentBO.component.get.excludeDependenciesOut match {
+    val excludeDependencyOutHashId: Option[List[DependencyBO]] = selectedComponentBO.selectedComponent.get.excludeDependenciesOut match {
       case Some(dependencies) => Some(dependencies map {
         d => {d.copy(outId = getHash(d.outId).get, inId = getHash(d.outId).get)}
       })
       case None => None
     }
 
-    val requireDependencyOutHashId: Option[List[DependencyBO]] = selectedComponentBO.component.get.requireDependenciesOut match {
+    val requireDependencyOutHashId: Option[List[DependencyBO]] = selectedComponentBO.selectedComponent.get.requireDependenciesOut match {
       case Some(dependencies) => Some(dependencies map {
         d => {d.copy(outId = getHash(d.outId).get, inId = getHash(d.outId).get)}
       })
       case None => None
     }
 
-    val requireDependencyInHashId: Option[List[DependencyBO]] = selectedComponentBO.component.get.requireDependenciesIn match {
+    val requireDependencyInHashId: Option[List[DependencyBO]] = selectedComponentBO.selectedComponent.get.requireDependenciesIn match {
       case Some(dependencies) => Some(dependencies map {
         d => {d.copy(outId = getHash(d.outId).get, inId = getHash(d.outId).get)}
       })
@@ -108,7 +108,7 @@ trait RIDConverter extends RidToHash {
     }
 
     selectedComponentBO.copy(
-      component = Some(selectedComponentBO.component.get.copy(
+      selectedComponent = Some(selectedComponentBO.selectedComponent.get.copy(
         componentId = selectedComponentIdHash,
         excludeDependenciesOut = excludeDependencyOutHashId,
         excludeDependenciesIn = excludeDependencyInHashId,

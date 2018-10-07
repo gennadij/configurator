@@ -1,6 +1,6 @@
 package models.currentConfig
 
-import models.bo.{ComponentBO, StepCurrentConfigBO}
+import models.bo.{ComponentBO, SelectedComponentBO, StepCurrentConfigBO}
 import play.api.Logger
 
 /**
@@ -102,12 +102,12 @@ object CurrentConfig {
    * 
    * @version 0.0.1
    * 
-   * @param stepId: String, componentId: String
+   * @param selectedComponentBO: SelectedComponentBO
    * 
    * @return List[ContainerComponentBO]
    */
-  def removeComponent(stepId: String, componentId: String): List[ComponentBO] = {
-    currentConfig.removeComponent(stepId, componentId)
+  def removeComponent(selectedComponentBO: SelectedComponentBO): List[ComponentBO] = {
+    currentConfig.removeComponent(selectedComponentBO: SelectedComponentBO)
   }
 }
 
@@ -283,17 +283,23 @@ class CurrentConfig {
    * 
    * @version 0.0.2
    * 
-   * @param stepId: String, componentId: String
+   * @param selectedComponentBO: SelectedComponentBO
    * 
    * @return Unit
    */
-  private def removeComponent(stepId: String, componentId: String): List[ComponentBO] = {
-    val step: Option[StepCurrentConfigBO] = getCurrentStep(stepId)
-    Logger.info(this.getClass.getSimpleName + ": " + step.get.components + " " + componentId)
+  private def removeComponent(selectedComponentBO: SelectedComponentBO): List[ComponentBO] = {
+
+    val step: Option[StepCurrentConfigBO] = getCurrentStep(selectedComponentBO.stepCurrentConfig.get.stepId)
+
+    Logger.info(this.getClass.getSimpleName + ": " + step.get.components + " " + selectedComponentBO.selectedComponent.get.componentId.get)
     Logger.info("Step with deleted component " + step.get.getClass.hashCode())
-    step.get.components = step.get.components.filterNot(_.componentId == componentId)
+
+    step.get.components = step.get.components.filterNot(_.componentId == selectedComponentBO.selectedComponent.get.componentId.get)
+
     Logger.info("Step with deleted component " + step.get.components)
+
     printCurrentConfig()
+
     step.get.components
   }
 }

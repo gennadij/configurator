@@ -185,7 +185,7 @@ trait Wrapper extends RIDConverter {
     val status: StatusComponent = selectedComponentWithHash.status.get
     JsonComponentOut(
       result = JsonComponentResult(
-        selectedComponentWithHash.component.get.componentId.get,
+        selectedComponentWithHash.selectedComponent.get.componentId.get,
         selectedComponentWithHash.currentStep.get.stepId.get,
         JsonComponentStatus(
           status.selectionCriterium match {
@@ -229,10 +229,10 @@ trait Wrapper extends RIDConverter {
             case None => None
           }
         ),
-        excludeDependenciesOut = toJsonDependency(selectedComponentWithHash.component.get.excludeDependenciesOut),
-        excludeDependenciesIn = toJsonDependency(selectedComponentWithHash.component.get.requireDependenciesIn),
-        requireDependenciesOut = toJsonDependency(selectedComponentWithHash.component.get.requireDependenciesOut),
-        requireDependenciesIn = toJsonDependency(selectedComponentWithHash.component.get.requireDependenciesIn)
+        excludeDependenciesOut = toJsonDependency(selectedComponentWithHash.selectedComponent.get.excludeDependenciesOut),
+        excludeDependenciesIn = toJsonDependency(selectedComponentWithHash.selectedComponent.get.requireDependenciesIn),
+        requireDependenciesOut = toJsonDependency(selectedComponentWithHash.selectedComponent.get.requireDependenciesOut),
+        requireDependenciesIn = toJsonDependency(selectedComponentWithHash.selectedComponent.get.requireDependenciesIn)
       )
     )
   }

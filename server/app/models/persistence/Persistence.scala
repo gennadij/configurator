@@ -109,7 +109,7 @@ object Persistence {
     vComponent match {
       case Some(vC) => SelectedComponentBO(
         status = Some(StatusComponent(common = Some(Success()))),
-        component = Some(ComponentBO(
+        selectedComponent = Some(ComponentBO(
           Some(vC.getIdentity.toString),
           Some(vC.getProperty(PropertyKeys.NAME_TO_SHOW)),
           Some(Graph.getComponentDependenciesOut(vC) filter {
@@ -190,10 +190,7 @@ object Persistence {
             hC.getVertex(Direction.IN).asInstanceOf[OrientVertex].getIdentity.toString()
           }))
         )
-      case None => statusNextStep match {
-        case _ =>
-          StepBO(status = Some(StatusStep(nextStep = Some(statusNextStep), common = Some(statusCommon))))
-      }
+      case None => StepBO(status = Some(StatusStep(nextStep = Some(statusNextStep), common = Some(statusCommon))))
     }
   }
 }

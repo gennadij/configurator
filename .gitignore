@@ -33,3 +33,5 @@ bin/
 
 # docu
 docu/*.synctex.gz
+docu/logic_description/*.pdf
+docu/logic_description/*.synctex.gz
