@@ -1,16 +1,15 @@
-package models.v001
+package models.nextStep
 
 import controllers.MessageHandler
 import controllers.websocket.WebClient
-import org.specs2.runner.JUnitRunner
 import org.junit.runner.RunWith
 import org.shared.common.JsonNames
 import org.shared.startConfig.json.JsonStartConfigOut
 import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
-import play.api.libs.json.Json
 import play.api.Logger
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsValue, Json}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -52,10 +51,7 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
 
       val componentIdC11: String = sCOut.get.result.step.components.filter(comp => comp.nameToShow == "C11")
         .map(_.componentId).head
-//      val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-//            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_1_user29_v016")
-//            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
-      
+
       Logger.info(this.getClass.getSimpleName + ": componentIdC11" + componentIdC11)
 
       val jsonComponentIn_1: JsValue = Json.obj(
@@ -71,24 +67,16 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_1 " + jsonComponentOut_1)
       
       (jsonComponentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
-//      (jsonComponentOut_1 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
-//      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
-//      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
-//      (((jsonComponentOut_1 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
+      (jsonComponentOut_1 \ "result" \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
+      ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"
+      ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "visualization").asOpt[String].get === "undef"
+      ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "nameToShow").asOpt[String].get === "(C11) ----> (C13)"
       (jsonComponentOut_1 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
-      (jsonComponentOut_1 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === 
-        "Sie koennen weitere Komponente auswaelen"
       (jsonComponentOut_1 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
-      (jsonComponentOut_1 \ "result" \ "status" \ "selectedComponent" \ "message").asOpt[String].get === 
-        "Die Komponente wurde erfolgreich in der aktuelle Konfiguration hinzugefuegt"
       (jsonComponentOut_1 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "NOT_EXCLUDED_COMPONENT"
-      (jsonComponentOut_1 \ "result" \ "status" \ "excludeDependency" \ "message").asOpt[String].get === 
-        "Diese Komponente kann zu der Konfiguration hinzugefuegt werden"
       (jsonComponentOut_1 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
-      (jsonComponentOut_1 \ "result" \ "status" \ "common" \ "message").asOpt[String].get === "Die Aktion ist erfolgreich"
       (jsonComponentOut_1 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
-      (jsonComponentOut_1 \ "result" \ "status" \ "componentType" \ "message").asOpt[String].get === ""
-      
+
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       //User hat ausgewaelt
@@ -117,24 +105,16 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_2 " + jsonComponentOut_2)
       
       (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
-//      (jsonComponentOut_2 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
-//      (((jsonComponentOut_2 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
-//      (((jsonComponentOut_2 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
-//      (((jsonComponentOut_2 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_2_user29_v016) ----> (C_1_3_user29_v016)"
+      (jsonComponentOut_2 \ "result" \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
+      ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"
+      ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "visualization").asOpt[String].get === "undef"
+      ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "nameToShow").asOpt[String].get === "(C12) ----> (C13)"
       (jsonComponentOut_2 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
-      (jsonComponentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === 
-        "Es darf keine weitere Komponente ausgewaelt werden und es muss naechste Schhritt geladen werden"
       (jsonComponentOut_2 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
-      (jsonComponentOut_2 \ "result" \ "status" \ "selectedComponent" \ "message").asOpt[String].get === 
-        "Die Komponente wurde erfolgreich in der aktuelle Konfiguration hinzugefuegt"
       (jsonComponentOut_2 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "NOT_EXCLUDED_COMPONENT"
-      (jsonComponentOut_2 \ "result" \ "status" \ "excludeDependency" \ "message").asOpt[String].get === 
-        "Diese Komponente kann zu der Konfiguration hinzugefuegt werden"
       (jsonComponentOut_2 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
-      (jsonComponentOut_2 \ "result" \ "status" \ "common" \ "message").asOpt[String].get === "Die Aktion ist erfolgreich"
       (jsonComponentOut_2 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
-      (jsonComponentOut_2 \ "result" \ "status" \ "componentType" \ "message").asOpt[String].get === ""
-      
+
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       val jsonNextStepIn_2 : JsValue = Json.obj(
@@ -147,10 +127,10 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       Logger.info(this.getClass.getSimpleName + ": nextStepOut_2 " + jsonNextStepOut_2)
       
       (jsonNextStepOut_2 \ "json").asOpt[String].get === JsonNames.NEXT_STEP
-      (jsonNextStepOut_2 \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S2_user29_v016"
+      (jsonNextStepOut_2 \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S2"
       (jsonNextStepOut_2 \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 2
-      (((jsonNextStepOut_2 \ "result" \ "step" \ "components")(0)) \ "nameToShow").asOpt[String].get === "C_2_1_user29_v016"
-      (((jsonNextStepOut_2 \ "result" \ "step" \ "components")(1)) \ "nameToShow").asOpt[String].get === "C_2_2_user29_v016"
+      (((jsonNextStepOut_2 \ "result" \ "step" \ "components")(0)) \ "nameToShow").asOpt[String].get === "C_2_1"
+      (((jsonNextStepOut_2 \ "result" \ "step" \ "components")(1)) \ "nameToShow").asOpt[String].get === "C_2_2"
       (jsonNextStepOut_2 \ "result" \ "status" \ "firstStep").asOpt[String] === None
       (jsonNextStepOut_2 \ "result" \ "status" \ "nextStep" \ "status").asOpt[String].get === "NEXT_STEP_EXIST"
       (jsonNextStepOut_2 \ "result" \ "status" \ "fatherStep").asOpt[String] === None
