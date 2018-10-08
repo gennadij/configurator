@@ -302,7 +302,6 @@ class SelectedComponentUtil {
 
     val currentConfigWithTempSelectedComponent: List[ComponentBO] =
       previousSelectedComponentsInCurrentConfig :+ selectedComponentBO.selectedComponent.get
-      previousSelectedComponentsInCurrentConfig
 
 
     val excludedComponentIds: Set[String] = (currentConfigWithTempSelectedComponent flatMap (pSC => {
@@ -321,27 +320,115 @@ class SelectedComponentUtil {
     })
 
 //        Logger.info("unselectedExcludedComponents: " + unselectedExcludedComponentIds)
-        val filteredComponents: List[String] =
-          selectedComponentBO.currentStep.get.componentIds.get filterNot (c => {
-            unselectedExcludedComponentIds :+ selectedComponentBO.selectedComponent.get.componentId.get
-          }.contains(c))
-
-    val currentConfigWithTempSelectedComponentIds: List[String] =
-      currentConfigWithTempSelectedComponent map (_.componentId.get)
-
     val pComponentIdsToSelect: List[String] =
       selectedComponentBO.currentStep.get.componentIds.get filterNot (c => {
-        unselectedExcludedComponentIds ::: currentConfigWithTempSelectedComponentIds
+        unselectedExcludedComponentIds :+ selectedComponentBO.selectedComponent.get.componentId.get
       }.contains(c))
 
-    Logger.info("filteredComponents: " +pComponentIdsToSelect)
+//    val currentConfigWithTempSelectedComponentIds: List[String] =
+//      currentConfigWithTempSelectedComponent map (_.componentId.get)
 
-    // TODO betrachten ob notwendig der Par löschen
-    val debugval = filteredComponents.filterNot(pCTS => previousSelectedComponentsInCurrentConfig.map(_.componentId.get).contains(pCTS))
-    Logger.info("debugval: " + debugval)
-    debugval
+//    val pComponentIdsToSelect: List[String] =
+//      selectedComponentBO.currentStep.get.componentIds.get filterNot (c => {
+//        unselectedExcludedComponentIds ::: currentConfigWithTempSelectedComponentIds
+//      }.contains(c))
 
-    selectedComponentBO.copy(possibleComponentIdsToSelect = Some(pComponentIdsToSelect))
+//    Logger.info("filteredComponents: " +pComponentIdsToSelect)
+    // possible selected component filter from previous selected components
+    val pSelectedComponentIdsToSelectWithoutComponentsFromCurrentConfig =
+      pComponentIdsToSelect.filterNot(pCTS => previousSelectedComponentsInCurrentConfig.map(_.componentId.get).contains(pCTS))
+//    Logger.info("debugval: " + debugval)
+//    debugval
+
+    selectedComponentBO.copy(possibleComponentIdsToSelect = Some(pSelectedComponentIdsToSelectWithoutComponentsFromCurrentConfig))
+
+
+
+  }
+
+  /**
+    * @author Gennadi Heimann
+    * @version 0.0.2
+    * @param selectedComponentBO: SelectedComponentBO
+    * @return List[String]
+    */
+  def getPossibleComponentToSelect_Test_Test(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+
+    val selectedComponentId = selectedComponentBO.selectedComponent.get.componentId.get
+
+    val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.stepCurrentConfig match {
+      case Some(step) => step.components
+      case None => List()
+    }
+
+//    val currentConfigWithTempSelectedComponent: List[ComponentBO] =
+//      previousSelectedComponentsInCurrentConfig :+ selectedComponentBO.selectedComponent.get
+
+    val previousSelectedComponentsInCurrentConfigIds: List[String] = previousSelectedComponentsInCurrentConfig map (_.componentId.get)
+
+    val fromCurrentConfigExcludedComponentIds: Set[String] = (previousSelectedComponentsInCurrentConfig flatMap (pSC => {
+      pSC.excludeDependenciesOut.get map (_.inId)
+    })).toSet
+
+    val fromSelectedComponentExcludedComponentIds: List[String] =
+      selectedComponentBO.selectedComponent.get.excludeDependenciesOut.get map (_.inId)
+
+//    val excludedComponentIds: Set[String] = (currentConfigWithTempSelectedComponent flatMap (pSC => {
+//      pSC.excludeDependenciesOut.get map (_.inId)
+//    })).toSet
+
+    //    Logger.info("excludedComponentIds: " + excludedComponentIds)
+
+
+    val unselectedComponentIds: List[String] = selectedComponentBO.currentStep.get.componentIds.get filterNot (c => {
+      (previousSelectedComponentsInCurrentConfigIds :::
+        fromCurrentConfigExcludedComponentIds.toList.+:(selectedComponentId)).contains(c)
+    })
+
+//    val unselectedComponentsIds: List[String] = selectedComponentBO.currentStep.get.componentIds.get filterNot (c => {
+//      currentConfigWithTempSelectedComponent.map(_.componentId.get).contains(c)
+//    })
+    //    Logger.info("unselectedComponentsIds: " + unselectedComponentsIds)
+    val unselectedExcludedComponentsFromCurrentConfigComponentsIds: List[String] = unselectedComponentIds.filter(uC => {
+      fromCurrentConfigExcludedComponentIds.contains(uC)
+    })
+
+    val unselectedExcludedComponentsFromSelectedComponent: List[String] = selectedComponentBO.status.get.excludeDependency.get match {
+      case ExcludedComponent() => List()
+      case NotExcludedComponent() => unselectedComponentIds.filter(uC => {fromSelectedComponentExcludedComponentIds.contains(uC)})
+    }
+
+
+    val unselectedExcludedComponents: List[String] =
+      unselectedExcludedComponentsFromCurrentConfigComponentsIds ::: unselectedExcludedComponentsFromSelectedComponent
+
+
+    val possibleComponentToSelect: List[String] =
+      unselectedComponentIds filterNot(uSIds => {unselectedExcludedComponents.contains(uSIds)})
+
+
+    //        Logger.info("unselectedExcludedComponents: " + unselectedExcludedComponentIds)
+//    val pComponentIdsToSelect: List[String] =
+//      selectedComponentBO.currentStep.get.componentIds.get filterNot (c => {
+//        unselectedExcludedComponentIds :+ selectedComponentBO.selectedComponent.get.componentId.get
+//      }.contains(c))
+
+    //    val currentConfigWithTempSelectedComponentIds: List[String] =
+    //      currentConfigWithTempSelectedComponent map (_.componentId.get)
+
+    //    val pComponentIdsToSelect: List[String] =
+    //      selectedComponentBO.currentStep.get.componentIds.get filterNot (c => {
+    //        unselectedExcludedComponentIds ::: currentConfigWithTempSelectedComponentIds
+    //      }.contains(c))
+
+    //    Logger.info("filteredComponents: " +pComponentIdsToSelect)
+    // possible selected component filter from previous selected components
+//    val pSelectedComponentIdsToSelectWithoutComponentsFromCurrentConfig =
+//    pComponentIdsToSelect.filterNot(pCTS => previousSelectedComponentsInCurrentConfig.map(_.componentId.get).contains(pCTS))
+    //    Logger.info("debugval: " + debugval)
+    //    debugval
+
+    selectedComponentBO.copy(possibleComponentIdsToSelect = Some(possibleComponentToSelect))
 
 
 

@@ -47,11 +47,10 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO) {
 
             val sCExtendedOfCurrentStep = getCurrentStepFromCurrentConfig(sCExtendedOfCurrentAndNextStep)
 
-            val sCExtendedOfPossibleComponentIdsToSelect =
-              new SelectedComponentUtil().getPossibleComponentToSelect_Test(sCExtendedOfCurrentStep)
+
 
             // Status Component Typ
-            val sCExtendedOfStatusComponentTyp = verifyStatusComponentType(sCExtendedOfPossibleComponentIdsToSelect)
+            val sCExtendedOfStatusComponentTyp = verifyStatusComponentType(sCExtendedOfCurrentStep)
 
             //Test -->
 
@@ -59,8 +58,11 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO) {
             val sCExtendedOfStatusExcludeDependency =
               verifyStatusExcludeDependencyInStepsInternalComponents(sCExtendedOfStatusComponentTyp)
 
+            val sCExtendedOfPossibleComponentIdsToSelect =
+              new SelectedComponentUtil().getPossibleComponentToSelect_Test_Test(sCExtendedOfStatusExcludeDependency)
+
             //Status Selection Criterium
-            val sCExtendedOfStatusSelectionCriterium = verifyStatusSelectionCriterium(sCExtendedOfStatusExcludeDependency)
+            val sCExtendedOfStatusSelectionCriterium = verifyStatusSelectionCriterium(sCExtendedOfPossibleComponentIdsToSelect)
 
             // Status Selected Component
             val sCExtendedOFStatusSelectedComponent_Test = verifyStatusSelectedComponent_Test(sCExtendedOfStatusSelectionCriterium)
