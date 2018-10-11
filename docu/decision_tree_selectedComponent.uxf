@@ -1,0 +1,1593 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>4</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>452</x>
+      <y>0</y>
+      <w>104</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>Der Benutzer wählt die Komponent aus.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>452</x>
+      <y>24</y>
+      <w>104</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>Die SelectedComponent wird aus der 
+DB geholt.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>452</x>
+      <y>52</y>
+      <w>104</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>commomStatus-&gt; Success or 
+ODBConnectionError or 
+ODBReadError or 
+ODBClassCastError</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>500</x>
+      <y>8</y>
+      <w>12</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>408</x>
+      <y>100</y>
+      <w>84</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>Es wird aus DB Current- und 
+NextStep gelesen.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>276</x>
+      <y>228</y>
+      <w>64</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>StepCurrentConfig
+-&gt;ID
+-&gt;nameToSchow
+-&gt;components(List)
+-&gt;nextStep
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>172</x>
+      <y>768</y>
+      <w>84</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>ExcludeDependency
+---&gt; ExcludedComponent
+---&gt; NotExcludedComponent
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>580</x>
+      <y>0</y>
+      <w>76</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>component
+-&gt;ID
+-&gt;NameToSchow
+-&gt;excludeDependenciesOut
+-&gt;excludeDependencisIn
+-&gt;requireDependenciesOut
+-&gt;requireDependenciesIn
+status
+-&gt;commonStatus
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>552</x>
+      <y>28</y>
+      <w>36</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;70.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>500</x>
+      <y>100</y>
+      <w>132</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Dieses Status wird in den SelectedComponentBO 
+geschrieben und an Benutzer gesendet</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>496</x>
+      <y>40</y>
+      <w>12</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;30.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>448</x>
+      <y>76</y>
+      <w>36</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=Success
+fg=green</panel_attributes>
+    <additional_attributes>10.0;60.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>76</y>
+      <w>172</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=ODBConnectionError or ODBReadError or ODBClassCastError
+fg=red</panel_attributes>
+    <additional_attributes>60.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>292</x>
+      <y>144</y>
+      <w>148</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>CurrentStep hat folgende Statuse
+1. CommonErrorCurrentStep, ODBConnectionError
+2. CommonErrorCurrentStep, ODBClassCastError
+3. CommonErrorCurrentStep, ODBReadError
+4. CurrentStepNotExist, Error
+5. CurrentStepExist, Success
+6. MultipleCurrentSteps, Error</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>300</x>
+      <y>40</y>
+      <w>68</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>CurrentStep
+step
+-&gt;ID
+-&gt;NameToSchow
+-&gt;SelectionCriteriumMIN
+-&gt;SelectionCriteriumMAX
+-&gt;status
+---&gt;firstStep
+---&gt;nextsStep
+---&gt;currentStep
+---&gt;common
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>368</x>
+      <y>116</y>
+      <w>84</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;70.0;190.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>364</x>
+      <y>100</y>
+      <w>52</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;110.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>376</x>
+      <y>8</y>
+      <w>68</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>NextStep
+step
+-&gt;ID
+-&gt;NameToSchow
+-&gt;SelectionCriteriumMIN
+-&gt;SelectionCriteriumMAX
+-&gt;status
+---&gt;firstStep
+---&gt;nextsStep
+---&gt;currentStep
+---&gt;common
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>412</x>
+      <y>80</y>
+      <w>12</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>436</x>
+      <y>144</y>
+      <w>148</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>NextStep hat folgende Statuse
+1. CommonErrorNextStep, ODBConnectionError
+2. CommonErrorNextStep, ODBClassCastError
+3. CommonErrorNextStep, ODBReadError
+4. NextStepNotExist, Success
+5. NextStepExist, Success
+6. MultipleNextSteps, Error</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>452</x>
+      <y>116</y>
+      <w>68</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>150.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>364</x>
+      <y>232</y>
+      <w>128</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>bg=orange
+Current- und NextStep werden in 
+das Objekt SelectedComponentBO abgelegt.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>368</x>
+      <y>200</y>
+      <w>68</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>150.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>444</x>
+      <y>200</y>
+      <w>52</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;80.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>292</x>
+      <y>292</y>
+      <w>120</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Aus dem CurrentConfig wird der Step mit 
+vorher ausgewählten Compoonents gelesen.
+Wenn keinen  Step gelesen werden kann, wird 
+None geschrieben. (Z.B beim ersten Step)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>356</x>
+      <y>248</y>
+      <w>120</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=CurrentStepExist, Success and 
+(NextStepExist, Success or 
+NextStepNotExist, Success)
+fg=green</panel_attributes>
+    <additional_attributes>10.0;110.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>480</x>
+      <y>248</y>
+      <w>52</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=rest der Statuse
+fg=red</panel_attributes>
+    <additional_attributes>90.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>432</x>
+      <y>292</y>
+      <w>132</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>Dieses Status wird in den SelectedComponentBO 
+geschrieben und an Benutzer gesendet</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>260</y>
+      <w>24</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>40.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>276</x>
+      <y>676</y>
+      <w>120</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+Prüfung des Statuses ComponentTyp </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>332</x>
+      <y>656</y>
+      <w>12</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>192</x>
+      <y>664</y>
+      <w>64</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>StatusComponentTyp
+--&gt; DefaultComponent
+--&gt; FinalComponent
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>252</x>
+      <y>676</y>
+      <w>32</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;60.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>212</x>
+      <y>712</y>
+      <w>100</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>NextStepNotExist -&gt; FinalComponnet
+NextStep exestiert nicht.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>280</x>
+      <y>684</y>
+      <w>12</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>340</x>
+      <y>712</y>
+      <w>100</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>NextStepExist -&gt; DefaultComponnet
+NextStep exestiert.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>380</x>
+      <y>684</y>
+      <w>12</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>748</y>
+      <w>120</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>Das Ergebnis wird in SelectedComponentBO
+geschrieben</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>348</x>
+      <y>728</y>
+      <w>12</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>300</x>
+      <y>728</y>
+      <w>12</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>780</y>
+      <w>120</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+Prüfung des Statuses ExcludeDependency</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>252</x>
+      <y>780</y>
+      <w>36</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;70.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>764</y>
+      <w>12</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>808</y>
+      <w>120</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Es wird aus stepCurrentConfig die 
+vorher ausgewählte Components geholt.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>792</y>
+      <w>12</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>128</x>
+      <y>812</y>
+      <w>136</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>previousSelectedComponentIdsFromCurrentConfig
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>260</x>
+      <y>816</y>
+      <w>28</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;50.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>848</y>
+      <w>120</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>Es werden die ExcludeDependency-OutIds
+des SelectedComponent geholt.
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>828</y>
+      <w>12</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>132</x>
+      <y>852</y>
+      <w>120</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>excludedDependencyOutIds
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>248</x>
+      <y>852</y>
+      <w>40</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>880</y>
+      <w>148</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Es werden die Listen
+previousSelectedComponentIdsFromCurrentConfig 
+und excludedDependencyOutIds verglichen, ob 
+beide gleiche Id beinhalten.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>136</x>
+      <y>888</y>
+      <w>116</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>excludeComponentsIds
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>248</x>
+      <y>892</y>
+      <w>40</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>220</x>
+      <y>932</y>
+      <w>116</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Das bedeutet, dass die internen
+Components des CurrentStepes die 
+ausgewählte Component ausschliessen.
+---&gt; ExcludedComponent</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>352</x>
+      <y>932</y>
+      <w>112</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Das bedeutet dass die internen
+Compnents die asugewählte Componente 
+nicht ausschliessen.
+---&gt; NotExcludedComponent</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>344</x>
+      <y>864</y>
+      <w>12</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>288</x>
+      <y>908</y>
+      <w>20</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=true</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>404</x>
+      <y>908</y>
+      <w>24</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=false</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>276</x>
+      <y>640</y>
+      <w>120</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>bg=orange
+Das Ergebnis wird in SelectedComponentBO
+geschrieben</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>284</x>
+      <y>976</y>
+      <w>120</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>Das Ergebnis wird in SelectedComponentBO
+geschrieben</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>308</x>
+      <y>960</y>
+      <w>12</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>372</x>
+      <y>960</y>
+      <w>12</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>284</x>
+      <y>1012</y>
+      <w>380</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+Prüfung des Statuses SelectionCriterium</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>340</x>
+      <y>992</y>
+      <w>12</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>652</x>
+      <y>1024</y>
+      <w>72</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=NotExcludedComponent</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>268</x>
+      <y>388</y>
+      <w>128</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>Es wrden die vorher ausgewählte Components 
+aus der CurrentConfig geholt. </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>600</x>
+      <y>1072</y>
+      <w>100</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>Prüfe ob der selectedComponent 
+vorher ausgewählt war</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>176</x>
+      <y>412</y>
+      <w>120</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>currentConfigWithTempSelectedComponent
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>172</x>
+      <y>356</y>
+      <w>124</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>previousSelectedComponentsInCurrentConfig
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>276</x>
+      <y>368</y>
+      <w>12</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>268</x>
+      <y>440</y>
+      <w>140</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>Zu der previousSelectedComponentsInCurrentConfig
+wurd SelectedComponent hinzugefügt.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>316</x>
+      <y>404</y>
+      <w>12</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>276</x>
+      <y>424</y>
+      <w>12</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>256</x>
+      <y>608</y>
+      <w>172</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>Filtere aus der Liste aller Components
+in CurrentStep unselectedExcludedComponentIds +
+currentConfigWithTempSelectedComponentIds heraus.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>256</x>
+      <y>480</y>
+      <w>168</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>Suche alle Components, die von der 
+currentConfigWithTempSelectedComponent
+ausgeschlossen werden.
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>256</x>
+      <y>336</y>
+      <w>168</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>Suche nach möglichen Components zu weiteren Auswahl</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>332</x>
+      <y>348</y>
+      <w>12</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>168</x>
+      <y>484</y>
+      <w>76</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>excludedComponentIds
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>144</x>
+      <y>520</y>
+      <w>84</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>unselectedComponentsIds
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>252</x>
+      <y>524</y>
+      <w>168</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>Suche alle unausgewählte Components in CurrentStep</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>256</x>
+      <y>560</y>
+      <w>172</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Suche aus unselectedComponentsIds 
+Components die von der vorher 
+ausgewählten Components ausgeschlossen werden</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>224</x>
+      <y>568</y>
+      <w>40</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>80.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>224</x>
+      <y>524</y>
+      <w>36</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>70.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>240</x>
+      <y>488</y>
+      <w>24</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>40.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>332</x>
+      <y>588</y>
+      <w>12</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>220</x>
+      <y>608</y>
+      <w>44</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>90.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>100</x>
+      <y>604</y>
+      <w>124</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>posibleComponentIdsToSelect
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>132</x>
+      <y>564</y>
+      <w>96</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>unselectedExcludedComponentIds
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>348</x>
+      <y>320</y>
+      <w>12</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>332</x>
+      <y>504</y>
+      <w>12</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>332</x>
+      <y>536</y>
+      <w>12</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>332</x>
+      <y>620</y>
+      <w>12</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>292</x>
+      <y>1024</y>
+      <w>64</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=ExcludedComponent</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>224</x>
+      <y>1052</y>
+      <w>128</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>Es wrden die vorher ausgewählte Components 
+aus der CurrentConfig geholt. </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>128</x>
+      <y>1024</y>
+      <w>124</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>previousSelectedComponentsInCurrentConfig
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>232</x>
+      <y>1036</y>
+      <w>12</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>332</x>
+      <y>456</y>
+      <w>12</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>248</x>
+      <y>1092</y>
+      <w>100</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>Liste possibleComponentIdsToSelect</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>284</x>
+      <y>1068</y>
+      <w>12</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>252</x>
+      <y>1100</y>
+      <w>28</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=empty</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>176</x>
+      <y>1128</y>
+      <w>100</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>Wird Status RequireNextStep gesetzt</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>324</x>
+      <y>1100</y>
+      <w>36</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=not empty</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>500</x>
+      <y>1164</y>
+      <w>160</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Bezogen auf countOfComponentsInCurrentConfig
+wird der Status berechnet</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>156</x>
+      <y>1228</y>
+      <w>660</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>bg=orange
+Das Ergebnis wird in SelectedComponentBO
+geschrieben</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>236</x>
+      <y>1136</y>
+      <w>12</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;230.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>356</x>
+      <y>1076</y>
+      <w>200</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>case count if min &gt; count &amp;&amp; max &gt; count =&gt; RequireComponent()
+case count if min &lt;= count &amp;&amp; max == count =&gt; RequireNextStep()
+case count if min &lt;= count &amp;&amp; max &gt; count =&gt; AllowNextComponent()
+case count if max &lt; count =&gt; NotAllowNextComponent()
+case _ =&gt; ErrorSelectionCriterium()
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>380</x>
+      <y>1112</y>
+      <w>12</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>368</x>
+      <y>1148</y>
+      <w>12</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;200.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>604</x>
+      <y>1088</y>
+      <w>20</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=true</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>680</x>
+      <y>1088</y>
+      <w>24</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=false</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>556</x>
+      <y>1120</y>
+      <w>104</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>Anzahl der Components in 
+CurrentConfig wird um 1 reduziert.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>516</x>
+      <y>1308</y>
+      <w>96</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>SelectedComponent wird aus der 
+CurrentConfig entfernt</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>304</x>
+      <y>1128</y>
+      <w>160</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Bezogen auf previousSelectedComponentsInCurrentConfig
+wird der Status berechnet</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>1112</y>
+      <w>12</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>588</x>
+      <y>1136</y>
+      <w>12</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>572</x>
+      <y>1184</y>
+      <w>12</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>488</x>
+      <y>1032</y>
+      <w>108</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes>countOfComponentsInCurrentConfig
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>576</x>
+      <y>1040</y>
+      <w>12</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;200.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>664</x>
+      <y>1120</y>
+      <w>128</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>Es werden die vorher ausgewählte Components 
+aus der CurrentConfig geholt. </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>712</x>
+      <y>1084</y>
+      <w>124</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>previousSelectedComponentsInCurrentConfig
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>756</x>
+      <y>1096</y>
+      <w>12</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>668</x>
+      <y>1152</y>
+      <w>128</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>previousSelectedComponentsInCurrentConfig +
+selectedComponent</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>724</x>
+      <y>1136</y>
+      <w>12</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>812</x>
+      <y>1152</y>
+      <w>176</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>countOfComponentsInCurrentConfigWithTempSelectedComponent
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>792</x>
+      <y>1152</y>
+      <w>28</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>50.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>608</x>
+      <y>1192</y>
+      <w>208</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Bezogen auf countOfComponentsInCurrentConfigWithTempSelectedComponent
+wird der Status berechnet</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>832</x>
+      <y>1184</y>
+      <w>200</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>case count if min &gt; count &amp;&amp; max &gt; count =&gt; RequireComponent()
+case count if min &lt;= count &amp;&amp; max == count =&gt; RequireNextStep()
+case count if min &lt;= count &amp;&amp; max &gt; count =&gt; AllowNextComponent()
+case count if max &lt; count =&gt; NotAllowNextComponent()
+case _ =&gt; ErrorSelectionCriterium()
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>812</x>
+      <y>1188</y>
+      <w>28</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>50.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>744</x>
+      <y>1168</y>
+      <w>12</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>764</x>
+      <y>1212</y>
+      <w>12</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

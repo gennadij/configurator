@@ -1,0 +1,354 @@
+\documentclass{article}
+
+\begin{document}
+
+\begin{titlepage}
+
+\author{Gennadi Heimann} 
+\title{Generischer Konfigurator} 
+\date{29.12.2017} 
+\maketitle
+\end{titlepage}
+
+\section{Logik Beschreibung}
+
+Die Abhngigkeiten im Konfigurator bilden die Regel. Jede Komponente hat eine
+Ausgangsabhngigket (outDependency) und eine Eingangsabhngigket
+(inDependency). Die Ausgangsabhngigket bewirkt auf ihre Komponente mit der
+Regel die in der Abhngigkeit hintergelegt ist. 
+Es gibt zwei Arten (dependencyType) von Abhngigkeiten $<exclude>$ und
+$<require>$. Die $<exclude>$ Abhngigkeit schlie\ss{}t die Komponente aus der
+Konfiguration aus. Die $<require>$ Abhngigkeit fordert wiederum, dass die
+Komponente in die KOnfiguration hinzugef\"ugt werden muss. Das Verhalten der
+Abh\"ngigkeiten wird von Parameter $<visualization>$ gesteuert. Der Benutzer
+des Konfigurators whlt die Komponente innerhalb eines Schrittes und die
+Logik das Konfigurators pr\"uft die Abhngigkeiten und anhand der Parameter
+wird weitere Verlauf gesteuert. In der darauffolgende Beschreibung werden
+einzelne Parameter erklrt.
+
+\begin{itemize} 
+    \item visualization bei der $<exclude>$ Komponenten
+    \begin{itemize}
+        \item auto 
+        \begin{itemize}
+            \item Die Komponente wird automatisch aus der Konfiguration
+            entfernt.Wenn die ausgeschlossene Komponente weiter auf
+            eine $<exclude>$ Komponente verwei\ss{}t, werden diese Komponente 
+            recursive ausgeschlossen. Das 
+            bedeutet, dass bei der spterem Verlauf werden diese
+            Komponente nicht gezeigt. Bei der $<require>$ Komponenten
+            wird dieses Vorgehen nicht angewendet. Die Komponente wird nicht aus der 
+            Konfiguration entfernt.
+        \end{itemize}
+        \item marked + selectable
+        \begin{itemize}
+            \item Die IN-Komponente wird visual merkiert, dass sie
+            $<exclude>$ Komponente ist und der Benutzer hat die
+            M\"oglichkeit diese Komponente auszuwhlen.
+            Wenn der Benutzer whlt diese Komponente aus, wird ein
+            Hinweis dem Benutzer vorgeschlagen, wie er die Abhngigkeiten
+            in seiner Konfiguration l\"osen kann. Es wird eine andere
+            OUT-Komponente aus dem gleichem Schritt vorgeschlagen. Wenn in
+            diesem Schritt keinen Vorschlag gemacht werden kann wird weiter
+            in dem übergeordneten Schritt weiter gesucht. Bei jedem
+            vorgeschlagenen Komponente wird weiterhin nach Abhngigkeiten
+            gepr\"ft.
+        \end{itemize}
+        \item marked + unselectable
+        \begin{itemize}
+            \item Die Komponente wird visuel markiert aber kann nicht
+            ausgewhlt werden. Die Abhngigkeiten werden gleich wie bei der
+            Visualizationparameter $<auto>$ behandelt.
+        \end{itemize}
+    \end{itemize}
+    \item require
+    \begin{itemize}
+        \item auto
+        \begin{itemize}
+          \item Die Komponente wird automatisch in die Konfiguration hinzugef\"ugt.
+          Es wird gepr\"uft, ob der IN-Komponente der Abhngigkeit weitere
+          $<require>$ oder $<exclude>$ Komponente hat. Wenn ja, wird gem\ss{} der
+          Parameter in der Abhngigkeit die Konfiguration angepasst. Wenn die
+          IN-Koponente über mehrere Schritt in der Konfiguration entfernt ist. Der
+          Konfigurator wird, dann in Laufe der Konfiguration bei jedem Schritt dem
+          Benutzer einen Hinweis geben, welche Komponente der Benutzer auswhlen
+          kann/muss um zu dem Schritt mit der $<require>$ Komponente zu kommen. Die
+          Komponente wird visual markiert, dass sie schon zu der Konfiguration
+          hinzugefugt wurde. Diese Komponente ist auch $<unselectable>$. Bei der
+          Abhngigkeit in gleichem Schritt wird die Komponente ohne jegliche
+          Hinweise zu der Konfiguration hinzugef\"ugt und dementsprechend markiert.
+        \end{itemize}
+    
+        \item selectable
+    
+        \begin{itemize}
+            \item Bevor die Komponente zu der Konfiguration hinzugef\"ugt wird, wird
+            dem Benutzer einen Hinweis mit dem Auswahl gegeben. Der Benutzer kann
+            entscheiden ob er die required Komponente zu der Konfiguration
+            hinzuf\"ugen will.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+Die aktuelle Konfiguration behält die gesamte Information (Abhngigkeiten)
+von der hinzugef\"ugten Komponente. Diese Information hilft dem Konfigurator die
+Pr\"ufungen durchf\"uhren, wenn der Web-Client Fehler macht. Zum Beispiel, wenn
+der Web-Client dem Benutzer eine Komponente auszuwhlen erlaubt, die von
+Server als $<unselecteble>$ oder $<remove>$ markiert wurde. In diesem Fall
+bekommt der Benutzer die Fehlermeldung.
+
+\subsection{Auswahlkriterium}
+
+Die Anzahl der Komponente die innerhalb eines Schrittes ausgewhlt werden
+können, werden über den Parameter $<SelectionCriterum>$ gesteuert. Dieses
+Kriterium definiert für jeden Schritt die maximale und minimale Anzahl der
+Komponente, die von dem Benutzer ausgehlt werden k\"onnen. Das Auswahlkriterium 
+wird nach demPr\"ufung der Abhngigkeiten durchgeführt. Es werden follgende Flle
+unterschieden:
+
+\begin{itemize}
+    \item RequireComponent 
+    \begin{itemize}
+        \item Wenn die Anzahl der ausgewhlten Komponente kleiner als minimale
+        Kriterium. Der Benutzer wird aufgefordert weiter Komponente
+        auszuwhlen, bis minimale Kriterium erreicht wird.\\
+        \textbf{min $>$ countOfComponents}
+    \end{itemize}
+    \item RequireNextStep
+        \begin{itemize}
+            \item Wenn alle Komponente in dem Schritt ausgewhlt sind, wird
+            der Konfigurator zu dem nchstem Schritt f\"uhren.\\
+            \textbf{max == countOfComponents}\\
+            Wenn der minimale Kriterium gleich Null und maximale Kriterium
+            gr\"o\ss{}er Eins ist, kann der Benutzer ohne den Auswahl der
+            Komponente zu dem nchsten wechseln.\\
+            \textbf{min == 0 and max $>$ 1} ist nicht erlaubt\\
+            \textbf{min == 0 and max == 0} ist nicht erlaubt.
+        \end{itemize}
+    \item AllowNextComponent
+    \begin{itemize}
+        \item  Wenn dem Benutzer noch weitere Komponente auszuwhlen erlaubt.
+        In diesem Fall kann der Benutzer weitere Komponente auszuwahlen oder zu
+        dem nchstem Schritt wechseln.\\
+        \textbf{min $<=$ countOfComponents and\\ max $>$ countOfComponents}
+    \end{itemize}
+\item ExcludeComponent
+    \begin{itemize}
+        \item Wenn der Benutzer mehr Komponente als erlaubt auswhlen
+        möchte.\\
+        \textbf{max $<$ countOfComponents}
+    \end{itemize}
+\end{itemize}
+
+\noindent\textbf{$<$countOfComponents$>$} = Anzahl der vorher
+ausgewhlten Komponenten.
+Die Anzahl der Komponenten wird aus der aktuellen Konfiguraion ermittelt\\\\
+
+\noindent Die Variable $<countOfComponents>$ wird vor der Prüfung auf die
+Auswahlkriterium immmer angepasst. Die Ausgewhlte Komponnete wird zuerst mit aktuellen
+Konfiguration verglichen. \\\\
+Wenn die ausgewhlte Komponente nicht in der
+bestehenden Konfiguration exestiert, wird $<countOfComponents>$ auf 1
+inkrementiert. Somit wird temporr die ausgewhlte Komponnte zu der
+aktuellen Konfiguration hinzugefügt. Nach dem alle Pr\"ufungen erfolgreich abgelaufen wird
+diese Komponnete zu der aktuellen Konfiguration hinzugefügt.\\\\
+Wenn die ausgewhlte Komponente in der aktuellen Konfiguration gefunden wird.
+Das bedeutet, dass die Komponnete abgewhlt wird und uas der Konfiguration
+entfernt werden muss, deswegen wird $<countOfComponents>$ nicht verndert.
+
+Aenderung 11.03.2018 bei der RemovedComponent wird selectedComponent - 1
+ausgeführt.
+
+\subsection{Hinweisfeld zu jeder Aktion}
+Der Server liefert bei jedem Aktion die Erklärungen zu diesen Aktion, deswegen
+bei dem Webclient sollte einen Bereich geben wo diese Information Präsentiert
+werden kann.
+
+\subsection{Auswahl der Komponente}
+
+Der Server bekommt von dem Web-Client die ausgewhlte Komponente.
+
+\begin{enumerate}
+  \item Die ausgew\"ahlte Komponente wird mit der aktuelle Konfiguration
+  vergliechen. \\
+  Wenn ausgew\"ahlte Komponente in aktueller Konfiguration exestiert,
+  \begin{itemize}
+    \item JA $->$ wird die Komponente auf die $<require>$ Abh\"angigkeit
+    gepr\"uft.
+    Wenn andere Komponente die ausgew\"ahlte komponente ben\"otigt,
+    \begin{itemize}
+      \item JA $->$ wird die Regel, die in der Abh\"angigkeit steht angewendet.
+      \item NEIN $->$ wird die Komponente aus der aktuellen Konfiguration
+      entfernt und sind keine weitere Pr\"ufungen notwendig. Bei dieser
+      Pr\"ufung m\"ussen die Komponente und die Schritte auf Konsistenz
+      prufen. Die Komponente wird als \\REMOVED\_COMPONENT markiert
+    \end{itemize}
+    \item NEIN $->$ wird die Komponente als ADDED\_COMPONENT markiert und
+    an weiteren Pr\"ufungen weitergegeben.
+  \end{itemize} 
+  \item Unabh\"angig von der aktuellen Konfiguration wird die ausgew\"ahlte
+  Komponente auf <$exclude>$ und $<require>$ Abh\"angigkeiten gepr\"uft.
+  \begin{itemize}
+    \item die Komponente hat eine $<require>$ Eingangsabh\"angigkeit $->$ Die
+    abh\"angige Komponente werden für weieter Prüfung ermittelt. Der Status wird
+    als REQUIRE\_COMPONENT.
+    \item die Komponente hat keine $<require>$ Eingangsabh\"angigkeit $->$ Die
+    ausgew\"ahlte Komponente wird ohne weiter Aktionen auszuf\"uhren als
+    NOT\_REQUIRE\_COMPONENT.
+    \item die Komponente hat eine $<exclude>$ Eingangsabh\"angigkeit $->$ Die
+    ausgew\"ahlte Komponente wird nach der Regeln in der Abh\"angigkeit
+    entweder trotz der Ausschluss zu der aktuellen Konfiguration hinzugef\"ugt
+    oder nicht zu der aktuellen Konfiguration hinzugef\"ugt. Der Status wird
+    als EXCLUDE\_COMPONENT markiert.
+    \item die Komponente hat keine $<exclude>$ Eingangsabh\"angigkeit $->$ Die
+    ausgew\"ahlte Komponente wird ohne weiter Aktionen auszuf\"uhren als
+    NOT\_EXCLUDE\_COMPONENT.
+  \end{itemize}
+  \item Die Status von der Vergleich in der aktuellen Konfiguration und von der
+  Pr\"ufung der Abh\"angigkeiten wird weiter zu der Pr\"ufung der
+  Auswahlkriterium weitergegeben.
+  \begin{itemize}
+    \item ADDED\_COMPONENT $->$
+    \begin{itemize}
+      \item REQUIRE\_COMPONENT $->$ Die abh\"angige Komponente werden je nach
+      Regel in der Abh\"angigkeit zu der aktuellen Konfiguration hinzugef\"ugt
+      oder dem Regeln entsprechende Behandlung angestossen.\\
+      Desweiteren werden
+      alle exclude Komponente innerhalb eines Schrittes und deren Regeln
+      gepr\"uft, Wenn die Regeln schliessen die Komponente aus,
+      \begin{itemize}
+        \item JA $->$ wird die List von allen innerhalb eines
+        Schrittes $<excluded>$ Komponenten, mit der Liste allen nicht ausgew\"ahlten
+        Komponenten verglichen. Wenn beide Listen gleich sind,
+        \begin{itemize}
+          \item JA $->$ wird der Status REQUIRE\_NEXT\_STEP gesetzt. Dadurch
+          wird die Anforderung zu dem n\"achstem Schritt bei dem Auswahl der
+          Komponente, der alle andere Komponente innerhab des Schrittes
+          ausschliesst, erkannt.
+          \item NEIN $->$ wird eine standartmässige \"Uberpr\"ufung der
+          Auswahlkriterium gemacht. (siehe Auswahlkriterium)
+        \end{itemize}
+        \item NEIN $->$ Definition folgt
+      \end{itemize}
+      \item NOT\_REQUIRE\_COMPONENT $->$ Es werden
+      alle exclude Komponente innerhalb eines Schrittes und deren Regeln
+      gepr\"uft, Wenn die Regeln schliessen die Komponente aus,
+      \begin{itemize}
+        \item JA $->$ wird die List von allen innerhalb eines
+        Schrittes $<excluded>$ Komponenten, mit der Liste allen nicht ausgew\"ahlten
+        Komponenten verglichen. Wenn beide Listen gleich sind,
+        \begin{itemize}
+          \item JA $->$ wird der Status REQUIRE\_NEXT\_STEP gesetzt. Dadurch
+          wird die Anforderung zu dem n\"achstem Schritt bei dem Auswahl der
+          Komponente, der alle andere Komponente innerhab des Schrittes
+          ausschliesst, erkannt.
+          \item NEIN $->$ wird eine standartmässige \"Uberpr\"ufung der
+          Auswahlkriterium gemacht. (siehe Auswahlkriterium)
+        \end{itemize}
+        \item NEIN $->$ Definition folgt
+      \end{itemize}
+      \item EXCLUDE\_COMPONENT $->$ setzen der Status bei der Vergleich der
+      aktuellen Konfiguration zu der NOT\_ALLOWED\_COMPONENT, wenn der Regel in
+      der Abh\"angigkeit das erlaubt. Die Komponente wird nicht zu der aktuellen
+      Konfiguration hinzuge\"ugt. Der Staus der Auswahlkriterium wird auf
+      EXCLUDED\_COMPONENT gesetzt.
+      \item NOT\_EXCLUDE\_COMPONENT $->$ 
+    \end{itemize}
+    \item REMOVED\_COMPONENT $->$ SelectionCriterium muss geprueft werden.
+  \end{itemize}
+    %\item Die Komponente $<Vertex>$ aus der DB lesen. $<vComponent>$
+    
+    %\item Alle ausgehende und eingehende Abhngigkeiten $<Edge>$ dieser
+%     Komponente aus DB lesen.
+    
+%     \item Die Abhngigkeiten werden auf folgende Arten gefiltert:
+%     
+%     \begin{itemize}
+%         \item Die $<exclude>$ ausgehende Abhngigkeiten
+%         $<excludeDependenciesOut>$
+%         \item Die $<exclude>$ eingehende Abhngigkeiten
+%         $<excludeDependenciesIn>$
+%         \item Die $<require>$ ausgehende Abhngigkeiten
+%         $<requireDependenciesOut>$
+%         \item Die $<require>$ eingehende Abhngigkeiten
+%         $<requireDependenciesIn>$
+%     \end{itemize}
+%     
+%     \item Zu jede Abhngigkeit werden dazugeh\"orige abh\"qangige Komponente
+%     ermittelt.
+%     
+%     \item Der Vaterschritt der ausgewhlten Komponente wird aus der DB
+%     abgefragt. $<vFatherStep>$
+%     
+%     \item Aus diesem Vaterschritt wird das Auswahlkriterium ausgelesen.
+%     $<selectionCriterium>$
+%     
+%     \item Der aktuelle Schritt wird aus der Aktuellen Konfiguration ebenso
+%     ausgelesen. $<currentStep>$
+%     
+%     \item Im aktuellem Schritt aus der aktuellen Konfiguration wird gepr\"uft,
+%     ob die ausgewhlte Komponnte in vorherigen Aktionen ausgewhlt war.
+%     Ausf\"uhrende Funktion $<checkSelectedComponent(currentStep,componentId)>$
+%     
+%     \begin{itemize}
+%         \item JA $->$ Die Komponente aus der aktuellen Konfiguration wird
+%         gel\"oscht. Der Status ist $<RemovedComponent>$
+%         Wenn die zu l\"oschende Komponente die Abhngigkeiten hat, werden
+%         diese dementsprechend der Regel behandelt.
+%         \item NEIN $->$ Der Status ist $<AddedComponent>$
+%     \end{itemize}
+%     
+%     \item Nachdem die aktuelle Konfiguration konsistent ist, werden
+%     alle vorher ausgewhlte Komponente des Schrittes aus der
+%     aktuellen Konfiguration ausgelesen. $<previousSelectedComponents>$
+%     
+%     \item Die definierte Auswahlkriterium im Vaterschritt wird mit dem vorher
+%     ausgewhlten Komponenten verglichen und nach der Regeln der
+%     Auswahlkriterium wird die aktuell ausgewhlte Komponente entweder zu der
+%     aktuellen Konfiguration hizugef\"ugt oder nicht hinzugef\"ugt.
+%     Ausf\"uhrende Funktion $<checkSelectionCriterium(previousSelectedComponents.size, selectionCriterium, statusSelectedComponent)>$
+%     
+%     \item Danach wird geschaut ob die ausgewhlte KOmponente von einem anderen
+%     Komponente ausgeschlossen wird.
+%     Ausf\"uhrende Funktion $<checkExcludeDependencies(currentStep.get, excludeDependenciesIn)>$
+%     
+%     \item Als nchstes wird geschaut ob die Komponente nchsten Schritt hat.
+%     Ausf\"uhrende Funktion $<checkNextStepExistence(vComponent)>$
+%     
+%     \item Der allgemeiner Status wird zurzeit auf erfolgreich gesetzt.
+%     
+%     \item Alle erreichen Status werden zu der $<StatusComponent>$ hinzugef\"ugt.
+%     
+%     \item Alle Abhengigkeiten von $<requireDependenciesOut>$ und
+%     $<excludeDependenciesOut>$ zu eier Liste hinzugef\"ugt.
+%     
+%     \item Danach wird mit Abhngigkeit des Statuses die $<ComponentOut>$
+%     zusammengesetzt
+    
+\end{enumerate}
+
+\subsection{Status}
+
+\begin{itemize}
+  \item SelectedComponent beschreibt der Status der ausgewhlte Komponente
+  \begin{itemize}
+    \item REMOVED\_COMPONENT beschreibt der ausgewhlte Komponente, die
+    zweites Mal ausgewhlt wurde. Bei ersten Mal wird die Komponente zu der
+    Konfiguration hinzugef\"ugt, beim zweiten Mal wird die Komponente aus der
+    Konfiguration entfernt. (Abzuwhlen)
+    \item ADDED\_COMPONENT beschreibt die Komponente die erstes Mal ausgewhlt
+    wurde. Diese Komponente wird zu der Konfiguration hinzugefügt.
+    \item ERROR\_COMPONENT beschreibt die Komponente bei dem nach der Auswhl
+    einen allgemeinen Fehler passiert.
+    \item NOT\_ALLOWED\_COMPONENT beschreibt die Komponente die aufgrund der
+    Abh\"angigkeit nicht zu der Konfiguration hinzugef\"ugt werden kann.
+  \end{itemize}
+  \item SelectionCriterium beschreibt der Status der Komponente vor dem Auswahl.
+  \begin{itemize}
+    \item siehe Auswahlkriterium
+  \end{itemize}
+\end{itemize}
+
+
+
+\end{document}
