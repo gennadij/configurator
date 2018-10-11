@@ -1,14 +1,21 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This README is still under construction
 
-### What is this repository for? ###
+### Generische Konfigurator ###
+## Beschreibung
+Dieser Konfigurat Konzopiert und entwickelt für die verschieden Anwendungsmöglichkeiten.
+Damit kann man einen Produktkonfigurator oder verschiedene Firmenprozesse abbilden.
+Im generischem Konfigurator wird nur die Logik des Konfigurationsprozesses und 
+minimale Visualisierung implementiert. 
 
-* Quick summary
-* Version
+* Versieon 0.0.3
 * [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
 
 ### How do I get set up? ###
+
+* To set up the project see here https://github.com/vmunier/play-scalajs.g8
+
 
 * Summary of set up
 * Configuration
@@ -27,3 +34,11 @@ This README would normally document whatever steps are necessary to get your app
 
 * Repo owner or admin
 * Other community or team contact
+
+### Used Technologie ###
+
+* Scala
+* ScalaJS
+* Framework PLay
+* OrientDB
+* Websocket
