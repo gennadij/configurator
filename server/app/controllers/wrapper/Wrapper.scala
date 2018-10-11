@@ -2,6 +2,7 @@ package controllers.wrapper
 
 import models.bo._
 import org.shared.common.json._
+import org.shared.common.status.step.NextStepExist
 import org.shared.component.json.{JsonComponentIn, JsonComponentOut, JsonComponentResult, JsonComponentStatus}
 import org.shared.component.status.StatusComponent
 import org.shared.currentConfig.json.{JsonCurrentConfigIn, JsonCurrentConfigOut, JsonCurrentConfigResult, JsonStepCurrentConfig}
@@ -53,8 +54,8 @@ trait Wrapper extends RIDConverter {
             ),
             JsonStepStatus(
               firstStep = Some(JsonStatus(
-                convertedIdsStartConfigBO.step.get.status.get.firstStep.get.status,
-                convertedIdsStartConfigBO.step.get.status.get.firstStep.get.message)),
+                convertedIdsStartConfigBO.step.get.status.get.startConfig.get.status,
+                convertedIdsStartConfigBO.step.get.status.get.startConfig.get.message)),
               common = Some(JsonStatus(
                 convertedIdsStartConfigBO.step.get.status.get.common.get.status,
                 convertedIdsStartConfigBO.step.get.status.get.common.get.message))
@@ -72,8 +73,8 @@ trait Wrapper extends RIDConverter {
             ),
             JsonStepStatus(
               firstStep = Some(JsonStatus(
-                startConfigBO.step.get.status.get.firstStep.get.status,
-                startConfigBO.step.get.status.get.firstStep.get.message)),
+                startConfigBO.step.get.status.get.startConfig.get.status,
+                startConfigBO.step.get.status.get.startConfig.get.message)),
               common = Some(JsonStatus(
                 startConfigBO.step.get.status.get.common.get.status,
                 startConfigBO.step.get.status.get.common.get.message))
@@ -101,24 +102,58 @@ trait Wrapper extends RIDConverter {
     * @return JsonNextStepOut
     */
   def toJsonNextStepOut(nextStepBO: NextStepBO): JsonNextStepOut = {
-    JsonNextStepOut(
-      result = JsonNextStepResult(
-        JsonStep(
-          nextStepBO.step.get.stepId.get,
-          nextStepBO.step.get.nameToShow.get,
-          List()),
-        JsonStepStatus(
-          nextStep = Some(JsonStatus(
-            nextStepBO.step.get.status.get.nextStep.get.status,
-            nextStepBO.step.get.status.get.nextStep.get.message
-          )),
-          common = Some(JsonStatus(
-            nextStepBO.step.get.status.get.common.get.status,
-            nextStepBO.step.get.status.get.common.get.message
-          ))
+
+    nextStepBO.step.get.status.get.nextStep.get match {
+      case NextStepExist() =>
+
+        val nextStepWithConvertedRids: NextStepBO = convertRidToHashForNextStepBO(nextStepBO)
+
+        JsonNextStepOut(
+          result = JsonNextStepResult(
+            JsonStep(
+              stepId = nextStepWithConvertedRids.step.get.stepId.get,
+              nameToShow = nextStepWithConvertedRids.step.get.nameToShow.get,
+              components = nextStepWithConvertedRids.componentsForSelection.get.components map (c => {
+                JsonComponent(
+                  componentId = c.componentId.get,
+                  nameToShow = c.nameToShow.get
+                )
+              })
+            ),
+            JsonStepStatus(
+              nextStep = Some(JsonStatus(
+                nextStepWithConvertedRids.step.get.status.get.nextStep.get.status,
+                nextStepWithConvertedRids.step.get.status.get.nextStep.get.message
+              )),
+              currentConfig = Some(JsonStatus(
+                status = nextStepWithConvertedRids.step.get.status.get.currentConfig.get.status,
+                message = nextStepWithConvertedRids.step.get.status.get.currentConfig.get.message
+              )),
+              common = Some(JsonStatus(
+                nextStepWithConvertedRids.step.get.status.get.common.get.status,
+                nextStepWithConvertedRids.step.get.status.get.common.get.message
+              ))
+            )
+          )
         )
-      )
-    )
+      case _ =>
+        JsonNextStepOut(
+          result = JsonNextStepResult(
+            step = JsonStep("", "", List()),
+            JsonStepStatus(
+              nextStep = Some(JsonStatus(
+                nextStepBO.step.get.status.get.nextStep.get.status,
+                nextStepBO.step.get.status.get.nextStep.get.message
+              )),
+              common = Some(JsonStatus(
+                nextStepBO.step.get.status.get.common.get.status,
+                nextStepBO.step.get.status.get.common.get.message
+              ))
+            )
+          )
+        )
+    }
+
   }
 
   /**

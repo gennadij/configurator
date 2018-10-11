@@ -8,6 +8,8 @@ import org.shared.currentConfig.json.{JsonCurrentConfigIn, JsonCurrentConfigOut}
 import org.shared.nextStep.json.JsonNextStepOut
 import org.shared.startConfig.json.{JsonStartConfigIn, JsonStartConfigOut}
 
+//TODO FirstStepStatus zu StartConfig umbenennen
+
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
   *

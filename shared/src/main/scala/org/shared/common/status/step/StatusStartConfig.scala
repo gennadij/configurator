@@ -8,24 +8,25 @@ import org.shared.common.status.Status
  * Created by Gennadi Heimann 26.02.2018
  */
 
-sealed abstract class StatusFirstStep extends Status
+sealed abstract class StatusStartConfig extends Status
 
-case class FirstStepNotExist() extends StatusFirstStep{
+case class StartConfigNotExist() extends StatusStartConfig{
   def status: String = "FIRST_STEP_NOT_EXIST"
   def message: String = ""
 }
 
-case class FirstStepExist() extends StatusFirstStep{
+case class StartConfigExist() extends StatusStartConfig{
   def status: String = "FIRST_STEP_EXIST"
   def message: String = ""
 }
 
-case class MultipleFirstSteps() extends StatusFirstStep{
+case class MultipleFirstSteps() extends StatusStartConfig{
   def status: String = "MULTIPLE_FIRST_STEPS"
   def message: String = ""
 }
 
-case class CommonErrorFirstStep() extends StatusFirstStep{
+case class CommonErrorStartConfig() extends StatusStartConfig{
   def status: String = "COMMON_ERROR_FIRST_STEP"
   def message: String = ""
 }
+

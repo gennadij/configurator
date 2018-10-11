@@ -117,4 +117,21 @@ trait RIDConverter extends RidToHash {
       currentStep = Some(selectedComponentBO.currentStep.get.copy(
         stepId = stepIdHash)))
   }
+
+  def convertRidToHashForNextStepBO(nextStepBO: NextStepBO): NextStepBO = {
+
+    val nextStepId: String = setIdAndHash(nextStepBO.step.get.stepId.get)._2
+
+    val nextStep: StepBO = nextStepBO.step.get.copy(stepId = Some(nextStepId))
+
+    val componentHashIds =  nextStepBO.componentsForSelection.get.components map (cBO => {
+      cBO.copy(componentId = Some(setIdAndHash(cBO.componentId.get)._2))
+    })
+
+    val componentsForSelectionBO: ComponentsForSelectionBO =
+      nextStepBO.componentsForSelection.get.copy(components = componentHashIds)
+
+    nextStepBO.copy(step = Some(nextStep), componentsForSelection = Some(componentsForSelectionBO))
+
+  }
 }

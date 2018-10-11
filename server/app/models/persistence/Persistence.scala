@@ -25,7 +25,7 @@ object Persistence {
     */
 
   def getFirstStep(configUrl: String): StepBO = {
-    val (vFirstStep, statusFirstStep, statusCommon): (Option[OrientVertex], StatusFirstStep, Status) =
+    val (vFirstStep, statusFirstStep, statusCommon): (Option[OrientVertex], StatusStartConfig, Status) =
       Graph.getFirstStep(configUrl)
 
     vFirstStep match {
@@ -36,14 +36,14 @@ object Persistence {
           selectionCriteriumMin = Some(fS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN)),
           selectionCriteriumMax = Some(fS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX)),
           status = Some(StatusStep(
-            firstStep = Some(FirstStepExist()),
+            startConfig = Some(StartConfigExist()),
             common = Some(Success())
           )
         ))
       case None =>
         StepBO(
           status = Some(StatusStep(
-            firstStep = Some(statusFirstStep),
+            startConfig = Some(statusFirstStep),
             common = Some(statusCommon)
           )
         ))
@@ -69,7 +69,7 @@ object Persistence {
         })
 
         ComponentsForSelectionBO(
-          status = Some(StatusComponent(common = Some(Success()))),
+          status = Some(StatusComponent(common = Some(statusCommon))),
           components = componentBOs
         )
 
@@ -138,10 +138,9 @@ object Persistence {
     * @return StepBO
     */
   def getCurrentStep(componentId: String): StepBO = {
-    val (vCurrentStep: Option[OrientVertex], statusCurrentStep: StatusCurrentStep, statusCommen: Status) =
+    val (vCurrentStep: Option[OrientVertex], statusCurrentStep: StatusCurrentStep, statusCommon: Status) =
       Graph.getCurrentStep(componentId)
 
-    //TODO Status FirstSetep und CurrentStep zusammenführen
     vCurrentStep match {
       case Some(vCS) =>
         StepBO(
@@ -150,16 +149,14 @@ object Persistence {
           Some(vCS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN).toString.toInt),
           Some(vCS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX).toString.toInt),
           Some(StatusStep(
-            None,
-            None,
-            Some(CurrentStepExist()),
-            Some(Success())
+            currentStep = Some(statusCurrentStep),
+            common = Some(statusCommon)
           )),
           Some(vCS.getEdges(Direction.OUT, PropertyKeys.HAS_COMPONENT).asScala.toList map (hC => {
             hC.getVertex(Direction.IN).asInstanceOf[OrientVertex].getIdentity.toString()
           }))
         )
-      case _ => StepBO(status = Some(StatusStep(currentStep = Some(statusCurrentStep), common = Some(statusCommen))))
+      case _ => StepBO(status = Some(StatusStep(currentStep = Some(statusCurrentStep), common = Some(statusCommon))))
     }
   }
 
@@ -181,9 +178,8 @@ object Persistence {
           selectionCriteriumMin = Some(vNS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN).toString.toInt),
           selectionCriteriumMax = Some(vNS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX).toString.toInt),
           status = Some(StatusStep(
-            firstStep = None,
             nextStep = Some(NextStepExist()),
-            currentStep = None,
+            currentConfig = Some(StepCurrentConfigSuccess()),
             common = Some(Success())
           )),
           componentIds = Some(vNS.getEdges(Direction.OUT, PropertyKeys.HAS_COMPONENT).asScala.toList map (hC => {

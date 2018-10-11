@@ -1,16 +1,13 @@
-package models.v002
+package models.selectedComponent
 
 import controllers.MessageHandler
 import controllers.websocket.WebClient
-import org.specs2.runner.JUnitRunner
 import org.junit.runner.RunWith
-import org.specs2.mutable.Specification
-import org.specs2.specification.BeforeAfterAll
-import play.api.libs.json.Json
-import play.api.Logger
-import play.api.libs.json.JsValue
-import models.persistence.orientdb.PropertyKeys
 import org.shared.common.JsonNames
+import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitRunner
+import org.specs2.specification.BeforeAfterAll
+import play.api.libs.json.JsValue
 import util.CommonFunction
 
 /**
@@ -18,9 +15,9 @@ import util.CommonFunction
  * 
  * Created by Gennadi Heimann 22.12.2017
  */
-//noinspection ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses
+//noinspection ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses
 @RunWith(classOf[JUnitRunner])
-class Scenario_002_8_Specs extends Specification with MessageHandler with BeforeAfterAll{
+class Scenario_002_11_Specs extends Specification with MessageHandler with BeforeAfterAll{
 
   val wC: WebClient = WebClient.init
   
@@ -29,7 +26,7 @@ class Scenario_002_8_Specs extends Specification with MessageHandler with Before
   def afterAll: Unit = {}
   
   "Specification spezifiziert der NextStep der Konfiguration" >> {
-    "S1 -> C1, C2, C3" >> {
+    "S1 -> C1, C2, C3, C1, C2, C3" >> {
       val configUrl = "http://contig1/user29_v016"
       
       val startConfigOut = CommonFunction.firstStep(wC, configUrl)
@@ -116,6 +113,73 @@ class Scenario_002_8_Specs extends Specification with MessageHandler with Before
       (result_3 \ "step" \ "components").asOpt[List[JsValue]].get.size === 2
       ((result_3 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_2_user29_v016")
       ((result_3 \ "step" \ "components")(1) \ "nameToShow").asOpt[String] === Some("C_1_1_user29_v016")
+      
+      val componentOut_4: JsValue = CommonFunction.selectComponent(wC, componentIdC11)
+      
+      (componentOut_4 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_4 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
+      (((componentOut_4 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
+      (((componentOut_4 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
+      (((componentOut_4 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
+      (componentOut_4 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
+      (componentOut_4 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "REMOVED_COMPONENT"
+      (componentOut_4 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
+      (componentOut_4 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "NOT_EXCLUDED_COMPONENT"
+      (componentOut_4 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
+      
+      val jsonCurrentConfigOut_4: JsValue = CommonFunction.currentCongig(wC)
+      
+      val result_4 = (jsonCurrentConfigOut_4 \ "result")
+      (jsonCurrentConfigOut_4 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
+      (result_4 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
+      (result_4 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
+      ((result_4 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_2_user29_v016")
+      
+      
+      val componentOut_5: JsValue = CommonFunction.selectComponent(wC, componentIdC12)
+      
+      (componentOut_5 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_5 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
+      (((componentOut_5 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
+      (((componentOut_5 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
+      (((componentOut_5 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_2_user29_v016) ----> (C_1_3_user29_v016)"
+      (componentOut_5 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
+      (componentOut_5 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "REMOVED_COMPONENT"
+      (componentOut_5 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_COMPONENT"
+      (componentOut_5 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "NOT_EXCLUDED_COMPONENT"
+      (componentOut_5 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
+      
+      val jsonCurrentConfigOut_5: JsValue = CommonFunction.currentCongig(wC)
+      
+      val result_5 = (jsonCurrentConfigOut_5 \ "result")
+      (jsonCurrentConfigOut_5 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
+      (result_5 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
+      (result_5 \ "step" \ "components").asOpt[List[JsValue]].get.size === 0
+//      ((result_5 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_2_user29_v016")
+      
+      val componentOut_6: JsValue = CommonFunction.selectComponent(wC, componentIdC13)
+      
+      (componentOut_6 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_6 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 2
+      (((componentOut_6 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
+      (((componentOut_6 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
+      (((componentOut_6 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_3_user29_v016) ----> (C_1_1_user29_v016)"
+      (((componentOut_6 \ "result" \ "dependencies")(1)) \ "dependencyType").asOpt[String].get === "exclude"
+      (((componentOut_6 \ "result" \ "dependencies")(1)) \ "visualization").asOpt[String].get === "remove"
+      (((componentOut_6 \ "result" \ "dependencies")(1)) \ "nameToShow").asOpt[String].get === "(C_1_3_user29_v016) ----> (C_1_2_user29_v016)"
+      (componentOut_6 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
+      (componentOut_6 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
+      (componentOut_6 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
+      (componentOut_6 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "NOT_EXCLUDED_COMPONENT"
+      (componentOut_6 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
+      
+      val jsonCurrentConfigOut_6: JsValue = CommonFunction.currentCongig(wC)
+      
+      val result_6 = (jsonCurrentConfigOut_6 \ "result")
+      (jsonCurrentConfigOut_6 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
+      (result_6 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
+      (result_6 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
+      ((result_6 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_3_user29_v016")
     }
   }
 }

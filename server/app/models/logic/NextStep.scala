@@ -3,8 +3,8 @@ package models.logic
 import models.bo._
 import models.currentConfig.CurrentConfig
 import models.persistence.Persistence
+import org.shared.common.status.Success
 import org.shared.common.status.step._
-import org.shared.common.status.{Error, Success}
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -39,8 +39,14 @@ class NextStep {
 
     selectedComponents match {
       case List() =>
-        createErrorNextStepOut(StatusStep(None, Some(StepCurrentConfigBOIncludeNoSelectedComponents()),
-          None, Some(Error())))
+        NextStepBO(
+          step = Some(StepBO(
+            status = Some(StatusStep(
+              currentConfig = Some(StepCurrentConfigBOIncludeNoSelectedComponents()),
+              common = Some(Success())
+            ))
+          ))
+        )
       case _ =>
         val nextStep: StepBO = Persistence.getNextStep(selectedComponents.head.componentId.get)
         nextStep.status.get.nextStep match {
@@ -48,6 +54,8 @@ class NextStep {
             val componentsForSelectionBO: ComponentsForSelectionBO = Persistence.getComponents(nextStep.stepId.get)
             componentsForSelectionBO.status.get.common match {
               case Some(Success()) =>
+                //Step zu der CurrentConfig hinzufuegen
+                //TODO NextStep erst zu der CurrentConfig hinzufuegen wenn erste Component ausgewaehlt wurde.
                 lastStep.nextStep = Some(StepCurrentConfigBO(
                   nextStep.stepId.get,
                   nextStep.nameToShow.get,
@@ -58,18 +66,16 @@ class NextStep {
                   step = Some(nextStep),
                   componentsForSelection = Some(componentsForSelectionBO)
                 )
-              case _ =>
-                createErrorNextStepOut(StatusStep(None,
-                  Some(NextStepIncludeNoComponents()),
-                  None, Some(Error())))
+              case _ => NextStepBO(step = Some(StepBO(
+                  status = Some(StatusStep(
+                    nextStep = Some(NextStepIncludeNoComponents()),
+                    common = Some(Success())
+                  ))
+              )))
             }
           case _ => NextStepBO(step = Some(nextStep))
         }
     }
-  }
-
-  private def createErrorNextStepOut(s: StatusStep): NextStepBO = {
-    NextStepBO(step = Some(StepBO(status = Some(s))))
   }
 
   /**
@@ -78,10 +84,10 @@ class NextStep {
     * @param list : Seq[String]
     * @return Boolean
     */
-  private def compareOneWithAll(list: Seq[String]): Boolean = {
-    list match {
-      case firstVertex :: rest => rest forall (_ == firstVertex)
-    }
-  }
+//  private def compareOneWithAll(list: Seq[String]): Boolean = {
+//    list match {
+//      case firstVertex :: rest => rest forall (_ == firstVertex)
+//    }
+//  }
 
 }

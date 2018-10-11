@@ -84,12 +84,6 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       val componentIdC12: String = sCOut.get.result.step.components.filter(comp => comp.nameToShow == "C12")
         .map(_.componentId).head
 
-//      val componentIdC12: String =
-//        (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-//            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_2_user29_v016")
-//            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
-      
-      
       Logger.info(this.getClass.getSimpleName + ": componentIdC12 " + componentIdC12)
       
       val jsonComponentIn_2: JsValue = Json.obj(
@@ -129,11 +123,12 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       (jsonNextStepOut_2 \ "json").asOpt[String].get === JsonNames.NEXT_STEP
       (jsonNextStepOut_2 \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S2"
       (jsonNextStepOut_2 \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 2
-      (((jsonNextStepOut_2 \ "result" \ "step" \ "components")(0)) \ "nameToShow").asOpt[String].get === "C_2_1"
-      (((jsonNextStepOut_2 \ "result" \ "step" \ "components")(1)) \ "nameToShow").asOpt[String].get === "C_2_2"
+      (((jsonNextStepOut_2 \ "result" \ "step" \ "components")(0)) \ "nameToShow").asOpt[String].get === "C21"
+      (((jsonNextStepOut_2 \ "result" \ "step" \ "components")(1)) \ "nameToShow").asOpt[String].get === "C22"
       (jsonNextStepOut_2 \ "result" \ "status" \ "firstStep").asOpt[String] === None
       (jsonNextStepOut_2 \ "result" \ "status" \ "nextStep" \ "status").asOpt[String].get === "NEXT_STEP_EXIST"
-      (jsonNextStepOut_2 \ "result" \ "status" \ "fatherStep").asOpt[String] === None
+      (jsonNextStepOut_2 \ "result" \ "status" \ "currentStep").asOpt[String] === None
+      (jsonNextStepOut_2 \ "result" \ "status" \ "currentConfig" \ "status").asOpt[String].get === "STEP_CURRENT_CONFIG_SUCCESS"
       (jsonNextStepOut_2 \ "result" \ "status" \ "common" \ "status").asOpt[String].get === "SUCCESS"
       
     }

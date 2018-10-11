@@ -1,16 +1,13 @@
-package models.v002
+package models.selectedComponent
 
 import controllers.MessageHandler
 import controllers.websocket.WebClient
-import org.specs2.runner.JUnitRunner
 import org.junit.runner.RunWith
-import org.specs2.mutable.Specification
-import org.specs2.specification.BeforeAfterAll
-import play.api.libs.json.Json
-import play.api.Logger
-import play.api.libs.json.JsValue
-import models.persistence.orientdb.PropertyKeys
 import org.shared.common.JsonNames
+import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitRunner
+import org.specs2.specification.BeforeAfterAll
+import play.api.libs.json.JsValue
 import util.CommonFunction
 
 /**
@@ -18,9 +15,9 @@ import util.CommonFunction
  * 
  * Created by Gennadi Heimann 22.12.2017
  */
-//noinspection ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses
+//noinspection ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses
 @RunWith(classOf[JUnitRunner])
-class Scenario_002_13_Specs extends Specification with MessageHandler with BeforeAfterAll{
+class Scenario_002_14_Specs extends Specification with MessageHandler with BeforeAfterAll{
 
   val wC: WebClient = WebClient.init
   
@@ -29,7 +26,7 @@ class Scenario_002_13_Specs extends Specification with MessageHandler with Befor
   def afterAll: Unit = {}
   
   "Specification spezifiziert der NextStep der Konfiguration" >> {
-    "S1 -> C1, C2, C3, C1, C2, C3, C1, C2" >> {
+    "S1 -> C1, C2, C3, C1, C2, C3, C1, C2, C3" >> {
       val configUrl = "http://contig1/user29_v016"
       
       val startConfigOut = CommonFunction.firstStep(wC, configUrl)
@@ -191,9 +188,6 @@ class Scenario_002_13_Specs extends Specification with MessageHandler with Befor
       (((componentOut_7 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
       (((componentOut_7 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
       (((componentOut_7 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
-//      (((componentOut_7 \ "result" \ "dependencies")(1)) \ "dependencyType").asOpt[String].get === "exclude"
-//      (((componentOut_7 \ "result" \ "dependencies")(1)) \ "visualization").asOpt[String].get === "remove"
-//      (((componentOut_7 \ "result" \ "dependencies")(1)) \ "nameToShow").asOpt[String].get === "(C_1_3_user29_v016) ----> (C_1_2_user29_v016)"
       (componentOut_7 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (componentOut_7 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
       (componentOut_7 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
@@ -215,9 +209,6 @@ class Scenario_002_13_Specs extends Specification with MessageHandler with Befor
       (((componentOut_8 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
       (((componentOut_8 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
       (((componentOut_8 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_2_user29_v016) ----> (C_1_3_user29_v016)"
-//      (((componentOut_7 \ "result" \ "dependencies")(1)) \ "dependencyType").asOpt[String].get === "exclude"
-//      (((componentOut_7 \ "result" \ "dependencies")(1)) \ "visualization").asOpt[String].get === "remove"
-//      (((componentOut_7 \ "result" \ "dependencies")(1)) \ "nameToShow").asOpt[String].get === "(C_1_3_user29_v016) ----> (C_1_2_user29_v016)"
       (componentOut_8 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (componentOut_8 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
       (componentOut_8 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
@@ -231,6 +222,29 @@ class Scenario_002_13_Specs extends Specification with MessageHandler with Befor
       (result_8 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
       (result_8 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
       ((result_8 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_3_user29_v016")
+      
+      val componentOut_9: JsValue = CommonFunction.selectComponent(wC, componentIdC13)
+      
+      (componentOut_9 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_9 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 2
+      (((componentOut_9 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
+      (((componentOut_9 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
+      (((componentOut_9 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_3_user29_v016) ----> (C_1_1_user29_v016)"
+      (((componentOut_9 \ "result" \ "dependencies")(1)) \ "dependencyType").asOpt[String].get === "exclude"
+      (((componentOut_9 \ "result" \ "dependencies")(1)) \ "visualization").asOpt[String].get === "remove"
+      (((componentOut_9 \ "result" \ "dependencies")(1)) \ "nameToShow").asOpt[String].get === "(C_1_3_user29_v016) ----> (C_1_2_user29_v016)"
+      (componentOut_9 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
+      (componentOut_9 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "REMOVED_COMPONENT"
+      (componentOut_9 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_COMPONENT"
+      (componentOut_9 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "NOT_EXCLUDED_COMPONENT"
+      (componentOut_9 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
+      
+      val jsonCurrentConfigOut_9: JsValue = CommonFunction.currentCongig(wC)
+      
+      val result_9 = (jsonCurrentConfigOut_9 \ "result")
+      (jsonCurrentConfigOut_9 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
+      (result_9 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
+      (result_9 \ "step" \ "components").asOpt[List[JsValue]].get.size === 0
     }
   }
 }

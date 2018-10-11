@@ -1,16 +1,13 @@
-package models.v002
+package models.selectedComponent
 
 import controllers.MessageHandler
 import controllers.websocket.WebClient
-import org.specs2.runner.JUnitRunner
 import org.junit.runner.RunWith
-import org.specs2.mutable.Specification
-import org.specs2.specification.BeforeAfterAll
-import play.api.libs.json.Json
-import play.api.Logger
-import play.api.libs.json.JsValue
-import models.persistence.orientdb.PropertyKeys
 import org.shared.common.JsonNames
+import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitRunner
+import org.specs2.specification.BeforeAfterAll
+import play.api.libs.json.JsValue
 import util.CommonFunction
 
 /**

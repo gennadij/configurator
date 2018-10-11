@@ -16,8 +16,8 @@ case class JsonNextStepResult (
 )
 
 object JsonNextStepResult {
-  implicit val writes: Writes[JsonNextStepResult] = (
-      (JsPath \ "step").write(Writes.of[JsonStep]) and 
-      (JsPath \ "status").write(Writes.of[JsonStepStatus])
-  )(unlift(JsonNextStepResult.unapply))
+  implicit val format: Format[JsonNextStepResult] = (
+      (JsPath \ "step").format(Format.of[JsonStep]) and
+      (JsPath \ "status").format(Format.of[JsonStepStatus])
+  )(JsonNextStepResult.apply, unlift(JsonNextStepResult.unapply))
 }

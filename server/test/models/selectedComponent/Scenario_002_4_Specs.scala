@@ -1,18 +1,16 @@
-package models.v002
+package models.selectedComponent
 
 import controllers.MessageHandler
 import controllers.websocket.WebClient
-import org.specs2.runner.JUnitRunner
 import org.junit.runner.RunWith
-import org.specs2.mutable.Specification
-import org.specs2.specification.BeforeAfterAll
-import play.api.libs.json.Json
-import play.api.Logger
-import play.api.libs.json.JsValue
-import models.persistence.orientdb.PropertyKeys
 import org.shared.common.JsonNames
 import org.shared.common.status.Success
 import org.shared.component.status._
+import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitRunner
+import org.specs2.specification.BeforeAfterAll
+import play.api.Logger
+import play.api.libs.json.{JsValue, Json}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -21,7 +19,7 @@ import org.shared.component.status._
  */
 //noinspection ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses
 @RunWith(classOf[JUnitRunner])
-class Scenario_002_3_Specs  extends Specification with MessageHandler with BeforeAfterAll{
+class Scenario_002_4_Specs  extends Specification with MessageHandler with BeforeAfterAll{
 
   val wC: WebClient = WebClient.init
   
@@ -32,7 +30,7 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
   }
   
   "Specification spezifiziert CurrentConfig bei der doppeltem Auswahl der Komponente " >> {
-    "Die Komponente C_1_1_user29_v016, C_1_2_user29_v016, C_1_1_user29_v016 wird ausgewaelt" >> {
+    "Die Komponente C_1_1_user29_v016, C_1_2_user29_v016, C_1_2_user29_v016 wird ausgewaelt" >> {
       val configUrl = "http://contig1/user29_v016"
       val startConfigIn = Json.obj(
           "json" -> JsonNames.START_CONFIG
@@ -106,7 +104,7 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
-      //User hat ausgewaelt Component 2
+      //User hat ausgewaelt Component 1
       val componentIdC12: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
             .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_2_user29_v016")
             .map(comp => {(comp \ "componentId").asOpt[String].get}).head
@@ -165,14 +163,10 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
-//      val componentIdC12: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-//            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_2_user29_v016")
-//            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
-      
       val componentIn_3 = Json.obj(
           "json" -> JsonNames.COMPONENT
           ,"params" -> Json.obj(
-               "componentId" -> componentIdC11
+               "componentId" -> componentIdC12
            )
       )
       Logger.info("componentIn_3 " + componentIn_3)
@@ -185,7 +179,7 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       (componentOut_3 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
       ((componentOut_3 \ "result" \ "dependencies")(0) \ "dependencyType").asOpt[String].get === "exclude"
       ((componentOut_3 \ "result" \ "dependencies")(0) \ "visualization").asOpt[String].get === "remove"
-      ((componentOut_3 \ "result" \ "dependencies")(0) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
+      ((componentOut_3 \ "result" \ "dependencies")(0) \ "nameToShow").asOpt[String].get === "(C_1_2_user29_v016) ----> (C_1_3_user29_v016)"
       
       val statusSelectionCriterium_3 = RequireNextStep()
       (componentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "status").asOpt[String].get === statusSelectionCriterium_3.status
@@ -219,7 +213,7 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       (jsonCurrentConfigOut_3 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_3 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
       (result_3 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
-      ((result_3 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_2_user29_v016")
+      ((result_3 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_1_user29_v016")
     }
   }
 }

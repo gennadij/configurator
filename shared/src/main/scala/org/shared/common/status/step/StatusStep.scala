@@ -8,8 +8,9 @@ import org.shared.common.status.Status
  * Created by Gennadi Heimann 20.02.2018
  */
 case class StatusStep(
-                       firstStep: Option[StatusFirstStep] = None,
+                       startConfig: Option[StatusStartConfig] = None,
                        nextStep: Option[StatusNextStep] = None,
                        currentStep: Option[StatusCurrentStep] = None,
+                       currentConfig: Option[StatusCurrentConfig] = None,
                        common: Option[Status] = None
 )

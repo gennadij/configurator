@@ -41,6 +41,7 @@ trait SelectedComponentUtil {
     val componentTypeStatus: StatusComponentType = selectedComponentBO.nextStep.get.status.get.nextStep.get match {
       case NextStepNotExist() => FinalComponent()
       case NextStepExist() => DefaultComponent()
+      case _ => UnknowComponentType()
     }
 
     val statusComponent: StatusComponent = selectedComponentBO.status.get.copy(componentType = Some(componentTypeStatus))
@@ -534,7 +535,6 @@ trait SelectedComponentUtil {
 //  def getPossibleComponentToSelect(currentConfigWithTempSelectedComponent: List[ComponentBO],
 //                                   selectedComponentBO: SelectedComponentBO,
 //                                   previousSelectedComponentsInCurrentConfig: List[ComponentBO]): List[String] = {
-//    //TODO nach dem Test Logger.info löschen
 //    val excludedComponentIds: Set[String] = (currentConfigWithTempSelectedComponent flatMap (pSC => {
 //      pSC.excludeDependenciesOut.get map (_.inId)
 //    })).toSet
@@ -563,7 +563,6 @@ trait SelectedComponentUtil {
 //
 //    Logger.info("filteredComponents: " +furtherPosibleComponentIdsToSelect)
 //    furtherPosibleComponentIdsToSelect
-//    // TODO betrachten ob notwendig der Par löschen
 ////    val debugval = filteredComponents.filterNot(pCTS => previousSelectedComponentsInCurrentConfig.map(_.componentId.get).contains(pCTS))
 ////    Logger.info("debugval: " + debugval)
 ////    debugval

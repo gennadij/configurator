@@ -57,7 +57,7 @@ object Graph {
     val graph: (Option[OrientGraph], String) = Database.getFactory
     graph._1 match {
       case Some(g) => new Graph(Some(g)).getNextStep(componentId)
-      case None => (None, CommonErrorNextStep(), ODBConnectionError())
+      case None => (None, NextStepCommonError(), ODBConnectionError())
     }
   }
 
@@ -67,11 +67,11 @@ object Graph {
     * @param configUrl : String
     * @return OrientVertex
     */
-  def getFirstStep(configUrl: String): (Option[OrientVertex], StatusFirstStep, Status) = {
+  def getFirstStep(configUrl: String): (Option[OrientVertex], StatusStartConfig, Status) = {
     val graph: (Option[OrientGraph], String) = Database.getFactory
     graph._1 match {
       case Some(g) => new Graph(Some(g)).getFirstStep(configUrl)
-      case None => (None, CommonErrorFirstStep(), ODBConnectionError())
+      case None => (None, CommonErrorStartConfig(), ODBConnectionError())
     }
   }
 
@@ -130,9 +130,9 @@ class Graph(graph: Option[OrientGraph]) {
 
       val vFatherSteps : List[OrientVertex]= eHasComponents map (eHasComponent => {eHasComponent.getVertex(Direction.OUT)})
       vFatherSteps.size match {
-        case s if s == 0 => (None, CurrentStepNotExist(), Error())
+        case s if s == 0 => (None, CurrentStepNotExist(), Success())
         case s if s == 1 => (Some(vFatherSteps.head), CurrentStepExist(), Success())
-        case s if s >  1 => (None, MultipleCurrentSteps(), Error())
+        case s if s >  1 => (None, MultipleCurrentSteps(), Success())
       }
     } catch {
       case e2: ClassCastException =>
@@ -207,18 +207,18 @@ class Graph(graph: Option[OrientGraph]) {
       graph.get.getVertex(componentId).getEdges(Direction.OUT, PropertyKeys.HAS_STEP).asScala.toList match {
         case eHasSteps if eHasSteps.size == 1 =>
           (Some(eHasSteps.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]), NextStepExist(), Success())
-        case eHasSteps if eHasSteps.size > 1 => (None, MultipleNextSteps(), Error())
+        case eHasSteps if eHasSteps.size > 1 => (None, NextMultipleSteps(), Success())
         case eHasSteps if eHasSteps.isEmpty => (None, NextStepNotExist(), Success())
       }
     } catch {
       case e2: ClassCastException =>
         graph.get.rollback()
         Logger.error(e2.printStackTrace().toString)
-        (None, CommonErrorNextStep(), ODBClassCastError())
+        (None, NextStepCommonError(), ODBClassCastError())
       case e1: Exception =>
         graph.get.rollback()
         Logger.error(e1.printStackTrace().toString)
-        (None, CommonErrorNextStep(), ODBReadError())
+        (None, NextStepCommonError(), ODBReadError())
     }
   }
 
@@ -229,7 +229,7 @@ class Graph(graph: Option[OrientGraph]) {
     * @return StepBO
     */
 
-  private def getFirstStep(configUrl: String): (Option[OrientVertex], StatusFirstStep, Status) = {
+  private def getFirstStep(configUrl: String): (Option[OrientVertex], StatusStartConfig, Status) = {
 
     try {
       val vConfigs: List[Vertex] = graph.get.getVertices(PropertyKeys.CONFIG_URL, configUrl).asScala.toList
@@ -239,22 +239,22 @@ class Graph(graph: Option[OrientGraph]) {
           eHasConfigs.size match {
             case eHasConfigsCount if eHasConfigsCount == 1 =>
               val vFirstStep: OrientVertex = eHasConfigs.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]
-              (Some(vFirstStep), FirstStepExist(), Success())
+              (Some(vFirstStep), StartConfigExist(), Success())
             case eHasConfigsCount if eHasConfigsCount > 1 => (None, MultipleFirstSteps(), Error())
-            case eHasConfigsCount if eHasConfigsCount < 1 => (None, FirstStepNotExist(), Error())
+            case eHasConfigsCount if eHasConfigsCount < 1 => (None, StartConfigNotExist(), Error())
           }
         case vConfigsCount if vConfigsCount > 1 => (None, MultipleFirstSteps(), Error())
-        case vConfigsCount if vConfigsCount < 1 => (None, FirstStepNotExist(), Error())
+        case vConfigsCount if vConfigsCount < 1 => (None, StartConfigNotExist(), Error())
       }
     } catch {
       case e2: ClassCastException =>
         graph.get.rollback()
         Logger.error(e2.printStackTrace().toString)
-        (None, CommonErrorFirstStep(), ODBClassCastError())
+        (None, CommonErrorStartConfig(), ODBClassCastError())
       case e1: Exception =>
         graph.get.rollback()
         Logger.error(e1.printStackTrace().toString)
-        (None, CommonErrorFirstStep(), ODBReadError())
+        (None, CommonErrorStartConfig(), ODBReadError())
     }
 
 

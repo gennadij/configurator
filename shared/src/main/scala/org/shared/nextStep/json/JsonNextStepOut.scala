@@ -1,7 +1,7 @@
 package org.shared.nextStep.json
 
 import org.shared.common.JsonNames
-import play.api.libs.json.{Json, OWrites}
+import play.api.libs.json.{Json, OFormat}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -15,5 +15,5 @@ case class JsonNextStepOut (
 )
 
 object JsonNextStepOut {
-  implicit val format: OWrites[JsonNextStepOut] = Json.writes[JsonNextStepOut]
+  implicit val format: OFormat[JsonNextStepOut] = Json.format[JsonNextStepOut]
 }
