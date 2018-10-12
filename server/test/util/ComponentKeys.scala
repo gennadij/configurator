@@ -17,7 +17,7 @@ import play.api.libs.json.Json.toJsFieldJsValueWrapper
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
- * 
+ *
  * Created by Gennadi Heimann 23.02.2018
  */
 //noinspection ExistsEquals,ScalaUnnecessaryParentheses
@@ -25,28 +25,28 @@ import play.api.libs.json.Json.toJsFieldJsValueWrapper
 @RunWith(classOf[JUnitRunner])
 class ComponentKeys extends Specification with MessageHandler with BeforeAfterAll {
   val wC: WebClient = WebClient.init
-  
+
   def beforeAll(): Unit = {
   }
-  
+
   def afterAll(): Unit = {
   }
-  
+
   "Specification spezifiziert der NextStep der Konfiguration" >> {
     "Es wird erster Step mit der Komponenten geladen und Component_1_1 und Componente_1_2  ausgewaelt" >> {
-      val configUrl = "http://contig1/user29_v016"
+      val configUrl = "http://config/client_013"
       val startConfigIn = Json.obj(
           "json" -> JsonNames.START_CONFIG
           ,"params" -> Json.obj(
                "configUrl" -> configUrl
            )
       )
-      
+
       val startConfigOut = wC.handleMessage(startConfigIn)
-      
+
       //User hat ausgewaelt
       val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_1_user29_v016")
+            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C11")
             .map(comp => {(comp \ "componentId").asOpt[String].get}).head
 
       val jsonComponentIn_1: JsValue = Json.obj(
@@ -55,43 +55,41 @@ class ComponentKeys extends Specification with MessageHandler with BeforeAfterAl
                "componentId" -> componentIdC11
            )
       )
-      
+
       val jsonComponentOut_1: JsValue = wC.handleMessage(jsonComponentIn_1)
-      
+
       Logger.info(this.getClass.getSimpleName + ": ComponentIn_1 " + jsonComponentIn_1)
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_1 " + jsonComponentOut_1)
 
 
       //noinspection ScalaUnnecessaryParentheses
       (jsonComponentOut_1).asOpt[JsObject].get.keys === Set("json", "result")
-      
-      (jsonComponentOut_1 \ "result").asOpt[JsObject].get.keys === 
-        Set("selectedComponentId", "stepId", "status", "dependencies")
-      
-      (jsonComponentOut_1 \ "result"\ "dependencies").asOpt[List[JsObject]].get.map(_.keys) === 
-        List(Set("outId", "inId", "dependencyType", "visualization", "nameToShow", "status", "message"))
+
+      (jsonComponentOut_1 \ "result").asOpt[JsObject].get.keys ===
+        Set("selectedComponentId", "stepId", "status",
+          "excludeDependenciesOut", "excludeDependenciesIn", "requireDependenciesOut", "requireDependenciesIn")
 
       //noinspection ExistsEquals
       (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.exists(_ == "selectionCriterium") === true
       (jsonComponentOut_1 \ "result"\ "status" \ "selectionCriterium").asOpt[JsObject].get.keys === Set("status", "message")
-      
+
       (jsonComponentOut_1 \ "result" \ "status").asOpt[JsObject].get.keys.contains("componentType") === true
       (jsonComponentOut_1 \ "result"\ "status" \ "componentType").asOpt[JsObject].get.keys === Set("status", "message")
-      
+
       (jsonComponentOut_1 \ "result" \ "status").asOpt[JsObject].get.keys.contains("common") === true
       (jsonComponentOut_1 \ "result"\ "status" \ "common").asOpt[JsObject].get.keys === Set("status", "message")
 
       //noinspection ExistsEquals
       (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.exists(_ == "selectedComponent") === true
       (jsonComponentOut_1 \ "result"\ "status" \ "selectedComponent").asOpt[JsObject].get.keys === Set("status", "message")
-      
+
       (jsonComponentOut_1 \ "result" \ "status").asOpt[JsObject].get.keys.contains("excludeDependency") === true
       (jsonComponentOut_1 \ "result"\ "status" \ "excludeDependency").asOpt[JsObject].get.keys === Set("status", "message")
-      
+
       (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.size === 5
-      
+
       (jsonComponentOut_1 \ "result"\ "stepId").asOpt[JsObject] === None
-      
+
       (jsonComponentOut_1 \ "result"\ "selectedComponentId").asOpt[JsObject] === None
     }
   }

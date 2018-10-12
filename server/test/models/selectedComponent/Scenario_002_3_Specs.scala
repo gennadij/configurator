@@ -30,8 +30,8 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
   }
   
   "Specification spezifiziert CurrentConfig bei der doppeltem Auswahl der Komponente " >> {
-    "Die Komponente C_1_1_user29_v016, C_1_2_user29_v016, C_1_1_user29_v016 wird ausgewaelt" >> {
-      val configUrl = "http://contig1/user29_v016"
+    "Die Komponente C11, C12, C11 wird ausgewaelt" >> {
+      val configUrl = "http://config/client_013"
       val startConfigIn = Json.obj(
           "json" -> JsonNames.START_CONFIG
           ,"params" -> Json.obj(
@@ -46,7 +46,7 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       
       //User hat ausgewaelt Component 1
       val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_1_user29_v016")
+            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C11")
             .map(comp => {(comp \ "componentId").asOpt[String].get}).head
       
       Logger.info(this.getClass.getSimpleName + ": componentIdC11 " + componentIdC11)
@@ -63,11 +63,7 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       Logger.info("componentOut_1 " + componentOut_1)
       
       (componentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
-      (componentOut_1 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
-      (((componentOut_1 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
-      (((componentOut_1 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
-      (((componentOut_1 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
-      
+
       val statusSelectionCriterium = AllowNextComponent()
       (componentOut_1 \ "result" \ "status" \ "selectionCriterium" \ "status").asOpt[String].get === statusSelectionCriterium.status
       (componentOut_1 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === statusSelectionCriterium.message
@@ -98,15 +94,15 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       
        val result_1 = (jsonCurrentConfigOut_1 \ "result")
       (jsonCurrentConfigOut_1 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result_1 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
+      (result_1 \ "step" \ "nameToShow").asOpt[String] === Some("S1")
       (result_1 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
-      ((result_1 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_1_user29_v016")
+      ((result_1 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C11")
       
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       //User hat ausgewaelt Component 2
       val componentIdC12: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_2_user29_v016")
+            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C12")
             .map(comp => {(comp \ "componentId").asOpt[String].get}).head
       
       val componentIn_2 = Json.obj(
@@ -122,11 +118,7 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       Logger.info("componentOut_2 " + componentOut_2)
       
       (componentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
-      (componentOut_2 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
-      (((componentOut_2 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
-      (((componentOut_2 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
-      (((componentOut_2 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_2_user29_v016) ----> (C_1_3_user29_v016)"
-      
+
       val statusSelectionCriterium_2 = RequireNextStep()
       (componentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "status").asOpt[String].get === statusSelectionCriterium_2.status
       (componentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === statusSelectionCriterium_2.message
@@ -158,7 +150,7 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       
       val result_2 = (jsonCurrentConfigOut_2 \ "result")
       (jsonCurrentConfigOut_2 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result_2 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
+      (result_2 \ "step" \ "nameToShow").asOpt[String] === Some("S1")
       (result_2 \ "step" \ "components").asOpt[List[JsValue]].get.size === 2
       
       Logger.info(this.getClass.getSimpleName + ": =================================================")
@@ -180,11 +172,7 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       Logger.info("componentOut_3 " + componentOut_3)
       
       (componentOut_3 \ "json").asOpt[String].get === JsonNames.COMPONENT
-      (componentOut_3 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
-      ((componentOut_3 \ "result" \ "dependencies")(0) \ "dependencyType").asOpt[String].get === "exclude"
-      ((componentOut_3 \ "result" \ "dependencies")(0) \ "visualization").asOpt[String].get === "remove"
-      ((componentOut_3 \ "result" \ "dependencies")(0) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
-      
+
       val statusSelectionCriterium_3 = RequireNextStep()
       (componentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "status").asOpt[String].get === statusSelectionCriterium_3.status
       (componentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === statusSelectionCriterium_3.message
@@ -215,9 +203,9 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       
       val result_3 = (jsonCurrentConfigOut_3 \ "result")
       (jsonCurrentConfigOut_3 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result_3 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
+      (result_3 \ "step" \ "nameToShow").asOpt[String] === Some("S1")
       (result_3 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
-      ((result_3 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_2_user29_v016")
+      ((result_3 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C12")
     }
   }
 }

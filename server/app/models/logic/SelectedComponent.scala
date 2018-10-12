@@ -43,10 +43,10 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO) extends Select
         (statusCurrentStep, statusNextStep) match {
           case (Success(), Success()) =>
 
-            val sCExtendedOfCurrentStep = getCurrentStepFromCurrentConfig(sCExtendedOfCurrentAndNextStep)
+            val sCExtendedOfCurrentConfigStep = getCurrentStepFromCurrentConfig(sCExtendedOfCurrentAndNextStep)
 
             // Status Component Typ
-            val sCExtendedOfStatusComponentTyp = verifyStatusComponentType(sCExtendedOfCurrentStep)
+            val sCExtendedOfStatusComponentTyp = verifyStatusComponentType(sCExtendedOfCurrentConfigStep)
 
             //Status Exclude Dependency
             val sCExtendedOfStatusExcludeDependency =

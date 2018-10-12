@@ -294,7 +294,7 @@ class CurrentConfig {
     Logger.info(this.getClass.getSimpleName + ": " + step.get.components + " " + selectedComponentBO.selectedComponent.get.componentId.get)
     Logger.info("Step with deleted component " + step.get.getClass.hashCode())
 
-    step.get.components = step.get.components.filterNot(_.componentId == selectedComponentBO.selectedComponent.get.componentId.get)
+    step.get.components = step.get.components.filterNot(_.componentId == selectedComponentBO.selectedComponent.get.componentId)
 
     Logger.info("Step with deleted component " + step.get.components)
 

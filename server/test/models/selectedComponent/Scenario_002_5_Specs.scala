@@ -29,7 +29,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
   
   "Specification spezifiziert der NextStep der Konfiguration" >> {
     "S1 -> C1 | S2 -> C1 | S3 -> C1" >> {
-      val configUrl = "http://contig1/user29_v016"
+      val configUrl = "http://config/client_013"
       val startConfigIn = Json.obj(
           "json" -> JsonNames.START_CONFIG
           ,"params" -> Json.obj(
@@ -44,7 +44,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       
       //User hat ausgewaelt Schritt 1
       val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_1_user29_v016")
+            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C11")
             .map(comp => {(comp \ "componentId").asOpt[String].get}).head
       
       Logger.info(this.getClass.getSimpleName + ": componentIdC11 " + componentIdC11)
@@ -85,7 +85,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       
       //User hat ausgewaelt Schritt 2
       val componentIdC21: String = (jsonNextStepOut_2 \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_2_1_user29_v016")
+            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C21")
             .map(comp => {(comp \ "componentId").asOpt[String].get}).head
       
       Logger.info(this.getClass.getSimpleName + ": componentIdC21 " + componentIdC21)
@@ -126,7 +126,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       
       //User hat ausgewaelt
       val componentIdC31: String = (jsonNextStepOut_3 \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_3_1_user29_v016")
+            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C31")
             .map(comp => {(comp \ "componentId").asOpt[String].get}).head
       
       Logger.info(this.getClass.getSimpleName + ": componentIdC31 " + componentIdC31)
@@ -167,12 +167,12 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       
       val result = (jsonCurrentConfigOut \ "result")
       (jsonCurrentConfigOut \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
-      ((result \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_1_user29_v016")
-      ((result \ "step" \ "nextStep" \ "nameToShow").asOpt[String]) === Some("S2_user29_v016")
-      ((result \ "step" \ "nextStep" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_2_1_user29_v016")
-      ((result \ "step" \ "nextStep" \ "nextStep" \ "nameToShow").asOpt[String]) === Some("S3_user29_v016")
-      ((result \ "step" \ "nextStep" \ "nextStep" \"components")(0) \ "nameToShow").asOpt[String] === Some("C_3_1_user29_v016")
+      (result \ "step" \ "nameToShow").asOpt[String] === Some("S1")
+      ((result \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C11")
+      ((result \ "step" \ "nextStep" \ "nameToShow").asOpt[String]) === Some("S2")
+      ((result \ "step" \ "nextStep" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C21")
+      ((result \ "step" \ "nextStep" \ "nextStep" \ "nameToShow").asOpt[String]) === Some("S3")
+      ((result \ "step" \ "nextStep" \ "nextStep" \"components")(0) \ "nameToShow").asOpt[String] === Some("C31")
     }
   }
 }

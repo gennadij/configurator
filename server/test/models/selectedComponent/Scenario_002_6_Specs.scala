@@ -27,22 +27,18 @@ class Scenario_002_6_Specs extends Specification with MessageHandler with Before
   
   "Specification spezifiziert der NextStep der Konfiguration" >> {
     "S1 -> C1" >> {
-      val configUrl = "http://contig1/user29_v016"
+      val configUrl = "http://config/client_013"
       
       val startConfigOut = CommonFunction.firstStep(wC, configUrl)
       //User hat ausgewaelt Schritt 1
       val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_1_user29_v016")
+            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C11")
             .map(comp => {(comp \ "componentId").asOpt[String].get}).head
       
       
       val componentOut_1: JsValue = CommonFunction.selectComponent(wC, componentIdC11)
       
       (componentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
-      (componentOut_1 \ "result" \ "dependencies").asOpt[List[JsValue]].get.size === 1
-      (((componentOut_1 \ "result" \ "dependencies")(0)) \ "dependencyType").asOpt[String].get === "exclude"
-      (((componentOut_1 \ "result" \ "dependencies")(0)) \ "visualization").asOpt[String].get === "remove"
-      (((componentOut_1 \ "result" \ "dependencies")(0)) \ "nameToShow").asOpt[String].get === "(C_1_1_user29_v016) ----> (C_1_3_user29_v016)"
       (componentOut_1 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (componentOut_1 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
       (componentOut_1 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
@@ -53,9 +49,9 @@ class Scenario_002_6_Specs extends Specification with MessageHandler with Before
       
       val result_1 = (jsonCurrentConfigOut_1 \ "result")
       (jsonCurrentConfigOut_1 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result_1 \ "step" \ "nameToShow").asOpt[String] === Some("S1_user29_v016")
+      (result_1 \ "step" \ "nameToShow").asOpt[String] === Some("S1")
       (result_1 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
-      ((result_1 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C_1_1_user29_v016")
+      ((result_1 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C11")
     }
   }
 }

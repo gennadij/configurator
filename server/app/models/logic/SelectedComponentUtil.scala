@@ -115,7 +115,7 @@ trait SelectedComponentUtil {
         if (componentIdExist) {
 
           val countOfComponentsInCurrentConfig: Int = selectedComponentBO.stepCurrentConfig match {
-            case Some(step) if step.components.size <= 1 =>  step.components.size - 1
+            case Some(step) if step.components.size >= 1 =>  step.components.size - 1
             case Some(step) if step.components.isEmpty =>  0
             case None => 0
           }
@@ -129,29 +129,35 @@ trait SelectedComponentUtil {
         }else{
 
           //TODO im decision_tree nachziehen.
-          selectedComponentBO.possibleComponentIdsToSelect.get match {
-            case List() =>
-              val status = selectedComponentBO.status.get.copy(selectionCriterium = Some(RequireNextStep()))
+          val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.stepCurrentConfig match {
+            case Some(step) => step.components
+            case None => List()
+          }
+          val currentConfigWithTempSelectedComponent: List[ComponentBO] =
+            previousSelectedComponentsInCurrentConfig :+ selectedComponentBO.selectedComponent.get
 
-              selectedComponentBO.copy(status = Some(status))
-            case _ =>
-              val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.stepCurrentConfig match {
-                case Some(step) => step.components
-                case None => List()
+          val countOfComponentsInCurrentConfigWithTempSelectedComponent = currentConfigWithTempSelectedComponent.size
+
+          val statusSC: StatusSelectionCriterium =
+            getSelectionCriteriumStatus(countOfComponentsInCurrentConfigWithTempSelectedComponent,
+              selectedComponentBO.currentStep.get)
+
+          statusSC match {
+            case AllowNextComponent() =>
+              selectedComponentBO.possibleComponentIdsToSelect.get match {
+                case List() =>
+                  val status = selectedComponentBO.status.get.copy(selectionCriterium = Some(RequireNextStep()))
+
+                  selectedComponentBO.copy(status = Some(status))
+                case _ =>
+                  val status = selectedComponentBO.status.get.copy(selectionCriterium = Some(statusSC))
+
+                  selectedComponentBO.copy(status = Some(status))
               }
-              val currentConfigWithTempSelectedComponent: List[ComponentBO] =
-                previousSelectedComponentsInCurrentConfig :+ selectedComponentBO.selectedComponent.get
-
-              val countOfComponentsInCurrentConfigWithTempSelectedComponent = currentConfigWithTempSelectedComponent.size
-
-              val statusSC: StatusSelectionCriterium =
-                getSelectionCriteriumStatus(countOfComponentsInCurrentConfigWithTempSelectedComponent,
-                  selectedComponentBO.currentStep.get)
-
+            case _ =>
               val status = selectedComponentBO.status.get.copy(selectionCriterium = Some(statusSC))
 
               selectedComponentBO.copy(status = Some(status))
-
           }
         }
     }
