@@ -1,7 +1,7 @@
 package org.shared.currentConfig.json
 
 import org.shared.common.JsonNames
-import play.api.libs.json.{Json, Reads}
+import play.api.libs.json.{Format, Json}
 
 /**
  * Created by Gennadi Heimann on 24.02.2017
@@ -14,5 +14,5 @@ case class JsonCurrentConfigIn (
 )
 
 object JsonCurrentConfigIn {
-  implicit val format: Reads[JsonCurrentConfigIn] = Json.reads[JsonCurrentConfigIn]
+  implicit val format: Format[JsonCurrentConfigIn] = Json.format[JsonCurrentConfigIn]
 }

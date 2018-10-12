@@ -1,6 +1,6 @@
 package org.views
 
-import org.scalajs.jquery.jQuery
+import org.scalajs.jquery.{JQuery, jQuery}
 import org.shared.component.json.JsonComponentStatus
 
 /**
@@ -9,7 +9,21 @@ import org.shared.component.json.JsonComponentStatus
   * Created by Gennadi Heimann 01.10.2018
   */
 class DrawSelectedComponent(jsonComponentStatus: JsonComponentStatus) {
-  def drawStatus = {
+
+  def markSelectedComponent(selectedComponentId: String): JQuery = {
+    jsonComponentStatus.selectedComponent.get.status match {
+      case "ADDED_COMPONENT"        =>
+        //Zeichne die Component in Grün
+
+        jQuery(s"#$selectedComponentId").css("background-color", "#9FF781")
+      case "REMOVED_COMPONENT"      =>
+        jQuery(s"#$selectedComponentId").css("background-color", "#F5A9D0")
+      case "NOT_ALLOWED_COMPONENT"  =>
+        jQuery(s"#$selectedComponentId").css("background-color", "#B40431")
+    }
+  }
+
+  def drawStatus: JQuery = {
     val htmlHeader =
       s"<dev id='status' class='status'>" +
         "componentType = " + jsonComponentStatus.componentType.get.status +

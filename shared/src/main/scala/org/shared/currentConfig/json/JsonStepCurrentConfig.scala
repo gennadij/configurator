@@ -24,4 +24,11 @@ object JsonStepCurrentConfig {
     (JsPath \ "components").write(Writes.list[JsonComponent](jsonComponentFormat)) and
     (JsPath \ "nextStep").lazyWrite(Writes.optionWithNull[JsonStepCurrentConfig](jsonStepCurrentConfigWrites))
   )(unlift(JsonStepCurrentConfig.unapply))
+
+  implicit val jsonStepCurrentConfigReads: Reads[JsonStepCurrentConfig] = (
+    (JsPath \ "stepId").read[String] and
+      (JsPath \ "nameToShow").read[String] and
+      (JsPath \ "components").read(Reads.list[JsonComponent](jsonComponentFormat)) and
+      (JsPath \ "nextStep").lazyRead(Reads.optionWithNull[JsonStepCurrentConfig](jsonStepCurrentConfigReads))
+    )(JsonStepCurrentConfig.apply _)
 }

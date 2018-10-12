@@ -2,7 +2,9 @@ package org.models
 
 import org.scalajs.dom.raw.WebSocket
 import org.shared.component.json.JsonComponentOut
+import org.shared.currentConfig.json.JsonCurrentConfigIn
 import org.views.DrawSelectedComponent
+import play.api.libs.json.Json
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -12,11 +14,22 @@ import org.views.DrawSelectedComponent
 class SelectedComponent(jsonComponentOut: JsonComponentOut, webSocket: WebSocket) {
 
   def selectedComponent = {
-    println("selectedComponent")
 
     val drawSelectedComponent: DrawSelectedComponent = new DrawSelectedComponent(jsonComponentOut.result.status)
 
     drawSelectedComponent.drawStatus
+
+    drawSelectedComponent.markSelectedComponent(jsonComponentOut.result.selectedComponentId)
+
+    //CurrentConfig aufrufen
+
+    val jsonCurrentConfig: String = Json.toJson(JsonCurrentConfigIn()).toString()
+
+    println("OUT -> " + jsonCurrentConfig)
+
+    webSocket.send(jsonCurrentConfig)
+
+
 
   }
 

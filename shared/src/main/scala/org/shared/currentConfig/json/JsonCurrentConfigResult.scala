@@ -13,7 +13,7 @@ case class JsonCurrentConfigResult (
 )
 
 object JsonCurrentConfigResult {
-  implicit val jsonCurrentConfigResultWrites: Writes[JsonCurrentConfigResult] = Json.writes[JsonCurrentConfigResult]
+  implicit val jsonCurrentConfigResultWrites: Format[JsonCurrentConfigResult] = Json.format[JsonCurrentConfigResult]
 //    (
 //      (JsPath \ "step").write(Writes.optionWithNull[JsonStepCurrentConfig])
 //  )(unlift(JsonCurrentConfigResult.unapply))
