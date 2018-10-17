@@ -4,6 +4,7 @@ import org.scalajs.dom.raw.WebSocket
 import org.scalajs.jquery.jQuery
 import org.shared.component.json.{JsonComponentIn, JsonComponentParam}
 import org.shared.startConfig.json.JsonStartConfigOut
+import org.views.html.Status
 import org.views.{DrawCurrentConfig, DrawStartConfig}
 import play.api.libs.json.Json
 
@@ -15,16 +16,15 @@ import play.api.libs.json.Json
 class StartConfg(jsonStartConfigOut: JsonStartConfigOut, webSocket: WebSocket) {
 
   def startConfig = {
-    println("===startConfig===")
 
     val drawStartConfig: DrawStartConfig =
       new DrawStartConfig(jsonStartConfigOut.result.step, jsonStartConfigOut.result.status)
 
     drawStartConfig.drawStartConfig()
 
-    drawStartConfig.drawStatus
+    Status.getStepStatusWindow(jsonStartConfigOut.result.status)
 
-    new DrawCurrentConfig().drawCurrentConfig
+    new DrawCurrentConfig().drawCurrentConfigWindow
 
     jsonStartConfigOut.result.step.components foreach{
       comp => {

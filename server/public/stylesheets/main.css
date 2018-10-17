@@ -48,19 +48,6 @@ section {
    border-style : solid;
    border-width : medium;
    border-radius : 10px;
-   /*text-align:left;
-   padding : 10px;
-   margin : 0px;
-   border-color : grey;
-   border-style : solid;
-   border-width : medium;
-   background-color: yellow;
-   border-radius : 10px;
-   position: absolute;
-   top: 15%;
-   left: 70%;
-   height: 80%;
-   width : 20%;*/
 }
 
 #text_for_config {
@@ -144,3 +131,30 @@ clear: both;
     width: 200px;
 }
 
+.stepCurrentConfig {
+    overflow-x: auto;
+    overflow-y: auto;
+    background-color: #A9D0F5;
+    text-align:left;
+    padding : 10px;
+    margin : 10px;
+    border-color : grey;
+    border-style : solid;
+    border-width : medium;
+    border-radius : 10px;
+    width: 80%;
+}
+
+.componentCurrentConfig {
+overflow-x: auto;
+    overflow-y: auto;
+    background-color: #58FAF4;
+    text-align:left;
+    padding : 10px;
+    margin : 10px;
+    border-color : grey;
+    border-style : solid;
+    border-width : medium;
+    border-radius : 10px;
+    width: 40%;
+}

@@ -1,10 +1,9 @@
 package org.views
 
 import org.scalajs.jquery.{JQuery, jQuery}
-import org.shared.common.json.{JsonComponent, JsonStep, JsonStepStatus}
+import org.shared.common.json.{JsonStep, JsonStepStatus}
 import org.util.HtmlElementIds
-
-import scala.collection.mutable
+import org.views.html.{Component, Config, Step}
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -13,69 +12,20 @@ import scala.collection.mutable
   */
 class DrawStartConfig(jsonStep: JsonStep, jsonStepStatus: JsonStepStatus) {
 
-  var componentIds: mutable.ListBuffer[String] = scala.collection.mutable.ListBuffer()
-
   def drawStartConfig(): JQuery = {
 
-    val htmlMain =
-      "<div id='main' class='main'> " +
-        "<p>Test - Konfigurator</p>" +
-        "</div>"
+    val jQueryConfigWindow: JQuery = Config.getConfigWindow()
 
-    drawNewMain(htmlMain)
+    val jQueryStepWindow = Step.getStepWindow(jsonStep: JsonStep)
 
-    val stepsHtml = drawStep(jsonStep)
+    val jQueryComponentWindows: List[JQuery] =  Component.getComponentWindows(jsonStep.components)
 
-    jQuery(stepsHtml).appendTo(jQuery(HtmlElementIds.mainJQuery))
-  }
+    jQueryComponentWindows foreach  (jQueryComponentWindow => {
+      jQueryStepWindow.append(jQueryComponentWindow)
+    })
 
-  def drawStatus = {
-    val htmlHeader =
-      s"<dev id='status' class='status'>" +
-        jsonStepStatus.firstStep.get.status +
-        " , " +
-        jsonStepStatus.common.get.status +
-        "</dev>"
+    jQueryConfigWindow.append(jQueryStepWindow)
 
-    jQuery("#status").remove()
-    jQuery(htmlHeader).appendTo(jQuery("header"))
-  }
-
-  private def drawNewMain(html: String) = {
-    jQuery(html).appendTo(jQuery(HtmlElementIds.section))
-  }
-
-  private def drawStep(step: JsonStep) = {
-    val htmlComponents = drawComponents(step.components)
-
-    "<div id='" + step.stepId + "' class='step'>" +
-      "ID: " + step.stepId.subSequence(0, 6) +
-      "&emsp; || &emsp;" +
-      "nameToShow: " + step.nameToShow +
-      "</br>" +
-      htmlComponents +
-      "</div>"
-  }
-
-  private def drawComponents(components: List[JsonComponent]): String = {
-
-    var htmlComponents = ""
-
-    components foreach { component =>
-      val componentId = component.componentId
-
-      this.componentIds += componentId
-
-      htmlComponents = htmlComponents +
-        "<div id='" + componentId + "' class='component'>" +
-        "ID " + component.componentId.subSequence(0, 6) +
-        "&emsp; || &emsp;" +
-        "nameToShow: " + component.nameToShow +
-        "&emsp; || &emsp;" +
-        "</br>" +
-        "</div>"
-    }
-
-    htmlComponents
+    jQuery(HtmlElementIds.section).append(jQueryConfigWindow)
   }
 }

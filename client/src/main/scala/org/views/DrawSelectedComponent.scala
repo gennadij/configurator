@@ -13,8 +13,6 @@ class DrawSelectedComponent(jsonComponentStatus: JsonComponentStatus) {
   def markSelectedComponent(selectedComponentId: String): JQuery = {
     jsonComponentStatus.selectedComponent.get.status match {
       case "ADDED_COMPONENT"        =>
-        //Zeichne die Component in Grün
-
         jQuery(s"#$selectedComponentId").css("background-color", "#9FF781")
       case "REMOVED_COMPONENT"      =>
         jQuery(s"#$selectedComponentId").css("background-color", "#F5A9D0")
