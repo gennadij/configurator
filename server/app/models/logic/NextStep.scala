@@ -18,13 +18,13 @@ object NextStep {
     * @version 0.0.2
     * @return NextStepOut
     */
-  def getNextStep: NextStepBO = {
-    new NextStep().getNextStep
+  def getNextStep(currentConfig: CurrentConfig): NextStepBO = {
+    new NextStep(currentConfig).getNextStep
   }
 }
 
 
-class NextStep {
+class NextStep(currentConfig: CurrentConfig) {
 
   /**
     * @author Gennadi Heimann
@@ -33,7 +33,7 @@ class NextStep {
     */
   private def getNextStep: NextStepBO = {
 
-    val lastStep: StepCurrentConfigBO = CurrentConfig.getLastStep
+    val lastStep: StepCurrentConfigBO = currentConfig.getLastStep
 
     val selectedComponents: List[ComponentBO] = lastStep.components
 

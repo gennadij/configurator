@@ -1,6 +1,7 @@
 package controllers.websocket
 
 import controllers.MessageHandler
+import models.currentConfig.CurrentConfig
 import play.api.libs.json.JsValue
 
 /**
@@ -8,32 +9,19 @@ import play.api.libs.json.JsValue
  * 
  * Created by Gennadi Heimann on 25.10.2017
  */
-//old
-//object WebClient {
-//  def init: WebClient = {
-//    new WebClient
-//  }
-//}
-//
-//class WebClient extends MessageHandler{
-//  val client = new Config()
-//
-//  def handleMessage(receivedMessage: JsValue): JsValue = {
-//    handleMessage(receivedMessage, client)
-//  }
-//}
 
-//new
 object WebClient {
   def init: WebClient = {
-    new WebClient
+
+    val webClient = new WebClient(new CurrentConfig)
+
+    webClient
   }
 }
 
-class WebClient extends MessageHandler{
-//  val client = new Config()
+class WebClient(currentConfig: CurrentConfig) extends MessageHandler {
 
   def handleClientMessage(receivedMessage: JsValue): JsValue = {
-    handleMessage(receivedMessage)
+    handleMessage(receivedMessage, currentConfig)
   }
 }

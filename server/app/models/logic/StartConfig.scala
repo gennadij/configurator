@@ -19,12 +19,12 @@ object StartConfig {
     * @param startConfigIn : StartConfigIn
     * @return StartConfigOut
     */
-  def startConfig(startConfigIn: StartConfigBO): StartConfigBO = {
-    new StartConfig(startConfigIn.configUrl).getFirstStep
+  def startConfig(startConfigIn: StartConfigBO, currentConfig: CurrentConfig): StartConfigBO = {
+    new StartConfig(startConfigIn.configUrl, currentConfig).getFirstStep
   }
 }
 
-class StartConfig(configUrl: Option[String]) {
+class StartConfig(configUrl: Option[String], currentConfig: CurrentConfig) {
 
 
   /**
@@ -46,7 +46,7 @@ class StartConfig(configUrl: Option[String]) {
         )
 
         // Fuege den ersten Schritt zu der aktuelle Konfiguration hinzu
-        CurrentConfig.addFirstStep(firstStepCurrentConfig)
+        currentConfig.addFirstStep(firstStepCurrentConfig)
 
         val componentsBOWithHashId: ComponentsForSelectionBO = componentsForSelectionBO.status.get.common match {
           case Some(Success()) =>

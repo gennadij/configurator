@@ -13,12 +13,13 @@ import org.shared.common.status.{Status, Success}
 
 object SelectedComponent  {
 
-  def verifySelectedComponent(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
-    new SelectedComponent(selectedComponentBO).selectedComponent
+  def verifySelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig: CurrentConfig): SelectedComponentBO = {
+    new SelectedComponent(selectedComponentBO, currentConfig).selectedComponent
   }
 }
 
-class SelectedComponent(selectedComponentBO: SelectedComponentBO) extends SelectedComponentUtil {
+class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig: CurrentConfig)
+  extends SelectedComponentUtil{
 
   /**
     * @author Gennadi Heimann
@@ -43,7 +44,8 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO) extends Select
         (statusCurrentStep, statusNextStep) match {
           case (Success(), Success()) =>
 
-            val sCExtendedOfCurrentConfigStep = getCurrentStepFromCurrentConfig(sCExtendedOfCurrentAndNextStep)
+            val sCExtendedOfCurrentConfigStep =
+              getCurrentStepFromCurrentConfig(sCExtendedOfCurrentAndNextStep, currentConfig)
 
             // Status Component Typ
             val sCExtendedOfStatusComponentTyp = verifyStatusComponentType(sCExtendedOfCurrentConfigStep)
@@ -59,7 +61,8 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO) extends Select
             val sCExtendedOfStatusSelectionCriterium = verifyStatusSelectionCriterium(sCExtendedOfPossibleComponentIdsToSelect)
 
             // Status Selected Component
-            val sCExtendedOFStatusSelectedComponent = verifyStatusSelectedComponent(sCExtendedOfStatusSelectionCriterium)
+            val sCExtendedOFStatusSelectedComponent =
+              verifyStatusSelectedComponent(sCExtendedOfStatusSelectionCriterium, currentConfig)
 
             sCExtendedOFStatusSelectedComponent
 
@@ -90,10 +93,11 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO) extends Select
     * @param selectedComponentBO : SelectedComponentBO
     * @return StepBO
     */
-  private def getCurrentStepFromCurrentConfig(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private def getCurrentStepFromCurrentConfig(selectedComponentBO: SelectedComponentBO,
+                                              currentConfig: CurrentConfig): SelectedComponentBO = {
 
     val currentStepCurrentConfig: Option[StepCurrentConfigBO] =
-      CurrentConfig.getCurrentStep(selectedComponentBO.currentStep.get.stepId.get)
+      currentConfig.getCurrentStep(selectedComponentBO.currentStep.get.stepId.get)
 
     selectedComponentBO.copy(stepCurrentConfig = currentStepCurrentConfig)
   }

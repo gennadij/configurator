@@ -42,7 +42,7 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
 
       Logger.info("StartConfigIn " + startConfigIn)
 
-      val startConfigOut: JsValue = wC.handleClientMessage(startConfigIn)
+      val startConfigOut: JsValue = wC.handleMessage(startConfigIn)
 
       Logger.info("StartConfigOut " + startConfigOut)
 
@@ -61,7 +61,7 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
            )
       )
 
-      val jsonComponentOut_1: JsValue = wC.handleClientMessage(jsonComponentIn_1)
+      val jsonComponentOut_1: JsValue = wC.handleMessage(jsonComponentIn_1)
 
       Logger.info(this.getClass.getSimpleName + ": ComponentIn_1 " + jsonComponentIn_1)
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_1 " + jsonComponentOut_1)
@@ -101,7 +101,7 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
            )
       )
 
-      val jsonComponentOut_2: JsValue = wC.handleClientMessage(jsonComponentIn_2)
+      val jsonComponentOut_2: JsValue = wC.handleMessage(jsonComponentIn_2)
 
       Logger.info(this.getClass.getSimpleName + ": ComponentIn_2 " + jsonComponentIn_2)
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_2 " + jsonComponentOut_2)

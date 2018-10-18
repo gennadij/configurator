@@ -8,123 +8,131 @@ import play.api.Logger
  * 
  * Crated by Gennadi Heimann 28.02.2017
  */
-object CurrentConfig {
+//object CurrentConfig {
+//
+//
+//  val currentConfig: CurrentConfig = new CurrentConfig
+//
+//  println("currentConfig " + currentConfig.hashCode())
+//
+//  //TODO handling from multiply clients
+//
+//
+//  /**
+//   * @author Gennadi Heimann
+//   *
+//   * @version 0.0.1
+//   *
+//   * Neu ausgewaelte Komponente wird zu seinem Schritt eingefuegt
+//   *
+//   * @param step: StepCurrentConfigBO, component: ContainerComponentBO
+//   *
+//   * @return Unit
+//   */
+//  def addComponent(step: StepCurrentConfigBO, component: ComponentBO): Unit = {
+//    // es wird geprueft ob der Step schon angelegt war
+//    // Die erste Komponente in dem Schritt wird ohne Pruefung des SelectionCriterium hinzugefuegt
+//    // Die Abhaengigkeiten werden weiterhin jedes mal geprueft
+//    currentConfig.addComponent(step, component)
+//  }
+//
+//  /**
+//   * @author Gennadi Heimann
+//   *
+//   * @version 0.0.2
+//   *
+//   * @param firstStep: StepCurrentConfigBO
+//   *
+//   * @return Unit
+//   */
+//  def addFirstStep(firstStep: StepCurrentConfigBO): Unit = currentConfig.addFirstStep(firstStep)
+//  /**
+//   * @author Gennadi Heimann
+//   *
+//   * @version 0.0.1
+//   *
+//   * Dieser neuer Schritt wird in die CurrentConfig hinzugefuegt
+//   *
+//   * @param nextStep: Option[StepCurrentConfigBO], fatherStep: Option[StepCurrentConfigBO]
+//   *
+//   * @return Unit
+//   */
+//  def addStep(nextStep: Option[StepCurrentConfigBO], fatherStep: Option[StepCurrentConfigBO]): Unit = {
+//    currentConfig.addStep(nextStep, fatherStep)
+//  }
+//
+//  /**
+//   * @author Gennadi Heimann
+//   *
+//   * @version 0.0.1
+//   *
+//   * @return Option[StepCurrentConfigBO]
+//   */
+//  def getCurrentConfig: Option[StepCurrentConfigBO] = currentConfig.getCurrentConfig
+//
+//  /**
+//   * @author Gennadi Heimann
+//   *
+//   * @version 0.0.1
+//   *
+//   * @return Unit
+//   */
+//  def printCurrentConfig(): Unit = currentConfig.printCurrentConfig()
+//
+//  /**
+//   * @author Gennadi Heimann
+//   *
+//   * @version 0.0.1
+//   *
+//   * @param stepId: String
+//   *
+//   * @return Option[StepCurrentConfigBO]
+//   */
+//  def getCurrentStep(stepId: String): Option[StepCurrentConfigBO] = {
+//    currentConfig.getCurrentStep(stepId)
+//  }
+//
+//  /**
+//   * @author Gennadi Heimann
+//   *
+//   * @version 0.0.1
+//   *
+//   * @return StepCurrentConfig
+//   */
+//  def getLastStep: StepCurrentConfigBO = {
+//    currentConfig.getLastStep
+//  }
+//
+//  /**
+//   * @author Gennadi Heimann
+//   *
+//   * @version 0.0.1
+//   *
+//   * @param selectedComponentBO: SelectedComponentBO
+//   *
+//   * @return List[ContainerComponentBO]
+//   */
+//  def removeComponent(selectedComponentBO: SelectedComponentBO): List[ComponentBO] = {
+//    currentConfig.removeComponent(selectedComponentBO: SelectedComponentBO)
+//  }
+//}
+
+class CurrentConfig {
   
+  var firstStep: Option[StepCurrentConfigBO] = None
+
+  println("CurrentConfig " + this.hashCode())
   
-  val currentConfig: CurrentConfig = new CurrentConfig
   /**
    * @author Gennadi Heimann
    * 
    * @version 0.0.1
-   * 
-   * Neu ausgewaelte Komponente wird zu seinem Schritt eingefuegt
    * 
    * @param step: StepCurrentConfigBO, component: ContainerComponentBO
    * 
    * @return Unit
    */
   def addComponent(step: StepCurrentConfigBO, component: ComponentBO): Unit = {
-    // es wird geprueft ob der Step schon angelegt war
-    // Die erste Komponente in dem Schritt wird ohne Pruefung des SelectionCriterium hinzugefuegt
-    // Die Abhaengigkeiten werden weiterhin jedes mal geprueft
-    currentConfig.addComponent(step, component)
-  }
-  
-  /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.2
-   * 
-   * @param firstStep: StepCurrentConfigBO
-   * 
-   * @return Unit
-   */
-  def addFirstStep(firstStep: StepCurrentConfigBO): Unit = currentConfig.addFirstStep(firstStep)
-  /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.1
-   * 
-   * Dieser neuer Schritt wird in die CurrentConfig hinzugefuegt
-   * 
-   * @param nextStep: Option[StepCurrentConfigBO], fatherStep: Option[StepCurrentConfigBO]
-   * 
-   * @return Unit
-   */
-  def addStep(nextStep: Option[StepCurrentConfigBO], fatherStep: Option[StepCurrentConfigBO]): Unit = {
-    currentConfig.addStep(nextStep, fatherStep)
-  }
-  
-  /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.1
-   * 
-   * @return Option[StepCurrentConfigBO]
-   */
-  def getCurrentConfig: Option[StepCurrentConfigBO] = currentConfig.getCurrentConfig
-  
-  /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.1
-   * 
-   * @return Unit
-   */
-  def printCurrentConfig(): Unit = currentConfig.printCurrentConfig()
-  
-  /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.1
-   * 
-   * @param stepId: String
-   * 
-   * @return Option[StepCurrentConfigBO]
-   */
-  def getCurrentStep(stepId: String): Option[StepCurrentConfigBO] = {
-    currentConfig.getCurrentStep(stepId)
-  }
-  
-  /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.1
-   * 
-   * @return StepCurrentConfig
-   */
-  def getLastStep: StepCurrentConfigBO = {
-    currentConfig.getLastStep
-  }
-  
-  /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.1
-   * 
-   * @param selectedComponentBO: SelectedComponentBO
-   * 
-   * @return List[ContainerComponentBO]
-   */
-  def removeComponent(selectedComponentBO: SelectedComponentBO): List[ComponentBO] = {
-    currentConfig.removeComponent(selectedComponentBO: SelectedComponentBO)
-  }
-}
-
-class CurrentConfig {
-  
-  var firstStep: Option[StepCurrentConfigBO] = None
-  
-  /**
-   * @author Gennadi Heimann
-   * 
-   * @version 0.0.1
-   * 
-   * @param step: StepCurrentConfigBO, component: ContainerComponentBO
-   * 
-   * @return Unit
-   */
-  private def addComponent(step: StepCurrentConfigBO, component: ComponentBO): Unit = {
     
     val currentStep: Option[StepCurrentConfigBO] = getStep(step.stepId)
     
@@ -142,7 +150,7 @@ class CurrentConfig {
    * 
    * @return Unit
    */
-  private def addFirstStep(firstStep: StepCurrentConfigBO): Unit = {
+  def addFirstStep(firstStep: StepCurrentConfigBO): Unit = {
     this.firstStep = Some(firstStep)
   }
   
@@ -155,7 +163,7 @@ class CurrentConfig {
    * 
    * @return Unit
    */
-  private def addStep(currentStep: Option[StepCurrentConfigBO], fatherStep: Option[StepCurrentConfigBO]): Unit = {
+  def addStep(currentStep: Option[StepCurrentConfigBO], fatherStep: Option[StepCurrentConfigBO]): Unit = {
     fatherStep match {
       case Some(fS) => fS.nextStep = currentStep
       case None => firstStep = currentStep
@@ -171,7 +179,7 @@ class CurrentConfig {
    * 
    * @return Option[StepCurrentConfig]
    */
-  private def getCurrentStep(stepId: String): Option[StepCurrentConfigBO] = {
+  def getCurrentStep(stepId: String): Option[StepCurrentConfigBO] = {
     getStep(stepId)
   }
   
@@ -182,7 +190,7 @@ class CurrentConfig {
    * 
    * @return Option[StepCurrentConfigBO]
    */
-  private def getCurrentConfig: Option[StepCurrentConfigBO] = this.firstStep
+  def getCurrentConfig: Option[StepCurrentConfigBO] = this.firstStep
   
   /**
    * @author Gennadi Heimann
@@ -191,7 +199,7 @@ class CurrentConfig {
    * 
    * @return StepCurrentConfig
    */
-  private def getLastStep: StepCurrentConfigBO = {
+  def getLastStep: StepCurrentConfigBO = {
     val firstStep = this.firstStep.get
     getLastStepRecursive(firstStep)
   }
@@ -287,7 +295,7 @@ class CurrentConfig {
    * 
    * @return Unit
    */
-  private def removeComponent(selectedComponentBO: SelectedComponentBO): List[ComponentBO] = {
+  def removeComponent(selectedComponentBO: SelectedComponentBO): List[ComponentBO] = {
 
     val step: Option[StepCurrentConfigBO] = getCurrentStep(selectedComponentBO.stepCurrentConfig.get.stepId)
 

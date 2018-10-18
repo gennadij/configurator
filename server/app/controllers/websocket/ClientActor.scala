@@ -24,7 +24,7 @@ class ClientActor(out: ActorRef, webClientsMgr: ActorRef) extends Actor {
   
   def receive: PartialFunction[Any, Unit] = {
     case msg: JsValue =>
-      Logger.debug("WebClient receive => " + msg)
+      Logger.debug("WebClient " + this.hashCode() +" receive => " + msg)
       webClientsMgr ! ClientSentMessage(webClient.handleClientMessage(msg))
     
     case ClientSentMessage(msg) => 

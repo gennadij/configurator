@@ -11,23 +11,6 @@ import org.shared.component.status._
   * Created by Gennadi Heimann 14.02.2018
   */
 
-object SelectedComponentUtil {
-
-//  def verifyStatusComponentType(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
-//
-//  }
-
-
-
-//  def checkStatusSelectedComponent(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
-//    new SelectedComponentUtil().checkStatusSelectedComponent(selectedComponentBO)
-//  }
-
-
-
-
-}
-
 trait SelectedComponentUtil {
 
   /**
@@ -169,7 +152,7 @@ trait SelectedComponentUtil {
     * @param selectedComponentBO : SelectedComponentBO
     * @return SelectedComponentBO
     */
-  private[logic] def verifyStatusSelectedComponent(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private[logic] def verifyStatusSelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig: CurrentConfig): SelectedComponentBO = {
     selectedComponentBO.status.get.excludeDependency.get match {
       case ExcludedComponent() =>
         val status = selectedComponentBO.status.get.copy(selectedComponent = Some(NotAllowedComponent()))
@@ -183,7 +166,7 @@ trait SelectedComponentUtil {
 
         if(componentIdExist) {
           //Die Komponente muss aus der CurrentConfig gelöscht werden
-          CurrentConfig.removeComponent(selectedComponentBO)
+          currentConfig.removeComponent(selectedComponentBO)
 
           val status = selectedComponentBO.status.get.copy(selectedComponent = Some(RemovedComponent()))
 
@@ -198,7 +181,7 @@ trait SelectedComponentUtil {
               val component =
                 selectedComponentBO.copy(status = Some(status))
 
-              CurrentConfig.addComponent(selectedComponentBO.stepCurrentConfig.get, component.selectedComponent.get)
+              currentConfig.addComponent(selectedComponentBO.stepCurrentConfig.get, component.selectedComponent.get)
 
               component
             case RequireNextStep() =>
@@ -208,7 +191,7 @@ trait SelectedComponentUtil {
               val component =
                 selectedComponentBO.copy(status = Some(status))
 
-              CurrentConfig.addComponent(selectedComponentBO.stepCurrentConfig.get, component.selectedComponent.get)
+              currentConfig.addComponent(selectedComponentBO.stepCurrentConfig.get, component.selectedComponent.get)
 
               component
 
@@ -219,7 +202,7 @@ trait SelectedComponentUtil {
               val component =
                 selectedComponentBO.copy(status = Some(status))
 
-              CurrentConfig.addComponent(selectedComponentBO.stepCurrentConfig.get, component.selectedComponent.get)
+              currentConfig.addComponent(selectedComponentBO.stepCurrentConfig.get, component.selectedComponent.get)
 
               component
 
