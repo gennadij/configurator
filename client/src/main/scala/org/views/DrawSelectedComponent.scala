@@ -21,23 +21,23 @@ class DrawSelectedComponent(jsonComponentStatus: JsonComponentStatus) {
     }
   }
 
-  def drawStatus: JQuery = {
-    val htmlHeader =
-      s"<dev id='status' class='status'>" +
-        "componentType = " + jsonComponentStatus.componentType.get.status +
-        " , " +
-        "selectionCriterium = " + jsonComponentStatus.selectionCriterium.get.status +
-        " , " + "</br>" +
-        "selectedComponent = " + jsonComponentStatus.selectedComponent.get.status +
-        " , " +
-        "excludeDependency = " + jsonComponentStatus.excludeDependency.get.status +
-        " , " +
-        "common = " + jsonComponentStatus.common.get.status +
-        "</dev>"
-
-    jQuery("#status").remove()
-    jQuery(htmlHeader).appendTo(jQuery("header"))
-  }
+//  def drawStatus: JQuery = {
+//    val htmlHeader =
+//      s"<dev id='status' class='status'>" +
+//        "componentType = " + jsonComponentStatus.componentType.get.status +
+//        " , " +
+//        "selectionCriterium = " + jsonComponentStatus.selectionCriterium.get.status +
+//        " , " + "</br>" +
+//        "selectedComponent = " + jsonComponentStatus.selectedComponent.get.status +
+//        " , " +
+//        "excludeDependency = " + jsonComponentStatus.excludeDependency.get.status +
+//        " , " +
+//        "common = " + jsonComponentStatus.common.get.status +
+//        "</dev>"
+//
+//    jQuery("#status").remove()
+//    jQuery(htmlHeader).appendTo(jQuery("header"))
+//  }
 
 
 }

@@ -4,8 +4,8 @@ import org.scalajs.dom.raw.WebSocket
 import org.scalajs.jquery.jQuery
 import org.shared.component.json.{JsonComponentIn, JsonComponentParam}
 import org.shared.startConfig.json.JsonStartConfigOut
-import org.views.html.Status
-import org.views.{DrawCurrentConfig, DrawStartConfig}
+import org.views.html.{ConfigMainWindow, Status, StepWindow}
+import org.views.{DrawCurrentConfig, DrawStartConfig, HtmlElementText}
 import play.api.libs.json.Json
 
 /**
@@ -16,6 +16,13 @@ import play.api.libs.json.Json
 class StartConfg(jsonStartConfigOut: JsonStartConfigOut, webSocket: WebSocket) {
 
   def startConfig = {
+
+    val jQueryConfigMainWindow = ConfigMainWindow.drawConfigMainInSection
+
+    val jQueryStepWindow = StepWindow.drawStepWindowInConfigMain(jsonStartConfigOut.result.step, jQueryConfigMainWindow)
+
+
+
 
     val drawStartConfig: DrawStartConfig =
       new DrawStartConfig(jsonStartConfigOut.result.step, jsonStartConfigOut.result.status)
@@ -28,7 +35,7 @@ class StartConfg(jsonStartConfigOut: JsonStartConfigOut, webSocket: WebSocket) {
 
     jsonStartConfigOut.result.step.components foreach{
       comp => {
-        jQuery("#" + comp.componentId).on("click", () => componentSelected(comp.componentId))
+        jQuery(HtmlElementText.numberSign + comp.componentId).on("click", () => componentSelected(comp.componentId))
       }
     }
   }

@@ -20,8 +20,6 @@ import org.shared.startConfig.json.{JsonStartConfigIn, JsonStartConfigOut}
   */
 trait GenericConfigurator extends Wrapper{
 
-  println("GenericConfigurator " + this.hashCode())
-
   /**
     * @author Gennadi Heimann
     * @version 0.0.1

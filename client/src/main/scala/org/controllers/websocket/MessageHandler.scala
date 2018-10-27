@@ -1,6 +1,6 @@
-package org.controllers
+package org.controllers.websocket
 
-import org.models.{SelectedComponent, StartConfg}
+import org.models.{NextStep, SelectedComponent, StartConfg}
 import org.scalajs.dom.raw.WebSocket
 import org.shared.common.JsonNames
 import org.shared.component.json.JsonComponentOut
@@ -35,7 +35,9 @@ class MessageHandler(websocket: WebSocket) {
   private def selectedComponent(receivedMessage: JsValue): Unit = {
     val jsonComponentOut: JsResult[JsonComponentOut] = Json.fromJson[JsonComponentOut](receivedMessage)
     jsonComponentOut match {
-      case jCOut: JsSuccess[JsonComponentOut] => new SelectedComponent(jCOut.value, websocket).selectedComponent
+      case jCOut: JsSuccess[JsonComponentOut] =>
+        new SelectedComponent(jCOut.value, websocket).selectedComponent
+        new NextStep().nextStep(jCOut.value)
       case e: JsError => println("Errors -> " + JsonNames.START_CONFIG + ": " + JsError.toJson(e).toString())
     }
   }

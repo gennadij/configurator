@@ -2,7 +2,7 @@ package org.views
 
 import org.scalajs.jquery.{JQuery, jQuery}
 import org.shared.currentConfig.json.JsonStepCurrentConfig
-import org.util.HtmlElementIds
+import HtmlElementText
 import org.views.html.CurrentConfig
 
 /**
@@ -16,13 +16,13 @@ class DrawCurrentConfig {
 
     val jQueryCurrentConfigWindow = CurrentConfig.getCurrentConfigWindow()
 
-    jQueryCurrentConfigWindow.appendTo(jQuery(HtmlElementIds.section))
+    jQueryCurrentConfigWindow.appendTo(jQuery(HtmlElementText.section))
   }
 
   def updateCurrentConfig(jsonStepCurrentConfig: JsonStepCurrentConfig)= {
 
-    if (jQuery(HtmlElementIds.currentConfgJQuery).length != 0) {
-      jQuery(HtmlElementIds.currentConfgJQuery).remove()
+    if (jQuery(HtmlElementText.currentConfigJQuery).length != 0) {
+      jQuery(HtmlElementText.currentConfigJQuery).remove()
     }
     drawCurrentConfigWindow
 

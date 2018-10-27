@@ -42,7 +42,7 @@ class ComponentKeys extends Specification with MessageHandler with BeforeAfterAl
            )
       )
 
-      val startConfigOut = wC.handleMessage(startConfigIn)
+      val startConfigOut = wC.handleMessage(startConfigIn, wC.currentConfig)
 
       //User hat ausgewaelt
       val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
@@ -56,7 +56,7 @@ class ComponentKeys extends Specification with MessageHandler with BeforeAfterAl
            )
       )
 
-      val jsonComponentOut_1: JsValue = wC.handleMessage(jsonComponentIn_1)
+      val jsonComponentOut_1: JsValue = wC.handleMessage(jsonComponentIn_1, wC.currentConfig)
 
       Logger.info(this.getClass.getSimpleName + ": ComponentIn_1 " + jsonComponentIn_1)
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_1 " + jsonComponentOut_1)

@@ -2,8 +2,7 @@ package org.views
 
 import org.scalajs.jquery.{JQuery, jQuery}
 import org.shared.common.json.{JsonStep, JsonStepStatus}
-import org.util.HtmlElementIds
-import org.views.html.{Component, Config, Step}
+import org.views.html.{Component, Config, StepWindow}
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -16,7 +15,7 @@ class DrawStartConfig(jsonStep: JsonStep, jsonStepStatus: JsonStepStatus) {
 
     val jQueryConfigWindow: JQuery = Config.getConfigWindow()
 
-    val jQueryStepWindow = Step.getStepWindow(jsonStep: JsonStep)
+    val jQueryStepWindow = StepWindow.drawStepWindowInConfigMain(jsonStep: JsonStep, null)
 
     val jQueryComponentWindows: List[JQuery] =  Component.getComponentWindows(jsonStep.components)
 
@@ -26,6 +25,6 @@ class DrawStartConfig(jsonStep: JsonStep, jsonStepStatus: JsonStepStatus) {
 
     jQueryConfigWindow.append(jQueryStepWindow)
 
-    jQuery(HtmlElementIds.section).append(jQueryConfigWindow)
+    jQuery(HtmlElementText.section).append(jQueryConfigWindow)
   }
 }

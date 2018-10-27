@@ -93,7 +93,7 @@ clear: both;
 .component{
     overflow-x: auto;
     overflow-y: auto;
-	background-color: #58D3F7;
+    background-color: #58D3F7;
     text-align:left;
     padding : 10px;
     margin : 10px;
@@ -107,7 +107,7 @@ clear: both;
 .nextStep{
     overflow-x: auto;
     overflow-y: auto;
-	background-color: #F2F5A9;
+    background-color: #F2F5A9;
     text-align:left;
     padding : 10px;
     margin : 10px;
@@ -115,20 +115,22 @@ clear: both;
     border-style : solid;
     border-width : medium;
     border-radius : 10px;
-    width: 20%;
+    width: 10%;
 }
 
 .button{
-    float: left;
+    overflow-x: auto;
+    overflow-y: auto;
+    float: right;
     background-color: #E0ECF8;
     text-align:left;
-    padding : 3px;
-    margin : 3px;
+    padding : 10px;
+    margin : 10px;
     border-color : grey;
     border-style : solid;
     border-width : medium;
     border-radius : 10px;
-    width: 200px;
+    width: 10%;
 }
 
 .stepCurrentConfig {
@@ -146,7 +148,7 @@ clear: both;
 }
 
 .componentCurrentConfig {
-overflow-x: auto;
+    overflow-x: auto;
     overflow-y: auto;
     background-color: #58FAF4;
     text-align:left;

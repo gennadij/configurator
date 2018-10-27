@@ -21,7 +21,7 @@ object CommonFunction {
            )
       )
       
-      val startConfigOut = wC.handleMessage(startConfigIn)
+      val startConfigOut = wC.handleMessage(startConfigIn, wC.currentConfig)
       
       Logger.info(this.getClass.getSimpleName + ": startConfigIn " + startConfigIn)
       Logger.info(this.getClass.getSimpleName + ": startConfigOut " + startConfigOut)
@@ -37,7 +37,7 @@ object CommonFunction {
          )
     )
     
-    val componentOut = wC.handleMessage(componentIn)
+    val componentOut = wC.handleMessage(componentIn, wC.currentConfig)
     
     Logger.info(this.getClass.getSimpleName + ": componentIn " + componentIn)
     Logger.info(this.getClass.getSimpleName + ": componentOut " + componentOut)
@@ -50,7 +50,7 @@ object CommonFunction {
         "json" -> JsonNames.CURRENT_CONFIG
     )
     
-    val jsonCurrentConfigOut: JsValue = wC.handleMessage(jsonCurrentConfigIn)
+    val jsonCurrentConfigOut: JsValue = wC.handleMessage(jsonCurrentConfigIn, wC.currentConfig)
       
     Logger.info(this.getClass.getSimpleName + ": currentConfigIn " + jsonCurrentConfigIn)
     Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + jsonCurrentConfigOut)
@@ -64,7 +64,7 @@ object CommonFunction {
         "json" -> JsonNames.NEXT_STEP
     )
       
-    val jsonNextStepOut = wC.handleMessage(jsonNextStepIn)
+    val jsonNextStepOut = wC.handleMessage(jsonNextStepIn, wC.currentConfig)
       
     Logger.info(this.getClass.getSimpleName + ": nextStepIn " + jsonNextStepIn)
     Logger.info(this.getClass.getSimpleName + ": nextStepOut " + jsonNextStepOut)

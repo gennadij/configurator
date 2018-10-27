@@ -2,7 +2,7 @@ package org.views.html
 
 import org.scalajs.jquery.{JQuery, jQuery}
 import org.shared.common.json.JsonComponent
-import org.util.HtmlElementIds
+import org.views.HtmlElementText
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -18,7 +18,7 @@ object Component {
       val jQueryDiv = jQuery(htmlDiv)
 
       jQueryDiv.attr("id", c.componentId)
-      jQueryDiv.attr("class", HtmlElementIds.classComponent)
+      jQueryDiv.attr("class", HtmlElementText.classComponent)
 
       val htmlIdAndNameToShow = "ID " + c.componentId.subSequence(0, 6) +
         "&emsp; || &emsp;" +

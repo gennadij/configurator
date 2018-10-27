@@ -2,7 +2,7 @@ package org.views.html
 
 import org.scalajs.jquery.{JQuery, jQuery}
 import org.shared.currentConfig.json.JsonStepCurrentConfig
-import org.util.HtmlElementIds
+import org.views.HtmlElementText
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -14,8 +14,8 @@ object CurrentConfig {
   def getCurrentConfigWindow(): JQuery = {
     val htmlCurrentConfig = "<div><center> <h3>Aktuelle Konfiguration</h3> </center></div>"
     val jQueryCurrentConfig = jQuery(htmlCurrentConfig)
-    jQueryCurrentConfig.attr("id", HtmlElementIds.currentConfigHtml)
-    jQueryCurrentConfig.attr("class", HtmlElementIds.currentConfigHtml)
+    jQueryCurrentConfig.attr("id", HtmlElementText.currentConfigHtml)
+    jQueryCurrentConfig.attr("class", HtmlElementText.currentConfigHtml)
   }
 
   def drawCurrentConfig(stepCurrentConfig: JsonStepCurrentConfig): Unit = {
@@ -37,11 +37,11 @@ object CurrentConfig {
 
   def drawCurrentStepWithComponents(stepCurrentConfig: JsonStepCurrentConfig): Unit = {
 
-    val currentConfigWindow = jQuery(HtmlElementIds.currentConfgJQuery)
+    val currentConfigWindow = jQuery(HtmlElementText.currentConfigJQuery)
 
     val htmlStep = "<div></div>"
     val jQueryCurrentStep = jQuery(htmlStep)
-    jQueryCurrentStep.attr("class", HtmlElementIds.stepCurrentConfigHtml)
+    jQueryCurrentStep.attr("class", HtmlElementText.stepCurrentConfigHtml)
 
     jQueryCurrentStep.append(stepCurrentConfig.nameToShow)
 
@@ -50,7 +50,7 @@ object CurrentConfig {
     stepCurrentConfig.components.reverse foreach {component =>
       val htmlComponent = "<div></div>"
       val jQueryCurrentConfigComponent = jQuery(htmlComponent)
-      jQueryCurrentConfigComponent.attr("class", HtmlElementIds.componentCurrentConfigHtml)
+      jQueryCurrentConfigComponent.attr("class", HtmlElementText.componentCurrentConfigHtml)
       jQueryCurrentConfigComponent.append(component.nameToShow)
       jQueryCurrentStep.append(jQueryCurrentConfigComponent)
     }

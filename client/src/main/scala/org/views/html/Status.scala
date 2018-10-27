@@ -3,7 +3,7 @@ package org.views.html
 import org.scalajs.jquery.{JQuery, jQuery}
 import org.shared.common.json.JsonStepStatus
 import org.shared.component.json.JsonComponentStatus
-import org.util.HtmlElementIds
+import org.views.HtmlElementText
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -14,23 +14,23 @@ object Status {
 
   def getStepStatusWindow(jsonStepStatus: JsonStepStatus) :JQuery = {
 
-    jQuery(HtmlElementIds.statusJQuery).remove()
+    jQuery(HtmlElementText.statusJQuery).remove()
 
     val htmlDiv = "<div></div>"
 
     val jQueryDiv = jQuery(htmlDiv)
 
-    jQueryDiv.attr("id", HtmlElementIds.statusHtml)
-    jQueryDiv.attr("class", HtmlElementIds.statusHtml)
+    jQueryDiv.attr("id", HtmlElementText.statusHtml)
+    jQueryDiv.attr("class", HtmlElementText.statusHtml)
 
     val htmlStatus = jsonStepStatus.firstStep.get.status +" , " + jsonStepStatus.common.get.status
 
     jQueryDiv.append(htmlStatus)
 
-    jQuery(HtmlElementIds.header).append(jQueryDiv)
+    jQuery(HtmlElementText.header).append(jQueryDiv)
   }
 
-  def getSelectedComponentStatusWindow(jsonComponentStatus: JsonComponentStatus): JQuery = {
+  def drawSelectedComponentStatusWindow(jsonComponentStatus: JsonComponentStatus): JQuery = {
 
     jQuery("#status").remove()
 
@@ -38,8 +38,8 @@ object Status {
 
     val jQueryDiv = jQuery(htmlDiv)
 
-    jQueryDiv.attr("id", HtmlElementIds.statusHtml)
-    jQueryDiv.attr("class", HtmlElementIds.statusHtml)
+    jQueryDiv.attr("id", HtmlElementText.statusHtml)
+    jQueryDiv.attr("class", HtmlElementText.statusHtml)
 
     val htmlStatus = "componentType = " + jsonComponentStatus.componentType.get.status +
         " , " +
@@ -53,7 +53,7 @@ object Status {
 
     jQueryDiv.append(htmlStatus)
 
-    jQuery(HtmlElementIds.header).append(jQueryDiv)
+    jQuery(HtmlElementText.header).append(jQueryDiv)
   }
 
 }

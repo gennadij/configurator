@@ -18,9 +18,7 @@ class SelectedComponent(jsonComponentOut: JsonComponentOut, webSocket: WebSocket
 
     val drawSelectedComponent: DrawSelectedComponent = new DrawSelectedComponent(jsonComponentOut.result.status)
 
-    drawSelectedComponent.drawStatus
-
-    Status.getSelectedComponentStatusWindow(jsonComponentOut.result.status)
+    Status.drawSelectedComponentStatusWindow(jsonComponentOut.result.status)
 
     drawSelectedComponent.markSelectedComponent(jsonComponentOut.result.selectedComponentId)
 

@@ -37,7 +37,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
            )
       )
       
-      val startConfigOut = wC.handleMessage(startConfigIn)
+      val startConfigOut = wC.handleMessage(startConfigIn, wC.currentConfig)
       
       Logger.info("StartConfigIn " + startConfigIn)
       Logger.info("StartConfigOut " + startConfigOut)
@@ -57,7 +57,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       )
       Logger.info("componentIn_1 " + componentIn_1)
       
-      val componentOut_1: JsValue = wC.handleMessage(componentIn_1)
+      val componentOut_1: JsValue = wC.handleMessage(componentIn_1, wC.currentConfig)
       
       Logger.info("componentOut_1 " + componentOut_1)
       
@@ -65,7 +65,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
           "json" -> JsonNames.CURRENT_CONFIG
       )
       
-      val jsonCurrentConfigOut_1: JsValue = wC.handleMessage(jsonCurrentConfigIn_1)
+      val jsonCurrentConfigOut_1: JsValue = wC.handleMessage(jsonCurrentConfigIn_1, wC.currentConfig)
       
       Logger.info(this.getClass.getSimpleName + ": currentConfigIn " + jsonCurrentConfigIn_1)
       Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + jsonCurrentConfigOut_1)
@@ -76,7 +76,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
           "json" -> JsonNames.NEXT_STEP
       )
       
-      val jsonNextStepOut_2 = wC.handleMessage(jsonNextStepIn_2)
+      val jsonNextStepOut_2 = wC.handleMessage(jsonNextStepIn_2, wC.currentConfig)
       
       Logger.info(this.getClass.getSimpleName + ": nextStepIn_2 " + jsonNextStepIn_2)
       Logger.info(this.getClass.getSimpleName + ": nextStepOut_2 " + jsonNextStepOut_2)
@@ -98,7 +98,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       )
       Logger.info("componentIn_2 " + componentIn_2)
       
-      val componentOut_2: JsValue = wC.handleMessage(componentIn_2)
+      val componentOut_2: JsValue = wC.handleMessage(componentIn_2, wC.currentConfig)
       
       Logger.info("componentOut_2 " + componentOut_2)
       
@@ -106,7 +106,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
           "json" -> JsonNames.CURRENT_CONFIG
       )
       
-      val jsonCurrentConfigOut_2: JsValue = wC.handleMessage(jsonCurrentConfigIn_2)
+      val jsonCurrentConfigOut_2: JsValue = wC.handleMessage(jsonCurrentConfigIn_2, wC.currentConfig)
       
       Logger.info(this.getClass.getSimpleName + ": currentConfigIn " + jsonCurrentConfigIn_2)
       Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + jsonCurrentConfigOut_2)
@@ -117,7 +117,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
           "json" -> JsonNames.NEXT_STEP
       )
       
-      val jsonNextStepOut_3 = wC.handleMessage(jsonNextStepIn_3)
+      val jsonNextStepOut_3 = wC.handleMessage(jsonNextStepIn_3, wC.currentConfig)
       
       Logger.info(this.getClass.getSimpleName + ": nextStepIn_3 " + jsonNextStepIn_3)
       Logger.info(this.getClass.getSimpleName + ": nextStepOut_3 " + jsonNextStepOut_3)
@@ -139,7 +139,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       )
       Logger.info("componentIn_3 " + componentIn_3)
       
-      val componentOut_3: JsValue = wC.handleMessage(componentIn_3)
+      val componentOut_3: JsValue = wC.handleMessage(componentIn_3, wC.currentConfig)
       
       Logger.info("componentOut_3 " + componentOut_3)
       
@@ -149,7 +149,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
           "json" -> JsonNames.NEXT_STEP
       )
       
-      val jsonNextStepOut_4 = wC.handleMessage(jsonNextStepIn_4)
+      val jsonNextStepOut_4 = wC.handleMessage(jsonNextStepIn_4, wC.currentConfig)
       
       Logger.info(this.getClass.getSimpleName + ": nextStepIn_4 " + jsonNextStepIn_4)
       Logger.info(this.getClass.getSimpleName + ": nextStepOut_4 " + jsonNextStepOut_4)
@@ -160,7 +160,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
           "json" -> JsonNames.CURRENT_CONFIG
       )
       
-      val jsonCurrentConfigOut: JsValue = wC.handleMessage(jsonCurrentConfigIn)
+      val jsonCurrentConfigOut: JsValue = wC.handleMessage(jsonCurrentConfigIn, wC.currentConfig)
       
       Logger.info(this.getClass.getSimpleName + ": currentConfigIn " + jsonCurrentConfigIn)
       Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + jsonCurrentConfigOut)

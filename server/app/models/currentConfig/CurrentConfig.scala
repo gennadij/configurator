@@ -5,123 +5,12 @@ import play.api.Logger
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
- * 
+ *
  * Crated by Gennadi Heimann 28.02.2017
  */
-//object CurrentConfig {
-//
-//
-//  val currentConfig: CurrentConfig = new CurrentConfig
-//
-//  println("currentConfig " + currentConfig.hashCode())
-//
-//  //TODO handling from multiply clients
-//
-//
-//  /**
-//   * @author Gennadi Heimann
-//   *
-//   * @version 0.0.1
-//   *
-//   * Neu ausgewaelte Komponente wird zu seinem Schritt eingefuegt
-//   *
-//   * @param step: StepCurrentConfigBO, component: ContainerComponentBO
-//   *
-//   * @return Unit
-//   */
-//  def addComponent(step: StepCurrentConfigBO, component: ComponentBO): Unit = {
-//    // es wird geprueft ob der Step schon angelegt war
-//    // Die erste Komponente in dem Schritt wird ohne Pruefung des SelectionCriterium hinzugefuegt
-//    // Die Abhaengigkeiten werden weiterhin jedes mal geprueft
-//    currentConfig.addComponent(step, component)
-//  }
-//
-//  /**
-//   * @author Gennadi Heimann
-//   *
-//   * @version 0.0.2
-//   *
-//   * @param firstStep: StepCurrentConfigBO
-//   *
-//   * @return Unit
-//   */
-//  def addFirstStep(firstStep: StepCurrentConfigBO): Unit = currentConfig.addFirstStep(firstStep)
-//  /**
-//   * @author Gennadi Heimann
-//   *
-//   * @version 0.0.1
-//   *
-//   * Dieser neuer Schritt wird in die CurrentConfig hinzugefuegt
-//   *
-//   * @param nextStep: Option[StepCurrentConfigBO], fatherStep: Option[StepCurrentConfigBO]
-//   *
-//   * @return Unit
-//   */
-//  def addStep(nextStep: Option[StepCurrentConfigBO], fatherStep: Option[StepCurrentConfigBO]): Unit = {
-//    currentConfig.addStep(nextStep, fatherStep)
-//  }
-//
-//  /**
-//   * @author Gennadi Heimann
-//   *
-//   * @version 0.0.1
-//   *
-//   * @return Option[StepCurrentConfigBO]
-//   */
-//  def getCurrentConfig: Option[StepCurrentConfigBO] = currentConfig.getCurrentConfig
-//
-//  /**
-//   * @author Gennadi Heimann
-//   *
-//   * @version 0.0.1
-//   *
-//   * @return Unit
-//   */
-//  def printCurrentConfig(): Unit = currentConfig.printCurrentConfig()
-//
-//  /**
-//   * @author Gennadi Heimann
-//   *
-//   * @version 0.0.1
-//   *
-//   * @param stepId: String
-//   *
-//   * @return Option[StepCurrentConfigBO]
-//   */
-//  def getCurrentStep(stepId: String): Option[StepCurrentConfigBO] = {
-//    currentConfig.getCurrentStep(stepId)
-//  }
-//
-//  /**
-//   * @author Gennadi Heimann
-//   *
-//   * @version 0.0.1
-//   *
-//   * @return StepCurrentConfig
-//   */
-//  def getLastStep: StepCurrentConfigBO = {
-//    currentConfig.getLastStep
-//  }
-//
-//  /**
-//   * @author Gennadi Heimann
-//   *
-//   * @version 0.0.1
-//   *
-//   * @param selectedComponentBO: SelectedComponentBO
-//   *
-//   * @return List[ContainerComponentBO]
-//   */
-//  def removeComponent(selectedComponentBO: SelectedComponentBO): List[ComponentBO] = {
-//    currentConfig.removeComponent(selectedComponentBO: SelectedComponentBO)
-//  }
-//}
-
 class CurrentConfig {
   
   var firstStep: Option[StepCurrentConfigBO] = None
-
-  println("CurrentConfig " + this.hashCode())
   
   /**
    * @author Gennadi Heimann

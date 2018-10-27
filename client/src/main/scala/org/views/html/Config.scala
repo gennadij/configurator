@@ -1,7 +1,7 @@
 package org.views.html
 
 import org.scalajs.jquery.{JQuery, jQuery}
-import org.util.HtmlElementIds
+import org.views.HtmlElementText
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -16,7 +16,7 @@ object Config {
 
     val htmlMainWindow = jQuery(textHtml)
 
-    htmlMainWindow.attr("id", HtmlElementIds.mainHtml)
-    htmlMainWindow.attr("class", HtmlElementIds.mainHtml)
+    htmlMainWindow.attr("id", HtmlElementText.configMainHtml)
+    htmlMainWindow.attr("class", HtmlElementText.configMainHtml)
   }
 }

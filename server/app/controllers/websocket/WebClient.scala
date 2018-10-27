@@ -19,7 +19,7 @@ object WebClient {
   }
 }
 
-class WebClient(currentConfig: CurrentConfig) extends MessageHandler {
+class WebClient(val currentConfig: CurrentConfig) extends MessageHandler {
 
   def handleClientMessage(receivedMessage: JsValue): JsValue = {
     handleMessage(receivedMessage, currentConfig)
