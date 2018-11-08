@@ -2,7 +2,6 @@ package org.views
 
 import org.scalajs.jquery.{JQuery, jQuery}
 import org.shared.currentConfig.json.JsonStepCurrentConfig
-import HtmlElementText
 import org.views.html.CurrentConfig
 
 /**

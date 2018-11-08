@@ -1,12 +1,11 @@
 package org.models
 
+import org.controllers.actionListner.ComponentActionListner
 import org.scalajs.dom.raw.WebSocket
-import org.scalajs.jquery.jQuery
-import org.shared.component.json.{JsonComponentIn, JsonComponentParam}
+import org.scalajs.jquery.{JQuery, jQuery}
 import org.shared.startConfig.json.JsonStartConfigOut
-import org.views.html.{ConfigMainWindow, Status, StepWindow}
-import org.views.{DrawCurrentConfig, DrawStartConfig, HtmlElementText}
-import play.api.libs.json.Json
+import org.views.HtmlElementText
+import org.views.html.{ComponentWindow, ConfigMainWindow, Status, StepWindow}
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -19,36 +18,21 @@ class StartConfg(jsonStartConfigOut: JsonStartConfigOut, webSocket: WebSocket) {
 
     val jQueryConfigMainWindow = ConfigMainWindow.drawConfigMainInSection
 
-    val jQueryStepWindow = StepWindow.drawStepWindowInConfigMain(jsonStartConfigOut.result.step, jQueryConfigMainWindow)
+    jQuery(HtmlElementText.section).append(jQueryConfigMainWindow)
 
+    val jQueryStepWindow = StepWindow.drawStepWindow(jsonStartConfigOut.result.step)
 
+    jQueryConfigMainWindow.append(jQueryStepWindow)
 
-
-    val drawStartConfig: DrawStartConfig =
-      new DrawStartConfig(jsonStartConfigOut.result.step, jsonStartConfigOut.result.status)
-
-    drawStartConfig.drawStartConfig()
+    val jQueryComponentWindows: List[JQuery] =
+      ComponentWindow.drawComponentWindows(jsonStartConfigOut.result.step.components)
 
     Status.getStepStatusWindow(jsonStartConfigOut.result.status)
 
-    new DrawCurrentConfig().drawCurrentConfigWindow
+    jQueryComponentWindows foreach(jQCW => {
+      jQueryStepWindow.append(jQCW)
 
-    jsonStartConfigOut.result.step.components foreach{
-      comp => {
-        jQuery(HtmlElementText.numberSign + comp.componentId).on("click", () => componentSelected(comp.componentId))
-      }
-    }
-  }
-
-  private def componentSelected(cId: String) = {
-    val jsonComponent: String = Json.toJson(JsonComponentIn(
-      params = JsonComponentParam(
-        componentId = cId
-      )
-    )).toString()
-
-    println("OUT -> " + jsonComponent)
-
-    webSocket.send(jsonComponent)
+      new ComponentActionListner(webSocket).addMouseClickForComponent(jQCW)
+    })
   }
 }

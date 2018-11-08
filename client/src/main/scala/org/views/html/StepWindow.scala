@@ -1,7 +1,7 @@
 package org.views.html
 
 import org.scalajs.jquery.{JQuery, jQuery}
-import org.shared.common.json.{JsonComponent, JsonStep}
+import org.shared.common.json.JsonStep
 import org.views.HtmlElementText
 
 /**
@@ -11,7 +11,7 @@ import org.views.HtmlElementText
   */
 object StepWindow {
 
-  def drawStepWindowInConfigMain(step: JsonStep, jQueryConfigMain: JQuery): JQuery = {
+  def drawStepWindow(step: JsonStep): JQuery = {
 
     val jQueryStepWindow = jQuery(HtmlElementText.stepDiv)
 
@@ -19,25 +19,5 @@ object StepWindow {
     jQueryStepWindow.attr(HtmlElementText.clazz, HtmlElementText.classStep)
 
     jQueryStepWindow.append(HtmlElementText.stepText(step))
-
-    jQueryConfigMain.append(jQueryStepWindow)
-  }
-
-  def appendComponentsToStepWindow(components: List[JsonComponent]): List[JQuery] = {
-    components map (c => {
-      val htmlDiv =
-
-      val jQueryDiv = jQuery(htmlDiv)
-
-      jQueryDiv.attr("id", c.componentId)
-      jQueryDiv.attr("class", HtmlElementText.classComponent)
-
-      val htmlIdAndNameToShow = "ID " + c.componentId.subSequence(0, 6) +
-        "&emsp; || &emsp;" +
-        "nameToShow: " + c.nameToShow
-
-      jQueryDiv.append(htmlIdAndNameToShow)
-
-    })
   }
 }

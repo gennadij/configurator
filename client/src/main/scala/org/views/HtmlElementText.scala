@@ -1,6 +1,6 @@
 package org.views
 
-import org.shared.common.json.JsonStep
+import org.shared.common.json.{JsonComponent, JsonStep}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -32,6 +32,10 @@ object HtmlElementText {
   def classComponent =              "component"
 
   def componentDiv =                "<div></div>"
+
+  def componentText(
+                     jsonComponent: JsonComponent
+                   ): String =       "ID " + jsonComponent.componentId.subSequence(0, 6) + "&emsp; || &emsp;" + "nameToShow: " + jsonComponent.nameToShow
 
   def currentConfigJQuery =          "#currentConfig"
   def currentConfigHtml =           "currentConfig"

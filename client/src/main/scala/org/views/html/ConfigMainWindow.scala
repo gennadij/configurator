@@ -12,8 +12,9 @@ object ConfigMainWindow {
 
   def drawConfigMainInSection = {
     val htmlConfigMainWindow = jQuery(HtmlElementText.configMainDiv)
+
     htmlConfigMainWindow.attr(HtmlElementText.id, HtmlElementText.configMainHtml)
+
     htmlConfigMainWindow.attr(HtmlElementText.clazz, HtmlElementText.configMainHtml)
-    jQuery(HtmlElementText.section).append(htmlConfigMainWindow)
   }
 }
