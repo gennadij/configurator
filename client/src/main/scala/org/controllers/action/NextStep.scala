@@ -1,6 +1,9 @@
 package org.controllers.action
 
+import org.controllers.websocket.WebSocket
 import org.scalajs.jquery.JQuery
+import org.shared.nextStep.json.JsonNextStepIn
+import play.api.libs.json.Json
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -16,7 +19,11 @@ class NextStep {
   }
 
   def actionNextStep(): Unit = {
-    println("NextStep")
+    val jsonNextStep: String = Json.toJson(JsonNextStepIn()).toString()
+
+    println("OUT -> " + jsonNextStep)
+
+    WebSocket.socket.send(jsonNextStep)
   }
 
 }

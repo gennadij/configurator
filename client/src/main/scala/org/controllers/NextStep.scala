@@ -1,8 +1,10 @@
 package org.controllers
 
+import org.controllers.action.Component
 import org.scalajs.jquery.jQuery
 import org.shared.component.json.JsonComponentOut
-import org.views.HtmlElementText
+import org.shared.nextStep.json.JsonNextStepOut
+import org.views.{DrawNextStep, HtmlElementText}
 import org.views.html.NextStepButton
 
 /**
@@ -12,7 +14,7 @@ import org.views.html.NextStepButton
   */
 class NextStep {
 
-  def nextStep(jsonComponentOut: JsonComponentOut) = {
+  def requirenNextStep(jsonComponentOut: JsonComponentOut) = {
     jsonComponentOut.result.status.selectionCriterium.get.status match {
       case "REQUIRE_NEXT_STEP" =>
 
@@ -30,6 +32,15 @@ class NextStep {
 
       case _ => jQuery()
     }
+  }
+
+  def nextStep(jsonNextStepOut: JsonNextStepOut) = {
+
+    val jQueryComponentWindows = new DrawNextStep().drawNextStep(jsonNextStepOut)
+
+    jQueryComponentWindows foreach(jQCW => {
+      new Component().addMouseClickForComponent(jQCW)
+    })
   }
 
 }

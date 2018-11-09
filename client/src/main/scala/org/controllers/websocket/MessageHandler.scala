@@ -4,6 +4,7 @@ import org.controllers.{NextStep, SelectedComponent, StartConfig}
 import org.shared.common.JsonNames
 import org.shared.component.json.JsonComponentOut
 import org.shared.currentConfig.json.JsonCurrentConfigOut
+import org.shared.nextStep.json.JsonNextStepOut
 import org.shared.startConfig.json.JsonStartConfigOut
 import org.views.DrawCurrentConfig
 import play.api.libs.json._
@@ -20,6 +21,7 @@ class MessageHandler {
     case Some(JsonNames.START_CONFIG) => startConfig(receivedMessage)
     case Some(JsonNames.COMPONENT) => selectedComponent(receivedMessage)
     case Some(JsonNames.CURRENT_CONFIG) => currentConfig(receivedMessage)
+    case Some(JsonNames.NEXT_STEP) => nextStep(receivedMessage)
     case _ => Json.obj("error" -> "keinen Treffer")
   }
 
@@ -36,7 +38,7 @@ class MessageHandler {
     jsonComponentOut match {
       case jCOut: JsSuccess[JsonComponentOut] =>
         new SelectedComponent(jCOut.value).selectedComponent
-        new NextStep().nextStep(jCOut.value)
+        new NextStep().requirenNextStep(jCOut.value)
       case e: JsError => println("Errors -> " + JsonNames.START_CONFIG + ": " + JsError.toJson(e).toString())
     }
   }
@@ -45,6 +47,14 @@ class MessageHandler {
     currentConfigOut match {
       case jCCOut: JsSuccess[JsonCurrentConfigOut] =>
         new DrawCurrentConfig().updateCurrentConfig(jCCOut.value.result.step.get)
+      case e: JsError => println("Errors -> " + JsonNames.START_CONFIG + ": " + JsError.toJson(e).toString())
+    }
+  }
+  private def nextStep(receivedMessage: JsValue): Unit = {
+    val nextStepOut: JsResult[JsonNextStepOut] = Json.fromJson[JsonNextStepOut](receivedMessage)
+    nextStepOut match {
+      case jNSOut: JsSuccess[JsonNextStepOut] =>
+        new NextStep().nextStep(jNSOut.value)
       case e: JsError => println("Errors -> " + JsonNames.START_CONFIG + ": " + JsError.toJson(e).toString())
     }
   }
