@@ -8,10 +8,10 @@ import org.views.HtmlElementText
   *
   * Created by Gennadi Heimann 19.10.2018
   */
-object NextStep {
+object NextStepButton {
 
   def drawNextStepButton(stepId: String): JQuery = {
-    val jQueryDivButtonNextSTep: JQuery = jQuery("<div></div>")
+    val jQueryDivButtonNextSTep: JQuery = jQuery(HtmlElementText.buttonNextStepDiv)
     jQueryDivButtonNextSTep.attr(HtmlElementText.id, HtmlElementText.buttonHtml)
     jQueryDivButtonNextSTep.attr(HtmlElementText.clazz, HtmlElementText.buttonHtml)
     jQueryDivButtonNextSTep.append(HtmlElementText.textInButtonHtml)

@@ -10,18 +10,16 @@ import org.views.HtmlElementText
   *
   * Created by Gennadi Heimann 17.10.2018
   */
-object Status {
+object StatusWindow {
 
-  def getStepStatusWindow(jsonStepStatus: JsonStepStatus) :JQuery = {
+  def drawStepStatusWindow(jsonStepStatus: JsonStepStatus) :JQuery = {
 
     jQuery(HtmlElementText.statusJQuery).remove()
 
-    val htmlDiv = "<div></div>"
+    val jQueryDiv = jQuery(HtmlElementText.statusDiv)
 
-    val jQueryDiv = jQuery(htmlDiv)
-
-    jQueryDiv.attr("id", HtmlElementText.statusHtml)
-    jQueryDiv.attr("class", HtmlElementText.statusHtml)
+    jQueryDiv.attr(HtmlElementText.id, HtmlElementText.statusHtml)
+    jQueryDiv.attr(HtmlElementText.clazz, HtmlElementText.statusHtml)
 
     val htmlStatus = jsonStepStatus.firstStep.get.status +" , " + jsonStepStatus.common.get.status
 
@@ -34,12 +32,10 @@ object Status {
 
     jQuery("#status").remove()
 
-    val htmlDiv = "<div></div>"
+    val jQueryDiv = jQuery(HtmlElementText.statusDiv)
 
-    val jQueryDiv = jQuery(htmlDiv)
-
-    jQueryDiv.attr("id", HtmlElementText.statusHtml)
-    jQueryDiv.attr("class", HtmlElementText.statusHtml)
+    jQueryDiv.attr(HtmlElementText.id, HtmlElementText.statusHtml)
+    jQueryDiv.attr(HtmlElementText.clazz, HtmlElementText.statusHtml)
 
     val htmlStatus = "componentType = " + jsonComponentStatus.componentType.get.status +
         " , " +
@@ -55,5 +51,4 @@ object Status {
 
     jQuery(HtmlElementText.header).append(jQueryDiv)
   }
-
 }

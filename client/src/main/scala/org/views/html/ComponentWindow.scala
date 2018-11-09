@@ -2,6 +2,7 @@ package org.views.html
 
 import org.scalajs.jquery.{JQuery, jQuery}
 import org.shared.common.json.JsonComponent
+import org.shared.component.json.JsonComponentStatus
 import org.views.HtmlElementText
 
 /**
@@ -24,5 +25,16 @@ object ComponentWindow {
       jQueryDivComponent
 
     })
+  }
+
+  def markSelectedComponent(selectedComponentId: String, jsonComponentStatus: JsonComponentStatus): JQuery = {
+    jsonComponentStatus.selectedComponent.get.status match {
+      case "ADDED_COMPONENT"        =>
+        jQuery(s"#$selectedComponentId").css("background-color", "#9FF781")
+      case "REMOVED_COMPONENT"      =>
+        jQuery(s"#$selectedComponentId").css("background-color", "#F5A9D0")
+      case "NOT_ALLOWED_COMPONENT"  =>
+        jQuery(s"#$selectedComponentId").css("background-color", "#B40431")
+    }
   }
 }

@@ -1,7 +1,6 @@
 package org.controllers.websocket
 
-import org.models.{NextStep, SelectedComponent, StartConfg}
-import org.scalajs.dom.raw.WebSocket
+import org.controllers.{NextStep, SelectedComponent, StartConfig}
 import org.shared.common.JsonNames
 import org.shared.component.json.JsonComponentOut
 import org.shared.currentConfig.json.JsonCurrentConfigOut
@@ -14,7 +13,7 @@ import play.api.libs.json._
  *
  * Created by Gennadi Heimann 25.04.2018
  */
-class MessageHandler(websocket: WebSocket) {
+class MessageHandler {
 
 
   def handleMessage(receivedMessage: JsValue) = (receivedMessage \ "json").asOpt[String] match {
@@ -27,7 +26,7 @@ class MessageHandler(websocket: WebSocket) {
   private def startConfig(receivedMessage: JsValue): Unit = {
     val jsonStartConfigOut: JsResult[JsonStartConfigOut] = Json.fromJson[JsonStartConfigOut](receivedMessage)
     jsonStartConfigOut match {
-      case jSCOut: JsSuccess[JsonStartConfigOut] => new StartConfg(jSCOut.value, websocket).startConfig
+      case jSCOut: JsSuccess[JsonStartConfigOut] => new StartConfig(jSCOut.value).startConfig
       case e: JsError => println("Errors -> " + JsonNames.START_CONFIG + ": " + JsError.toJson(e).toString())
     }
   }
@@ -36,7 +35,7 @@ class MessageHandler(websocket: WebSocket) {
     val jsonComponentOut: JsResult[JsonComponentOut] = Json.fromJson[JsonComponentOut](receivedMessage)
     jsonComponentOut match {
       case jCOut: JsSuccess[JsonComponentOut] =>
-        new SelectedComponent(jCOut.value, websocket).selectedComponent
+        new SelectedComponent(jCOut.value).selectedComponent
         new NextStep().nextStep(jCOut.value)
       case e: JsError => println("Errors -> " + JsonNames.START_CONFIG + ": " + JsError.toJson(e).toString())
     }

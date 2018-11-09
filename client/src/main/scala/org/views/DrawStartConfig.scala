@@ -1,20 +1,17 @@
-package org.models
+package org.views
 
-import org.controllers.actionListner.ComponentActionListner
-import org.scalajs.dom.raw.WebSocket
 import org.scalajs.jquery.{JQuery, jQuery}
 import org.shared.startConfig.json.JsonStartConfigOut
-import org.views.HtmlElementText
-import org.views.html.{ComponentWindow, ConfigMainWindow, Status, StepWindow}
+import org.views.html.{ComponentWindow, ConfigMainWindow, StatusWindow, StepWindow}
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
   *
-  * Created by Gennadi Heimann 27.09.2018
+  * Created by Gennadi Heimann 09.11.2018
   */
-class StartConfg(jsonStartConfigOut: JsonStartConfigOut, webSocket: WebSocket) {
+class DrawStartConfig(jsonStartConfigOut: JsonStartConfigOut) {
 
-  def startConfig = {
+  def drawStartConfig : List[JQuery] = {
 
     val jQueryConfigMainWindow = ConfigMainWindow.drawConfigMainInSection
 
@@ -24,15 +21,15 @@ class StartConfg(jsonStartConfigOut: JsonStartConfigOut, webSocket: WebSocket) {
 
     jQueryConfigMainWindow.append(jQueryStepWindow)
 
+    StatusWindow.drawStepStatusWindow(jsonStartConfigOut.result.status)
+
     val jQueryComponentWindows: List[JQuery] =
       ComponentWindow.drawComponentWindows(jsonStartConfigOut.result.step.components)
 
-    Status.getStepStatusWindow(jsonStartConfigOut.result.status)
-
     jQueryComponentWindows foreach(jQCW => {
       jQueryStepWindow.append(jQCW)
-
-      new ComponentActionListner(webSocket).addMouseClickForComponent(jQCW)
     })
+
+    jQueryComponentWindows
   }
 }

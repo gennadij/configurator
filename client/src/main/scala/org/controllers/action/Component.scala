@@ -1,6 +1,6 @@
-package org.controllers.actionListner
+package org.controllers.action
 
-import org.scalajs.dom.raw.WebSocket
+import org.controllers.websocket.WebSocket
 import org.scalajs.jquery.JQuery
 import org.shared.component.json.{JsonComponentIn, JsonComponentParam}
 import org.views.HtmlElementText
@@ -11,7 +11,7 @@ import play.api.libs.json.Json
   *
   * Created by Gennadi Heimann 26.10.2018
   */
-class ComponentActionListner(webSocket: WebSocket) {
+class Component {
 
   def addMouseClickForComponent(jQueryElem: JQuery): Unit = {
     jQueryElem.on("click", () => componentSelected(jQueryElem.attr(HtmlElementText.id).toString))
@@ -26,6 +26,6 @@ class ComponentActionListner(webSocket: WebSocket) {
 
     println("OUT -> " + jsonComponent)
 
-    webSocket.send(jsonComponent)
+    WebSocket.socket.send(jsonComponent)
   }
 }
