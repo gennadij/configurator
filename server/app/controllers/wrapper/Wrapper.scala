@@ -159,10 +159,10 @@ trait Wrapper extends RIDConverter {
   /**
     * @author Gennadi Heimann
     * @version 0.0.1
-    * @param jsonCurrentConfiugIn : JsonCurrentConfigIn
+    * @param jsonCurrentConfigIn : JsonCurrentConfigIn
     * @return CurrentConfigIn
     */
-  def toCurrentConfigIn(jsonCurrentConfiugIn: JsonCurrentConfigIn): Unit = {}
+  def toCurrentConfigIn(jsonCurrentConfigIn: JsonCurrentConfigIn): Unit = {}
 
   /**
     * @author Gennadi Heimann
@@ -170,28 +170,28 @@ trait Wrapper extends RIDConverter {
     * @param step : Option[StepCurrentConfigBO]
     * @return JsonCurrentConfigOut
     */
-  def toJsonCurentConfigOut(step: Option[StepCurrentConfigBO]): JsonCurrentConfigOut = {
+  def toJsonCurrentConfigOut(step: Option[StepCurrentConfigBO]): JsonCurrentConfigOut = {
     JsonCurrentConfigOut(
       result = JsonCurrentConfigResult(
-        step = getJsonCurrentStepRecursiv(step)
+        step = getJsonCurrentStepRecursive(step)
       )
     )
   }
 
 
-  def getJsonCurrentStepRecursiv(firstStep: Option[StepCurrentConfigBO]): Option[JsonStepCurrentConfig] = {
+  def getJsonCurrentStepRecursive(firstStep: Option[StepCurrentConfigBO]): Option[JsonStepCurrentConfig] = {
     firstStep match {
       case Some(nextStep) =>
         Some(JsonStepCurrentConfig(
-          nextStep.stepId,
+          convertRidToHashForStepOrComponentInCurrentConfig(nextStep.stepId),
           nextStep.nameToShow,
           nextStep.components map (c => {
             JsonComponent(
-              c.componentId.get,
+              convertRidToHashForStepOrComponentInCurrentConfig(c.componentId.get),
               c.nameToShow.get
             )
           }),
-          getJsonCurrentStepRecursiv(nextStep.nextStep)
+          getJsonCurrentStepRecursive(nextStep.nextStep)
         ))
       case None => None
     }
@@ -200,7 +200,7 @@ trait Wrapper extends RIDConverter {
   /**
     * @author Gennadi Heimann
     * @version 0.0.1
-    * @param selectedComponentBO : ComponentOut
+    * @param jsonComponentIn: JsonComponentIn
     * @return ComponentIn
     */
 

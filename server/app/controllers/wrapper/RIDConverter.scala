@@ -134,4 +134,8 @@ trait RIDConverter extends RidToHash {
     nextStepBO.copy(step = Some(nextStep), componentsForSelection = Some(componentsForSelectionBO))
 
   }
+
+  def convertRidToHashForStepOrComponentInCurrentConfig(id: String): String = {
+    getHash(id).get
+  }
 }
