@@ -9,7 +9,8 @@ import play.api.Logger
  * Crated by Gennadi Heimann 28.02.2017
  */
 class CurrentConfig {
-  
+  //TODO CurrntConfig sendet die rid an Client
+
   var firstStep: Option[StepCurrentConfigBO] = None
   
   /**

@@ -1,6 +1,6 @@
 FirstStep_C11_C12_Specs             ==> S1 -> C11, C12 = ok
 FirstStep_C11_C13_Specs             ==> S1 -> C11, C13 = ok
 Scenario_002_2_Specs                ==> S1 -> C11, C11 = ok
-Scenario_002_3_Specs                ==> S1 -> C11, C12, C11 =
-Scenario_002_4_Specs                ==> S1 -> C11, C12, C12 =
+Scenario_002_3_Specs                ==> S1 -> C11, C12, C11 = ok
+Scenario_002_4_Specs                ==> S1 -> C11, C12, C12 = ok
 Scenario_002_5_Specs                ==> S1 -> C1 | S2 -> C1 | S3 -> C1 =

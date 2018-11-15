@@ -17,5 +17,6 @@ object NextStepButton {
     jQueryDivButtonNextSTep.append(HtmlElementText.textInButtonHtml)
     val jQueryDivStep = jQuery(HtmlElementText.numberSign + stepId)
     jQueryDivStep.append(jQueryDivButtonNextSTep)
+    jQueryDivButtonNextSTep
   }
 }
