@@ -30,17 +30,24 @@ class NextStep {
       case "ALLOW_NEXT_COMPONENT" =>
         jQuery(HtmlElementText.buttonJQuery).remove()
 
+        val jQueryButtonNextStep = NextStepButton.drawNextStepButton(jsonComponentOut.result.stepId)
+
+        new action.NextStep().addMouseClick(jQueryButtonNextStep)
+
       case _ => jQuery()
     }
   }
 
   def nextStep(jsonNextStepOut: JsonNextStepOut) = {
 
-    val jQueryComponentWindows = new DrawNextStep().drawNextStep(jsonNextStepOut)
+    jsonNextStepOut.result.status.nextStep.get.status match {
+      case "NEXT_STEP_EXIST" =>
+        val jQueryComponentWindows = new DrawNextStep().drawNextStep(jsonNextStepOut)
 
-    jQueryComponentWindows foreach(jQCW => {
-      new Component().addMouseClickForComponent(jQCW)
-    })
+        jQueryComponentWindows foreach(jQCW => {
+          new Component().addMouseClickForComponent(jQCW)
+        })
+    }
   }
 
 }

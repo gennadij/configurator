@@ -1,6 +1,28 @@
-FirstStep_C11_C12_Specs             ==> S1 -> C11, C12 = ok
-FirstStep_C11_C13_Specs             ==> S1 -> C11, C13 = ok
-Scenario_002_2_Specs                ==> S1 -> C11, C11 = ok
-Scenario_002_3_Specs                ==> S1 -> C11, C12, C11 = ok
-Scenario_002_4_Specs                ==> S1 -> C11, C12, C12 = ok
-Scenario_002_5_Specs                ==> S1 -> C1 | S2 -> C1 | S3 -> C1 =
+Legende
+
+SX = Der Schritt, der geladen wurde.
+CXY = Die Komponente, die ausgewaelt wurde. Für X steht der Schrittlaufnummer und für Y ein Komponentelaufnummer.
+-> = Der nächste Schritt wird angefragt.
+
+FirstStep_C11_C12_Specs             ==> S1 - C11, C12 = ok
+FirstStep_C11_C13_Specs             ==> S1 - C11, C13 = ok
+Scenario_002_2_Specs                ==> S1 - C11, C11 = ok
+Scenario_002_3_Specs                ==> S1 - C11, C12, C11 = ok
+Scenario_002_4_Specs                ==> S1 - C11, C12, C12 = ok
+Scenario_002_5_Specs                ==> S1 - C11 -> S2 - C21 -> S3 - C31 = ok
+Scenario_002_6_Specs                ==> S1 - C11 = ok
+Scenario_002_7_Specs                ==> S1 - C11, C12 = ok
+Scenario_002_8_Specs                ==> S1 - C11, C12, C13 = ok
+Scenario_002_9_Specs                ==> S1 - C1, C2, C3, C1 = ok
+Scenario_002_10_Specs               ==> S1 - C1, C2, C3, C1, C2 = ok
+Scenario_002_11_Specs               ==> S1 - C1, C2, C3, C1, C2, C3 = ok
+Scenario_002_12_Specs               ==> S1 - C1, C2, C3, C1, C2, C3, C1 = ok
+Scenario_002_13_Specs               ==> S1 - C1, C2, C3, C1, C2, C3, C1, C2 = ok
+Scenario_002_14_Specs               ==> S1 - C1, C2, C3, C1, C2, C3, C1, C2, C3 = ok
+Scenario_002_15_Specs               ==> S1 - C1, C2 -> S2 - C1 = ok
+Scenario_002_16_Specs               ==> S1 - C1, C2, C3 -> S2 - C1, C2 = ok
+Scenario_002_17_Specs               ==> S1 - C1, C2 -> S2 - C2
+
+
+
+Scenario_003_1_Specs                ==> S1 - C11 -> S2 - C21 -> S3 - C32, S1 - C12 -> =

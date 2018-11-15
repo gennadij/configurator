@@ -29,4 +29,6 @@ class DrawNextStep {
 
     jQueryComponentWindows
   }
+
+  def deleteNextStepButton = jQuery(HtmlElementText.buttonJQuery).remove()
 }

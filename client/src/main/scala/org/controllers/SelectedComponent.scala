@@ -1,8 +1,9 @@
 package org.controllers
 
 import org.controllers.action.CurrentConfig
+import org.scalajs.jquery.jQuery
 import org.shared.component.json.JsonComponentOut
-import org.views.DrawSelectedComponent
+import org.views.{DrawNextStep, DrawSelectedComponent, HtmlElementText}
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -13,11 +14,20 @@ class SelectedComponent(jsonComponentOut: JsonComponentOut) {
 
   def selectedComponent = {
 
-    new DrawSelectedComponent().drawSelectedComponent(jsonComponentOut)
+    jsonComponentOut.result.status.componentType.get.status match {
+      case "FINAL_COMPONENT" =>
 
-    //CurrentConfig aufrufen
+        new DrawSelectedComponent().drawSelectedComponent(jsonComponentOut)
+        new CurrentConfig().getCurrentConfig
+      case "DEFAULT_COMPONENT" =>
+        new DrawSelectedComponent().drawSelectedComponent(jsonComponentOut)
 
-    new CurrentConfig().getCurrentConfig
+        //CurrentConfig aufrufen
+
+        new CurrentConfig().getCurrentConfig
+    }
+
+
   }
 
 }
