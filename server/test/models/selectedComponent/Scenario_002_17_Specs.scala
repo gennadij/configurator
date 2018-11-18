@@ -25,7 +25,7 @@ class Scenario_002_17_Specs extends Specification with MessageHandler with Befor
   
   def afterAll: Unit = {}
   
-  "Specification for scenario 16" >> {
+  "Specification for scenario 17" >> {
     "S1 -> C1, C2 | S2 -> C2" >> {
       val configUrl = "http://config/client_013"
       

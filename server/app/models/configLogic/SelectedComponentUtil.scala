@@ -1,4 +1,4 @@
-package models.logic
+package models.configLogic
 
 import models.bo.{ComponentBO, SelectedComponentBO, StepBO}
 import models.currentConfig.CurrentConfig
@@ -19,7 +19,7 @@ trait SelectedComponentUtil {
     * @param selectedComponentBO : SelectedComponentBO
     * @return SelectedComponentBO
     */
-  private[logic] def verifyStatusComponentType(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private[configLogic] def verifyStatusComponentType(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
 
     val componentTypeStatus: StatusComponentType = selectedComponentBO.nextStep.get.status.get.nextStep.get match {
       case NextStepNotExist() => FinalComponent()
@@ -38,7 +38,7 @@ trait SelectedComponentUtil {
     * @param selectedComponentBO : SelectedComponentBO
     * @return SelectedComponentBO
     */
-  private[logic] def verifyStatusExcludeDependencyInStepsInternalComponents(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private[configLogic] def verifyStatusExcludeDependencyInStepsInternalComponents(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
 
     val previousSelectedComponentIdsFromCurrentConfig: List[String] = selectedComponentBO.stepCurrentConfig match {
       case Some(step) => step.components map (_.componentId.get)
@@ -69,7 +69,7 @@ trait SelectedComponentUtil {
     * @param selectedComponentBO : SelectedComponentBO
     * @return SelectedComponentBO
     */
-  private[logic] def verifyStatusSelectionCriterium(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private[configLogic] def verifyStatusSelectionCriterium(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
     selectedComponentBO.status.get.excludeDependency.get match {
       case ExcludedComponent() =>
         val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.stepCurrentConfig match {
@@ -83,7 +83,7 @@ trait SelectedComponentUtil {
             selectedComponentBO.copy(status = Some(status))
           case _ =>
             val statusSC: StatusSelectionCriterium =
-              getSelectionCriteriumStatus(previousSelectedComponentsInCurrentConfig.size,
+              getSelectionCriterionStatus(previousSelectedComponentsInCurrentConfig.size,
                 selectedComponentBO.currentStep.get)
             val status = selectedComponentBO.status.get.copy(selectionCriterium = Some(statusSC))
             selectedComponentBO.copy(status = Some(status))
@@ -104,7 +104,7 @@ trait SelectedComponentUtil {
           }
 
           val statusSC: StatusSelectionCriterium =
-            getSelectionCriteriumStatus(countOfComponentsInCurrentConfig, selectedComponentBO.currentStep.get)
+            getSelectionCriterionStatus(countOfComponentsInCurrentConfig, selectedComponentBO.currentStep.get)
 
           val status = selectedComponentBO.status.get.copy(selectionCriterium = Some(statusSC))
           selectedComponentBO.copy(status = Some(status))
@@ -122,7 +122,7 @@ trait SelectedComponentUtil {
           val countOfComponentsInCurrentConfigWithTempSelectedComponent = currentConfigWithTempSelectedComponent.size
 
           val statusSC: StatusSelectionCriterium =
-            getSelectionCriteriumStatus(countOfComponentsInCurrentConfigWithTempSelectedComponent,
+            getSelectionCriterionStatus(countOfComponentsInCurrentConfigWithTempSelectedComponent,
               selectedComponentBO.currentStep.get)
 
           statusSC match {
@@ -152,7 +152,7 @@ trait SelectedComponentUtil {
     * @param selectedComponentBO : SelectedComponentBO
     * @return SelectedComponentBO
     */
-  private[logic] def verifyStatusSelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig: CurrentConfig): SelectedComponentBO = {
+  private[configLogic] def verifyStatusSelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig: CurrentConfig): SelectedComponentBO = {
     selectedComponentBO.status.get.excludeDependency.get match {
       case ExcludedComponent() =>
         val status = selectedComponentBO.status.get.copy(selectedComponent = Some(NotAllowedComponent()))
@@ -222,7 +222,7 @@ trait SelectedComponentUtil {
     * @param selectedComponentBO: SelectedComponentBO
     * @return List[String]
     */
-  private[logic] def getPossibleComponentToSelect(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private[configLogic] def getPossibleComponentToSelect(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
 
     val selectedComponentId = selectedComponentBO.selectedComponent.get.componentId.get
 
@@ -271,16 +271,19 @@ trait SelectedComponentUtil {
     * @param countOfComponents : Int, fatherStep: StepBO
     * @return StatusSelectionCriterium
     */
-  def getSelectionCriteriumStatus(countOfComponents: Int, fatherStep: StepBO): StatusSelectionCriterium = {
+  def getSelectionCriterionStatus(countOfComponents: Int, fatherStep: StepBO): StatusSelectionCriterium = {
 
     val min: Int = fatherStep.selectionCriteriumMin.get
     val max: Int = fatherStep.selectionCriteriumMax.get
+
+    println("####" + min + max + countOfComponents)
 
     countOfComponents match {
       case count if min > count && max > count => RequireComponent()
       case count if min <= count && max == count => RequireNextStep()
       case count if min <= count && max > count => AllowNextComponent()
       case count if max < count => NotAllowNextComponent()
+      case _ => ErrorSelectionCriterion()
     }
   }
 

@@ -1,4 +1,4 @@
-package models.logic
+package models.configLogic
 
 import models.bo._
 import models.currentConfig.CurrentConfig

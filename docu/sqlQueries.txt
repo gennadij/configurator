@@ -1,0 +1,1 @@
+delete vertex V where @rid in (traverse * from #21:60)

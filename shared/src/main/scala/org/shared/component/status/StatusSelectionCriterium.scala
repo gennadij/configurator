@@ -49,7 +49,7 @@ case class AllowNextComponent() extends StatusSelectionCriterium{
   def message: String = "Sie koennen weitere Komponente auswaelen"
 }
 
-//case class ErrorSelectionCriterium() extends StatusSelectionCriterium{
-//  def status: String = "ERROR_SELECTION_CRITERIUM"
-//  def message: String = ""
-//}
+case class ErrorSelectionCriterion() extends StatusSelectionCriterium{
+  def status: String = "ERROR_SELECTION_CRITERION"
+  def message: String = ""
+}
