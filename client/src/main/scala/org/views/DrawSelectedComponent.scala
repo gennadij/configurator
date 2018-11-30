@@ -1,6 +1,6 @@
 package org.views
 
-import org.shared.component.json.JsonComponentOut
+import org.shared.json.selectedComponent.JsonComponentOut
 import org.views.html.{ComponentWindow, StatusWindow}
 
 /**

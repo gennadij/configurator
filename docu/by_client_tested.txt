@@ -28,3 +28,310 @@ Scenario_002_17_Specs               ==> S1 - C1, C2 -> S2 - C2 = ok
 Scenario_005_1_Specs                ==> S1 - C11 -> S2 - C21 -> S3 - C32, S1 - C12 -> =
 FinalStepSpecs                      ==> S1 - C11 -> S2 - C21 -> S3 - C31 = ok
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Test}
+\begin{tabbing}
+
+\noindent Scenario 002-1: \hspace*{0,2cm} \= S1 $->$ C11, C12 $|$ S2 $->$ C21
+$|$ S3 $->$ C31 $|$ S2 $->$ C21 ok \\
+
+\noindent Scenario 002-2: \>  S1 $->$ C11, C11 ok \\
+
+\noindent Scenario 002-3: \>  S1 $->$ C11, C12, C11 ok \\
+
+\noindent Scenario 002-4: \>  S1 $->$ C11, C12, C12 ok \\
+
+\noindent Scenario 002-5: \>  S1 $->$ C11 $|$ S2 $->$ C21 $|$ S3 $->$ C31 ok \\
+
+\noindent Scenario 002-6: \>  S1 $->$ C11 ok \\
+
+\noindent Scenario 002-7: \>  S1 $->$ C11, C12 ok \\
+
+\noindent Scenario 002-8: \>  S1 $->$ C11, C12, C13 ok \\
+
+\noindent Scenario 002-9: \>  S1 $->$ C11, C12, C13, C11 ok \\
+
+\noindent Scenario 002-10: \> S1 $->$ C11, C12, C13, C11, C12 ok \\
+
+\noindent Scenario 002-11: \> S1 $->$ C11, C12, C13, C11, C12, C13 ok \\
+
+\noindent Scenario 002-12: \> S1 $->$ C11, C12, C13, C11, C12, C13, C11 ok \\
+
+\noindent Scenario 002-13: \> S1 $->$ C11, C12, C13, C11, C12, C13, C11,
+C12 ok \\
+
+\noindent Scenario 002-14: \> S1 $->$ C11, C12, C13, C11, C12, C13, C11, C12,
+C13 ok \\
+
+\noindent Scenario 002-15: \> S1 $->$ C11, C12 $|$ S2 $->$ C21 ok \\
+
+\noindent Scenario 002-16: \> S1 $->$ C11, C12 $|$ S2 $->$ C21, C22 ok\\
+
+\end{tabbing}
+
+\subsubsection{Szenario v002-1}
+
+configUrl=http://contig1/user29\_v016\\
+
+Diese Szenario nur möglich bei der Einstellung von
+$<configurationCourse=sequence>$.\\
+
+\noindent Es gibt folgende Verläfe: $<sequence>, <sabstitute>$.
+Diese Verläufe beziehen sich in großen Ganzen nur auf der Verhalten des Clients des Konfigurators.
+Bei der $<sequence>$ werden die nächste Schritte an der vorherige Schritt angehängt,
+so dass der Benutzer alle abgearbeitete Schritte sieht. Bei der $<sabstitute>$ der
+nächste Schritt ersetzt den vorherigen. Der Server benötigt die Information ob der
+vorherige Schritte durch der Auswahl des Benutzers (z.B. Button vorherige Schritt) geladen
+werden soll ($<sabstitute>$) oder der Benutzer die Änderung in den vorherigen Schritten
+sofort vornehmen kann, da er visualisiert ist ($<sequence>$).
+
+\begin{enumerate}
+  \item Server: Start Konfiguration $->$ Schritt 1
+  \item Client: Auswahl $->$ Komponent 1-1
+  \item Server: Komponent 1-1 hinzugef\"ugt, aktuelle Konfiguration angepasst
+  \item Client: Auswahl $->$ Komponent 1-2
+  \item Server: Komponent 1-2 hinzugef\"ugt, aktuelle Konfiguration angepasst
+  \item Client: Auswahl: $->$ n\"achste Schritt laden
+  \item Server: Lade Schritt 2
+  \item Client: Auswahl $->$ Komponent 2-1
+  \item Server: Komponent 2-1 hinzugef\"ugt, aktuelle Konfiguration angepasst
+  \item Client: Auswahl: $->$ n\"achste Schritt laden
+  \item Server: Lade Schritt 3
+  \item Client: Auswahl: $->$ Komponent 3-1
+  \item Server: Komponent 3-1 hinzugef\"ugt, aktuelle Konfiguration angepasst
+  \item Client: Auswahl $->$ Komponent 2-1
+  \item Server: Warnung: Komponente 2-1 und Komponente 3-1 werden aus der
+  Konfiguration entfernt.
+  \item Client: Auswahl $->$ Ja
+  \item Server: Komponente 2-1, Schritt 3 mit Komponente 3-1 aus der aktuellen
+  Konfiguration entfernt.
+\end{enumerate}
+
+\subsubsection{Szenario 002-2}
+
+configUrl=http://contig1/user29\_v016\\
+
+Globale Einstellungen $<configurationCourse=sequence>$
+
+\begin{enumerate}
+  \item Server: Start Konfiguration $->$ Schritt 1
+  \item Client: Auswahl $->$ Komponent 1-1
+  \item Server: Komponent 1-1 wurde in die aktuelle Konfiguration hinzugef\"ugt
+  \item Client: Auswahl $->$ Komponent 1-1
+  \item Server: Komponent 1-1 wurde aus der aktuellen Konfiguratiuon entfernt
+\end{enumerate}
+
+\subsubsection{Szenario 002-3}
+
+configUrl=http://contig1/user29\_v016\\
+
+Globale Einstellungen $<configurationCourse=sequence>$
+
+\begin{enumerate}
+  \item Server: Start Konfiguration $->$ Schritt 1
+  \item Client: Auswahl $->$ Komponent 1-1
+  \item Server: Komponent 1-1 wurde in die aktuelle Konfiguration hinzugef\"ugt
+  \item Client: Auswahl $->$ Komponent 1-2
+  \item Server: Komponent 1-2 wurde in die aktuelle Konfiguration hinzugef\"ugt
+  \item Client: Auswahl $->$ Komponent 1-1
+  \item Server: Komponent 1-1 wurde aus der aktuellen Konfiguratiuon entfernt
+\end{enumerate}
+
+\subsubsection{Szenario 002-4}
+
+configUrl=http://contig1/user29\_v016\\
+
+Globale Einstellungen $<configurationCourse=sequence>$
+
+\begin{enumerate}
+  \item Server: Start Konfiguration $->$ Schritt 1
+  \item Client: Auswahl $->$ Komponent 1-1
+  \item Server: Komponent 1-1 wurde in die aktuelle Konfiguration hinzugef\"ugt
+  \item Client: Auswahl $->$ Komponent 1-2
+  \item Server: Komponent 1-2 wurde in die aktuelle Konfiguration hinzugef\"ugt
+  \item Client: Auswahl $->$ Komponent 1-2
+  \item Server: Komponent 1-2 wurde aus der aktuellen Konfiguratiuon entfernt
+\end{enumerate}
+
+\subsubsection{Szenario 002-5}
+
+configUrl=http://contig1/user29\_v016\\
+
+Globale Einstellungen $<configurationCourse=sequence>$
+
+\begin{enumerate}
+  \item Server: Start Konfiguration $->$ Schritt 1
+  \item Client: Auswahl $->$ Komponent 1-1
+  \item Server: Komponent 1-1 wurde in die aktuelle Konfiguration hinzugef\"ugt
+  \item Client: Auswahl: $->$ n\"achste Schritt laden
+  \item Server: Lade Schritt 2
+  \item Client: Auswahl $->$ Komponent 2-1
+  \item Server: Komponent 2-1 wurde in die aktuelle Konfiguration hinzugef\"ugt
+  \item Client: Auswahl: $->$ n\"achste Schritt laden
+  \item Server: Lade Schritt 3
+  \item Client: Auswahl $->$ Komponent 3-1
+  \item Server: Komponent 3-1 wurde in die aktuelle Konfiguration hinzugef\"ugt
+  \item Client: Auswahl: $->$ n\"achste Schritt laden
+  \item Server: Error -> Es existiert keiner weiteren Schritt
+\end{enumerate}
+
+\subsubsection{Szenario 002-6}
+
+configUrl=http://contig1/user29\_v016\\
+
+Schritt 1 $->$ Component 1\\
+
+Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ AddedComponent
+  \item SelectionCriterium $->$ AllowNextComponent
+  \item ExcludeDependency $->$ NotExcludeComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\subsubsection{Szenario 002-7}
+
+configUrl=http://contig1/user29\_v016\\
+
+\noindent Schritt 1 $->$ Component 1, Component 2\\
+
+\noindent Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ AddedComponent
+  \item SelectionCriterium $->$ RequireNextStep
+  \item ExcludeDependency $->$ NotExcludeComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\subsubsection{Szenario 002-8}
+
+configUrl=http://contig1/user29\_v016\\
+
+\noindent Schritt 1 $->$ Component 1, Component 2, Component 3\\
+
+\noindent Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ NotAllowedComponent
+  \item SelectionCriterium $->$ RequireNextStep
+  \item ExcludeDependency $->$ ExcludeComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\subsubsection{Szenario 002-9}
+
+configUrl=http://contig1/user29\_v016\\
+
+\noindent Schritt 1 $->$ Component 1, Component 2, Component 3, Component 1\\
+
+\noindent Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ RemovedComponent
+  \item SelectionCriterium $->$ AllowNextComponent
+  \item ExcludeDependency $->$ NotExcludedComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\subsubsection{Szenario 002-10}
+
+configUrl=http://contig1/user29\_v016\\
+
+\noindent Schritt 1 $->$ Component 1, Component 2, Component 3, Component 1,
+Component 2\\
+
+\noindent Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ RemovedComponent
+  \item SelectionCriterium $->$ RequireComponent
+  \item ExcludeDependency $->$ NotExcludeComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\subsubsection{Szenario 002-11}
+
+configUrl=http://contig1/user29\_v016\\
+
+\noindent Schritt 1 $->$ Component 1, Component 2, Component 3, Component 1,
+Component 2, Component 3\\
+
+\noindent Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ AddedComponent
+  \item SelectionCriterium $->$ RequireNextStep
+  \item ExcludeDependency $->$ NotExcludedComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\subsubsection{Szenario 002-12}
+
+configUrl=http://contig1/user29\_v016\\
+
+\noindent Schritt 1 $->$ Component 1, Component 2, Component 3, Component 1,
+Component 2, Component 3, Component 1\\
+
+\noindent Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ NotAllowedComponent
+  \item SelectionCriterium $->$ RequireNextStep
+  \item ExcludeDependency $->$ ExcludeComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\subsubsection{Szenario 002-13}
+
+configUrl=http://contig1/user29\_v016\\
+
+\noindent Schritt 1 $->$ Component 1, Component 2, Component 3, Component 1,
+Component 2, Component 3, Component 1, Component 2\\
+
+\noindent Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ NotAllowedComponent
+  \item SelectionCriterium $->$ RequireNextStep
+  \item ExcludeDependency $->$ ExcludeComponent
+  \item Common $->$ Success
+\end{itemize}
+
+\subsubsection{Szenario 002-8}
+
+configUrl=http://contig1/user29\_v016\\
+
+\noindent Schritt 1 $->$ Component 1, Component 2, Component 3, Component 1,
+Component 2, Component 3, Component 1, Component 2, Component 3\\
+
+\noindent Status:
+
+\begin{itemize}
+  \item ComponentType $->$ DefaultComponent
+  \item SelectedComponent $->$ RemovedComponent
+  \item SelectionCriterium $->$ RequireComponent
+  \item ExcludeDependency $->$ NotExcludeComponent
+  \item Common $->$ Success
+\end{itemize}

@@ -1,7 +1,7 @@
 package org.controllers.action
 
 import org.controllers.websocket.WebSocket
-import org.shared.currentConfig.json.JsonCurrentConfigIn
+import org.shared.json.currentConfig.JsonCurrentConfigIn
 import play.api.libs.json.Json
 
 /**

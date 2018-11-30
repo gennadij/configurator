@@ -1,8 +1,8 @@
 package controllers.wrapper
 
 import models.bo._
-import org.shared.common.status.Success
-import org.shared.component.json.JsonComponentIn
+import org.shared.json.selectedComponent.JsonComponentIn
+import org.shared.status.common.Success
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com

@@ -3,10 +3,10 @@ package util
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
+import org.shared.json.JsonNames
 import org.specs2.runner.JUnitRunner
 import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeAfterAll
-import org.shared.common.JsonNames
 import play.api.libs.json.Json
 import play.api.Logger
 import play.api.libs.json.JsValue

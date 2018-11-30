@@ -1,6 +1,6 @@
 package models.bo
 
-import org.shared.common.status.step.StatusStep
+import org.shared.status.common.StatusStep
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com

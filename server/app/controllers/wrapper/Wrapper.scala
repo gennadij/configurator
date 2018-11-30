@@ -1,13 +1,14 @@
 package controllers.wrapper
 
 import models.bo._
-import org.shared.common.json._
-import org.shared.common.status.step.NextStepExist
-import org.shared.component.json.{JsonComponentIn, JsonComponentOut, JsonComponentResult, JsonComponentStatus}
-import org.shared.component.status.StatusComponent
-import org.shared.currentConfig.json.{JsonCurrentConfigIn, JsonCurrentConfigOut, JsonCurrentConfigResult, JsonStepCurrentConfig}
-import org.shared.nextStep.json.{JsonNextStepOut, JsonNextStepResult}
-import org.shared.startConfig.json.{JsonStartConfigIn, JsonStartConfigOut, JsonStartConfigResult}
+import org.shared.json.common
+import org.shared.json.common.{JsonComponent, JsonStatus, JsonStep, JsonStepStatus}
+import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut, JsonCurrentConfigResult, JsonStepCurrentConfig}
+import org.shared.json.nextStep.{JsonNextStepOut, JsonNextStepResult}
+import org.shared.json.selectedComponent._
+import org.shared.json.startConfig.{JsonStartConfigIn, JsonStartConfigOut, JsonStartConfigResult}
+import org.shared.status.nextStep.NextStepExist
+import org.shared.status.selectedComponent.StatusComponent
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -110,7 +111,7 @@ trait Wrapper extends RIDConverter {
 
         JsonNextStepOut(
           result = JsonNextStepResult(
-            JsonStep(
+            common.JsonStep(
               stepId = nextStepWithConvertedRids.step.get.stepId.get,
               nameToShow = nextStepWithConvertedRids.step.get.nameToShow.get,
               components = nextStepWithConvertedRids.componentsForSelection.get.components map (c => {

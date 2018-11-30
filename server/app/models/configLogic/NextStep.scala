@@ -3,8 +3,9 @@ package models.configLogic
 import models.bo._
 import models.currentConfig.CurrentConfig
 import models.persistence.Persistence
-import org.shared.common.status.Success
-import org.shared.common.status.step._
+import org.shared.status.common.{StatusStep, Success}
+import org.shared.status.currentConfig.StepCurrentConfigBOIncludeNoSelectedComponents
+import org.shared.status.nextStep.{NextStepExist, NextStepIncludeNoComponents}
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com

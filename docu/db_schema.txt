@@ -13,6 +13,7 @@ CREATE CLASS hasConfig EXTENDS E;
 CREATE CLASS Config EXTENDS V;
 CREATE PROPERTY Config.configUrl STRING;
 CREATE INDEX configUrl ON Config (configUrl) UNIQUE;
+CREATE PROPERTY Config.configurationCourse String;
 #ALTER CLASS Config STRICTMODE TRUE;
 
 CREATE CLASS hasStep EXTENDS E;

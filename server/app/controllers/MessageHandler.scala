@@ -2,12 +2,12 @@ package controllers
 
 import controllers.genericConfig.GenericConfigurator
 import models.currentConfig.CurrentConfig
-import org.shared.common.JsonNames
-import org.shared.component.json.JsonComponentIn
-import org.shared.currentConfig.json.{JsonCurrentConfigIn, JsonCurrentConfigOut}
-import org.shared.error.{JsonErrorIn, JsonErrorParams}
-import org.shared.nextStep.json.JsonNextStepIn
-import org.shared.startConfig.json.JsonStartConfigIn
+import org.shared.json.JsonNames
+import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
+import org.shared.json.error.{JsonErrorIn, JsonErrorParams}
+import org.shared.json.nextStep.JsonNextStepIn
+import org.shared.json.selectedComponent.JsonComponentIn
+import org.shared.json.startConfig.JsonStartConfigIn
 import play.api.Logger
 import play.api.libs.json._
 

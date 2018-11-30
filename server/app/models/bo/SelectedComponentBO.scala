@@ -1,6 +1,6 @@
 package models.bo
 
-import org.shared.component.status.StatusComponent
+import org.shared.status.selectedComponent.StatusComponent
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com

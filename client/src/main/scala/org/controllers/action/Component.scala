@@ -2,7 +2,7 @@ package org.controllers.action
 
 import org.controllers.websocket.WebSocket
 import org.scalajs.jquery.JQuery
-import org.shared.component.json.{JsonComponentIn, JsonComponentParam}
+import org.shared.json.selectedComponent.{JsonComponentIn, JsonComponentParam}
 import org.views.HtmlElementText
 import play.api.libs.json.Json
 

@@ -4,9 +4,12 @@ import com.tinkerpop.blueprints.Direction
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import models.bo.{ComponentBO, ComponentsForSelectionBO, SelectedComponentBO, StepBO}
 import models.persistence.orientdb.{Graph, PropertyKeys}
-import org.shared.common.status.step._
-import org.shared.common.status._
-import org.shared.component.status.StatusComponent
+import org.shared.status.common
+import org.shared.status.common.{Status, StatusStep, Success}
+import org.shared.status.currentConfig.StepCurrentConfigSuccess
+import org.shared.status.nextStep.{NextStepExist, StatusNextStep}
+import org.shared.status.selectedComponent.{StatusComponent, StatusCurrentStep}
+import org.shared.status.startConfig.{StartConfigExist, StatusStartConfig}
 
 import scala.collection.JavaConverters._
 /**
@@ -42,7 +45,7 @@ object Persistence {
         ))
       case None =>
         StepBO(
-          status = Some(StatusStep(
+          status = Some(common.StatusStep(
             startConfig = Some(statusFirstStep),
             common = Some(statusCommon)
           )
@@ -106,25 +109,29 @@ object Persistence {
   def getSelectedComponent(selectedComponentId: String): SelectedComponentBO = {
     val (vComponent, statusCommon): (Option[OrientVertex], Status) = Graph.getComponent(selectedComponentId)
 
+
+
     vComponent match {
-      case Some(vC) => SelectedComponentBO(
-        status = Some(StatusComponent(common = Some(Success()))),
-        selectedComponent = Some(ComponentBO(
-          Some(vC.getIdentity.toString),
-          Some(vC.getProperty(PropertyKeys.NAME_TO_SHOW)),
-          Some(Graph.getComponentDependenciesOut(vC) filter {
-            _.dependencyType == PropertyKeys.EXCLUDE
-          }),
-          Some(Graph.getComponentDependenciesIn(vC) filter {
-            _.dependencyType == PropertyKeys.EXCLUDE
-          }),
-          Some(Graph.getComponentDependenciesOut(vC) filter {
-            _.dependencyType == PropertyKeys.REQUIRE
-          }),
-          Some(Graph.getComponentDependenciesIn(vC) filter {
-            _.dependencyType == PropertyKeys.REQUIRE
-          })
-        ))
+      case Some(vC) =>
+        val excludeDependencyOut =
+          Graph.getComponentDependenciesOut(vC) filter {_.dependencyType == PropertyKeys.EXCLUDE}
+        val excludeDependencyIn =
+          Graph.getComponentDependenciesIn(vC) filter {_.dependencyType == PropertyKeys.EXCLUDE}
+        val requireDependencyOut =
+          Graph.getComponentDependenciesOut(vC) filter {_.dependencyType == PropertyKeys.REQUIRE}
+        val requireDependencyIn =
+          Graph.getComponentDependenciesIn(vC) filter {_.dependencyType == PropertyKeys.REQUIRE}
+
+        SelectedComponentBO(
+          status = Some(StatusComponent(common = Some(Success()))),
+          selectedComponent = Some(ComponentBO(
+            Some(vC.getIdentity.toString),
+            Some(vC.getProperty(PropertyKeys.NAME_TO_SHOW)),
+            Some(excludeDependencyOut),
+            Some(excludeDependencyIn),
+            Some(requireDependencyOut),
+            Some(requireDependencyIn)
+          ))
       )
       case None => SelectedComponentBO(
         Some(StatusComponent(common = Some(statusCommon))))
@@ -186,7 +193,7 @@ object Persistence {
             hC.getVertex(Direction.IN).asInstanceOf[OrientVertex].getIdentity.toString()
           }))
         )
-      case None => StepBO(status = Some(StatusStep(nextStep = Some(statusNextStep), common = Some(statusCommon))))
+      case None => StepBO(status = Some(common.StatusStep(nextStep = Some(statusNextStep), common = Some(statusCommon))))
     }
   }
 }

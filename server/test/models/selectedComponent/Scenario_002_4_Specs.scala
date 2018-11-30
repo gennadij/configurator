@@ -3,9 +3,9 @@ package models.selectedComponent
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
-import org.shared.common.JsonNames
 import org.shared.common.status.Success
-import org.shared.component.status._
+import org.shared.json.JsonNames
+import org.shared.selectedComponent.status._
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll

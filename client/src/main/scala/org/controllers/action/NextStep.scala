@@ -2,7 +2,7 @@ package org.controllers.action
 
 import org.controllers.websocket.WebSocket
 import org.scalajs.jquery.{JQuery, jQuery}
-import org.shared.nextStep.json.JsonNextStepIn
+import org.shared.json.nextStep.JsonNextStepIn
 import org.views.{DrawNextStep, HtmlElementText}
 import play.api.libs.json.Json
 

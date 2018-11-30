@@ -3,7 +3,7 @@ package models.configLogic
 import models.bo._
 import models.currentConfig.CurrentConfig
 import models.persistence.Persistence
-import org.shared.common.status.Success
+import org.shared.status.common.Success
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com

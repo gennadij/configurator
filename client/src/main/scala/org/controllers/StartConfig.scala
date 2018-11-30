@@ -1,7 +1,7 @@
 package org.controllers
 
 import org.controllers.action.Component
-import org.shared.startConfig.json.JsonStartConfigOut
+import org.shared.json.startConfig.JsonStartConfigOut
 import org.views.DrawStartConfig
 
 /**

@@ -2,8 +2,8 @@ package models.configLogic
 
 import models.bo.{ComponentBO, SelectedComponentBO, StepBO}
 import models.currentConfig.CurrentConfig
-import org.shared.common.status.step.{NextStepExist, NextStepNotExist}
-import org.shared.component.status._
+import org.shared.status.nextStep.{NextStepExist, NextStepNotExist}
+import org.shared.status.selectedComponent._
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com

@@ -3,10 +3,10 @@ package controllers.genericConfig
 import controllers.wrapper.Wrapper
 import models.currentConfig.CurrentConfig
 import models.configLogic.{NextStep, SelectedComponent, StartConfig}
-import org.shared.component.json.{JsonComponentIn, JsonComponentOut}
-import org.shared.currentConfig.json.{JsonCurrentConfigIn, JsonCurrentConfigOut}
-import org.shared.nextStep.json.JsonNextStepOut
-import org.shared.startConfig.json.{JsonStartConfigIn, JsonStartConfigOut}
+import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
+import org.shared.json.nextStep.JsonNextStepOut
+import org.shared.json.selectedComponent.{JsonComponentIn, JsonComponentOut}
+import org.shared.json.startConfig.{JsonStartConfigIn, JsonStartConfigOut}
 
 //TODO FirstStepStatus zu StartConfig umbenennen
 

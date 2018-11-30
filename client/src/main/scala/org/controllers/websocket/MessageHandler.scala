@@ -1,11 +1,11 @@
 package org.controllers.websocket
 
 import org.controllers.{NextStep, SelectedComponent, StartConfig}
-import org.shared.common.JsonNames
-import org.shared.component.json.JsonComponentOut
-import org.shared.currentConfig.json.JsonCurrentConfigOut
-import org.shared.nextStep.json.JsonNextStepOut
-import org.shared.startConfig.json.JsonStartConfigOut
+import org.shared.json.JsonNames
+import org.shared.json.currentConfig.JsonCurrentConfigOut
+import org.shared.json.nextStep.JsonNextStepOut
+import org.shared.json.selectedComponent.JsonComponentOut
+import org.shared.json.startConfig.JsonStartConfigOut
 import org.views.DrawCurrentConfig
 import play.api.libs.json._
 

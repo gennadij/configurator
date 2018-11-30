@@ -1,7 +1,7 @@
 package org.views
 
 import org.scalajs.jquery.{JQuery, jQuery}
-import org.shared.startConfig.json.JsonStartConfigOut
+import org.shared.json.startConfig.JsonStartConfigOut
 import org.views.html.{ComponentWindow, ConfigMainWindow, StatusWindow, StepWindow}
 
 /**

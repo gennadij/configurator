@@ -1,8 +1,8 @@
 package org.controllers.websocket
 
 import org.scalajs.dom
-import org.shared.common.JsonNames
-import org.shared.startConfig.json.{JsonStartConfigIn, JsonStartConfigParams}
+import org.shared.json.JsonNames
+import org.shared.json.startConfig.{JsonStartConfigIn, JsonStartConfigParams}
 import play.api.libs.json.{JsValue, Json}
 
 import scala.util.matching.Regex

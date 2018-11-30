@@ -2,7 +2,7 @@ package org.controllers
 
 import org.controllers.action.CurrentConfig
 import org.scalajs.jquery.jQuery
-import org.shared.component.json.JsonComponentOut
+import org.shared.json.selectedComponent.JsonComponentOut
 import org.views.{DrawNextStep, DrawSelectedComponent, HtmlElementText}
 
 /**

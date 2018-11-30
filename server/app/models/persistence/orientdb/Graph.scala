@@ -4,8 +4,10 @@ import com.tinkerpop.blueprints.impls.orient.{OrientEdge, OrientGraph, OrientVer
 import com.tinkerpop.blueprints.{Direction, Edge, Vertex}
 import models.bo.{DependencyBO, StepBO}
 import models.persistence.Database
-import org.shared.common.status._
-import org.shared.common.status.step._
+import org.shared.status.common._
+import org.shared.status.nextStep._
+import org.shared.status.selectedComponent._
+import org.shared.status.startConfig._
 import play.api.Logger
 
 import scala.collection.JavaConverters._

@@ -2,8 +2,8 @@ package org.controllers
 
 import org.controllers.action.Component
 import org.scalajs.jquery.jQuery
-import org.shared.component.json.JsonComponentOut
-import org.shared.nextStep.json.JsonNextStepOut
+import org.shared.json.nextStep.JsonNextStepOut
+import org.shared.json.selectedComponent.JsonComponentOut
 import org.views.{DrawNextStep, HtmlElementText}
 import org.views.html.NextStepButton
 

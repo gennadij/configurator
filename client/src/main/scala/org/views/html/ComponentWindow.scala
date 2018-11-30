@@ -1,8 +1,8 @@
 package org.views.html
 
 import org.scalajs.jquery.{JQuery, jQuery}
-import org.shared.common.json.JsonComponent
-import org.shared.component.json.JsonComponentStatus
+import org.shared.json.common.JsonComponent
+import org.shared.json.selectedComponent.JsonComponentStatus
 import org.views.HtmlElementText
 
 /**

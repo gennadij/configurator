@@ -1,6 +1,7 @@
 package models.bo
 
-import org.shared.component.status.StatusComponent
+import org.shared.status.selectedComponent.StatusComponent
+
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -8,6 +9,6 @@ import org.shared.component.status.StatusComponent
   * Created by Gennadi Heimann 16.07.2018
   */
 case class ComponentsForSelectionBO(
-                               status: Option[StatusComponent] = None,
-                               components: List[ComponentBO] = List()
+                                     status: Option[StatusComponent] = None,
+                                     components: List[ComponentBO] = List()
                              )

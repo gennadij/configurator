@@ -1,7 +1,7 @@
 package org.views.html
 
 import org.scalajs.jquery.{JQuery, jQuery}
-import org.shared.common.json.JsonStep
+import org.shared.json.common.JsonStep
 import org.views.HtmlElementText
 
 /**

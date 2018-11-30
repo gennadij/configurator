@@ -3,9 +3,9 @@ package models.nextStep
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
-import org.shared.common.JsonNames
-import org.shared.nextStep.json.JsonNextStepOut
-import org.shared.startConfig.json.JsonStartConfigOut
+import org.shared.json.JsonNames
+import org.shared.json.nextStep.JsonNextStepOut
+import org.shared.json.startConfig.JsonStartConfigOut
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll

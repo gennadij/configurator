@@ -1,7 +1,7 @@
 package org.views
 
 import org.scalajs.jquery.{JQuery, jQuery}
-import org.shared.nextStep.json.JsonNextStepOut
+import org.shared.json.nextStep.JsonNextStepOut
 import org.views.html.{ComponentWindow, StatusWindow, StepWindow}
 
 /**
