@@ -16,7 +16,12 @@ lazy val server = (project in file("server")).settings(commonSettings).settings(
 	"com.orientechnologies" % "orientdb-graphdb" % "3.0.1"
   ),
   // Compile the project before generating Eclipse files, so that generated .scala or .class files for views and routes are present
-  EclipseKeys.preTasks := Seq(compile in Compile)
+  EclipseKeys.preTasks := Seq(compile in Compile),
+
+  //PlayKeys.devSettings += "play.server.http.port" -> "8080",
+  PlayKeys.devSettings += "play.server.http.idleTimeout" -> "180s",
+  PlayKeys.devSettings += "akka.http.server.websocket.periodic-keep-alive-max-idle" -> "10s"
+
 ).enablePlugins(PlayScala).
   dependsOn(sharedJvm)
 
