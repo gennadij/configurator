@@ -3,10 +3,10 @@ package models.selectedComponent
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
-import org.shared.common.status.Success
 import org.shared.json.JsonNames
 import org.shared.json.startConfig.JsonStartConfigOut
-import org.shared.selectedComponent.status._
+import org.shared.status.common.Success
+import org.shared.status.selectedComponent._
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
@@ -67,15 +67,15 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_1 " + jsonComponentOut_1)
 
       (jsonComponentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
-      (jsonComponentOut_1 \ "result" \ "selectedComponentId").asOpt[String].get.size must be_>=(30)
-      (jsonComponentOut_1 \ "result" \ "stepId").asOpt[String].get.size must be_>=(30)
+      (jsonComponentOut_1 \ "result" \ "selectedComponentId").asOpt[String].get.length must be_>=(30)
+      (jsonComponentOut_1 \ "result" \ "stepId").asOpt[String].get.length must be_>=(30)
       (jsonComponentOut_1 \ "result" \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
       ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"
       ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "visualization").asOpt[String].get === "undef"
       ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "nameToShow").asOpt[String].get ===
         "(C11) ----> (C13)"
 
-      val status = (jsonComponentOut_1 \ "result" \ "status")
+      val status = jsonComponentOut_1 \ "result" \ "status"
       (status \ "selectionCriterium" \ "status").asOpt[String].get === AllowNextComponent().status
       (status \"selectedComponent" \ "status").asOpt[String].get === AddedComponent().status
       (status \"excludeDependency" \ "status").asOpt[String].get === NotExcludedComponent().status
@@ -108,14 +108,14 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
 
       (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
 
-      (jsonComponentOut_2 \ "result" \ "selectedComponentId").asOpt[String].get.size must be_>=(30)
-      (jsonComponentOut_2 \ "result" \ "stepId").asOpt[String].get.size must be_>=(30)
+      (jsonComponentOut_2 \ "result" \ "selectedComponentId").asOpt[String].get.length must be_>=(30)
+      (jsonComponentOut_2 \ "result" \ "stepId").asOpt[String].get.length must be_>=(30)
 
       (jsonComponentOut_2 \ "result" \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
       ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"
       ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "visualization").asOpt[String].get === "undef"
       ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "nameToShow").asOpt[String].get === "(C12) ----> (C13)"
-      val status_2 = (jsonComponentOut_2 \ "result" \ "status")
+      val status_2 = jsonComponentOut_2 \ "result" \ "status"
       (status_2 \ "selectionCriterium" \ "status").asOpt[String].get === RequireNextStep().status
       (status_2 \"selectedComponent" \ "status").asOpt[String].get === AddedComponent().status
       (status_2 \"excludeDependency" \ "status").asOpt[String].get === NotExcludedComponent().status

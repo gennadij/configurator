@@ -266,7 +266,7 @@ trait Wrapper extends RIDConverter {
           }
         ),
         excludeDependenciesOut = toJsonDependency(selectedComponentWithHash.selectedComponent.get.excludeDependenciesOut),
-        excludeDependenciesIn = toJsonDependency(selectedComponentWithHash.selectedComponent.get.requireDependenciesIn),
+        excludeDependenciesIn = toJsonDependency(selectedComponentWithHash.selectedComponent.get.excludeDependenciesIn),
         requireDependenciesOut = toJsonDependency(selectedComponentWithHash.selectedComponent.get.requireDependenciesOut),
         requireDependenciesIn = toJsonDependency(selectedComponentWithHash.selectedComponent.get.requireDependenciesIn)
       )

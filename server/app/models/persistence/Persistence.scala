@@ -107,9 +107,8 @@ object Persistence {
     * @return ContainerComponentBO
     */
   def getSelectedComponent(selectedComponentId: String): SelectedComponentBO = {
+
     val (vComponent, statusCommon): (Option[OrientVertex], Status) = Graph.getComponent(selectedComponentId)
-
-
 
     vComponent match {
       case Some(vC) =>
@@ -133,6 +132,7 @@ object Persistence {
             Some(requireDependencyIn)
           ))
       )
+
       case None => SelectedComponentBO(
         Some(StatusComponent(common = Some(statusCommon))))
     }

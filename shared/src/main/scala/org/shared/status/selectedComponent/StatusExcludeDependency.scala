@@ -11,10 +11,11 @@ import org.shared.status.common.Status
 
 sealed abstract class StatusExcludeDependency extends Status
 
-case class ExcludedComponent() extends StatusExcludeDependency() {
+case class ExcludedComponent(
+                              excludeComponent: String,
+                              excludedComponent: String) extends StatusExcludeDependency() {
   def status: String = "EXCLUDED_COMPONENT"
-  def message: String = "Diese Komponente darf nicht ausgewaehlt werden. " + 
-      "Sie wird von einer anderen Komponente ausgeschlossen. Bitte waehlen Sie eine andere Komponente"
+  def message: String = s"Die Komponent $excludedComponent wird von der Komponente $excludeComponent ausgeschlossen."
 }
 
 case class NotExcludedComponent() extends StatusExcludeDependency() {

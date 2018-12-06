@@ -4,6 +4,7 @@ import models.bo._
 import models.currentConfig.CurrentConfig
 import models.persistence.Persistence
 import org.shared.status.common.{Status, Success}
+import play.api.Logger
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -50,12 +51,18 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig:
             // Status Component Typ
             val sCExtendedOfStatusComponentTyp = verifyStatusComponentType(sCExtendedOfCurrentConfigStep)
 
-            //Status Exclude Dependency
-            val sCExtendedOfStatusExcludeDependency =
+            //Status Exclude Dependency for internal Components
+            val sCExtendedOfStatusExcludeDependencyInternal =
               verifyStatusExcludeDependencyInStepsInternalComponents(sCExtendedOfStatusComponentTyp)
 
+            //Status Exclude Dependency for external Components
+            val sCExtendedOfStatusExcludeDependencyExternal =
+              verifyStatusExcludeDependencyInExternal(sCExtendedOfStatusExcludeDependencyInternal)
+
+            Logger.info(sCExtendedOfStatusExcludeDependencyInternal.selectedComponent.get.toString)
+
             val sCExtendedOfPossibleComponentIdsToSelect =
-              getPossibleComponentToSelect(sCExtendedOfStatusExcludeDependency)
+              getPossibleComponentToSelect(sCExtendedOfStatusExcludeDependencyInternal)
 
             //Status Selection Criterium
             val sCExtendedOfStatusSelectionCriterium = verifyStatusSelectionCriterium(sCExtendedOfPossibleComponentIdsToSelect)

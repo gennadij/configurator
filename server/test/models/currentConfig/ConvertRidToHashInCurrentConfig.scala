@@ -3,9 +3,9 @@ package models.currentConfig
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
-import org.shared.common.status.Success
 import org.shared.json.JsonNames
-import org.shared.selectedComponent.status.{AddedComponent, AllowNextComponent, NotExcludedComponent, RequireNextStep}
+import org.shared.status.common.Success
+import org.shared.status.selectedComponent._
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll

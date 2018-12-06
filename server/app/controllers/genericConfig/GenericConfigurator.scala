@@ -8,8 +8,6 @@ import org.shared.json.nextStep.JsonNextStepOut
 import org.shared.json.selectedComponent.{JsonComponentIn, JsonComponentOut}
 import org.shared.json.startConfig.{JsonStartConfigIn, JsonStartConfigOut}
 
-//TODO FirstStepStatus zu StartConfig umbenennen
-
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
   *
@@ -18,6 +16,8 @@ import org.shared.json.startConfig.{JsonStartConfigIn, JsonStartConfigOut}
   * Stellt eine Schnittstelle zwischen Controller und
   * Logik des generischen Konfigurators
   */
+
+//TODO C11 -> C22 = RID Fehler
 trait GenericConfigurator extends Wrapper{
 
   /**

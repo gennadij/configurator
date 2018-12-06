@@ -180,7 +180,6 @@ class Graph(graph: Option[OrientGraph]) {
     * @return ComponentOut
     */
   private def getComponent(componentId: String): (Option[OrientVertex], Status) = {
-
     try {
       val vComponent = graph.get.getVertex(componentId)
       (Some(vComponent), Success())
@@ -283,6 +282,7 @@ class Graph(graph: Option[OrientGraph]) {
       .asScala.toList map {
       _.asInstanceOf[OrientEdge]
     }
+
     eHasDependencies map {
       eHasDependency => {
         DependencyBO(
