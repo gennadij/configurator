@@ -62,7 +62,7 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig:
             Logger.info(sCExtendedOfStatusExcludeDependencyInternal.selectedComponent.get.toString)
 
             val sCExtendedOfPossibleComponentIdsToSelect =
-              getPossibleComponentToSelect(sCExtendedOfStatusExcludeDependencyInternal)
+              getPossibleComponentToSelect(sCExtendedOfStatusExcludeDependencyExternal)
 
             //Status Selection Criterium
             val sCExtendedOfStatusSelectionCriterium = verifyStatusSelectionCriterium(sCExtendedOfPossibleComponentIdsToSelect)

@@ -2,6 +2,7 @@ package models.configLogic
 
 import models.bo.{ComponentBO, SelectedComponentBO, StepBO}
 import models.currentConfig.CurrentConfig
+import models.persistence.Persistence
 import org.shared.status.nextStep.{NextStepExist, NextStepNotExist}
 import org.shared.status.selectedComponent._
 
@@ -58,7 +59,7 @@ trait SelectedComponentUtil {
         selectedComponentBO.copy(status = Some(statusNotExcludedComponent))
       case _ =>
         val statusExcludedComponent: StatusComponent =
-          selectedComponentBO.status.get.copy(excludeDependency = Some(ExcludedComponent("", "")))
+          selectedComponentBO.status.get.copy(excludeDependency = Some(ExcludedComponentInternal()))
         selectedComponentBO.copy(status = Some(statusExcludedComponent))
     }
   }
@@ -71,7 +72,7 @@ trait SelectedComponentUtil {
     */
   private[configLogic] def verifyStatusSelectionCriterium(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
     selectedComponentBO.status.get.excludeDependency.get match {
-      case ExcludedComponent(_, _) =>
+      case ExcludedComponentInternal() =>
         val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.stepCurrentConfig match {
           case Some(step) => step.components
           case None => List()
@@ -154,7 +155,7 @@ trait SelectedComponentUtil {
     */
   private[configLogic] def verifyStatusSelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig: CurrentConfig): SelectedComponentBO = {
     selectedComponentBO.status.get.excludeDependency.get match {
-      case ExcludedComponent(_, _) =>
+      case ExcludedComponentInternal() =>
         val status = selectedComponentBO.status.get.copy(selectedComponent = Some(NotAllowedComponent()))
 
         selectedComponentBO.copy(status = Some(status))
@@ -250,7 +251,7 @@ trait SelectedComponentUtil {
     })
 
     val unselectedExcludedComponentsFromSelectedComponent: List[String] = selectedComponentBO.status.get.excludeDependency.get match {
-      case ExcludedComponent("", "") => List()
+      case ExcludedComponentInternal() => List()
       case NotExcludedComponent() => unselectedComponentIds.filter(uC => {fromSelectedComponentExcludedComponentIds.contains(uC)})
     }
 
@@ -289,13 +290,33 @@ trait SelectedComponentUtil {
     selectedComponentBO.selectedComponent.get.excludeDependenciesIn.get match {
       case List() => selectedComponentBO
       case dependencyIn =>
+
+        val excludeComponentsId: List[String] =
+          dependencyIn map (_.outId)
+
+        val excludedComponentsId: List[String] =
+          dependencyIn map (_.inId)
+
+        val excludeComponents: List[SelectedComponentBO] =
+          excludeComponentsId map (Persistence.getSelectedComponent(_))
+
+        val excludedComponents: List[SelectedComponentBO] =
+          excludedComponentsId map (Persistence.getSelectedComponent(_))
+
+        val statusExcludedComponent: StatusComponent =
+          selectedComponentBO.status.get.copy(excludeDependency =
+            Some(ExcludedComponentExternal(
+              excludeComponents.head.selectedComponent.get.nameToShow.get,
+              excludedComponents.head.selectedComponent.get.nameToShow.get))
+          )
+        selectedComponentBO.copy(status = Some(statusExcludedComponent))
+
         //TODO
         //Alle Dependencies sameln und die Info zusammenstellen
         //Componente als Exclude markieren
 
 
-
-        selectedComponentBO
+      selectedComponentBO
     }
   }
 }

@@ -87,11 +87,12 @@ class Scenario_005_1_Specs extends Specification with MessageHandler with Before
       (componentOut4_21 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "FINAL_COMPONENT"
       (componentOut4_21 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
       (componentOut4_21 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_COMPONENT"
-      (componentOut4_21 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "NOT_EXCLUDED_COMPONENT"
+      (componentOut4_21 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String].get === "EXCLUDED_COMPONENT"
+      (componentOut4_21 \ "result" \ "status" \"excludeDependency" \ "message").asOpt[String].get === ""
       (componentOut4_21 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
+
       //TODO der Komponent C51 darf nicht in der CurrentConfig, da sie von der Komponent C21 ausgeschloßen war.
       // TODO Visualizierung ist auto automatisch aus der Curent Config entfernen.
     }
   }
-
 }

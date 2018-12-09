@@ -11,7 +11,12 @@ import org.shared.status.common.Status
 
 sealed abstract class StatusExcludeDependency extends Status
 
-case class ExcludedComponent(
+case class ExcludedComponentInternal() extends StatusExcludeDependency() {
+  def status: String = "EXCLUDED_COMPONENT"
+  def message: String = s"Die Komponent darf nich ausgewählt werden."
+}
+
+case class ExcludedComponentExternal(
                               excludeComponent: String,
                               excludedComponent: String) extends StatusExcludeDependency() {
   def status: String = "EXCLUDED_COMPONENT"
