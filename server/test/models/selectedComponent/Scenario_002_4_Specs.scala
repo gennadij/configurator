@@ -71,7 +71,7 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
       
       (componentOut_1 \ "result" \ "status" \ "selectedComponent" \ "status").asOpt[String].get === statusSelectedComponent.status
 
-      val statusExcludeDependency = NotExcludedComponent()
+      val statusExcludeDependency = NotExcludedComponentInternal()
       
       (componentOut_1 \ "result" \ "status" \ "excludeDependency" \ "status").asOpt[String].get === statusExcludeDependency.status
 
@@ -122,7 +122,7 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
       
       (componentOut_2 \ "result" \ "status" \ "selectedComponent" \ "status").asOpt[String].get === statusSelectedComponent_2.status
 
-      val statusExcludeDependency_2 = NotExcludedComponent()
+      val statusExcludeDependency_2 = NotExcludedComponentInternal()
       
       (componentOut_2 \ "result" \ "status" \ "excludeDependency" \ "status").asOpt[String].get === statusExcludeDependency_2.status
 
@@ -168,7 +168,7 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
       
       (componentOut_3 \ "result" \ "status" \ "selectedComponent" \ "status").asOpt[String].get === statusSelectedComponent_3.status
 
-      val statusExcludeDependency_3 = NotExcludedComponent()
+      val statusExcludeDependency_3 = NotExcludedComponentInternal()
       
       (componentOut_3 \ "result" \ "status" \ "excludeDependency" \ "status").asOpt[String].get === statusExcludeDependency_3.status
 

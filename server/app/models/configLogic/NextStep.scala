@@ -56,7 +56,6 @@ class NextStep(currentConfig: CurrentConfig) {
             componentsForSelectionBO.status.get.common match {
               case Some(Success()) =>
                 //Step zu der CurrentConfig hinzufuegen
-                //TODO NextStep erst zu der CurrentConfig hinzufuegen wenn erste Component ausgewaehlt wurde.
                 lastStep.nextStep = Some(StepCurrentConfigBO(
                   nextStep.stepId.get,
                   nextStep.nameToShow.get,

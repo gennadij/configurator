@@ -10,7 +10,8 @@ import org.shared.status.common.Status
 case class StatusComponent (
                              selectionCriterium: Option[StatusSelectionCriterium] = None,
                              selectedComponent: Option[StatusSelectedComponent] = None,
-                             excludeDependency: Option[StatusExcludeDependency] = None,
+                             excludedDependencyInternal: Option[StatusExcludeDependencyInternal] = None,
+                             excludedDependencyExternal: Option[StatusExcludeDependencyExternal] = None,
                              common: Option[Status] = None,
                              componentType: Option[StatusComponentType] = None
 )

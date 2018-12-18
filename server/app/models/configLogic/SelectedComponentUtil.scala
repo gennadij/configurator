@@ -55,11 +55,11 @@ trait SelectedComponentUtil {
     excludeComponentsIds match {
       case List() =>
         val statusNotExcludedComponent: StatusComponent =
-          selectedComponentBO.status.get.copy(excludeDependency = Some(NotExcludedComponent()))
+          selectedComponentBO.status.get.copy(excludedDependencyInternal = Some(NotExcludedComponentInternal()))
         selectedComponentBO.copy(status = Some(statusNotExcludedComponent))
       case _ =>
         val statusExcludedComponent: StatusComponent =
-          selectedComponentBO.status.get.copy(excludeDependency = Some(ExcludedComponentInternal()))
+          selectedComponentBO.status.get.copy(excludedDependencyInternal = Some(ExcludedComponentInternal()))
         selectedComponentBO.copy(status = Some(statusExcludedComponent))
     }
   }
@@ -71,7 +71,7 @@ trait SelectedComponentUtil {
     * @return SelectedComponentBO
     */
   private[configLogic] def verifyStatusSelectionCriterium(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
-    selectedComponentBO.status.get.excludeDependency.get match {
+    selectedComponentBO.status.get.excludedDependencyInternal.get match {
       case ExcludedComponentInternal() =>
         val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.stepCurrentConfig match {
           case Some(step) => step.components
@@ -90,7 +90,7 @@ trait SelectedComponentUtil {
             selectedComponentBO.copy(status = Some(status))
         }
 
-      case NotExcludedComponent() =>
+      case NotExcludedComponentInternal() =>
         val componentIdExist: Boolean =
           selectedComponentBO.stepCurrentConfig.get.components.exists(
             _.componentId.get == selectedComponentBO.selectedComponent.get.componentId.get
@@ -154,13 +154,13 @@ trait SelectedComponentUtil {
     * @return SelectedComponentBO
     */
   private[configLogic] def verifyStatusSelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig: CurrentConfig): SelectedComponentBO = {
-    selectedComponentBO.status.get.excludeDependency.get match {
+    selectedComponentBO.status.get.excludedDependencyInternal.get match {
       case ExcludedComponentInternal() =>
         val status = selectedComponentBO.status.get.copy(selectedComponent = Some(NotAllowedComponent()))
 
         selectedComponentBO.copy(status = Some(status))
 
-      case NotExcludedComponent() =>
+      case NotExcludedComponentInternal() =>
         val componentIdExist: Boolean =
           selectedComponentBO.stepCurrentConfig.get.components
             .exists(_.componentId.get == selectedComponentBO.selectedComponent.get.componentId.get)
@@ -250,9 +250,9 @@ trait SelectedComponentUtil {
       fromCurrentConfigExcludedComponentIds.contains(uC)
     })
 
-    val unselectedExcludedComponentsFromSelectedComponent: List[String] = selectedComponentBO.status.get.excludeDependency.get match {
+    val unselectedExcludedComponentsFromSelectedComponent: List[String] = selectedComponentBO.status.get.excludedDependencyInternal.get match {
       case ExcludedComponentInternal() => List()
-      case NotExcludedComponent() => unselectedComponentIds.filter(uC => {fromSelectedComponentExcludedComponentIds.contains(uC)})
+      case NotExcludedComponentInternal() => unselectedComponentIds.filter(uC => {fromSelectedComponentExcludedComponentIds.contains(uC)})
     }
 
 
@@ -297,25 +297,33 @@ trait SelectedComponentUtil {
         val excludedComponentsId: List[String] =
           dependencyIn map (_.inId)
 
+        val internComponents: List[String] = selectedComponentBO.currentStep.get.componentIds.get
+
+        //TODO Problem wenn eine KOmponente InternalDependency und ExternalDependnecy hat.
+        //TODO Es soll getrennte Stati für StatusExcludeDependency (External) und StatusExcludeDependency (Internal) geben.
+        //TODO Die Internal Dependencis sollen aus der Liste der allgemeinen Dependencies ausgefieltert werden und bei internal umgekehrt.
+//        if(internComponents.exists(iCs => excludeComponentsId.exists(eCsId => iCs == eCsId)))
+//          // Internal Dependency ->
+//          selectedComponentBO
+//        else
+//          ??? //false
+
         val excludeComponents: List[SelectedComponentBO] =
           excludeComponentsId map (Persistence.getSelectedComponent(_))
 
         val excludedComponents: List[SelectedComponentBO] =
           excludedComponentsId map (Persistence.getSelectedComponent(_))
 
+
+
         val statusExcludedComponent: StatusComponent =
-          selectedComponentBO.status.get.copy(excludeDependency =
+          selectedComponentBO.status.get.copy(excludedDependencyExternal =
             Some(ExcludedComponentExternal(
               excludeComponents.head.selectedComponent.get.nameToShow.get,
               excludedComponents.head.selectedComponent.get.nameToShow.get))
           )
         selectedComponentBO.copy(status = Some(statusExcludedComponent))
-
-        //TODO
-        //Alle Dependencies sameln und die Info zusammenstellen
-        //Componente als Exclude markieren
-
-
+        //TODO Alle Dependencies sameln und die Info zusammenstellen
       selectedComponentBO
     }
   }

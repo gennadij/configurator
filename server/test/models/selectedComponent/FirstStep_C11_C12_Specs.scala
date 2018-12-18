@@ -78,7 +78,7 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
       val status = jsonComponentOut_1 \ "result" \ "status"
       (status \ "selectionCriterium" \ "status").asOpt[String].get === AllowNextComponent().status
       (status \"selectedComponent" \ "status").asOpt[String].get === AddedComponent().status
-      (status \"excludeDependency" \ "status").asOpt[String].get === NotExcludedComponent().status
+      (status \"excludeDependency" \ "status").asOpt[String].get === NotExcludedComponentInternal().status
       (status \"common" \ "status").asOpt[String].get === Success().status
       (status \"componentType" \ "status").asOpt[String].get === DefaultComponent().status
 
@@ -118,7 +118,7 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
       val status_2 = jsonComponentOut_2 \ "result" \ "status"
       (status_2 \ "selectionCriterium" \ "status").asOpt[String].get === RequireNextStep().status
       (status_2 \"selectedComponent" \ "status").asOpt[String].get === AddedComponent().status
-      (status_2 \"excludeDependency" \ "status").asOpt[String].get === NotExcludedComponent().status
+      (status_2 \"excludeDependency" \ "status").asOpt[String].get === NotExcludedComponentInternal().status
       (status_2 \"common" \ "status").asOpt[String].get === Success().status
       (status_2 \"componentType" \ "status").asOpt[String].get === DefaultComponent().status
     }

@@ -25,7 +25,9 @@ Scenario_002_17_Specs               ==> S1 - C1, C2 -> S2 - C2 = ok
 
 
 
-Scenario_005_1_Specs                ==> S1 - C11 -> S2 - C21 -> S3 - C32, S1 - C12 -> =
+Scenario_005_1_Specs                ==> S1 - C11 -> S2 - C21 -> S3 - C33 -> S5 - C51 =
+Scenario_005_2_Specs                ==> S1 - C11 -> S2 - C22 =
+
 FinalStepSpecs                      ==> S1 - C11 -> S2 - C21 -> S3 - C31 = ok
 
 

@@ -240,7 +240,7 @@ trait Wrapper extends RIDConverter {
               ))
             case None => None
           },
-          status.excludeDependency match {
+          status.excludedDependencyInternal match {
             case Some(s) =>
               Some(JsonStatus(
                 s.status,

@@ -17,7 +17,6 @@ import org.shared.json.startConfig.{JsonStartConfigIn, JsonStartConfigOut}
   * Logik des generischen Konfigurators
   */
 
-//TODO C11 -> C22 = RID Fehler
 trait GenericConfigurator extends Wrapper{
 
   /**
