@@ -12,7 +12,8 @@ import play.api.libs.json._
 case class JsonComponentStatus (
     selectionCriterium: Option[JsonStatus],
     selectedComponent: Option[JsonStatus],
-    excludeDependency: Option[JsonStatus],
+    excludeDependencyInternal: Option[JsonStatus],
+    excludeDependencyExternal: Option[JsonStatus],
     common: Option[JsonStatus],
     componentType: Option[JsonStatus]
 )
@@ -21,7 +22,8 @@ object JsonComponentStatus {
   implicit val writerJsonComponentStatus: Format[JsonComponentStatus] = (
     (JsPath \ "selectionCriterium").format(Format.optionWithNull[JsonStatus]) and
     (JsPath \ "selectedComponent").format(Format.optionWithNull[JsonStatus]) and
-    (JsPath \ "excludeDependency").format(Format.optionWithNull[JsonStatus]) and
+    (JsPath \ "excludeDependencyInternal").format(Format.optionWithNull[JsonStatus]) and
+    (JsPath \ "excludeDependencyExternal").format(Format.optionWithNull[JsonStatus]) and
     (JsPath \ "common").format(Format.optionWithNull[JsonStatus]) and
     (JsPath \ "componentType").format(Format.optionWithNull[JsonStatus])
   )(JsonComponentStatus.apply, unlift(JsonComponentStatus.unapply))

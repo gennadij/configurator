@@ -2,6 +2,7 @@ package org.shared.status.selectedComponent
 
 import org.shared.status.common.Status
 
+
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
   *
@@ -10,13 +11,19 @@ import org.shared.status.common.Status
 sealed abstract class StatusExcludeDependencyExternal extends Status
 
 case class ExcludedComponentExternal(
-                                      excludeComponent: String,
-                                      excludedComponent: String)
+                                      excludeComponents: List[String],
+                                      excludedComponents: List[String])
   extends StatusExcludeDependencyExternal {
 
   def status: String = "EXCLUDED_COMPONENT_EXTERNAL"
-  def message: String = s"Die Komponent $excludedComponent wird von der " +
-    "Komponente $excludeComponent ausgeschlossen."
+  def message: String = createNameToShowForComponents(excludeComponents)
+
+
+  private def createNameToShowForComponents(excludeComponents: List[String]): String = {
+    (excludeComponents map (eC => {
+      s"Diese Komponente $eC verbietet die Auswahl von aktueller Komponente"
+    })).toString()
+  }
 }
 
 case class NotExcludedComponentExternal() extends StatusExcludeDependencyExternal {

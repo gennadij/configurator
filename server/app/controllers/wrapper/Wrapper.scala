@@ -248,6 +248,14 @@ trait Wrapper extends RIDConverter {
               ))
             case None => None
           },
+          status.excludedDependencyExternal match {
+            case Some(s) =>
+              Some(JsonStatus(
+                s.status,
+                s.message
+              ))
+            case None => None
+          },
           status.common match {
             case Some(s) =>
               Some(JsonStatus(

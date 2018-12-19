@@ -43,7 +43,7 @@ object StatusWindow {
         " , " + "</br>" +
         "selectedComponent = " + jsonComponentStatus.selectedComponent.get.status +
         " , " +
-        "excludeDependency = " + jsonComponentStatus.excludeDependency.get.status +
+        "excludeDependency = " + jsonComponentStatus.excludeDependencyInternal.get.status +
         " , " +
         "common = " + jsonComponentStatus.common.get.status
 

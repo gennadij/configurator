@@ -294,37 +294,45 @@ trait SelectedComponentUtil {
         val excludeComponentsId: List[String] =
           dependencyIn map (_.outId)
 
-        val excludedComponentsId: List[String] =
-          dependencyIn map (_.inId)
+//        val excludedComponentsId: List[String] =
+//          dependencyIn map (_.inId)
 
         val internComponents: List[String] = selectedComponentBO.currentStep.get.componentIds.get
 
         //TODO Problem wenn eine KOmponente InternalDependency und ExternalDependnecy hat.
         //TODO Es soll getrennte Stati für StatusExcludeDependency (External) und StatusExcludeDependency (Internal) geben.
         //TODO Die Internal Dependencis sollen aus der Liste der allgemeinen Dependencies ausgefieltert werden und bei internal umgekehrt.
-//        if(internComponents.exists(iCs => excludeComponentsId.exists(eCsId => iCs == eCsId)))
-//          // Internal Dependency ->
-//          selectedComponentBO
-//        else
-//          ??? //false
 
-        val excludeComponents: List[SelectedComponentBO] =
-          excludeComponentsId map (Persistence.getSelectedComponent(_))
+        val excludeComponentsIdExternal: List[String] =
+          excludeComponentsId map (eCsId => internComponents exists (iCs => iCs == eCsId)) zip (excludeComponentsId) filterNot (_._1) map (_._2)
 
-        val excludedComponents: List[SelectedComponentBO] =
-          excludedComponentsId map (Persistence.getSelectedComponent(_))
+//        val excludedComponentsIdExternal: List[String] =
+//          excludedComponentsId map (eCsId => internComponents exists (iCs => iCs == eCsId)) zip (excludedComponentsId) filterNot (_._1) map (_._2)
 
+        if (!excludeComponentsIdExternal.isEmpty) {
 
+          //Presentation of the Exclude Status
+          val excludeComponents: List[SelectedComponentBO] =
+            excludeComponentsIdExternal map (Persistence.getSelectedComponent(_))
 
-        val statusExcludedComponent: StatusComponent =
-          selectedComponentBO.status.get.copy(excludedDependencyExternal =
-            Some(ExcludedComponentExternal(
-              excludeComponents.head.selectedComponent.get.nameToShow.get,
-              excludedComponents.head.selectedComponent.get.nameToShow.get))
-          )
-        selectedComponentBO.copy(status = Some(statusExcludedComponent))
-        //TODO Alle Dependencies sameln und die Info zusammenstellen
-      selectedComponentBO
+//          val excludedComponents: List[SelectedComponentBO] =
+//            excludedComponentsId map (Persistence.getSelectedComponent(_))
+
+          val nameToShowExcludeComponents: List[String] = excludeComponents map (_.selectedComponent.get.nameToShow.get)
+
+          val nameToShowExcludedComponents: List[String] = excludedComponents map (_.selectedComponent.get.nameToShow.get)
+
+          val statusExcludedComponent: StatusComponent =
+            selectedComponentBO.status.get.copy(excludedDependencyExternal =
+              Some(ExcludedComponentExternal(
+                nameToShowExcludeComponents,
+                nameToShowExcludedComponents))
+            )
+
+          selectedComponentBO.copy(status = Some(statusExcludedComponent))
+        } else {
+          selectedComponentBO
+        }
     }
   }
 }
