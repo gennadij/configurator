@@ -3,7 +3,7 @@ package models.selectedComponent
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
-import org.shared.json.JsonNames
+import org.shared.json.{JsonKey, JsonNames}
 import org.shared.status.common.Success
 import org.shared.status.selectedComponent._
 import org.specs2.mutable.Specification
@@ -65,7 +65,7 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
       (componentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
 
       val statusSelectionCriterium = AllowNextComponent()
-      (componentOut_1 \ "result" \ "status" \ "selectionCriterium" \ "status").asOpt[String].get === statusSelectionCriterium.status
+      (componentOut_1 \ "result" \ "status" \ JsonKey.selectionCriterion \ "status").asOpt[String].get === statusSelectionCriterium.status
 
       val statusSelectedComponent = AddedComponent()
       
@@ -73,7 +73,7 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
 
       val statusExcludeDependency = NotExcludedComponentInternal()
       
-      (componentOut_1 \ "result" \ "status" \ "excludeDependency" \ "status").asOpt[String].get === statusExcludeDependency.status
+      (componentOut_1 \ "result" \ "status" \ JsonKey.excludeDependencyInternal \ "status").asOpt[String].get === statusExcludeDependency.status
 
       val statusCommon = Success()
       
@@ -116,7 +116,7 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
       (componentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
 
       val statusSelectionCriterium_2 = RequireNextStep()
-      (componentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "status").asOpt[String].get === statusSelectionCriterium_2.status
+      (componentOut_2 \ "result" \ "status" \ JsonKey.selectionCriterion \ "status").asOpt[String].get === statusSelectionCriterium_2.status
 
       val statusSelectedComponent_2 = AddedComponent()
       
@@ -124,7 +124,7 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
 
       val statusExcludeDependency_2 = NotExcludedComponentInternal()
       
-      (componentOut_2 \ "result" \ "status" \ "excludeDependency" \ "status").asOpt[String].get === statusExcludeDependency_2.status
+      (componentOut_2 \ "result" \ "status" \ JsonKey.excludeDependencyInternal \ "status").asOpt[String].get === statusExcludeDependency_2.status
 
       val statusCommon_2 = Success()
       
@@ -162,7 +162,7 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
       (componentOut_3 \ "json").asOpt[String].get === JsonNames.COMPONENT
 
       val statusSelectionCriterium_3 = RequireNextStep()
-      (componentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "status").asOpt[String].get === statusSelectionCriterium_3.status
+      (componentOut_2 \ "result" \ "status" \ JsonKey.selectionCriterion \ "status").asOpt[String].get === statusSelectionCriterium_3.status
 
       val statusSelectedComponent_3 = RemovedComponent()
       
@@ -170,7 +170,7 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
 
       val statusExcludeDependency_3 = NotExcludedComponentInternal()
       
-      (componentOut_3 \ "result" \ "status" \ "excludeDependency" \ "status").asOpt[String].get === statusExcludeDependency_3.status
+      (componentOut_3 \ "result" \ "status" \ JsonKey.excludeDependencyInternal \ "status").asOpt[String].get === statusExcludeDependency_3.status
 
       val statusCommon_3 = Success()
       

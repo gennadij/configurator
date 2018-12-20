@@ -320,13 +320,13 @@ trait SelectedComponentUtil {
 
           val nameToShowExcludeComponents: List[String] = excludeComponents map (_.selectedComponent.get.nameToShow.get)
 
-          val nameToShowExcludedComponents: List[String] = excludedComponents map (_.selectedComponent.get.nameToShow.get)
+//          val nameToShowExcludedComponents: List[String] = excludedComponents map (_.selectedComponent.get.nameToShow.get)
 
           val statusExcludedComponent: StatusComponent =
             selectedComponentBO.status.get.copy(excludedDependencyExternal =
               Some(ExcludedComponentExternal(
                 nameToShowExcludeComponents,
-                nameToShowExcludedComponents))
+                List()))
             )
 
           selectedComponentBO.copy(status = Some(statusExcludedComponent))

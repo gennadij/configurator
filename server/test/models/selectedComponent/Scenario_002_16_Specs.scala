@@ -3,7 +3,7 @@ package models.selectedComponent
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
-import org.shared.json.JsonNames
+import org.shared.json.{JsonKey, JsonNames}
 import org.shared.status.selectedComponent.{ExcludedComponentInternal, NotExcludedComponentInternal}
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
@@ -42,8 +42,8 @@ class Scenario_002_16_Specs extends Specification with MessageHandler with Befor
       (componentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
       (componentOut_1 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (componentOut_1 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
-      (componentOut_1 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
-      (componentOut_1 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
+      (componentOut_1 \ JsonKey.result \ JsonKey.status \JsonKey.selectionCriterion \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
+      (componentOut_1 \ "result" \ "status" \JsonKey.excludeDependencyInternal \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
       (componentOut_1 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
       
       val jsonCurrentConfigOut_1: JsValue = CommonFunction.currentCongig(wC)
@@ -60,22 +60,23 @@ class Scenario_002_16_Specs extends Specification with MessageHandler with Befor
       
       
       val componentOut_2: JsValue = CommonFunction.selectComponent(wC, componentIdC12)
-      
+
+      val result_6 = componentOut_2 \ JsonKey.result \ JsonKey.status
       (componentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
-      (componentOut_2 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
-      (componentOut_2 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
-      (componentOut_2 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
-      (componentOut_2 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
-      (componentOut_2 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
+      (result_6 \ "componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
+      (result_6 \ "selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
+      (result_6 \ JsonKey.selectionCriterion \ JsonKey.status).asOpt[String].get === "REQUIRE_NEXT_STEP"
+      (result_6 \ JsonKey.excludeDependencyInternal \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
+      (result_6 \ "common" \ "status").asOpt[String].get === "SUCCESS"
       
       val jsonCurrentConfigOut_2: JsValue = CommonFunction.currentCongig(wC)
       
-      val result_2 = (jsonCurrentConfigOut_2 \ "result")
+      val result_2 = (jsonCurrentConfigOut_2 \ JsonKey.result \ JsonKey.step)
       (jsonCurrentConfigOut_2 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result_2 \ "step" \ "nameToShow").asOpt[String] === Some("S1")
-      (result_2 \ "step" \ "components").asOpt[List[JsValue]].get.size === 2
-      ((result_2 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C12")
-      ((result_2 \ "step" \ "components")(1) \ "nameToShow").asOpt[String] === Some("C11")
+      (result_2 \ "nameToShow").asOpt[String] === Some("S1")
+      (result_2 \ "components").asOpt[List[JsValue]].get.size === 2
+      ((result_2 \ "components")(0) \ "nameToShow").asOpt[String] === Some("C12")
+      ((result_2 \ "components")(1) \ "nameToShow").asOpt[String] === Some("C11")
       
       val componentIdC13: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
             .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C13")
@@ -83,13 +84,14 @@ class Scenario_002_16_Specs extends Specification with MessageHandler with Befor
       
       
       val componentOut_3: JsValue = CommonFunction.selectComponent(wC, componentIdC13)
-      
+
+      val result_7 = componentOut_3 \ JsonKey.result \ JsonKey.status
       (componentOut_3 \ "json").asOpt[String].get === JsonNames.COMPONENT
-      (componentOut_3 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
-      (componentOut_3 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
-      (componentOut_3 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
-      (componentOut_3 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String] === Some(ExcludedComponentInternal().status)
-      (componentOut_3 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
+      (result_7 \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
+      (result_7 \"selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
+      (result_7 \ JsonKey.selectionCriterion \ JsonKey.status).asOpt[String].get === "REQUIRE_NEXT_STEP"
+      (result_7 \JsonKey.excludeDependencyInternal \ "status").asOpt[String] === Some(ExcludedComponentInternal().status)
+      (result_7 \"common" \ "status").asOpt[String].get === "SUCCESS"
       
       val jsonCurrentConfigOut_3: JsValue = CommonFunction.currentCongig(wC)
       
@@ -118,13 +120,14 @@ class Scenario_002_16_Specs extends Specification with MessageHandler with Befor
             
     
       val componentOut4_21 = CommonFunction.selectComponent(wC, componentId21)
-      
+
+      val result_8 = componentOut4_21 \ JsonKey.result \ JsonKey.status
       (componentOut4_21 \ "json").asOpt[String].get === JsonNames.COMPONENT
-      (componentOut4_21 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
-      (componentOut4_21 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
-      (componentOut4_21 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
-      (componentOut4_21 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
-      (componentOut4_21 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
+      (result_8 \ "componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
+      (result_8 \ "selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
+      (result_8 \ JsonKey.selectionCriterion \ JsonKey.status).asOpt[String].get === "REQUIRE_NEXT_STEP"
+      (result_8 \ JsonKey.excludeDependencyInternal \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
+      (result_8 \ "common" \ "status").asOpt[String].get === "SUCCESS"
       
       val jsonCurrentConfigOut_4: JsValue = CommonFunction.currentCongig(wC)
       
@@ -140,13 +143,14 @@ class Scenario_002_16_Specs extends Specification with MessageHandler with Befor
             .map(comp => {(comp \ "componentId").asOpt[String].get}).head
       
       val componentOut4_22 = CommonFunction.selectComponent(wC, componentId22)
-      
+
+      val r_9 = componentOut4_22 \ JsonKey.result \ JsonKey.status
       (componentOut4_22 \ "json").asOpt[String].get === JsonNames.COMPONENT
-      (componentOut4_22 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
-      (componentOut4_22 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
-      (componentOut4_22 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "NOT_ALLOW_NEXT_COMPONENT"
-      (componentOut4_22 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
-      (componentOut4_22 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
+      (r_9 \ "componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
+      (r_9 \ "selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
+      (r_9 \ JsonKey.selectionCriterion \ JsonKey.status).asOpt[String].get === "NOT_ALLOW_NEXT_COMPONENT"
+      (r_9 \ JsonKey.excludeDependencyInternal \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
+      (r_9 \ "common" \ "status").asOpt[String].get === "SUCCESS"
       
       val jsonCurrentConfigOut_5: JsValue = CommonFunction.currentCongig(wC)
       

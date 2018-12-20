@@ -39,7 +39,7 @@ object StatusWindow {
 
     val htmlStatus = "componentType = " + jsonComponentStatus.componentType.get.status +
         " , " +
-        "selectionCriterium = " + jsonComponentStatus.selectionCriterium.get.status +
+        "selectionCriterium = " + jsonComponentStatus.selectionCriterion.get.status +
         " , " + "</br>" +
         "selectedComponent = " + jsonComponentStatus.selectedComponent.get.status +
         " , " +

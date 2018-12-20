@@ -10,17 +10,17 @@ import play.api.libs.json._
  * Created by Gennadi Heimann 05.01.2018
  */
 case class JsonComponentStatus (
-    selectionCriterium: Option[JsonStatus],
-    selectedComponent: Option[JsonStatus],
-    excludeDependencyInternal: Option[JsonStatus],
-    excludeDependencyExternal: Option[JsonStatus],
-    common: Option[JsonStatus],
-    componentType: Option[JsonStatus]
+                                 selectionCriterion: Option[JsonStatus],
+                                 selectedComponent: Option[JsonStatus],
+                                 excludeDependencyInternal: Option[JsonStatus],
+                                 excludeDependencyExternal: Option[JsonStatus],
+                                 common: Option[JsonStatus],
+                                 componentType: Option[JsonStatus]
 )
 
 object JsonComponentStatus {
   implicit val writerJsonComponentStatus: Format[JsonComponentStatus] = (
-    (JsPath \ "selectionCriterium").format(Format.optionWithNull[JsonStatus]) and
+    (JsPath \ "selectionCriterion").format(Format.optionWithNull[JsonStatus]) and
     (JsPath \ "selectedComponent").format(Format.optionWithNull[JsonStatus]) and
     (JsPath \ "excludeDependencyInternal").format(Format.optionWithNull[JsonStatus]) and
     (JsPath \ "excludeDependencyExternal").format(Format.optionWithNull[JsonStatus]) and

@@ -3,7 +3,7 @@ package util
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
-import org.shared.json.JsonNames
+import org.shared.json.{JsonKey, JsonNames}
 import org.specs2.runner.JUnitRunner
 import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeAfterAll
@@ -70,8 +70,8 @@ class ComponentKeys extends Specification with MessageHandler with BeforeAfterAl
           "excludeDependenciesOut", "excludeDependenciesIn", "requireDependenciesOut", "requireDependenciesIn")
 
       //noinspection ExistsEquals
-      (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.exists(_ == "selectionCriterium") === true
-      (jsonComponentOut_1 \ "result"\ "status" \ "selectionCriterium").asOpt[JsObject].get.keys === Set("status", "message")
+      (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.exists(_ == JsonKey.selectionCriterion) === true
+      (jsonComponentOut_1 \ "result"\ "status" \ JsonKey.selectionCriterion).asOpt[JsObject].get.keys === Set("status", "message")
 
       (jsonComponentOut_1 \ "result" \ "status").asOpt[JsObject].get.keys.contains("componentType") === true
       (jsonComponentOut_1 \ "result"\ "status" \ "componentType").asOpt[JsObject].get.keys === Set("status", "message")
@@ -83,10 +83,10 @@ class ComponentKeys extends Specification with MessageHandler with BeforeAfterAl
       (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.exists(_ == "selectedComponent") === true
       (jsonComponentOut_1 \ "result"\ "status" \ "selectedComponent").asOpt[JsObject].get.keys === Set("status", "message")
 
-      (jsonComponentOut_1 \ "result" \ "status").asOpt[JsObject].get.keys.contains("excludeDependency") === true
-      (jsonComponentOut_1 \ "result"\ "status" \ "excludeDependency").asOpt[JsObject].get.keys === Set("status", "message")
+      (jsonComponentOut_1 \ "result" \ "status").asOpt[JsObject].get.keys.contains(JsonKey.excludeDependencyInternal) === true
+      (jsonComponentOut_1 \ "result"\ "status" \ JsonKey.excludeDependencyInternal).asOpt[JsObject].get.keys === Set("status", "message")
 
-      (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.size === 5
+      (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.size === 6
 
       (jsonComponentOut_1 \ "result"\ "stepId").asOpt[JsObject] === None
 

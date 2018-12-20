@@ -3,7 +3,7 @@ package models.currentConfig
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
-import org.shared.json.JsonNames
+import org.shared.json.{JsonKey, JsonNames}
 import org.shared.status.common.Success
 import org.shared.status.selectedComponent._
 import org.specs2.mutable.Specification
@@ -61,8 +61,8 @@ class ConvertRidToHashInCurrentConfig extends Specification with MessageHandler 
       (componentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
 
       val statusSelectionCriterium = AllowNextComponent()
-      (componentOut_1 \ "result" \ "status" \ "selectionCriterium" \ "status").asOpt[String].get === statusSelectionCriterium.status
-      (componentOut_1 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === statusSelectionCriterium.message
+      (componentOut_1 \ "result" \ "status" \ JsonKey.selectionCriterion \ "status").asOpt[String].get === statusSelectionCriterium.status
+      (componentOut_1 \ "result" \ "status" \ JsonKey.selectionCriterion \ "message").asOpt[String].get === statusSelectionCriterium.message
 
       val statusSelectedComponent = AddedComponent()
 
@@ -71,8 +71,8 @@ class ConvertRidToHashInCurrentConfig extends Specification with MessageHandler 
 
       val statusExcludeDependency = NotExcludedComponentInternal()
 
-      (componentOut_1 \ "result" \ "status" \ "excludeDependency" \ "status").asOpt[String].get === statusExcludeDependency.status
-      (componentOut_1 \ "result" \ "status" \ "excludeDependency" \ "message").asOpt[String].get === statusExcludeDependency.message
+      (componentOut_1 \ "result" \ "status" \ JsonKey.excludeDependencyInternal \ "status").asOpt[String].get === statusExcludeDependency.status
+      (componentOut_1 \ "result" \ "status" \ JsonKey.excludeDependencyInternal \ "message").asOpt[String].get === statusExcludeDependency.message
 
       val statusCommon = Success()
 
@@ -118,8 +118,8 @@ class ConvertRidToHashInCurrentConfig extends Specification with MessageHandler 
       (componentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
 
       val statusSelectionCriterium_2 = RequireNextStep()
-      (componentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "status").asOpt[String].get === statusSelectionCriterium_2.status
-      (componentOut_2 \ "result" \ "status" \ "selectionCriterium" \ "message").asOpt[String].get === statusSelectionCriterium_2.message
+      (componentOut_2 \ "result" \ "status" \ JsonKey.selectionCriterion \ "status").asOpt[String].get === statusSelectionCriterium_2.status
+      (componentOut_2 \ "result" \ "status" \ JsonKey.selectionCriterion \ "message").asOpt[String].get === statusSelectionCriterium_2.message
 
       val statusSelectedComponent_2 = AddedComponent()
 
@@ -128,8 +128,8 @@ class ConvertRidToHashInCurrentConfig extends Specification with MessageHandler 
 
       val statusExcludeDependency_2 = NotExcludedComponentInternal()
 
-      (componentOut_2 \ "result" \ "status" \ "excludeDependency" \ "status").asOpt[String].get === statusExcludeDependency_2.status
-      (componentOut_2 \ "result" \ "status" \ "excludeDependency" \ "message").asOpt[String].get === statusExcludeDependency_2.message
+      (componentOut_2 \ "result" \ "status" \ JsonKey.excludeDependencyInternal \ "status").asOpt[String].get === statusExcludeDependency_2.status
+      (componentOut_2 \ "result" \ "status" \ JsonKey.excludeDependencyInternal \ "message").asOpt[String].get === statusExcludeDependency_2.message
 
       val statusCommon_2 = Success()
 

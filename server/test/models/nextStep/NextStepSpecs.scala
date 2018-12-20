@@ -3,7 +3,7 @@ package models.nextStep
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
-import org.shared.json.JsonNames
+import org.shared.json.{JsonKey, JsonNames}
 import org.shared.json.startConfig.JsonStartConfigOut
 import org.shared.status.selectedComponent.NotExcludedComponentInternal
 import org.specs2.mutable.Specification
@@ -72,9 +72,9 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"
       ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "visualization").asOpt[String].get === "undef"
       ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "nameToShow").asOpt[String].get === "(C11) ----> (C13)"
-      (jsonComponentOut_1 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
+      (jsonComponentOut_1 \ "result" \ "status" \JsonKey.selectionCriterion \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
       (jsonComponentOut_1 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
-      (jsonComponentOut_1 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
+      (jsonComponentOut_1 \ "result" \ "status" \JsonKey.excludeDependencyInternal \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
       (jsonComponentOut_1 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
       (jsonComponentOut_1 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
 
@@ -104,9 +104,9 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"
       ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "visualization").asOpt[String].get === "undef"
       ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "nameToShow").asOpt[String].get === "(C12) ----> (C13)"
-      (jsonComponentOut_2 \ "result" \ "status" \"selectionCriterium" \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
+      (jsonComponentOut_2 \ "result" \ "status" \ JsonKey.selectionCriterion \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
       (jsonComponentOut_2 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
-      (jsonComponentOut_2 \ "result" \ "status" \"excludeDependency" \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
+      (jsonComponentOut_2 \ "result" \ "status" \JsonKey.excludeDependencyInternal \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
       (jsonComponentOut_2 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
       (jsonComponentOut_2 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
 

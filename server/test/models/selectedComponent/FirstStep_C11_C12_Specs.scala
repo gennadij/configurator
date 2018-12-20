@@ -3,7 +3,7 @@ package models.selectedComponent
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
-import org.shared.json.JsonNames
+import org.shared.json.{JsonKey, JsonNames}
 import org.shared.json.startConfig.JsonStartConfigOut
 import org.shared.status.common.Success
 import org.shared.status.selectedComponent._
@@ -76,9 +76,9 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
         "(C11) ----> (C13)"
 
       val status = jsonComponentOut_1 \ "result" \ "status"
-      (status \ "selectionCriterium" \ "status").asOpt[String].get === AllowNextComponent().status
+      (status \ JsonKey.selectionCriterion \ JsonKey.status).asOpt[String] === Some(AllowNextComponent().status)
       (status \"selectedComponent" \ "status").asOpt[String].get === AddedComponent().status
-      (status \"excludeDependency" \ "status").asOpt[String].get === NotExcludedComponentInternal().status
+      (status \JsonKey.excludeDependencyInternal \ "status").asOpt[String].get === NotExcludedComponentInternal().status
       (status \"common" \ "status").asOpt[String].get === Success().status
       (status \"componentType" \ "status").asOpt[String].get === DefaultComponent().status
 
@@ -116,9 +116,9 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
       ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "visualization").asOpt[String].get === "undef"
       ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "nameToShow").asOpt[String].get === "(C12) ----> (C13)"
       val status_2 = jsonComponentOut_2 \ "result" \ "status"
-      (status_2 \ "selectionCriterium" \ "status").asOpt[String].get === RequireNextStep().status
+      (status_2 \ JsonKey.selectionCriterion \ JsonKey.status).asOpt[String].get === RequireNextStep().status
       (status_2 \"selectedComponent" \ "status").asOpt[String].get === AddedComponent().status
-      (status_2 \"excludeDependency" \ "status").asOpt[String].get === NotExcludedComponentInternal().status
+      (status_2 \JsonKey.excludeDependencyInternal \ "status").asOpt[String].get === NotExcludedComponentInternal().status
       (status_2 \"common" \ "status").asOpt[String].get === Success().status
       (status_2 \"componentType" \ "status").asOpt[String].get === DefaultComponent().status
     }

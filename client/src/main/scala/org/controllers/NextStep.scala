@@ -17,7 +17,7 @@ class NextStep {
   def requirenNextStep(jsonComponentOut: JsonComponentOut) = {
 
     val componentTypeAndSelectionCriterium: (String, String) =
-      (jsonComponentOut.result.status.selectionCriterium.get.status,
+      (jsonComponentOut.result.status.selectionCriterion.get.status,
         jsonComponentOut.result.status.componentType.get.status)
 
     componentTypeAndSelectionCriterium match {
