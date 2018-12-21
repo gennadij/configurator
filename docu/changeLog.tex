@@ -68,12 +68,40 @@ Der Webclient soll prüfen, ob ein nächster Schritt exestiert. Wenn ja, kein Bu
 
 \noindent@created on 16.11.2018\\
 @finished on \\
-Implementierung von Abhängigkeiten zwischen der Komponenten von verschiedenen Schritten.
+\\
+Implementierung von $<exclude>$ und $<require>$ Abhängigkeiten zwischen der externen Komponenten.
+Es wird zwischen verschiedene Arten der Auflösung der Abhängigkeiten $<StrategyOfDependencyResolver>$ gesehen.
+Die Einstellung zu der Auflösung der Abhängigkeit wird in der Config Vertex gehalten.
+
+\begin{itemize}
+    \item $<auto>$ $\Rightarrow$ Die Abhängigkeit wird automatisch aufgelöst.
+    \item $<selectableDecision>$ $\Rightarrow$ Die Abhängigkeit durch 
+    die aktive Entscheidung der Anwender aufgelöst. 
+\end{itemize}
+
+\noindent\underline{Interne Komponente} sind die Komponente die einem Schritt gehören.\\
+\underline{Externe Komponente} sind die Komponente die verschiedenen Schritten gehören.\\
+
+\noindent Bei der $<exclude>$ Abhängigkeit werde zwischen ausschließende und ausgeschlossenen 
+Komponente unterschieden.\\
+C1 - ausschließende Komponente\\
+C2 - ausgeschlossene Komponent\\
+
+Aussage 1: Komponente C1 schließt die Komponente C2 aus der Konfiguration aus. Das bedeutet, dass
+der Komponente C2 darf nicht ausgewählt werden, wenn die Komponente C1 davor ausgewählt war. Das war 
+eine $<forward>$ Auflösung der Abhängigkeit.\\
+
+Aussage 2: Komponente C1 schließt die Komponente C2 aus der Konfiguration aus. 
+Aber im Gegensatz zu der Aussage 1 wird die Komponente C2 vor C1 ausgewählt. Das bedeutet, 
+dass die Komponnte C2 aus der Konfiguration entfernt wird und rekursiv nach 
+anderen Abhängigkeiten gesucht und aufgelöst. Diese Auflösung wird als $<reverse>$ Auflösung 
+der Abhängigkeiten genannt.
+
+
 \begin{itemize}
 	\item Erkennung des Parameteres $<visualization>$ in der Abhängigkeit.
 	\item Auflösung der Abhängigkeit gemäß dem eingestellten Parameter.
 \end{itemize}
-\\
 
 \noindent@created on 23.11.2018\\
 @finished on \\

@@ -112,6 +112,7 @@ object Graph {
   }
 
 }
+//TODO fuer Admin Specs fuer die Mandatory und RegEx Constraint schreiben
 
 class Graph(graph: Option[OrientGraph]) {
 

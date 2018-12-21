@@ -14,6 +14,11 @@ CREATE CLASS Config EXTENDS V;
 CREATE PROPERTY Config.configUrl STRING;
 CREATE INDEX configUrl ON Config (configUrl) UNIQUE;
 CREATE PROPERTY Config.configurationCourse String;
+ALTER PROPERTY Config.configurationCourse MANDATORY TRUE;
+ALTER PROPERTY Config.configurationCourse REGEX "(sequence|sabstitute)";
+CREATE PROPERTY Config.strategyOfDependencyResolver String;
+ALTER PROPERTY Config.strategyOfDependencyResolver MANDATORY TRUE;
+ALTER PROPERTY Config.strategyOfDependencyResolver REGEX "(auto|selectableDecision)";
 #ALTER CLASS Config STRICTMODE TRUE;
 
 CREATE CLASS hasStep EXTENDS E;
