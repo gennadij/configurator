@@ -64,12 +64,12 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig:
             val sCExtendedOfPossibleComponentIdsToSelect =
               getPossibleComponentToSelect(sCExtendedOfStatusExcludeDependencyExternal)
 
-            //Status Selection Criterium
-            val sCExtendedOfStatusSelectionCriterium = verifyStatusSelectionCriterium(sCExtendedOfPossibleComponentIdsToSelect)
+            //Status Selection Criterion
+            val sCExtendedOfStatusSelectionCriterion = verifyStatusSelectionCriterium(sCExtendedOfPossibleComponentIdsToSelect)
 
             // Status Selected Component
             val sCExtendedOFStatusSelectedComponent =
-              verifyStatusSelectedComponent(sCExtendedOfStatusSelectionCriterium, currentConfig)
+              verifyStatusSelectedComponent(sCExtendedOfStatusSelectionCriterion, currentConfig)
 
             sCExtendedOFStatusSelectedComponent
 

@@ -80,22 +80,22 @@ object Persistence {
     }
   }
 
-  /**
-    * @author Gennadi Heimann
-    * @version 0.0.1
-    * @param StartConfigIn
-    * @return StartConfigOut
-    */
+//  /**
+//    * @author Gennadi Heimann
+//    * @version 0.0.1
+//    * @param StartConfigIn
+//    * @return StartConfigOut
+//    */
   //  def startConfig(startConfigIn: StartConfigIn) : StartConfigOut = {
   //    StepVertex.firstStep(startConfigIn)
   //  }
 
-  /**
-    * @author Gennadi Heimann
-    * @version 0.0.1
-    * @param NextStepIn
-    * @return NextStepOut
-    */
+//  /**
+//    * @author Gennadi Heimann
+//    * @version 0.0.1
+//    * @param NextStepIn
+//    * @return NextStepOut
+//    */
   //  def nestStep(nextStepIn: NextStepIn): NextStepOut = {
   //    StepVertex.nextStep(nextStepIn)
   //  }
