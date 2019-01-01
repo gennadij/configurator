@@ -1,5 +1,7 @@
 CONNECT remote:localhost/testDB root root
 
+export database /home/gennadi/dev/projects/config/testDB_01012019.export
+
 LIST CLASSES
 
 delete vertex V where @rid in (traverse * from #22:53 limit 100) 
