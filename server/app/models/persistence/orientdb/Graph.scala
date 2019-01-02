@@ -113,6 +113,7 @@ object Graph {
 
 }
 //TODO fuer Admin Specs fuer die Mandatory und RegEx Constraint schreiben
+//TODO In der OrientDB Client war der Test bei der RegExp erfolgreich
 
 class Graph(graph: Option[OrientGraph]) {
 

@@ -56,22 +56,27 @@ auch aus der $<CurrentConfig>$ entfernt.\\
 
 \section{v0.0.5}
 
-@created on 13.12.2017\\
-@finished on \\
-Jede Schritt in dem Konfigurator kann eine Abhängigkeit zu dem Schritt oder
+\textbf{@created on 13.12.2017}\\
+\textbf{@finished on} \\
+\textbf{@name }\\
+
+\noindent Jede Schritt in dem Konfigurator kann eine Abhängigkeit zu dem Schritt oder
 Komponente haben. Das bedeutet, dass geladene Schritt eine Komponente oder einen
 Schritt ausschlie\ss{}en oder fordern kann.\\
 
-\noindent@created on 16.11.2018\\
-@finished on \\
-Der Webclient soll prüfen, ob ein nächster Schritt exestiert. Wenn ja, kein Button für NextStep erstellen.\\
+\noindent \textbf{@created on 16.11.2018}\\
+\textbf{@finished on }\\
+\textbf{@name }\\
 
-\noindent@created on 16.11.2018\\
-@finished on \\
-\\
-Implementierung von $<exclude>$ und $<require>$ Abhängigkeiten zwischen der externen Komponenten.
+\noindent Der Webclient soll prüfen, ob ein nächster Schritt exestiert. Wenn ja, kein Button für NextStep erstellen.\\
+
+\noindent \textbf{@created on 16.11.2018}\\
+\textbf{@finished on} \\
+\textbf{@name Auflösung der Abhängigkeit}\\
+
+\noindent Implementierung von $<exclude>$ und $<require>$ Abhängigkeiten zwischen der externen Komponenten.
 Es wird zwischen verschiedene Arten der Auflösung der Abhängigkeiten $<StrategyOfDependencyResolver>$ gesehen.
-Die Einstellung zu der Auflösung der Abhängigkeit wird direkt in dem $<Dependency>$ Vertex gehalten.
+Die Einstellung zu der Auflösung der Abhängigkeit wird direkt in dem $<Dependency>$ Edge gehalten.
 
 \begin{itemize}
     \item $<auto>$ $\Rightarrow$ Die Abhängigkeit wird automatisch aufgelöst.
@@ -95,17 +100,13 @@ Aussage 2: Komponente C1 schließt die Komponente C2 aus der Konfiguration aus.
 Aber im Gegensatz zu der Aussage 1 wird die Komponente C2 vor C1 ausgewählt. Das bedeutet, 
 dass die Komponnte C2 aus der Konfiguration entfernt wird und rekursiv nach 
 anderen Abhängigkeiten gesucht und aufgelöst. Diese Auflösung wird als $<reverse>$ Auflösung 
-der Abhängigkeiten genannt.
+der Abhängigkeiten genannt.\\
 
+\noindent\textbf{@created on 23.11.2018}\\
+\textbf{@finished on }\\
+\textbf{@name }\\
 
-\begin{itemize}
-	\item Erkennung des Parameteres $<visualization>$ in der Abhängigkeit.
-	\item Auflösung der Abhängigkeit gemäß dem eingestellten Parameter.
-\end{itemize}
-
-\noindent@created on 23.11.2018\\
-@finished on \\
-Erkennung der Konfigurationsverlauf.\\
+\noindent Erkennung der Konfigurationsverlauf.\\
 Es gibt zwei Konfigurationverläufe: 
 
 \begin{itemize}
@@ -114,9 +115,11 @@ Es gibt zwei Konfigurationverläufe:
 \end{itemize}
 \noindent Der Konfigurationsverlauf wird in dem Vertex Config abgespeichert. \\
 
-\noindent @created on 23.11.2018\\
-@finished on \\
-Die Abhängigkeiten zu der aktuelle Konfiguration hinzufügen.\\
+\noindent \textbf{@created on 23.11.2018}\\
+\textbf{@finished on }\\
+\textbf{@name}\\
+
+\noindent Die Abhängigkeiten zu der aktuelle Konfiguration hinzufügen.\\
 
 \noindent @created on 23.11.2018\\
 @finished on \\
