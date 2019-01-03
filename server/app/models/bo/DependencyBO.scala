@@ -1,5 +1,7 @@
 package models.bo
 
+import models.bo.types.StrategyOfDR
+
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
  * 
@@ -10,5 +12,6 @@ case class DependencyBO (
     inId: String,
     visualization: String,
     dependencyType: String,
-    nameToShow: String
+    nameToShow: String,
+    strategyOfDependencyResolver: StrategyOfDR
 )

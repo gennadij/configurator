@@ -20,4 +20,5 @@ object PropertyKeys {
   val SELECTION_CRITERIUM_MAX: String = "selectionCriteriumMax"
   val EXCLUDE: String = "exclude"
   val REQUIRE: String = "require"
+  val STRATEGY_OF_DEPENDENCY_RESOLVER = "strategyOfDependencyResolver"
 }

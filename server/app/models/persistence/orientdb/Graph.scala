@@ -2,6 +2,7 @@ package models.persistence.orientdb
 
 import com.tinkerpop.blueprints.impls.orient.{OrientEdge, OrientGraph, OrientVertex}
 import com.tinkerpop.blueprints.{Direction, Edge, Vertex}
+import models.bo.types.{Auto, SelectableDecision}
 import models.bo.{DependencyBO, StepBO}
 import models.persistence.Database
 import org.shared.status.common._
@@ -112,8 +113,8 @@ object Graph {
   }
 
 }
-//TODO fuer Admin Specs fuer die Mandatory und RegEx Constraint schreiben
 //TODO In der OrientDB Client war der Test bei der RegExp erfolgreich
+
 
 class Graph(graph: Option[OrientGraph]) {
 
@@ -288,11 +289,15 @@ class Graph(graph: Option[OrientGraph]) {
     eHasDependencies map {
       eHasDependency => {
         DependencyBO(
-          eHasDependency.getProperty(PropertyKeys.OUT).asInstanceOf[OrientVertex].getIdentity.toString, //outId: String,
-          eHasDependency.getProperty(PropertyKeys.IN).asInstanceOf[OrientVertex].getIdentity.toString, //inId: String,
-          eHasDependency.getProperty(PropertyKeys.VISUALIZATION).toString, //visualization: String,
-          eHasDependency.getProperty(PropertyKeys.DEPENDENCY_TYPE).toString, //dependencyType: String,
-          eHasDependency.getProperty(PropertyKeys.NAME_TO_SHOW).toString //nameToShow: String
+          outId = eHasDependency.getProperty(PropertyKeys.OUT).asInstanceOf[OrientVertex].getIdentity.toString,
+          inId = eHasDependency.getProperty(PropertyKeys.IN).asInstanceOf[OrientVertex].getIdentity.toString,
+          visualization = eHasDependency.getProperty(PropertyKeys.VISUALIZATION).toString,
+          dependencyType = eHasDependency.getProperty(PropertyKeys.DEPENDENCY_TYPE).toString,
+          nameToShow = eHasDependency.getProperty(PropertyKeys.NAME_TO_SHOW).toString,
+          strategyOfDependencyResolver = eHasDependency.getProperty(PropertyKeys.STRATEGY_OF_DEPENDENCY_RESOLVER).toString match {
+            case Auto.value => Auto
+            case SelectableDecision.value => SelectableDecision
+          }
         )
       }
     }
@@ -312,11 +317,15 @@ class Graph(graph: Option[OrientGraph]) {
     eHasDependencies map {
       eHasDependency => {
         DependencyBO(
-          eHasDependency.getProperty(PropertyKeys.OUT).asInstanceOf[OrientVertex].getIdentity.toString, //outId: String,
-          eHasDependency.getProperty(PropertyKeys.IN).asInstanceOf[OrientVertex].getIdentity.toString, //inId: String,
-          eHasDependency.getProperty(PropertyKeys.VISUALIZATION).toString, //visualization: String,
-          eHasDependency.getProperty(PropertyKeys.DEPENDENCY_TYPE).toString, //dependencyType: String,
-          eHasDependency.getProperty(PropertyKeys.NAME_TO_SHOW).toString //nameToShow: String
+          outId = eHasDependency.getProperty(PropertyKeys.OUT).asInstanceOf[OrientVertex].getIdentity.toString,
+          inId = eHasDependency.getProperty(PropertyKeys.IN).asInstanceOf[OrientVertex].getIdentity.toString,
+          visualization = eHasDependency.getProperty(PropertyKeys.VISUALIZATION).toString,
+          dependencyType = eHasDependency.getProperty(PropertyKeys.DEPENDENCY_TYPE).toString,
+          nameToShow = eHasDependency.getProperty(PropertyKeys.NAME_TO_SHOW).toString,
+          strategyOfDependencyResolver = eHasDependency.getProperty(PropertyKeys.STRATEGY_OF_DEPENDENCY_RESOLVER).toString match {
+            case Auto.value => Auto
+            case SelectableDecision.value => SelectableDecision
+          }
         )
       }
     }

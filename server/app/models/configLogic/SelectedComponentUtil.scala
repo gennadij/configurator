@@ -299,10 +299,6 @@ trait SelectedComponentUtil {
 
         val internComponents: List[String] = selectedComponentBO.currentStep.get.componentIds.get
 
-        //TODO Problem wenn eine KOmponente InternalDependency und ExternalDependnecy hat.
-        //TODO Es soll getrennte Stati für StatusExcludeDependency (External) und StatusExcludeDependency (Internal) geben.
-        //TODO Die Internal Dependencis sollen aus der Liste der allgemeinen Dependencies ausgefieltert werden und bei internal umgekehrt.
-
         val excludeComponentsIdExternal: List[String] =
           excludeComponentsId map (eCsId => internComponents exists (iCs => iCs == eCsId)) zip (excludeComponentsId) filterNot (_._1) map (_._2)
 
