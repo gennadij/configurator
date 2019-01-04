@@ -1,7 +1,7 @@
 package controllers
 
 import controllers.genericConfig.GenericConfigurator
-import models.currentConfig.CurrentConfig
+import models.configLogic.CurrentConfig
 import org.shared.json.JsonNames
 import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
 import org.shared.json.error.{JsonErrorIn, JsonErrorParams}
@@ -24,12 +24,12 @@ trait MessageHandler extends GenericConfigurator{
     * @param receivedMessage : JsValue, client: Config
     * @return JsValue
     */
-  def handleMessage(receivedMessage: JsValue, cC: CurrentConfig): JsValue = {
+  def handleMessage(receivedMessage: JsValue, currentConfig: CurrentConfig): JsValue = {
     (receivedMessage \ "json").asOpt[String] match {
-      case Some("StartConfig") => startConfig(receivedMessage, cC)
-      case Some("NextStep") => nextStep(receivedMessage, cC)
-      case Some("CurrentConfig") => currentConfig(receivedMessage, cC)
-      case Some("Component") => selectedComponent(receivedMessage, cC)
+      case Some("StartConfig") => startConfig(receivedMessage, currentConfig)
+      case Some("NextStep") => nextStep(receivedMessage, currentConfig)
+      case Some("CurrentConfig") => currentConfig(receivedMessage, currentConfig)
+      case Some("Component") => selectedComponent(receivedMessage, currentConfig)
       case _ => jsonError(errorText = "Input JSON is not permitted")
     }
   }

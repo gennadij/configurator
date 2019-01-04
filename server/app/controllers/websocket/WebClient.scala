@@ -1,7 +1,7 @@
 package controllers.websocket
 
 import controllers.MessageHandler
-import models.currentConfig.CurrentConfig
+import models.configLogic.CurrentConfig
 import play.api.libs.json.JsValue
 
 /**

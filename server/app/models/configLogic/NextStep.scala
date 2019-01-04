@@ -1,7 +1,6 @@
 package models.configLogic
 
 import models.bo._
-import models.currentConfig.CurrentConfig
 import models.persistence.Persistence
 import org.shared.status.common.{StatusStep, Success}
 import org.shared.status.currentConfig.StepCurrentConfigBOIncludeNoSelectedComponents

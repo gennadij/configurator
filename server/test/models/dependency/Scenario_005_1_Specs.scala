@@ -2,6 +2,7 @@ package models.dependency
 
 import controllers.MessageHandler
 import controllers.websocket.WebClient
+import models.bo.types.Auto
 import org.junit.runner.RunWith
 import org.shared.json.{JsonKey, JsonNames}
 import org.shared.json.startConfig.JsonStartConfigOut
@@ -71,6 +72,7 @@ class Scenario_005_1_Specs extends Specification with MessageHandler with Before
       ((r_3 \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.dependencyType).asOpt[String].get === "exclude"
       ((r_3 \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.visualization).asOpt[String].get === "auto"
       ((r_3 \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.nameToShow).asOpt[String].get === "(C21) ---> (C51)"
+      ((r_3 \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.strategyOfDependencyResolver).asOpt[String].get === Auto.value
 
       val r_1 = componentOut_21 \ JsonKey.result \ JsonKey.status
 
@@ -106,6 +108,7 @@ class Scenario_005_1_Specs extends Specification with MessageHandler with Before
       ((componentOutResult4_21 \ JsonKey.excludeDependenciesIn)(0) \ JsonKey.dependencyType).asOpt[String].get === "exclude"
       ((componentOutResult4_21 \ JsonKey.excludeDependenciesIn)(0) \ JsonKey.visualization).asOpt[String].get === "auto"
       ((componentOutResult4_21 \ JsonKey.excludeDependenciesIn)(0) \ JsonKey.nameToShow).asOpt[String].get === "(C21) ---> (C51)"
+      ((componentOutResult4_21 \ JsonKey.excludeDependenciesIn)(0) \ JsonKey.strategyOfDependencyResolver).asOpt[String].get === Auto.value
 
       val r_2 = componentOutResult4_21 \ JsonKey.status
       (componentOut4_21 \ JsonKey.json).asOpt[String].get === JsonNames.COMPONENT

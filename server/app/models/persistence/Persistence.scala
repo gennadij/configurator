@@ -3,7 +3,6 @@ package models.persistence
 import com.tinkerpop.blueprints.Direction
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import models.bo.{ComponentBO, ComponentsForSelectionBO, SelectedComponentBO, StepBO}
-import models.persistence.orientdb.{Graph, PropertyKeys}
 import org.shared.status.common
 import org.shared.status.common.{Status, StatusStep, Success}
 import org.shared.status.currentConfig.StepCurrentConfigSuccess

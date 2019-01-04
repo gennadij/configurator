@@ -50,6 +50,7 @@ object JsonKey {
   def inId = "inId"
   def dependencyType = "dependencyType"
   def visualization = "visualization"
+  def strategyOfDependencyResolver = "strategyOfDependencyResolver"
 
 
 

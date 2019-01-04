@@ -224,7 +224,7 @@ trait Wrapper extends RIDConverter {
         selectedComponentWithHash.selectedComponent.get.componentId.get,
         selectedComponentWithHash.currentStep.get.stepId.get,
         JsonComponentStatus(
-          status.selectionCriterium match {
+          status.selectionCriterion match {
             case Some(s) =>
               Some(JsonStatus(
                 s.status,
@@ -290,7 +290,8 @@ trait Wrapper extends RIDConverter {
             inId = dBO.inId,
             dependencyType = dBO.dependencyType,
             visualization = dBO.visualization,
-            nameToShow = dBO.nameToShow
+            nameToShow = dBO.nameToShow,
+            strategyOfDependencyResolver = dBO.strategyOfDependencyResolver.value
           )
         })
       case None => None

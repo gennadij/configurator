@@ -8,7 +8,7 @@ import org.shared.status.common.Status
  * Created by Gennadi Heimann 03.01.2018
  */
 case class StatusComponent (
-                             selectionCriterium: Option[StatusSelectionCriterium] = None,
+                             selectionCriterion: Option[StatusSelectionCriterion] = None,
                              selectedComponent: Option[StatusSelectedComponent] = None,
                              excludedDependencyInternal: Option[StatusExcludeDependencyInternal] = None,
                              excludedDependencyExternal: Option[StatusExcludeDependencyExternal] = None,

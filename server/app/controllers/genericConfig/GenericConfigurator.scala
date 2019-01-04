@@ -1,8 +1,7 @@
 package controllers.genericConfig
 
 import controllers.wrapper.Wrapper
-import models.currentConfig.CurrentConfig
-import models.configLogic.{NextStep, SelectedComponent, StartConfig}
+import models.configLogic.{CurrentConfig, NextStep, SelectedComponent, StartConfig}
 import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
 import org.shared.json.nextStep.JsonNextStepOut
 import org.shared.json.selectedComponent.{JsonComponentIn, JsonComponentOut}
