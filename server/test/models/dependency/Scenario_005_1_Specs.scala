@@ -147,10 +147,6 @@ class Scenario_005_1_Specs extends Specification with MessageHandler with Before
       (nextStep_3 \ JsonKey.nameToShow).asOpt[String] === Some(s5)
       (nextStep_3 \ JsonKey.components).asOpt[List[JsValue]].get.size === 0
       (nextStep_3 \ JsonKey.stepId).asOpt[String].get.length must be_<=(32) and be_>=(30)
-
-
-      //TODO der Komponent C51 darf nicht in der CurrentConfig, da sie von der Komponent C21 ausgeschloßen war.
-      // TODO Visualizierung ist auto automatisch aus der Curent Config entfernen.
     }
   }
 }

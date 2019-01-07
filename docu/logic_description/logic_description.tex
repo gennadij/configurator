@@ -330,6 +330,51 @@ werden kann.
 
 \subsection{Status}
 
+\subsubsection{StartConfig}
+
+\begin{itemize}
+	\item FIRST\_STEP\_NOT\_EXIST\\
+		Der Konfigurator kann nicht gestartet werde, da der ersten 
+		Schritt nicht geladen werden kann. Der Admin des Konfigurators
+		muss der ersten Schritt in der Konfiguration erstellen.\\
+		Beispielnachricht: Die Konfiguration kann nicht gestartet werden. 
+		Bitte wenden Sie sich an der Administrator.
+	\item FIRST\_STEP\_EXIST\\
+		Der Konfigurator kann ordnungsgemäß gestartet werden.
+	\item MULTIPLE\_FIRST\_STEPS\\
+		Der Konfigurator kann nicht gestartet werden, da es mehrere
+		Schritte erkannt wurde.
+		Beispielnachricht: Die Konfiguration kann nicht gestartet werden. 
+		Bitte wenden Sie sich an der Administrator.
+	\item COMMON\_ERROR\_FIRST\_STEP\\
+		wird nicht mehr gebraucht
+\end{itemize}
+
+\subsubsection{Common}
+
+\begin{itemize}
+	\item SUCCESS\\
+		Wenn die Aktion erfolgreich war.
+	\item ERROR\\
+		Wenn in der Aktion einen Fehler aufgetreten.
+	\item CLASS\_CAST\_ERROR\\
+		Spezifische Fehler in der DB
+	\item ODB\_READE\_ERROR\\
+		Spezifische Fehler in der DB
+	\item ODB\_CONNECTION\_ERROR\\
+		Spezifische Fehler in der DB
+\end{itemize}
+
+\subsection{CurrentConfig}
+
+\begin{itemize}
+	\item STEP\_CURRENT\_CONFIG\_SUCCESS\\
+		???
+	\item STEP\_CURRENT\_CONFIG\_BO\_INCLUDE\_NO\_SELECTED\_COMPONENTS
+		???
+\end{itemize}
+
+\subsubsection{SelectedComponent}
 \begin{itemize}
   \item SelectedComponent beschreibt der Status der ausgewhlte Komponente
   \begin{itemize}

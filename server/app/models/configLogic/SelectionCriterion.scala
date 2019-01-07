@@ -95,8 +95,8 @@ trait SelectionCriterion {
     */
   private def getSelectionCriterionStatus(countOfComponents: Int, fatherStep: StepBO): StatusSelectionCriterion = {
 
-    val min: Int = fatherStep.selectionCriteriumMin.get
-    val max: Int = fatherStep.selectionCriteriumMax.get
+    val min: Int = fatherStep.selectionCriterionMin.get
+    val max: Int = fatherStep.selectionCriterionMax.get
 
     countOfComponents match {
       case count if min > count && max > count => RequireComponent()

@@ -10,11 +10,6 @@ abstract class Status {
   def message: String
 }
 
-//case class FinalComponent() extends Status {
-//  def status: String = "FINAL_COMPONENT"
-//  def message: String = "Es wurde letze Komponente ausgewaelt. Konfiguration ist abgeschlossen"
-//}
-
 case class Success() extends Status {
   def status: String = "SUCCESS"
   def message: String = "Die Aktion ist erfolgreich"

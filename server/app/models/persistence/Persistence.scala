@@ -35,8 +35,8 @@ object Persistence {
         StepBO(
           stepId = Some(fS.getIdentity.toString),
           nameToShow = Some(fS.getProperty(PropertyKeys.NAME_TO_SHOW).toString),
-          selectionCriteriumMin = Some(fS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN)),
-          selectionCriteriumMax = Some(fS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX)),
+          selectionCriterionMin = Some(fS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN)),
+          selectionCriterionMax = Some(fS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX)),
           status = Some(StatusStep(
             startConfig = Some(StartConfigExist()),
             common = Some(Success())
@@ -181,8 +181,8 @@ object Persistence {
         StepBO(
           stepId = Some(vNS.getIdentity.toString),
           nameToShow = Some(vNS.getProperty(PropertyKeys.NAME_TO_SHOW).toString),
-          selectionCriteriumMin = Some(vNS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN).toString.toInt),
-          selectionCriteriumMax = Some(vNS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX).toString.toInt),
+          selectionCriterionMin = Some(vNS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN).toString.toInt),
+          selectionCriterionMax = Some(vNS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX).toString.toInt),
           status = Some(StatusStep(
             nextStep = Some(NextStepExist()),
             currentConfig = Some(StepCurrentConfigSuccess()),
