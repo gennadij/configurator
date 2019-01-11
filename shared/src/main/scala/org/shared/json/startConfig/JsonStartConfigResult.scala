@@ -12,7 +12,6 @@ import play.api.libs.json._
  * result : {step: ...}
  */
 case class JsonStartConfigResult (
-
                                    step: JsonStep,
                                    status: JsonStepStatus
 )

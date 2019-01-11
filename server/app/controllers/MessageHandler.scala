@@ -7,7 +7,7 @@ import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
 import org.shared.json.error.{JsonErrorIn, JsonErrorParams}
 import org.shared.json.nextStep.JsonNextStepIn
 import org.shared.json.selectedComponent.JsonComponentIn
-import org.shared.json.startConfig.JsonStartConfigIn
+import org.shared.json.step.JsonStartConfigIn
 import play.api.Logger
 import play.api.libs.json._
 
@@ -24,12 +24,12 @@ trait MessageHandler extends GenericConfigurator{
     * @param receivedMessage : JsValue, client: Config
     * @return JsValue
     */
-  def handleMessage(receivedMessage: JsValue, currentConfig: CurrentConfig): JsValue = {
+  def handleMessage(receivedMessage: JsValue, cC: CurrentConfig): JsValue = {
     (receivedMessage \ "json").asOpt[String] match {
-      case Some("StartConfig") => startConfig(receivedMessage, currentConfig)
-      case Some("NextStep") => nextStep(receivedMessage, currentConfig)
-      case Some("CurrentConfig") => currentConfig(receivedMessage, currentConfig)
-      case Some("Component") => selectedComponent(receivedMessage, currentConfig)
+      case Some("StartConfig") => startConfig(receivedMessage, cC)
+      case Some("NextStep") => nextStep(receivedMessage, cC)
+      case Some("CurrentConfig") => currentConfig(receivedMessage, cC)
+      case Some("Component") => selectedComponent(receivedMessage, cC)
       case _ => jsonError(errorText = "Input JSON is not permitted")
     }
   }

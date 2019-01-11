@@ -11,5 +11,6 @@ case class ComponentBO(
                       excludeDependenciesOut: Option[List[DependencyBO]] = None,
                       excludeDependenciesIn: Option[List[DependencyBO]] = None,
                       requireDependenciesOut: Option[List[DependencyBO]] = None,
-                      requireDependenciesIn: Option[List[DependencyBO]] = None
+                      requireDependenciesIn: Option[List[DependencyBO]] = None,
+                      permissionToSelection: Option[Boolean] = None
                     )
