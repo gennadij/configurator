@@ -6,7 +6,7 @@ import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
 import org.shared.json.nextStep.JsonNextStepOut
 import org.shared.json.selectedComponent.{JsonComponentIn, JsonComponentOut}
 import org.shared.json.startConfig.JsonStartConfigOut
-import org.shared.json.step.JsonStartConfigIn
+import org.shared.json.step.{JsonStepIn, JsonStepOut}
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -24,11 +24,11 @@ trait GenericConfigurator extends Wrapper{
   /**
     * @author Gennadi Heimann
     * @version 0.0.1
-    * @param jsonStartConfigIn : JsonStartConfigIn
+    * @param jsonStepIn : JsonStartConfigIn
     * @return JsonStartConfigOut
     */
-  def startConfig(jsonStartConfigIn: JsonStartConfigIn, currentConfig: CurrentConfig): JsonStartConfigOut = {
-    toJsonStartConfigOut(StartConfig.startConfig(toStartConfigIn(jsonStartConfigIn), currentConfig))
+  def startConfig(jsonStepIn: JsonStepIn, currentConfig: CurrentConfig): JsonStepOut = {
+    toJsonStepOut(StartConfig.startConfig(toStepIn(jsonStepIn), currentConfig))
   }
 
   /**

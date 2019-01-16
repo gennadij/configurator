@@ -15,11 +15,11 @@ object StartConfig {
   /**
     * @author Gennadi Heimann
     * @version 0.0.2
-    * @param startConfigIn : StartConfigIn
+    * @param stepContainerBO : StartConfigIn
     * @return StartConfigOut
     */
-  def startConfig(startConfigIn: StartConfigBO, currentConfig: CurrentConfig): StartConfigBO = {
-    new StartConfig(startConfigIn.configUrl, currentConfig).getFirstStep
+  def startConfig(stepContainerBO: StepContainerBO, currentConfig: CurrentConfig): StepContainerBO = {
+    new StartConfig(stepContainerBO.configUrl, currentConfig).startConfig
   }
 }
 
@@ -31,7 +31,7 @@ class StartConfig(configUrl: Option[String], currentConfig: CurrentConfig) {
     * @version 0.0.2
     * @return StartConfigOut
     */
-  private def getFirstStep: StartConfigBO = {
+  private def startConfig: StepContainerBO = {
 
     val firstStep: StepBO = Persistence.getFirstStep(configUrl.get)
 

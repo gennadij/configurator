@@ -12,6 +12,6 @@ case class StepBO (
                     nameToShow: Option[String] = None,
                     selectionCriterionMin: Option[Int] = None,
                     selectionCriterionMax: Option[Int] = None,
-                    status: Option[StatusStep] = None,
+                    status: Option[StatusStep] = None, //TODO DELETE
                     componentIds: Option[List[String]] = None
 )

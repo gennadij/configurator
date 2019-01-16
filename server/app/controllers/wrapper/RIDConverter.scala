@@ -14,30 +14,30 @@ trait RIDConverter extends RidToHash {
   /**
     * @author Gennadi Heimann
     * @version 0.0.3
-    * @param startConfigBO: StartConfigBO
+    * @param stepContainerBO: StartConfigBO
     * @return SelectedComponentBO
     */
-  private[wrapper] def convertRidToHashforStartConfig(startConfigBO: StartConfigBO): StartConfigBO = {
-    startConfigBO.step.get.status.get.common match {
+  private[wrapper] def convertRidToHashforStartConfig(stepContainerBO: StepContainerBO): StepContainerBO = {
+    stepContainerBO.step.get.status.get.common match {
       case Some(Success()) =>
-        val stepIdHash: String = setIdAndHash(startConfigBO.step.get.stepId.get)._2
+        val stepIdHash: String = setIdAndHash(stepContainerBO.step.get.stepId.get)._2
 
-        val stepBOWithHashId: StepBO = startConfigBO.step.get.copy(stepId = Some(stepIdHash))
+        val stepBOWithHashId: StepBO = stepContainerBO.step.get.copy(stepId = Some(stepIdHash))
 
-        val componentsBOWithHashId: ComponentsForSelectionBO =
-          startConfigBO.componentsForSelection.get.status.get.common match {
-            case Some(Success()) =>
-              ComponentsForSelectionBO(
-                status = startConfigBO.componentsForSelection.get.status,
-                components = startConfigBO.componentsForSelection.get.components map (c => {
+        val componentsBOWithHashId: Option[Set[ComponentBO]] =
+          stepContainerBO.error match {
+            case Some(List.empty) =>
+              Some(
+                stepContainerBO.componentsForSelection.get map (c => {
                   c.copy(componentId = Some(setIdAndHash(c.componentId.get)._2))
-                }))
-            case _ => startConfigBO.componentsForSelection.get
+                })
+              )
+            case _ => None
           }
 
-        startConfigBO.copy(step = Some(stepBOWithHashId), componentsForSelection = Some(componentsBOWithHashId))
+        stepContainerBO.copy(step = Some(stepBOWithHashId), componentsForSelection = componentsBOWithHashId)
 
-      case _ => startConfigBO
+      case _ => stepContainerBO
     }
   }
 

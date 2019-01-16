@@ -2,11 +2,11 @@ package controllers.wrapper
 
 import models.bo._
 import org.shared.json.common
-import org.shared.json.common.{JsonComponent, JsonStatus, JsonStep, JsonStepStatus}
+import org.shared.json.common.{JsonError, JsonStatus, JsonStepStatus}
 import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut, JsonCurrentConfigResult, JsonStepCurrentConfig}
 import org.shared.json.nextStep.{JsonNextStepOut, JsonNextStepResult}
 import org.shared.json.selectedComponent._
-import org.shared.json.startConfig.{JsonStartConfigIn, JsonStartConfigOut, JsonStartConfigResult}
+import org.shared.json.step._
 import org.shared.status.nextStep.NextStepExist
 import org.shared.status.selectedComponent.StatusComponent
 
@@ -20,81 +20,109 @@ trait Wrapper extends RIDConverter {
   /**
     * @author Gennadi Heimann
     * @version 0.0.1
-    * @param jsonStartConfigIn : JsonStartConfigIn
+    * @param jsonStepIn : JsonStartConfigIn
     * @return StartConfigBO
     */
-  def toStartConfigIn(jsonStartConfigIn: JsonStartConfigIn): StartConfigBO = {
-    StartConfigBO(
-      Some(jsonStartConfigIn.params.configUrl)
+  def toStepIn(jsonStepIn: JsonStepIn): StepContainerBO = {
+    StepContainerBO(
+      configUrl = Some(jsonStepIn.params.configUrl)
     )
+
   }
 
   /**
     * @author Gennadi Heimann
     * @version 0.0.1
-    * @param startConfigBO : StartConfigBO
+    * @param stepContainerBO : StartConfigBO
     * @return JsonStartConfigOut
     */
-  def toJsonStartConfigOut(startConfigBO: StartConfigBO): JsonStartConfigOut = {
+  def toJsonStepOut(stepContainerBO: StepContainerBO): JsonStepOut = {
 
-    val convertedIdsStartConfigBO: StartConfigBO = convertRidToHashforStartConfig(startConfigBO)
+    val convertedIdsStepContainerBO: StepContainerBO = convertRidToHashforStartConfig(stepContainerBO)
 
-    convertedIdsStartConfigBO.step.get.stepId match {
+    convertedIdsStepContainerBO.step.get.stepId match {
       case Some(_) =>
-        JsonStartConfigOut(
-          result = JsonStartConfigResult(
-            JsonStep(
-              convertedIdsStartConfigBO.step.get.stepId.get,
-              convertedIdsStartConfigBO.step.get.nameToShow.get,
-              convertedIdsStartConfigBO.componentsForSelection.get.components map (component => {
-                JsonComponent(
-                  component.componentId.get,
-                  component.nameToShow.get
-                )
-              })
+        JsonStepOut(
+          result = JsonStepResult(
+            step = JsonStep(
+              stepId = convertedIdsStepContainerBO.step.get.stepId.get,
+              nameToShow = convertedIdsStepContainerBO.step.get.nameToShow.get,
+              selectionCriterion = JsonSelectionCriterion(
+                min = convertedIdsStepContainerBO.step.get.selectionCriterionMin.get,
+                max = convertedIdsStepContainerBO.step.get.selectionCriterionMax.get
+              )
             ),
-            JsonStepStatus(
-              firstStep = Some(JsonStatus(
-                convertedIdsStartConfigBO.step.get.status.get.startConfig.get.status,
-                convertedIdsStartConfigBO.step.get.status.get.startConfig.get.message)),
-              common = Some(JsonStatus(
-                convertedIdsStartConfigBO.step.get.status.get.common.get.status,
-                convertedIdsStartConfigBO.step.get.status.get.common.get.message))
-            )
-
+            componentsForSelection = convertedIdsStepContainerBO.componentsForSelection.get map (component => {
+              JsonComponent(
+                component.componentId.get,
+                component.nameToShow.get,
+                component.permissionToSelection.get
+              )
+            }),
+            errors = convertedIdsStepContainerBO.error.get map {error =>
+              JsonError(
+                message = error.message,
+                name = error.name,
+                code =error.code
+              )
+            },
+            warnings = Set() //TODO GET READY
           )
         )
-      case None =>
-        JsonStartConfigOut(
-          result = JsonStartConfigResult(
-            JsonStep(
-              "",
-              "",
-              List()
-            ),
-            JsonStepStatus(
-              firstStep = Some(JsonStatus(
-                startConfigBO.step.get.status.get.startConfig.get.status,
-                startConfigBO.step.get.status.get.startConfig.get.message)),
-              common = Some(JsonStatus(
-                startConfigBO.step.get.status.get.common.get.status,
-                startConfigBO.step.get.status.get.common.get.message))
-            )
-
-          )
-        )
+//        JsonStartConfigOut(
+//          result = JsonStartConfigResult(
+//            JsonStep(
+//              convertedIdsStepContainerBO.step.get.stepId.get,
+//              convertedIdsStepContainerBO.step.get.nameToShow.get,
+//              convertedIdsStepContainerBO.componentsForSelection.get.components map (component => {
+//                JsonComponent(
+//                  component.componentId.get,
+//                  component.nameToShow.get
+//                )
+//              })
+//            ),
+//            JsonStepStatus(
+//              firstStep = Some(JsonStatus(
+//                convertedIdsStepContainerBO.step.get.status.get.startConfig.get.status,
+//                convertedIdsStepContainerBO.step.get.status.get.startConfig.get.message)),
+//              common = Some(JsonStatus(
+//                convertedIdsStepContainerBO.step.get.status.get.common.get.status,
+//                convertedIdsStepContainerBO.step.get.status.get.common.get.message))
+//            )
+//
+//          )
+//        )
+//      case None =>
+//        JsonStartConfigOut(
+//          result = JsonStartConfigResult(
+//            JsonStep(
+//              "",
+//              "",
+//              List()
+//            ),
+//            JsonStepStatus(
+//              firstStep = Some(JsonStatus(
+//                stepContainerBO.step.get.status.get.startConfig.get.status,
+//                stepContainerBO.step.get.status.get.startConfig.get.message)),
+//              common = Some(JsonStatus(
+//                stepContainerBO.step.get.status.get.common.get.status,
+//                stepContainerBO.step.get.status.get.common.get.message))
+//            )
+//
+//          )
+//        )
     }
 
 
   }
 
-//  /**
-//    * @author Gennadi Heimann
-//    * @version 0.0.1
-//    * @param jsonNextStepIn : JsonNextStepIn
-//    * @return NextStepIn
-//    */
-//  def toNextStepIn(jsonNextStepIn: JsonNextStepIn)
+  //  /**
+  //    * @author Gennadi Heimann
+  //    * @version 0.0.1
+  //    * @param jsonNextStepIn : JsonNextStepIn
+  //    * @return NextStepIn
+  //    */
+  //  def toNextStepIn(jsonNextStepIn: JsonNextStepIn)
 
   /**
     * @author Gennadi Heimann
@@ -115,7 +143,7 @@ trait Wrapper extends RIDConverter {
               stepId = nextStepWithConvertedRids.step.get.stepId.get,
               nameToShow = nextStepWithConvertedRids.step.get.nameToShow.get,
               components = nextStepWithConvertedRids.componentsForSelection.get.components map (c => {
-                JsonComponent(
+                common.JsonComponent(
                   componentId = c.componentId.get,
                   nameToShow = c.nameToShow.get
                 )
@@ -140,7 +168,7 @@ trait Wrapper extends RIDConverter {
       case _ =>
         JsonNextStepOut(
           result = JsonNextStepResult(
-            step = JsonStep("", "", List()),
+            step = common.JsonStep("", "", List()),
             JsonStepStatus(
               nextStep = Some(JsonStatus(
                 nextStepBO.step.get.status.get.nextStep.get.status,
@@ -187,7 +215,7 @@ trait Wrapper extends RIDConverter {
           convertRidToHashForStepOrComponentInCurrentConfig(nextStep.stepId),
           nextStep.nameToShow,
           nextStep.components map (c => {
-            JsonComponent(
+            common.JsonComponent(
               convertRidToHashForStepOrComponentInCurrentConfig(c.componentId.get),
               c.nameToShow.get
             )
@@ -201,7 +229,7 @@ trait Wrapper extends RIDConverter {
   /**
     * @author Gennadi Heimann
     * @version 0.0.1
-    * @param jsonComponentIn: JsonComponentIn
+    * @param jsonComponentIn : JsonComponentIn
     * @return ComponentIn
     */
 
@@ -284,7 +312,7 @@ trait Wrapper extends RIDConverter {
   def toJsonDependency(dependencyBOs: Option[List[DependencyBO]]): Option[List[JsonDependency]] = {
     dependencyBOs match {
       case Some(dependencyBO) => Some(
-        dependencyBO map {dBO =>
+        dependencyBO map { dBO =>
           JsonDependency(
             outId = dBO.outId,
             inId = dBO.inId,

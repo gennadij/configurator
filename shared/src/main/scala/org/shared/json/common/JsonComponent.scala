@@ -11,7 +11,7 @@ import play.api.libs.json._
 case class JsonComponent (
     componentId: String,
     nameToShow: String
-)
+                         )
 
 object JsonComponent {
   implicit val jsonComponentFormat: Format[JsonComponent] = Json.format[JsonComponent]

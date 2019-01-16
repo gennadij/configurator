@@ -7,7 +7,7 @@ import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
 import org.shared.json.error.{JsonErrorIn, JsonErrorParams}
 import org.shared.json.nextStep.JsonNextStepIn
 import org.shared.json.selectedComponent.JsonComponentIn
-import org.shared.json.step.JsonStartConfigIn
+import org.shared.json.step.JsonStepIn
 import play.api.Logger
 import play.api.libs.json._
 
@@ -41,9 +41,9 @@ trait MessageHandler extends GenericConfigurator{
     * @return JsValue
     */
   private def startConfig(receivedMessage: JsValue, currentConfig: CurrentConfig): JsValue = {
-    val jsonStartConfigIn: JsResult[JsonStartConfigIn] = Json.fromJson[JsonStartConfigIn](receivedMessage)
-    jsonStartConfigIn match {
-      case _: JsSuccess[JsonStartConfigIn] => Json.toJson(startConfig(jsonStartConfigIn.get, currentConfig))
+    val jsonStepIn: JsResult[JsonStepIn] = Json.fromJson[JsonStepIn](receivedMessage)
+    jsonStepIn match {
+      case _: JsSuccess[JsonStepIn] => Json.toJson(startConfig(jsonStepIn.get, currentConfig))
       case e: JsError => jsonError(JsonNames.START_CONFIG, e)
     }
   }
