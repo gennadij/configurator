@@ -2,7 +2,7 @@ package models.configLogic
 
 import models.bo._
 import models.persistence.Persistence
-import org.shared.status.common.Success
+import org.shared.error.Error
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -33,39 +33,35 @@ class StartConfig(configUrl: Option[String], currentConfig: CurrentConfig) {
     */
   private def startConfig: StepContainerBO = {
 
-    val firstStep: StepBO = Persistence.getFirstStep(configUrl.get)
+    val (firstStepBO, errorFirstSTep): (Option[StepBO], Option[Error]) = Persistence.getFirstStep(configUrl.get)
 
-    firstStep.stepId match {
-      case Some(stepId) =>
-        val componentsForSelectionBO: ComponentsForSelectionBO = Persistence.getComponents(stepId)
+    firstStepBO match {
+      case Some(stepBO) =>
+        val (componentBOs, errorComponents): (Option[Set[ComponentBO]], Option[Error]) =
+          Persistence.getComponents(stepBO.stepId.get)
 
         val firstStepCurrentConfig: StepCurrentConfigBO = StepCurrentConfigBO(
-          stepId,
-          firstStep.nameToShow.get
+          stepBO.stepId.get,
+          stepBO.nameToShow.get
         )
 
         // Fuege den ersten Schritt zu der aktuelle Konfiguration hinzu
         currentConfig.addFirstStep(firstStepCurrentConfig)
 
-        val componentsBOWithHashId: ComponentsForSelectionBO = componentsForSelectionBO.status.get.common match {
-          case Some(Success()) =>
-            ComponentsForSelectionBO(
-              status = componentsForSelectionBO.status,
-              components =  componentsForSelectionBO.components
+        errorComponents match {
+          case Some(error) =>
+            StepContainerBO(
+              error = Some(Set(error))
             )
-          case None => componentsForSelectionBO
-          case _ => componentsForSelectionBO
+          case _ =>
+            StepContainerBO(
+              step = firstStepBO,
+              componentsForSelection = componentBOs
+            )
         }
-
-        StartConfigBO(
-          step = Some(firstStep),
-          componentsForSelection = Some(componentsBOWithHashId)
-        )
-
       case None =>
-        StartConfigBO(
-          step = Some(firstStep),
-          componentsForSelection = None
+        StepContainerBO(
+          error = Some(Set(errorFirstSTep.get))
         )
     }
   }

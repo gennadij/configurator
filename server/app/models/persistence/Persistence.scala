@@ -2,13 +2,13 @@ package models.persistence
 
 import com.tinkerpop.blueprints.Direction
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
-import models.bo.{ComponentBO, ComponentsForSelectionBO, SelectedComponentBO, StepBO}
+import models.bo.{ComponentBO, SelectedComponentBO, StepBO}
+import org.shared.error.Error
 import org.shared.status.common
 import org.shared.status.common.{Status, StatusStep, Success}
 import org.shared.status.currentConfig.StepCurrentConfigSuccess
 import org.shared.status.nextStep.{NextStepExist, StatusNextStep}
 import org.shared.status.selectedComponent.{StatusComponent, StatusCurrentStep}
-import org.shared.status.startConfig.{StartConfigExist, StatusStartConfig}
 
 import scala.collection.JavaConverters._
 /**
@@ -26,29 +26,20 @@ object Persistence {
     * @return StepBO
     */
 
-  def getFirstStep(configUrl: String): StepBO = {
-    val (vFirstStep, statusFirstStep, statusCommon): (Option[OrientVertex], StatusStartConfig, Status) =
+  def getFirstStep(configUrl: String): (Option[StepBO], Option[Error]) = {
+    val (vFirstStep, error): (Option[OrientVertex], Option[Error]) =
       Graph.getFirstStep(configUrl)
 
     vFirstStep match {
       case Some(fS) =>
-        StepBO(
+        (Some(StepBO(
           stepId = Some(fS.getIdentity.toString),
           nameToShow = Some(fS.getProperty(PropertyKeys.NAME_TO_SHOW).toString),
           selectionCriterionMin = Some(fS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN)),
-          selectionCriterionMax = Some(fS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX)),
-          status = Some(StatusStep(
-            startConfig = Some(StartConfigExist()),
-            common = Some(Success())
-          )
-        ))
+          selectionCriterionMax = Some(fS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX)))
+        ), None)
       case None =>
-        StepBO(
-          status = Some(common.StatusStep(
-            startConfig = Some(statusFirstStep),
-            common = Some(statusCommon)
-          )
-        ))
+        (None, error)
     }
   }
 
@@ -58,8 +49,8 @@ object Persistence {
     * @param stepId : String
     * @return ComponentsBO
     */
-  def getComponents(stepId: String): ComponentsForSelectionBO = {
-    val (vComponents, statusCommon): (Option[List[OrientVertex]], Status) = Graph.getComponents(stepId)
+  def getComponents(stepId: String): (Option[Set[ComponentBO]], Option[Error])  = {
+    val (vComponents, error): (Option[Set[OrientVertex]], Option[Error]) = Graph.getComponents(stepId)
 
     vComponents match {
       case Some(vCs) =>
@@ -69,13 +60,8 @@ object Persistence {
               nameToShow = Some(vC.getProperty(PropertyKeys.NAME_TO_SHOW))
           )
         })
-
-        ComponentsForSelectionBO(
-          status = Some(StatusComponent(common = Some(statusCommon))),
-          components = componentBOs
-        )
-
-      case None => ComponentsForSelectionBO(status = Some(StatusComponent(common = Some(statusCommon))))
+        (Some(componentBOs.toSet), None)
+      case None => (None, error)
     }
   }
 
