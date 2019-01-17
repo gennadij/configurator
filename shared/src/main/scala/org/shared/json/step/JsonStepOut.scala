@@ -9,8 +9,8 @@ import play.api.libs.json.{Json, OFormat}
   * Created by Gennadi Heimann 07.01.2019
   */
 case class JsonStepOut (
-  json: String = JsonNames.START_CONFIG,
-  result: JsonStepResult
+                         json: String = JsonNames.STEP,
+                         result: JsonStepResult
 )
 
 object JsonStepOut {

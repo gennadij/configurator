@@ -1,6 +1,6 @@
 package org.shared.json.startConfig
 
-import org.shared.json.{JsonNames, step}
+import org.shared.json.JsonNames
 import play.api.libs.json.{Json, OFormat}
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -13,5 +13,5 @@ case class JsonStartConfigIn (
 )
 
 object JsonStartConfigIn {
-  implicit val format: OFormat[step.JsonStartConfigIn] = Json.format[step.JsonStartConfigIn]
+  implicit val format: OFormat[JsonStartConfigIn] = Json.format[JsonStartConfigIn]
 }

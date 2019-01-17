@@ -2,8 +2,7 @@ package org.controllers.websocket
 
 import org.scalajs.dom
 import org.shared.json.JsonNames
-import org.shared.json.startConfig.JsonStartConfigParams
-import org.shared.json.step.JsonStartConfigIn
+import org.shared.json.startConfig.{JsonStartConfigIn, JsonStartConfigParams}
 import play.api.libs.json.{JsValue, Json}
 
 import scala.util.matching.Regex
@@ -24,13 +23,13 @@ object WebSocket {
     println("main")
     socket.onmessage = {
       (e: dom.MessageEvent) => {
-        println("IN -> " + e.data.toString())
-        val jsValue: JsValue = Json.parse(e.data.toString())
+        println("IN -> " + e.data.toString)
+        val jsValue: JsValue = Json.parse(e.data.toString)
         new MessageHandler().handleMessage(jsValue)
       }
     }
 
-    socket.onopen = { (e: dom.Event) => {
+    socket.onopen = { (_: dom.Event) => {
       println("Websocket open")
 
       val startConfig = Json.toJson(JsonStartConfigIn(
@@ -45,8 +44,8 @@ object WebSocket {
     }
 
     socket.onerror = {
-      (e: dom.Event) => {
-        println("Websocket error")
+      (_: dom.Event) => {
+        println("""Websocket error""")
       }
     }
   }

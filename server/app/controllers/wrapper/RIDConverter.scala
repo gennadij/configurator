@@ -2,7 +2,6 @@ package controllers.wrapper
 
 import models.bo._
 import org.shared.json.selectedComponent.JsonComponentIn
-import org.shared.status.common.Success
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -18,26 +17,25 @@ trait RIDConverter extends RidToHash {
     * @return SelectedComponentBO
     */
   private[wrapper] def convertRidToHashforStartConfig(stepContainerBO: StepContainerBO): StepContainerBO = {
-    stepContainerBO.step.get.status.get.common match {
-      case Some(Success()) =>
+    stepContainerBO.error match {
+      case Some(_) => stepContainerBO
+      case _ =>
         val stepIdHash: String = setIdAndHash(stepContainerBO.step.get.stepId.get)._2
 
         val stepBOWithHashId: StepBO = stepContainerBO.step.get.copy(stepId = Some(stepIdHash))
 
         val componentsBOWithHashId: Option[Set[ComponentBO]] =
           stepContainerBO.error match {
-            case Some(List.empty) =>
-              Some(
-                stepContainerBO.componentsForSelection.get map (c => {
-                  c.copy(componentId = Some(setIdAndHash(c.componentId.get)._2))
-                })
-              )
-            case _ => None
+            case Some(_) => None
+
+            case _ => Some(
+              stepContainerBO.componentsForSelection.get map (c => {
+                c.copy(componentId = Some(setIdAndHash(c.componentId.get)._2))
+              })
+            )
           }
 
         stepContainerBO.copy(step = Some(stepBOWithHashId), componentsForSelection = componentsBOWithHashId)
-
-      case _ => stepContainerBO
     }
   }
 

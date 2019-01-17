@@ -12,6 +12,11 @@ object JsonKey {
   def json = "json"
   def nameToShow = "nameToShow"
 
+  //error
+  def errors = "errors"
+  def name = "name"
+  def code = "code"
+  def warnings = "warnings"
   //Status Common
   def status = "status"
   def common = "common"
@@ -31,12 +36,14 @@ object JsonKey {
   def currentConfig = "currentConfig"
 
   //Step
+  def configUrl = "configUrl"
   def step = "step"
   def stepId = "stepId"
   def components = "components"
 
   //Component
   def componentId = "componentId"
+  def componentsForSelection = "componentsForSelection"
 
   //SelectedComponent
   def selectedComponentId = "selectedComponentId"

@@ -40,35 +40,47 @@ trait Wrapper extends RIDConverter {
 
     val convertedIdsStepContainerBO: StepContainerBO = convertRidToHashforStartConfig(stepContainerBO)
 
-    convertedIdsStepContainerBO.step.get.stepId match {
+    convertedIdsStepContainerBO.step match {
       case Some(_) =>
         JsonStepOut(
           result = JsonStepResult(
-            step = JsonStep(
+            step = Some(JsonStep(
               stepId = convertedIdsStepContainerBO.step.get.stepId.get,
               nameToShow = convertedIdsStepContainerBO.step.get.nameToShow.get,
               selectionCriterion = JsonSelectionCriterion(
-                min = convertedIdsStepContainerBO.step.get.selectionCriterionMin.get,
-                max = convertedIdsStepContainerBO.step.get.selectionCriterionMax.get
+                min = convertedIdsStepContainerBO.step.get.selectionCriterionMin.get.toString.toInt,
+                max = convertedIdsStepContainerBO.step.get.selectionCriterionMax.get.toString.toInt
               )
-            ),
-            componentsForSelection = convertedIdsStepContainerBO.componentsForSelection.get map (component => {
+            )),
+            componentsForSelection = Some(convertedIdsStepContainerBO.componentsForSelection.get.toList map (component => {
               JsonComponent(
                 component.componentId.get,
                 component.nameToShow.get,
-                component.permissionToSelection.get
+                component.permissionToSelection.getOrElse(true) //TODO standardwert festlegen
               )
-            }),
-            errors = convertedIdsStepContainerBO.error.get map {error =>
+            })),
+            errors = convertedIdsStepContainerBO.error.getOrElse(List()).toList map {error => //TODO in Json Objekt eine Option implementieren
               JsonError(
                 message = error.message,
                 name = error.name,
                 code =error.code
               )
             },
-            warnings = Set() //TODO GET READY
+            warnings = List() //TODO GET READY
           )
         )
+      case None => JsonStepOut(
+        result = JsonStepResult(
+          errors = (stepContainerBO.error.get map {e =>
+            JsonError(
+              message = e.message,
+              name = e.name,
+              code = e.code
+            )
+          }).toList,
+          warnings = List()
+        )
+      )
 //        JsonStartConfigOut(
 //          result = JsonStartConfigResult(
 //            JsonStep(

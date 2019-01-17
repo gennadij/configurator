@@ -4,7 +4,7 @@ import models.bo._
 import models.persistence.Persistence
 import org.shared.status.common.{StatusStep, Success}
 import org.shared.status.currentConfig.StepCurrentConfigBOIncludeNoSelectedComponents
-import org.shared.status.nextStep.{NextStepExist, NextStepIncludeNoComponents}
+import org.shared.status.nextStep.NextStepExist
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -51,27 +51,28 @@ class NextStep(currentConfig: CurrentConfig) {
         val nextStep: StepBO = Persistence.getNextStep(selectedComponents.head.componentId.get)
         nextStep.status.get.nextStep match {
           case Some(NextStepExist()) =>
-            val componentsForSelectionBO: ComponentsForSelectionBO = Persistence.getComponents(nextStep.stepId.get)
-            componentsForSelectionBO.status.get.common match {
-              case Some(Success()) =>
-                //Step zu der CurrentConfig hinzufuegen
-                lastStep.nextStep = Some(StepCurrentConfigBO(
-                  nextStep.stepId.get,
-                  nextStep.nameToShow.get,
-                  List(),
-                  None
-                ))
-                NextStepBO(
-                  step = Some(nextStep),
-                  componentsForSelection = Some(componentsForSelectionBO)
-                )
-              case _ => NextStepBO(step = Some(StepBO(
-                  status = Some(StatusStep(
-                    nextStep = Some(NextStepIncludeNoComponents()),
-                    common = Some(Success())
-                  ))
-              )))
-            }
+//            val componentsForSelectionBO: ComponentsForSelectionBO = Persistence.getComponents(nextStep.stepId.get)
+//            componentsForSelectionBO.status.get.common match {
+//              case Some(Success()) =>
+//                //Step zu der CurrentConfig hinzufuegen
+//                lastStep.nextStep = Some(StepCurrentConfigBO(
+//                  nextStep.stepId.get,
+//                  nextStep.nameToShow.get,
+//                  List(),
+//                  None
+//                ))
+//                NextStepBO(
+//                  step = Some(nextStep),
+//                  componentsForSelection = Some(componentsForSelectionBO)
+//                )
+//              case _ => NextStepBO(step = Some(StepBO(
+//                  status = Some(StatusStep(
+//                    nextStep = Some(NextStepIncludeNoComponents()),
+//                    common = Some(Success())
+//                  ))
+//              )))
+//            }
+            ???
           case _ => NextStepBO(step = Some(nextStep))
         }
     }

@@ -3,12 +3,12 @@ package models.startConfig
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
-import org.shared.json.JsonNames
+import org.shared.json.{JsonKey, JsonNames}
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
 import play.api.Logger
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsNull, JsValue, Json}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -30,9 +30,10 @@ class StartConfigWithDefectURLSpecs extends Specification with MessageHandler wi
     "Es wird keinen Step geladen" >> {
       val configUrl = "http://config/client_01"
       val startConfigIn = Json.obj(
-          "json" -> JsonNames.START_CONFIG
-          ,"params" -> Json.obj(
-               "configUrl" -> configUrl
+          JsonKey.json -> JsonNames.STEP
+          ,JsonKey.params -> Json.obj(
+               JsonKey.configUrl -> configUrl,
+          JsonKey.componentId -> ""
            )
       )
 
@@ -44,16 +45,13 @@ class StartConfigWithDefectURLSpecs extends Specification with MessageHandler wi
       
       
       
-      (startConfigOut \ "json").asOpt[String].get === JsonNames.START_CONFIG
-      (startConfigOut \ "result" \ "step").asOpt[String] === None
-      (startConfigOut \ "result" \ "step" \ "nameToShow").asOpt[String].get === ""
-      (startConfigOut \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 0
-      (startConfigOut \ "result" \ "status" \ "firstStep" \ "status").asOpt[String].get === "FIRST_STEP_NOT_EXIST"
-      (startConfigOut \ "result" \ "status" \ "firstStep" \ "message").asOpt[String].get === ""
-      (startConfigOut \ "result" \ "status" \ "nextStep").asOpt[String] === None
-      (startConfigOut \ "result" \ "status" \ "fatherStep").asOpt[String] === None
-      (startConfigOut \ "result" \ "status" \ "common" \ "status").asOpt[String].get === "ERROR"
-      (startConfigOut \ "result" \ "status" \ "common" \ "message").asOpt[String].get === "Die Aktion ist nicht erfolgreich"
+      (startConfigOut \ JsonKey.json).asOpt[String].get === JsonNames.STEP
+      (startConfigOut \ JsonKey.result \ JsonKey.step).asOpt[JsValue].get === JsNull
+      ((startConfigOut \ JsonKey.result \ JsonKey.errors)(0) \ JsonKey.message).asOpt[String].get ===
+        "Der aufgeforderte Schritt (stepId = undefined) exestiert nicht in dem Datenbank"
+      ((startConfigOut \ JsonKey.result \ JsonKey.errors)(0) \ JsonKey.name).asOpt[String].get === "STEP_NOT_EXIST"
+      ((startConfigOut \ JsonKey.result \ JsonKey.errors)(0) \ JsonKey.code).asOpt[String].get === "E010001"
+      (startConfigOut \ JsonKey.result \ JsonKey.warnings).asOpt[List[JsValue]] === Some(List())
     }
   }
 }

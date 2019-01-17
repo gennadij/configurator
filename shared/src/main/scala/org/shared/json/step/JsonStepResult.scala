@@ -1,9 +1,9 @@
 package org.shared.json.step
 
+import org.shared.json.JsonKey
 import org.shared.json.common.{JsonError, JsonWarning}
-import org.shared.json.startConfig.JsonStartConfigResult
-import play.api.libs.json.{Format, JsPath, Writes}
 import play.api.libs.functional.syntax._
+import play.api.libs.json.{Format, JsPath}
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -11,17 +11,17 @@ import play.api.libs.functional.syntax._
   * Created by Gennadi Heimann 07.01.2019
   */
 case class JsonStepResult(
-                           step: JsonStep,
-                           componentsForSelection: Set[JsonComponent],
-                           errors: Set[JsonError],
-                           warnings: Set[JsonWarning]
+                           step: Option[JsonStep] = None, // TODO Option with Standard
+                           componentsForSelection: Option[List[JsonComponent]] = None,
+                           errors: List[JsonError],
+                           warnings: List[JsonWarning]
                          )
 
 object JsonStepResult {
-  implicit val writes: Format[JsonStartConfigResult] = (
-    (JsPath \ "step").format(Writes.of[JsonStep]) and
-    (JsPath \ "componentsForSelection").format(Writes.of[Set[JsonComponent]]) and
-    (JsPath \ "errors").format(Writes.of[Set[JsonError]]) and
-    (JsPath \ "warnings").format(Writes.of[Set[JsonWarning]])
-  )(JsonStartConfigResult.apply, unlift(JsonStartConfigResult.unapply))
+  implicit val format: Format[JsonStepResult] = (
+    (JsPath \ JsonKey.step).format(Format.optionWithNull[JsonStep]) and
+    (JsPath \ JsonKey.componentsForSelection).format(Format.optionWithNull[List[JsonComponent]]) and
+    (JsPath \ JsonKey.errors).format(Format.of[List[JsonError]]) and
+    (JsPath \ JsonKey.warnings).format(Format.of[List[JsonWarning]])
+  )(JsonStepResult.apply, unlift(JsonStepResult.unapply))
 }

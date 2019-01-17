@@ -1,6 +1,6 @@
 package org.shared.json.common
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{Format, Json}
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -14,5 +14,5 @@ case class JsonError (
                      )
 
 object JsonError{
-  implicit val format: OFormat[JsonError] = Json.format[JsonError]
+  implicit val format: Format[JsonError] = Json.format[JsonError]
 }

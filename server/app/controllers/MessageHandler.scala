@@ -26,11 +26,30 @@ trait MessageHandler extends GenericConfigurator{
     */
   def handleMessage(receivedMessage: JsValue, cC: CurrentConfig): JsValue = {
     (receivedMessage \ "json").asOpt[String] match {
+      case Some(JsonNames.STEP) => step(receivedMessage, cC)
       case Some("StartConfig") => startConfig(receivedMessage, cC)
       case Some("NextStep") => nextStep(receivedMessage, cC)
       case Some("CurrentConfig") => currentConfig(receivedMessage, cC)
       case Some("Component") => selectedComponent(receivedMessage, cC)
       case _ => jsonError(errorText = "Input JSON is not permitted")
+    }
+  }
+
+  /**
+    * @author Gennadi Heimann
+    * @version 0.0.1
+    * @param receivedMessage : JsValue
+    * @return JsValue
+    */
+  private def step(receivedMessage: JsValue, currentConfig: CurrentConfig): JsValue = {
+    val jsonStepIn: JsResult[JsonStepIn] = Json.fromJson[JsonStepIn](receivedMessage)
+    jsonStepIn match {
+      case _: JsSuccess[JsonStepIn] =>
+        jsonStepIn.get.params.componentId match {
+          case componentId if componentId.isEmpty => Json.toJson(startConfig(jsonStepIn.get, currentConfig))
+          case _ => ???
+        }
+      case e: JsError => jsonError(JsonNames.STEP, e)
     }
   }
 
