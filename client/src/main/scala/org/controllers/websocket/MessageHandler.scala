@@ -1,11 +1,10 @@
 package org.controllers.websocket
 
-import org.controllers.{NextStep, SelectedComponent, StartConfig}
+import org.controllers.{NextStep, SelectedComponent}
 import org.shared.json.JsonNames
 import org.shared.json.currentConfig.JsonCurrentConfigOut
 import org.shared.json.nextStep.JsonNextStepOut
 import org.shared.json.selectedComponent.JsonComponentOut
-import org.shared.json.startConfig.JsonStartConfigOut
 import org.views.DrawCurrentConfig
 import play.api.libs.json._
 
@@ -18,20 +17,20 @@ class MessageHandler {
 
 
   def handleMessage(receivedMessage: JsValue) = (receivedMessage \ "json").asOpt[String] match {
-    case Some(JsonNames.START_CONFIG) => startConfig(receivedMessage)
+//    case Some(JsonNames.START_CONFIG) => startConfig(receivedMessage)
     case Some(JsonNames.COMPONENT) => selectedComponent(receivedMessage)
     case Some(JsonNames.CURRENT_CONFIG) => currentConfig(receivedMessage)
     case Some(JsonNames.NEXT_STEP) => nextStep(receivedMessage)
     case _ => Json.obj("error" -> "keinen Treffer")
   }
 
-  private def startConfig(receivedMessage: JsValue): Unit = {
-    val jsonStartConfigOut: JsResult[JsonStartConfigOut] = Json.fromJson[JsonStartConfigOut](receivedMessage)
-    jsonStartConfigOut match {
-      case jSCOut: JsSuccess[JsonStartConfigOut] => new StartConfig(jSCOut.value).startConfig
-      case e: JsError => println("Errors -> " + JsonNames.START_CONFIG + ": " + JsError.toJson(e).toString())
-    }
-  }
+//  private def startConfig(receivedMessage: JsValue): Unit = {
+//    val jsonStartConfigOut: JsResult[JsonStartConfigOut] = Json.fromJson[JsonStartConfigOut](receivedMessage)
+//    jsonStartConfigOut match {
+//      case jSCOut: JsSuccess[JsonStartConfigOut] => new StartConfig(jSCOut.value).startConfig
+//      case e: JsError => println("Errors -> " + JsonNames.START_CONFIG + ": " + JsError.toJson(e).toString())
+//    }
+//  }
 
   private def selectedComponent(receivedMessage: JsValue): Unit = {
     val jsonComponentOut: JsResult[JsonComponentOut] = Json.fromJson[JsonComponentOut](receivedMessage)

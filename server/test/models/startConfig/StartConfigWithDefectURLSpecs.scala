@@ -51,7 +51,7 @@ class StartConfigWithDefectURLSpecs extends Specification with MessageHandler wi
         "Der aufgeforderte Schritt (stepId = undefined) exestiert nicht in dem Datenbank"
       ((startConfigOut \ JsonKey.result \ JsonKey.errors)(0) \ JsonKey.name).asOpt[String].get === "STEP_NOT_EXIST"
       ((startConfigOut \ JsonKey.result \ JsonKey.errors)(0) \ JsonKey.code).asOpt[String].get === "E010001"
-      (startConfigOut \ JsonKey.result \ JsonKey.warnings).asOpt[List[JsValue]] === Some(List())
+      (startConfigOut \ JsonKey.result \ JsonKey.warnings).asOpt[List[JsValue]] === None
     }
   }
 }

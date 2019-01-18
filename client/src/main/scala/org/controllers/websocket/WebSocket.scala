@@ -1,8 +1,6 @@
 package org.controllers.websocket
 
 import org.scalajs.dom
-import org.shared.json.JsonNames
-import org.shared.json.startConfig.{JsonStartConfigIn, JsonStartConfigParams}
 import play.api.libs.json.{JsValue, Json}
 
 import scala.util.matching.Regex
@@ -32,14 +30,15 @@ object WebSocket {
     socket.onopen = { (_: dom.Event) => {
       println("Websocket open")
 
-      val startConfig = Json.toJson(JsonStartConfigIn(
-        json = JsonNames.START_CONFIG,
-        params = JsonStartConfigParams(
-          configUrl = "http://config/client_013"
-        )
-      )).toString()
+      val startConfig = ???
+//        Json.toJson(JsonStartConfigIn(
+//        json = JsonNames.START_CONFIG,
+//        params = JsonStartConfigParams(
+//          configUrl = "http://config/client_013"
+//        )
+//      )).toString()
       println("OUT -> " + startConfig)
-      socket.send(startConfig)
+//      socket.send(startConfig)
       }
     }
 

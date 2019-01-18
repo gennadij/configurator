@@ -13,15 +13,15 @@ import play.api.libs.json.{Format, JsPath}
 case class JsonStepResult(
                            step: Option[JsonStep] = None, // TODO Option with Standard
                            componentsForSelection: Option[List[JsonComponent]] = None,
-                           errors: List[JsonError],
-                           warnings: List[JsonWarning]
+                           errors: Option[List[JsonError]] = None,
+                           warnings: Option[List[JsonWarning]] = None
                          )
 
 object JsonStepResult {
   implicit val format: Format[JsonStepResult] = (
     (JsPath \ JsonKey.step).format(Format.optionWithNull[JsonStep]) and
     (JsPath \ JsonKey.componentsForSelection).format(Format.optionWithNull[List[JsonComponent]]) and
-    (JsPath \ JsonKey.errors).format(Format.of[List[JsonError]]) and
-    (JsPath \ JsonKey.warnings).format(Format.of[List[JsonWarning]])
+    (JsPath \ JsonKey.errors).format(Format.optionWithNull[List[JsonError]]) and
+    (JsPath \ JsonKey.warnings).format(Format.optionWithNull[List[JsonWarning]])
   )(JsonStepResult.apply, unlift(JsonStepResult.unapply))
 }

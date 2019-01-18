@@ -27,7 +27,7 @@ trait MessageHandler extends GenericConfigurator{
   def handleMessage(receivedMessage: JsValue, cC: CurrentConfig): JsValue = {
     (receivedMessage \ "json").asOpt[String] match {
       case Some(JsonNames.STEP) => step(receivedMessage, cC)
-      case Some("StartConfig") => startConfig(receivedMessage, cC)
+//      case Some("StartConfig") => startConfig(receivedMessage, cC)
       case Some("NextStep") => nextStep(receivedMessage, cC)
       case Some("CurrentConfig") => currentConfig(receivedMessage, cC)
       case Some("Component") => selectedComponent(receivedMessage, cC)
@@ -59,13 +59,13 @@ trait MessageHandler extends GenericConfigurator{
     * @param receivedMessage : JsValue
     * @return JsValue
     */
-  private def startConfig(receivedMessage: JsValue, currentConfig: CurrentConfig): JsValue = {
-    val jsonStepIn: JsResult[JsonStepIn] = Json.fromJson[JsonStepIn](receivedMessage)
-    jsonStepIn match {
-      case _: JsSuccess[JsonStepIn] => Json.toJson(startConfig(jsonStepIn.get, currentConfig))
-      case e: JsError => jsonError(JsonNames.START_CONFIG, e)
-    }
-  }
+//  private def startConfig(receivedMessage: JsValue, currentConfig: CurrentConfig): JsValue = {
+//    val jsonStepIn: JsResult[JsonStepIn] = Json.fromJson[JsonStepIn](receivedMessage)
+//    jsonStepIn match {
+//      case _: JsSuccess[JsonStepIn] => Json.toJson(startConfig(jsonStepIn.get, currentConfig))
+//      case e: JsError => jsonError(JsonNames.START_CONFIG, e)
+//    }
+//  }
 
   /**
     * @author Gennadi Heimann

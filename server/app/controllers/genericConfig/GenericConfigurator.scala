@@ -5,7 +5,6 @@ import models.configLogic.{CurrentConfig, NextStep, SelectedComponent, StartConf
 import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
 import org.shared.json.nextStep.JsonNextStepOut
 import org.shared.json.selectedComponent.{JsonComponentIn, JsonComponentOut}
-import org.shared.json.startConfig.JsonStartConfigOut
 import org.shared.json.step.{JsonStepIn, JsonStepOut}
 
 /**
@@ -16,8 +15,6 @@ import org.shared.json.step.{JsonStepIn, JsonStepOut}
   * Stellt eine Schnittstelle zwischen Controller und
   * Logik des generischen Konfigurators
   */
-
-//TODO Die min max Werte aus SelectionCriterum müssen auch an Client ausgeliefert werden
 
 trait GenericConfigurator extends Wrapper{
 

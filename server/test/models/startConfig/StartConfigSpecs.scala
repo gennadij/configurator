@@ -52,8 +52,8 @@ class StartConfigSpecs extends Specification with MessageHandler with BeforeAfte
       ((startConfigOut \ JsonKey.result \ JsonKey.componentsForSelection )(0) \ JsonKey.nameToShow).asOpt[String].get === "C11"
       ((startConfigOut \ JsonKey.result \ JsonKey.componentsForSelection )(1) \ JsonKey.nameToShow).asOpt[String].get === "C12"
       ((startConfigOut \ JsonKey.result \ JsonKey.componentsForSelection )(2) \ JsonKey.nameToShow).asOpt[String].get === "C13"
-      (startConfigOut \ JsonKey.result \ JsonKey.errors).asOpt[List[JsObject]] === Some(List())
-      (startConfigOut \ JsonKey.result \ JsonKey.warnings).asOpt[List[JsObject]] === Some(List())
+      (startConfigOut \ JsonKey.result \ JsonKey.errors).asOpt[List[JsObject]] === None
+      (startConfigOut \ JsonKey.result \ JsonKey.warnings).asOpt[List[JsObject]] === None
     }
   }
   

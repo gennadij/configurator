@@ -10,7 +10,7 @@ import play.api.libs.json.{Json, OFormat}
 case class JsonComponent (
                          componentId: String,
                          nameToShow: String,
-                         permissionToSelection: Boolean
+                         permissionToSelection: Option[Boolean] = None
                          )
 
 object JsonComponent{

@@ -13,8 +13,8 @@ trait RIDConverter extends RidToHash {
   /**
     * @author Gennadi Heimann
     * @version 0.0.3
-    * @param stepContainerBO: StartConfigBO
-    * @return SelectedComponentBO
+    * @param stepContainerBO: StepContainerBO
+    * @return StepContainerBO
     */
   private[wrapper] def convertRidToHashforStartConfig(stepContainerBO: StepContainerBO): StepContainerBO = {
     stepContainerBO.error match {

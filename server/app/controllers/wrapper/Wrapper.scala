@@ -20,8 +20,8 @@ trait Wrapper extends RIDConverter {
   /**
     * @author Gennadi Heimann
     * @version 0.0.1
-    * @param jsonStepIn : JsonStartConfigIn
-    * @return StartConfigBO
+    * @param jsonStepIn : JsonStepIn
+    * @return StepContainerBO
     */
   def toStepIn(jsonStepIn: JsonStepIn): StepContainerBO = {
     StepContainerBO(
@@ -33,8 +33,8 @@ trait Wrapper extends RIDConverter {
   /**
     * @author Gennadi Heimann
     * @version 0.0.1
-    * @param stepContainerBO : StartConfigBO
-    * @return JsonStartConfigOut
+    * @param stepContainerBO : StepContainerBO
+    * @return JsonStepOut
     */
   def toJsonStepOut(stepContainerBO: StepContainerBO): JsonStepOut = {
 
@@ -55,30 +55,22 @@ trait Wrapper extends RIDConverter {
             componentsForSelection = Some(convertedIdsStepContainerBO.componentsForSelection.get.toList map (component => {
               JsonComponent(
                 component.componentId.get,
-                component.nameToShow.get,
-                component.permissionToSelection.getOrElse(true) //TODO standardwert festlegen
+                component.nameToShow.get
               )
-            })),
-            errors = convertedIdsStepContainerBO.error.getOrElse(List()).toList map {error => //TODO in Json Objekt eine Option implementieren
-              JsonError(
-                message = error.message,
-                name = error.name,
-                code =error.code
-              )
-            },
-            warnings = List() //TODO GET READY
+            }))
           )
         )
       case None => JsonStepOut(
         result = JsonStepResult(
-          errors = (stepContainerBO.error.get map {e =>
-            JsonError(
-              message = e.message,
-              name = e.name,
-              code = e.code
-            )
-          }).toList,
-          warnings = List()
+          errors = Some(
+            (stepContainerBO.error.get map {e =>
+              JsonError(
+                message = e.message,
+                name = e.name,
+                code = e.code
+              )
+            }).toList
+          )
         )
       )
 //        JsonStartConfigOut(

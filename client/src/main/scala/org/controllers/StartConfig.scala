@@ -1,7 +1,6 @@
 package org.controllers
 
 import org.controllers.action.Component
-import org.shared.json.startConfig.JsonStartConfigOut
 import org.views.DrawStartConfig
 
 /**
@@ -9,7 +8,7 @@ import org.views.DrawStartConfig
   *
   * Created by Gennadi Heimann 09.11.2018
   */
-class StartConfig(jsonStartConfigOut: JsonStartConfigOut) {
+class StartConfig(jsonStartConfigOut: Any/*JsonStartConfigOut*/) {
 
   private[controllers] def startConfig = {
 

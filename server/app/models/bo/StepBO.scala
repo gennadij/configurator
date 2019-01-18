@@ -7,6 +7,8 @@ import org.shared.status.common.StatusStep
  * 
  * Created by Gennadi Heimann 09.02.2018
  */
+
+//TODO und aus dem StepBO.status entfernen, nachdem NextStep implementiert wurde
 case class StepBO (
                     stepId: Option[String] = None,
                     nameToShow: Option[String] = None,
