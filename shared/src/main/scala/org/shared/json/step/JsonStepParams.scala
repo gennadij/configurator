@@ -1,6 +1,8 @@
 package org.shared.json.step
 
-import play.api.libs.json.{Json, OFormat}
+import org.shared.json.JsonKey
+import play.api.libs.json.{Format, JsPath, Json}
+import play.api.libs.functional.syntax._
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -9,12 +11,9 @@ import play.api.libs.json.{Json, OFormat}
  */
 
 case class JsonStepParams (
-    configUrl: String,
-    componentId: String
+    configUrl: Option[String] = None
 )
 
 object JsonStepParams{
-  implicit val format: OFormat[JsonStepParams] = Json.format[JsonStepParams]
+  implicit val format: Format[JsonStepParams] = Json.format[JsonStepParams]
 }
-
-

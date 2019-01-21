@@ -25,7 +25,7 @@ trait Wrapper extends RIDConverter {
     */
   def toStepIn(jsonStepIn: JsonStepIn): StepContainerBO = {
     StepContainerBO(
-      configUrl = Some(jsonStepIn.params.configUrl)
+      configUrl = Some(jsonStepIn.params.configUrl.get)
     )
 
   }
@@ -73,51 +73,7 @@ trait Wrapper extends RIDConverter {
           )
         )
       )
-//        JsonStartConfigOut(
-//          result = JsonStartConfigResult(
-//            JsonStep(
-//              convertedIdsStepContainerBO.step.get.stepId.get,
-//              convertedIdsStepContainerBO.step.get.nameToShow.get,
-//              convertedIdsStepContainerBO.componentsForSelection.get.components map (component => {
-//                JsonComponent(
-//                  component.componentId.get,
-//                  component.nameToShow.get
-//                )
-//              })
-//            ),
-//            JsonStepStatus(
-//              firstStep = Some(JsonStatus(
-//                convertedIdsStepContainerBO.step.get.status.get.startConfig.get.status,
-//                convertedIdsStepContainerBO.step.get.status.get.startConfig.get.message)),
-//              common = Some(JsonStatus(
-//                convertedIdsStepContainerBO.step.get.status.get.common.get.status,
-//                convertedIdsStepContainerBO.step.get.status.get.common.get.message))
-//            )
-//
-//          )
-//        )
-//      case None =>
-//        JsonStartConfigOut(
-//          result = JsonStartConfigResult(
-//            JsonStep(
-//              "",
-//              "",
-//              List()
-//            ),
-//            JsonStepStatus(
-//              firstStep = Some(JsonStatus(
-//                stepContainerBO.step.get.status.get.startConfig.get.status,
-//                stepContainerBO.step.get.status.get.startConfig.get.message)),
-//              common = Some(JsonStatus(
-//                stepContainerBO.step.get.status.get.common.get.status,
-//                stepContainerBO.step.get.status.get.common.get.message))
-//            )
-//
-//          )
-//        )
     }
-
-
   }
 
   //  /**

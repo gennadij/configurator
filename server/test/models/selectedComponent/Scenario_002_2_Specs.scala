@@ -4,7 +4,6 @@ import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
 import org.shared.json.{JsonKey, JsonNames}
-import org.shared.json.startConfig.JsonStartConfigOut
 import org.shared.status.common.Success
 import org.shared.status.selectedComponent._
 import org.specs2.mutable.Specification
@@ -45,20 +44,21 @@ class Scenario_002_2_Specs  extends Specification with MessageHandler with Befor
       Logger.info("StartConfigIn " + startConfigIn)
       Logger.info("StartConfigOut " + startConfigOut)
 
-      val startConfig = Json.fromJson[JsonStartConfigOut](startConfigOut)
+//      val startConfig = Json.fromJson[JsonStartConfigOut](startConfigOut)
+//
+//      //User hat ausgewaelt
+//      val componentIdC11: String = startConfig.get.result.step.components.filter(comp => comp.nameToShow == "C11")
+//        .map(_.componentId).head
 
-      //User hat ausgewaelt
-      val componentIdC11: String = startConfig.get.result.step.components.filter(comp => comp.nameToShow == "C11")
-        .map(_.componentId).head
-
-      Logger.info(this.getClass.getSimpleName + ": componentIdC11 " + componentIdC11)
-      
-      val componentIn_1 = Json.obj(
-          "json" -> JsonNames.COMPONENT
-          ,"params" -> Json.obj(
-               "componentId" -> componentIdC11
-           )
-      )
+//      Logger.info(this.getClass.getSimpleName + ": componentIdC11 " + componentIdC11)
+//
+      val componentIn_1 = ???
+//Json.obj(
+//          "json" -> JsonNames.COMPONENT
+//          ,"params" -> Json.obj(
+//               "componentId" -> componentIdC11
+//           )
+//      )
       Logger.info("componentIn_1 " + componentIn_1)
       
       val componentOut_1: JsValue = wC.handleMessage(componentIn_1, wC.currentConfig)
@@ -107,12 +107,13 @@ class Scenario_002_2_Specs  extends Specification with MessageHandler with Befor
       
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
-      val componentIn_2 = Json.obj(
-          "json" -> JsonNames.COMPONENT
-          ,"params" -> Json.obj(
-               "componentId" -> componentIdC11
-           )
-      )
+      val componentIn_2 = ???
+//        Json.obj(
+//          "json" -> JsonNames.COMPONENT
+//          ,"params" -> Json.obj(
+//               "componentId" -> componentIdC11
+//           )
+//      )
       Logger.info("componentIn_2 " + componentIn_2)
       
       val componentOut_2: JsValue = wC.handleMessage(componentIn_2, wC.currentConfig)

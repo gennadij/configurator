@@ -2,12 +2,9 @@ package models.persistence
 
 import com.tinkerpop.blueprints.Direction
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
-import models.bo.{ComponentBO, SelectedComponentBO, StepBO}
+import models.bo.{ComponentBO, SelectedComponentBO, StepBO, StepContainerBO}
 import org.shared.error.Error
-import org.shared.status.common
 import org.shared.status.common.{Status, StatusStep, Success}
-import org.shared.status.currentConfig.StepCurrentConfigSuccess
-import org.shared.status.nextStep.{NextStepExist, StatusNextStep}
 import org.shared.status.selectedComponent.{StatusComponent, StatusCurrentStep}
 
 import scala.collection.JavaConverters._
@@ -26,20 +23,25 @@ object Persistence {
     * @return StepBO
     */
 
-  def getFirstStep(configUrl: String): (Option[StepBO], Option[Error]) = {
-    val (vFirstStep, error): (Option[OrientVertex], Option[Error]) =
-      Graph.getFirstStep(configUrl)
+  def getStep(configUrl: Option[String] = None, componentId: Option[String] = None): StepContainerBO = {
 
-    vFirstStep match {
-      case Some(fS) =>
-        (Some(StepBO(
-          stepId = Some(fS.getIdentity.toString),
-          nameToShow = Some(fS.getProperty(PropertyKeys.NAME_TO_SHOW).toString),
-          selectionCriterionMin = Some(fS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN)),
-          selectionCriterionMax = Some(fS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX)))
-        ), None)
-      case None =>
-        (None, error)
+    val (vStep, error) : (Option[OrientVertex], Option[Error]) = ((configUrl, componentId): @unchecked) match {
+      case (Some(configUrl), None) => Graph.getStep(configUrl = Some(configUrl))
+      case (None, Some(componentId)) => Graph.getStep(componentId = Some(componentId))
+    }
+
+    error match {
+      case Some(_) => StepContainerBO(error = Some(Set(error.get)))
+      case None => StepContainerBO(
+        step = Some(
+          StepBO(
+            stepId = Some(vStep.get.getIdentity.toString),
+            nameToShow = Some(vStep.get.getProperty(PropertyKeys.NAME_TO_SHOW).toString),
+            selectionCriterionMin = Some(vStep.get.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN)),
+            selectionCriterionMax = Some(vStep.get.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX))
+          )
+        )
+      )
     }
   }
 
@@ -64,26 +66,6 @@ object Persistence {
       case None => (None, error)
     }
   }
-
-//  /**
-//    * @author Gennadi Heimann
-//    * @version 0.0.1
-//    * @param StartConfigIn
-//    * @return StartConfigOut
-//    */
-  //  def startConfig(startConfigIn: StartConfigIn) : StartConfigOut = {
-  //    StepVertex.firstStep(startConfigIn)
-  //  }
-
-//  /**
-//    * @author Gennadi Heimann
-//    * @version 0.0.1
-//    * @param NextStepIn
-//    * @return NextStepOut
-//    */
-  //  def nestStep(nextStepIn: NextStepIn): NextStepOut = {
-  //    StepVertex.nextStep(nextStepIn)
-  //  }
 
   /**
     * @author Gennadi Heimann
@@ -129,56 +111,31 @@ object Persistence {
     * @param componentId: String
     * @return StepBO
     */
-  def getCurrentStep(componentId: String): StepBO = {
-    val (vCurrentStep: Option[OrientVertex], statusCurrentStep: StatusCurrentStep, statusCommon: Status) =
+  def getCurrentStep(componentId: String): StepContainerBO = {
+    val (vCurrentStep: Option[OrientVertex], error: Option[Error]) =
       Graph.getCurrentStep(componentId)
 
-    vCurrentStep match {
-      case Some(vCS) =>
-        StepBO(
-          Some(vCS.getIdentity.toString),
-          Some(vCS.getProperty(PropertyKeys.NAME_TO_SHOW).toString),
-          Some(vCS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN).toString.toInt),
-          Some(vCS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX).toString.toInt),
-          Some(StatusStep(
-            currentStep = Some(statusCurrentStep),
-            common = Some(statusCommon)
-          )),
-          Some(vCS.getEdges(Direction.OUT, PropertyKeys.HAS_COMPONENT).asScala.toList map (hC => {
-            hC.getVertex(Direction.IN).asInstanceOf[OrientVertex].getIdentity.toString()
-          }))
-        )
-      case _ => StepBO(status = Some(StatusStep(currentStep = Some(statusCurrentStep), common = Some(statusCommon))))
-    }
-  }
-
-  /**
-    * @author Gennadi Heimann
-    * @version 0.0.2
-    * @param componentId: String
-    * @return StepBO
-    */
-  def getNextStep(componentId: String): StepBO = {
-    val (vNextStep, statusNextStep, statusCommon) : (Option[OrientVertex], StatusNextStep, Status) =
-      Graph.getNextStep(componentId)
-
-    vNextStep match {
-      case Some(vNS) =>
-        StepBO(
-          stepId = Some(vNS.getIdentity.toString),
-          nameToShow = Some(vNS.getProperty(PropertyKeys.NAME_TO_SHOW).toString),
-          selectionCriterionMin = Some(vNS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN).toString.toInt),
-          selectionCriterionMax = Some(vNS.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX).toString.toInt),
-          status = Some(StatusStep(
-            nextStep = Some(NextStepExist()),
-            currentConfig = Some(StepCurrentConfigSuccess()),
-            common = Some(Success())
-          )),
-          componentIds = Some(vNS.getEdges(Direction.OUT, PropertyKeys.HAS_COMPONENT).asScala.toList map (hC => {
-            hC.getVertex(Direction.IN).asInstanceOf[OrientVertex].getIdentity.toString()
-          }))
-        )
-      case None => StepBO(status = Some(common.StatusStep(nextStep = Some(statusNextStep), common = Some(statusCommon))))
+    error match {
+      case Some(_) => StepContainerBO(error = Some(Set(error.get)))
+      case None => StepContainerBO(
+        step = Some(StepBO(
+          stepId = Some(vCurrentStep.get.getIdentity.toString),
+          nameToShow = Some(vCurrentStep.get.getProperty(PropertyKeys.NAME_TO_SHOW).toString),
+          selectionCriterionMin = Some(vCurrentStep.get.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN).toString.toInt),
+          Some(vCurrentStep.get.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX).toString.toInt)
+        )),
+        componentsForSelection =
+          Some(
+            (
+              vCurrentStep.get.getEdges(Direction.OUT, PropertyKeys.HAS_COMPONENT).asScala.toList map (hC => {
+                ComponentBO(
+                  componentId = Some(hC.getVertex(Direction.IN).asInstanceOf[OrientVertex].getIdentity.toString()
+                  )
+                )
+              })
+              ).toSet
+          )
+      )
     }
   }
 }

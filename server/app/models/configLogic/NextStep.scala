@@ -2,9 +2,7 @@ package models.configLogic
 
 import models.bo._
 import models.persistence.Persistence
-import org.shared.status.common.{StatusStep, Success}
-import org.shared.status.currentConfig.StepCurrentConfigBOIncludeNoSelectedComponents
-import org.shared.status.nextStep.NextStepExist
+import org.shared.error.{Error, PreviousStepIncludeNoSelectedComponents}
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -18,7 +16,7 @@ object NextStep {
     * @version 0.0.2
     * @return NextStepOut
     */
-  def getNextStep(currentConfig: CurrentConfig): NextStepBO = {
+  def getNextStep(currentConfig: CurrentConfig): StepContainerBO = {
     new NextStep(currentConfig).getNextStep
   }
 }
@@ -31,7 +29,7 @@ class NextStep(currentConfig: CurrentConfig) {
     * @version 0.0.2
     * @return NextStepOut
     */
-  private def getNextStep: NextStepBO = {
+  private def getNextStep: StepContainerBO = {
 
     val lastStep: StepCurrentConfigBO = currentConfig.getLastStep
 
@@ -39,51 +37,39 @@ class NextStep(currentConfig: CurrentConfig) {
 
     selectedComponents match {
       case List() =>
-        NextStepBO(
-          step = Some(StepBO(
-            status = Some(StatusStep(
-              currentConfig = Some(StepCurrentConfigBOIncludeNoSelectedComponents()),
-              common = Some(Success())
-            ))
-          ))
+        StepContainerBO(
+          error = Some(Set(PreviousStepIncludeNoSelectedComponents(lastStep.stepId)))
         )
       case _ =>
-        val nextStep: StepBO = Persistence.getNextStep(selectedComponents.head.componentId.get)
-        nextStep.status.get.nextStep match {
-          case Some(NextStepExist()) =>
-//            val componentsForSelectionBO: ComponentsForSelectionBO = Persistence.getComponents(nextStep.stepId.get)
-//            componentsForSelectionBO.status.get.common match {
-//              case Some(Success()) =>
-//                //Step zu der CurrentConfig hinzufuegen
-//                lastStep.nextStep = Some(StepCurrentConfigBO(
-//                  nextStep.stepId.get,
-//                  nextStep.nameToShow.get,
-//                  List(),
-//                  None
-//                ))
-//                NextStepBO(
-//                  step = Some(nextStep),
-//                  componentsForSelection = Some(componentsForSelectionBO)
-//                )
-//              case _ => NextStepBO(step = Some(StepBO(
-//                  status = Some(StatusStep(
-//                    nextStep = Some(NextStepIncludeNoComponents()),
-//                    common = Some(Success())
-//                  ))
-//              )))
-//            }
-            ???
-          case _ => NextStepBO(step = Some(nextStep))
+        val nextStep: StepContainerBO = Persistence.getStep(componentId = selectedComponents.head.componentId)
+        nextStep.error match {
+          case Some(e) => StepContainerBO(error = Some(e))
+          case None =>
+            val (componentsBO, errorComponent): (Option[Set[ComponentBO]], Option[Error])  =
+              Persistence.getComponents(nextStep.step.get.stepId.get)
+            errorComponent match {
+              case Some(_) => StepContainerBO(error = Some(Set(errorComponent.get)))
+              case None =>
+                //Step zu der CurrentConfig hinzufuegen
+                lastStep.nextStep = Some(StepCurrentConfigBO(
+                  stepId = nextStep.step.get.stepId.get,
+                  nameToShow = nextStep.step.get.nameToShow.get
+                ))
+                StepContainerBO(
+                  step = nextStep.step,
+                  componentsForSelection = componentsBO
+                )
+            }
         }
     }
   }
 
-  /**
-    * @author Gennadi Heimann
-    * @version 0.0.1
-    * @param list : Seq[String]
-    * @return Boolean
-    */
+//  /**
+//    * @author Gennadi Heimann
+//    * @version 0.0.1
+//    * @param list : Seq[String]
+//    * @return Boolean
+//    */
 //  private def compareOneWithAll(list: Seq[String]): Boolean = {
 //    list match {
 //      case firstVertex :: rest => rest forall (_ == firstVertex)

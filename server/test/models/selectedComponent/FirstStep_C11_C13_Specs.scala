@@ -4,7 +4,6 @@ import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
 import org.shared.json.{JsonKey, JsonNames}
-import org.shared.json.startConfig.JsonStartConfigOut
 import org.shared.status.common.Success
 import org.shared.status.selectedComponent._
 import org.specs2.mutable.Specification
@@ -47,11 +46,12 @@ class FirstStep_C11_C13_Specs extends Specification with MessageHandler with Bef
       Logger.info("StartConfigIn " + startConfigIn)
       Logger.info("StartConfigOut " + startConfigOut)
 
-      val sCOut = Json.fromJson[JsonStartConfigOut](startConfigOut)
-
-      //User hat ausgewaelt
-      val componentIdC11: String = sCOut.get.result.step.components.filter(comp => comp.nameToShow == "C11")
-        .map(_.componentId).head
+//      val sCOut = Json.fromJson[JsonStartConfigOut](startConfigOut)
+//
+//      //User hat ausgewaelt
+      val componentIdC11: String = ???
+//sCOut.get.result.step.components.filter(comp => comp.nameToShow == "C11")
+//        .map(_.componentId).head
       
       Logger.info(this.getClass.getSimpleName + ": componentIdC11" + componentIdC11)
 
@@ -81,11 +81,13 @@ class FirstStep_C11_C13_Specs extends Specification with MessageHandler with Bef
 
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
-      val sCOut_2 = Json.fromJson[JsonStartConfigOut](startConfigOut)
+      val sCOut_2 = ???
+//        Json.fromJson[JsonStartConfigOut](startConfigOut)
 
       //User hat ausgewaelt
-      val componentIdC13: String = sCOut_2.get.result.step.components.filter(comp => comp.nameToShow == "C13")
-        .map(_.componentId).head
+      val componentIdC13: String = ???
+//        sCOut_2.get.result.step.components.filter(comp => comp.nameToShow == "C13")
+//        .map(_.componentId).head
 
       Logger.info(this.getClass.getSimpleName + ": componentIdC13 " + componentIdC13)
       

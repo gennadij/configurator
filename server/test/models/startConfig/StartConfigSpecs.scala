@@ -33,8 +33,7 @@ class StartConfigSpecs extends Specification with MessageHandler with BeforeAfte
       val startConfigIn = Json.obj(
           JsonKey.json -> JsonNames.STEP
           ,JsonKey.params -> Json.obj(
-               JsonKey.configUrl -> configUrl,
-               JsonKey.componentId -> ""
+               JsonKey.configUrl -> configUrl
            )
       )
       

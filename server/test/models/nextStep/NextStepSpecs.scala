@@ -4,7 +4,6 @@ import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
 import org.shared.json.{JsonKey, JsonNames}
-import org.shared.json.startConfig.JsonStartConfigOut
 import org.shared.status.selectedComponent.NotExcludedComponentInternal
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
@@ -46,12 +45,13 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       Logger.info("StartConfigIn " + startConfigIn)
       Logger.info("StartConfigOut " + startConfigOut)
 
-      val sCOut = Json.fromJson[JsonStartConfigOut](startConfigOut)
+//      val sCOut = Json.fromJson[JsonStartConfigOut](startConfigOut)
 
       //User hat ausgewaelt
-
-      val componentIdC11: String = sCOut.get.result.step.components.filter(comp => comp.nameToShow == "C11")
-        .map(_.componentId).head
+//
+      val componentIdC11: String = ???
+      // sCOut.get.result.step.components.filter(comp => comp.nameToShow == "C11")
+//        .map(_.componentId).head
 
       Logger.info(this.getClass.getSimpleName + ": componentIdC11" + componentIdC11)
 
@@ -82,8 +82,9 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       
       //User hat ausgewaelt
 
-      val componentIdC12: String = sCOut.get.result.step.components.filter(comp => comp.nameToShow == "C12")
-        .map(_.componentId).head
+      val componentIdC12: String = ???
+//        sCOut.get.result.step.components.filter(comp => comp.nameToShow == "C12")
+//        .map(_.componentId).head
 
       Logger.info(this.getClass.getSimpleName + ": componentIdC12 " + componentIdC12)
       

@@ -6,8 +6,6 @@ import models.bo.DependencyBO
 import models.bo.types.{Auto, SelectableDecision}
 import org.shared.error.{ClassCast, Error, MultipleSteps, ODBConnection, ODBRead, StepNotExist}
 import org.shared.status.common.{ODBClassCastError, ODBConnectionError, ODBReadError, Status, Success}
-import org.shared.status.nextStep._
-import org.shared.status.selectedComponent._
 import play.api.Logger
 
 import scala.collection.JavaConverters._
@@ -27,11 +25,11 @@ object Graph {
     * @param componentId : String
     * @return StepBO
     */
-  def getCurrentStep(componentId: String): (Option[OrientVertex], StatusCurrentStep, Status) = {
+  def getCurrentStep(componentId: String): (Option[OrientVertex], Option[Error]) = {
     val graph: (Option[OrientGraph], String) = ODatabase.getFactory
     graph._1 match {
       case Some(g) => new Graph(Some(g)).getCurrentStep(componentId)
-      case None => (None, CommonErrorCurrentStep(), ODBConnectionError())
+      case None => (None, Some(ODBConnection()))
     }
   }
 
@@ -55,13 +53,13 @@ object Graph {
     * @param componentId : String
     * @return StepBO
     */
-  def getNextStep(componentId: String): (Option[OrientVertex], StatusNextStep, Status) = {
-    val graph: (Option[OrientGraph], String) = ODatabase.getFactory
-    graph._1 match {
-      case Some(g) => new Graph(Some(g)).getNextStep(componentId)
-      case None => (None, NextStepCommonError(), ODBConnectionError())
-    }
-  }
+//  def getNextStep(componentId: String): (Option[OrientVertex], StatusNextStep, Status) = {
+//    val graph: (Option[OrientGraph], String) = ODatabase.getFactory
+//    graph._1 match {
+//      case Some(g) => new Graph(Some(g)).getNextStep(componentId)
+//      case None => (None, NextStepCommonError(), ODBConnectionError())
+//    }
+//  }
 
   /**
     * @author Gennadi Heimann
@@ -69,10 +67,10 @@ object Graph {
     * @param configUrl : String
     * @return OrientVertex
     */
-  def getFirstStep(configUrl: String): (Option[OrientVertex], Option[Error]) = {
+  def getStep(configUrl: Option[String] = None, componentId: Option[String] = None): (Option[OrientVertex], Option[Error]) = {
     val graph: (Option[OrientGraph], String) = ODatabase.getFactory
     graph._1 match {
-      case Some(g) => new Graph(Some(g)).getFirstStep(configUrl)
+      case Some(g) => new Graph(Some(g)).getStep(configUrl, componentId)
       case None => (None, Some(ODBConnection()))
     }
   }
@@ -124,7 +122,7 @@ class Graph(graph: Option[OrientGraph]) {
     * @param componentId : String
     * @return OrientVertex
     */
-  private def getCurrentStep(componentId: String): (Option[OrientVertex], StatusCurrentStep, Status) = {
+  private def getCurrentStep(componentId: String): (Option[OrientVertex], Option[Error]) = {
 
     try {
       val vComponent = graph.get.getVertex(componentId)
@@ -134,19 +132,19 @@ class Graph(graph: Option[OrientGraph]) {
 
       val vFatherSteps : List[OrientVertex]= eHasComponents map (eHasComponent => {eHasComponent.getVertex(Direction.OUT)})
       vFatherSteps.size match {
-        case s if s == 0 => (None, CurrentStepNotExist(), Success())
-        case s if s == 1 => (Some(vFatherSteps.head), CurrentStepExist(), Success())
-        case s if s >  1 => (None, MultipleCurrentSteps(), Success())
+        case s if s == 0 => (None, Some(StepNotExist()))
+        case s if s == 1 => (Some(vFatherSteps.head), None)
+        case s if s >  1 => (None, Some(MultipleSteps()))
       }
     } catch {
       case e2: ClassCastException =>
         graph.get.rollback()
         Logger.error(e2.printStackTrace().toString)
-        (None, CommonErrorCurrentStep(), ODBClassCastError())
+        (None, Some(ClassCast()))
       case e1: Exception =>
         graph.get.rollback()
         Logger.error(e1.printStackTrace().toString)
-        (None, CommonErrorCurrentStep(), ODBReadError())
+        (None, Some(ODBRead()))
     }
   }
 
@@ -201,55 +199,37 @@ class Graph(graph: Option[OrientGraph]) {
   /**
     * @author Gennadi Heimann
     * @version 0.0.2
-    * @param componentId : String
-    * @return StepBO
-    */
-  private def getNextStep(componentId: String): (Option[OrientVertex], StatusNextStep, Status) = {
-
-    try {
-      graph.get.getVertex(componentId).getEdges(Direction.OUT, PropertyKeys.HAS_STEP).asScala.toList match {
-        case eHasSteps if eHasSteps.size == 1 =>
-          (Some(eHasSteps.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]), NextStepExist(), Success())
-        case eHasSteps if eHasSteps.size > 1 => (None, NextMultipleSteps(), Success())
-        case eHasSteps if eHasSteps.isEmpty => (None, NextStepNotExist(), Success())
-      }
-    } catch {
-      case e2: ClassCastException =>
-        graph.get.rollback()
-        Logger.error(e2.printStackTrace().toString)
-        (None, NextStepCommonError(), ODBClassCastError())
-      case e1: Exception =>
-        graph.get.rollback()
-        Logger.error(e1.printStackTrace().toString)
-        (None, NextStepCommonError(), ODBReadError())
-    }
-  }
-
-  /**
-    * @author Gennadi Heimann
-    * @version 0.0.2
     * @param configUrl : String
     * @return StepBO
     */
 
-  private def getFirstStep(configUrl: String): (Option[OrientVertex], Option[Error]) = {
-
+  private def getStep(configUrl: Option[String],componentId: Option[String]): (Option[OrientVertex], Option[Error]) = {
     try {
-      val vConfigs: List[Vertex] = graph.get.getVertices(PropertyKeys.CONFIG_URL, configUrl).asScala.toList
-      vConfigs.size match {
-        case vConfigsCount if vConfigsCount == 1 =>
-          val eHasConfigs: List[Edge] = vConfigs.head.getEdges(Direction.OUT, PropertyKeys.HAS_STEP).asScala.toList
-          eHasConfigs.size match {
-            case eHasConfigsCount if eHasConfigsCount == 1 =>
-              val vFirstStep: OrientVertex = eHasConfigs.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]
-              (Some(vFirstStep), None)
-            case eHasConfigsCount if eHasConfigsCount > 1 => (None, Some(MultipleSteps()))
-            case eHasConfigsCount if eHasConfigsCount < 1 => (None, Some(StepNotExist()))
+      ((configUrl, componentId): @unchecked) match {
+        case (Some(configUrl), None) =>
+          val vConfigs: List[Vertex] = graph.get.getVertices(PropertyKeys.CONFIG_URL, configUrl).asScala.toList
+          vConfigs.size match {
+            case vConfigsCount if vConfigsCount == 1 =>
+              val eHasConfigs: List[Edge] = vConfigs.head.getEdges(Direction.OUT, PropertyKeys.HAS_STEP).asScala.toList
+              eHasConfigs.size match {
+                case eHasConfigsCount if eHasConfigsCount == 1 =>
+                  val vFirstStep: OrientVertex = eHasConfigs.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]
+                  (Some(vFirstStep), None)
+                case eHasConfigsCount if eHasConfigsCount > 1 => (None, Some(MultipleSteps()))
+                case eHasConfigsCount if eHasConfigsCount < 1 => (None, Some(StepNotExist()))
+              }
+            case vConfigsCount if vConfigsCount > 1 => (None, Some(MultipleSteps()))
+            case vConfigsCount if vConfigsCount < 1 => (None, Some(StepNotExist()))
           }
-        case vConfigsCount if vConfigsCount > 1 => (None, Some(MultipleSteps()))
-        case vConfigsCount if vConfigsCount < 1 => (None, Some(StepNotExist()))
+        case (None, Some(componentId)) =>
+          graph.get.getVertex(componentId).getEdges(Direction.OUT, PropertyKeys.HAS_STEP).asScala.toList match {
+            case eHasSteps if eHasSteps.size == 1 =>
+              (Some(eHasSteps.head.getVertex(Direction.IN).asInstanceOf[OrientVertex]), None)
+            case eHasSteps if eHasSteps.size > 1 => (None, Some(MultipleSteps()))
+            case eHasSteps if eHasSteps.isEmpty => (None, Some(StepNotExist()))
+          }
       }
-    } catch {
+    }catch {
       case e2: ClassCastException =>
         graph.get.rollback()
         Logger.error(e2.printStackTrace().toString)

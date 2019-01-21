@@ -4,7 +4,6 @@ import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
 import org.shared.json.{JsonKey, JsonNames}
-import org.shared.json.startConfig.JsonStartConfigOut
 import org.shared.status.common.Success
 import org.shared.status.selectedComponent._
 import org.specs2.mutable.Specification
@@ -46,11 +45,12 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
 
       Logger.info("StartConfigOut " + startConfigOut)
 
-      val sCOut = Json.fromJson[JsonStartConfigOut](startConfigOut)
+//      val sCOut = Json.fromJson[JsonStartConfigOut](startConfigOut)
 
       //User hat ausgewaelt
-      val componentIdC11: String = sCOut.get.result.step.components.filter(comp => comp.nameToShow == "C11")
-            .map(_.componentId).head
+      val componentIdC11: String = ???
+//        sCOut.get.result.step.components.filter(comp => comp.nameToShow == "C11")
+//            .map(_.componentId).head
 
       Logger.info(this.getClass.getSimpleName + ": componentIdC11 " + componentIdC11)
 

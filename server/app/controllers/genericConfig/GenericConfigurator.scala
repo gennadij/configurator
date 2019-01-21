@@ -33,7 +33,7 @@ trait GenericConfigurator extends Wrapper{
     * @version 0.0.1
     * @return JsonNextStepOut
     */
-  def getNextStep(currentConfig: CurrentConfig): JsonNextStepOut = toJsonNextStepOut(NextStep.getNextStep(currentConfig))
+  def getNextStep(currentConfig: CurrentConfig): JsonStepOut = toJsonStepOut(NextStep.getNextStep(currentConfig))
 
   /**
     * @author Gennadi Heimann

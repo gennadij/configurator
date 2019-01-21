@@ -25,7 +25,7 @@ case class MultipleSteps(id: String = "undefined") extends Error(
   code = "E010002"
 )
 
-case class NextStepIncludeNoComponents(stepId: String = "undefined") extends Error(
+case class PreviousStepIncludeNoSelectedComponents(stepId: String = "undefined") extends Error(
   message = s"Der nächste Schritt (id = $stepId) enthält keine Komponente",
   name = "NEXT_STEP_INCLUDE_NO_COMPONENTS",
   code = "E010003"

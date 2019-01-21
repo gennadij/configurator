@@ -2,8 +2,8 @@ package models.configLogic
 
 import models.bo._
 import models.persistence.Persistence
-import org.shared.status.common.{Status, Success}
-import org.shared.status.nextStep.{NextStepExist, NextStepNotExist}
+import org.shared.error.StepNotExist
+import org.shared.status.common.Success
 import org.shared.status.selectedComponent._
 
 /**
@@ -38,12 +38,12 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig:
 
         val sCExtendedOfCurrentAndNextStep = getCurrentAndNextStepFromPersistence(sCBO)
 
-        val (statusCurrentStep, statusNextStep): (Status ,Status) =
-          (sCExtendedOfCurrentAndNextStep.currentStep.get.status.get.common.get,
-            sCExtendedOfCurrentAndNextStep.nextStep.get.status.get.common.get)
+        val (statusCurrentStep, statusNextStep) =
+          (sCExtendedOfCurrentAndNextStep.currentStep.get.error,
+            sCExtendedOfCurrentAndNextStep.nextStep.get.error)
 
         (statusCurrentStep, statusNextStep) match {
-          case (Success(), Success()) =>
+          case (None, None) =>
 
             val sCExtendedOfCurrentConfigStep =
               getCurrentStepFromCurrentConfig(sCExtendedOfCurrentAndNextStep, currentConfig)
@@ -85,9 +85,9 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig:
     */
   private def getCurrentAndNextStepFromPersistence(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
 
-    val currentStepBO: StepBO = Persistence.getCurrentStep(selectedComponentBO.selectedComponent.get.componentId.get)
+    val currentStepBO: StepContainerBO = Persistence.getCurrentStep(selectedComponentBO.selectedComponent.get.componentId.get)
 
-    val nextStep: StepBO = Persistence.getNextStep(selectedComponentBO.selectedComponent.get.componentId.get)
+    val nextStep: StepContainerBO = Persistence.getStep(componentId = selectedComponentBO.selectedComponent.get.componentId)
 
     selectedComponentBO.copy(currentStep = Some(currentStepBO), nextStep = Some(nextStep))
   }
@@ -102,7 +102,7 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig:
                                               currentConfig: CurrentConfig): SelectedComponentBO = {
 
     val currentStepCurrentConfig: Option[StepCurrentConfigBO] =
-      currentConfig.getCurrentStep(selectedComponentBO.currentStep.get.stepId.get)
+      currentConfig.getCurrentStep(selectedComponentBO.currentStep.get.step.get.stepId.get)
 
     selectedComponentBO.copy(stepCurrentConfig = currentStepCurrentConfig)
   }
@@ -115,9 +115,9 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig:
     */
   private def verifyStatusComponentType(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
 
-    val componentTypeStatus: StatusComponentType = selectedComponentBO.nextStep.get.status.get.nextStep.get match {
-      case NextStepNotExist() => FinalComponent()
-      case NextStepExist() => DefaultComponent()
+    val componentTypeStatus: StatusComponentType = selectedComponentBO.nextStep.get.error match {
+      case _ : Option[Set[StepNotExist]] => FinalComponent() //TODO verbessern
+      case None => DefaultComponent()
       case _ => UnknownComponentType()
     }
 
@@ -226,7 +226,8 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig:
     val fromSelectedComponentExcludedComponentIds: List[String] =
       selectedComponentBO.selectedComponent.get.excludeDependenciesOut.get map (_.inId)
 
-    val unselectedComponentIds: List[String] = selectedComponentBO.currentStep.get.componentIds.get filterNot (c => {
+
+    val unselectedComponentIds: List[String] = (selectedComponentBO.currentStep.get.componentsForSelection.get.toList map(_.componentId.get)) filterNot (c => { //TODO verbessern
       (previousSelectedComponentsInCurrentConfigIds :::
         fromCurrentConfigExcludedComponentIds.toList.+:(selectedComponentId)).contains(c)
     })

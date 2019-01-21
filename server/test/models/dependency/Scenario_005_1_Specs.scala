@@ -5,7 +5,6 @@ import controllers.websocket.WebClient
 import models.bo.types.Auto
 import org.junit.runner.RunWith
 import org.shared.json.{JsonKey, JsonNames}
-import org.shared.json.startConfig.JsonStartConfigOut
 import org.shared.status.common.Success
 import org.shared.status.selectedComponent._
 import org.specs2.mutable.Specification
@@ -45,10 +44,11 @@ class Scenario_005_1_Specs extends Specification with MessageHandler with Before
 
       val startConfigOut_S1 = CommonFunction.firstStep(wC, configUrl)
 
-      val sCOut = Json.fromJson[JsonStartConfigOut](startConfigOut_S1)
-
-      val componentIdC11: String = sCOut.get.result.step.components.filter(comp => comp.nameToShow == c11)
-        .map(_.componentId).head
+//      val sCOut = Json.fromJson[JsonStartConfigOut](startConfigOut_S1)
+//
+      val componentIdC11: String = ???
+      // sCOut.get.result.step.components.filter(comp => comp.nameToShow == c11)
+//        .map(_.componentId).head
 
       CommonFunction.selectComponent(wC, componentIdC11)
 

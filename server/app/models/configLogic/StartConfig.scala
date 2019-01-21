@@ -33,7 +33,7 @@ class StartConfig(configUrl: Option[String], currentConfig: CurrentConfig) {
     */
   private def startConfig: StepContainerBO = {
 
-    val (firstStepBO, errorFirstSTep): (Option[StepBO], Option[Error]) = Persistence.getFirstStep(configUrl.get)
+    val (firstStepBO, errorFirstSTep): (Option[StepBO], Option[Error]) = Persistence.getStep(configUrl = configUrl)
 
     firstStepBO match {
       case Some(stepBO) =>

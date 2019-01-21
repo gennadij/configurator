@@ -28,7 +28,7 @@ trait MessageHandler extends GenericConfigurator{
     (receivedMessage \ "json").asOpt[String] match {
       case Some(JsonNames.STEP) => step(receivedMessage, cC)
 //      case Some("StartConfig") => startConfig(receivedMessage, cC)
-      case Some("NextStep") => nextStep(receivedMessage, cC)
+//      case Some("NextStep") => nextStep(receivedMessage, cC)
       case Some("CurrentConfig") => currentConfig(receivedMessage, cC)
       case Some("Component") => selectedComponent(receivedMessage, cC)
       case _ => jsonError(errorText = "Input JSON is not permitted")
@@ -44,10 +44,10 @@ trait MessageHandler extends GenericConfigurator{
   private def step(receivedMessage: JsValue, currentConfig: CurrentConfig): JsValue = {
     val jsonStepIn: JsResult[JsonStepIn] = Json.fromJson[JsonStepIn](receivedMessage)
     jsonStepIn match {
-      case _: JsSuccess[JsonStepIn] =>
-        jsonStepIn.get.params.componentId match {
-          case componentId if componentId.isEmpty => Json.toJson(startConfig(jsonStepIn.get, currentConfig))
-          case _ => ???
+      case jSIn: JsSuccess[JsonStepIn] =>
+        jSIn.get.params.configUrl match {
+          case Some(_) =>Json.toJson(startConfig(jSIn.get, currentConfig))
+          case None => Json.toJson(getNextStep(currentConfig))
         }
       case e: JsError => jsonError(JsonNames.STEP, e)
     }
@@ -73,13 +73,13 @@ trait MessageHandler extends GenericConfigurator{
     * @param receiveMessage : JsValue
     * @return JsValue
     */
-  private def nextStep(receiveMessage: JsValue, currentConfig: CurrentConfig): JsValue = {
-    val jsonNextStepIn: JsResult[JsonNextStepIn] = Json.fromJson[JsonNextStepIn](receiveMessage)
-    jsonNextStepIn match {
-      case _: JsSuccess[JsonNextStepIn] => Json.toJson(getNextStep(currentConfig))
-      case e: JsError => jsonError(JsonNames.NEXT_STEP, e)
-    }
-  }
+//  private def nextStep(receiveMessage: JsValue, currentConfig: CurrentConfig): JsValue = {
+//    val jsonNextStepIn: JsResult[JsonNextStepIn] = Json.fromJson[JsonNextStepIn](receiveMessage)
+//    jsonNextStepIn match {
+//      case _: JsSuccess[JsonNextStepIn] => Json.toJson(getNextStep(currentConfig))
+//      case e: JsError => jsonError(JsonNames.NEXT_STEP, e)
+//    }
+//  }
 
   /**
     * @author Gennadi Heimann

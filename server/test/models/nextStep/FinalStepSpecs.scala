@@ -5,7 +5,6 @@ import controllers.websocket.WebClient
 import org.junit.runner.RunWith
 import org.shared.json.{JsonKey, JsonNames}
 import org.shared.json.nextStep.JsonNextStepOut
-import org.shared.json.startConfig.JsonStartConfigOut
 import org.shared.status.selectedComponent.NotExcludedComponentInternal
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
@@ -47,12 +46,13 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
       Logger.info("IN " + startConfigIn)
       Logger.info("OUT" + startConfigOut)
 
-      val sCOut = Json.fromJson[JsonStartConfigOut](startConfigOut)
-
-      //User hat ausgewaelt
-
-      val componentIdC11: String = sCOut.get.result.step.components.filter(comp => comp.nameToShow == "C11")
-        .map(_.componentId).head
+//      val sCOut = Json.fromJson[JsonStartConfigOut](startConfigOut)
+//
+//      //User hat ausgewaelt
+//
+      val componentIdC11: String = ???
+      // sCOut.get.result.step.components.filter(comp => comp.nameToShow == "C11")
+//        .map(_.componentId).head
 
       val componentIn_1 = Json.obj(
           "json" -> JsonNames.COMPONENT

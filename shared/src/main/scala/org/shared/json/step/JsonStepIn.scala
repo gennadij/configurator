@@ -1,7 +1,7 @@
 package org.shared.json.step
 
 import org.shared.json.JsonNames
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{Format, Json}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -14,6 +14,6 @@ case class JsonStepIn (
 )
 
 object JsonStepIn{
-  implicit val format: OFormat[JsonStepIn] = Json.format[JsonStepIn]
+  implicit val format: Format[JsonStepIn] = Json.format[JsonStepIn]
 }
 
