@@ -33,9 +33,9 @@ class StartConfig(configUrl: Option[String], currentConfig: CurrentConfig) {
     */
   private def startConfig: StepContainerBO = {
 
-    val (firstStepBO, errorFirstSTep): (Option[StepBO], Option[Error]) = Persistence.getStep(configUrl = configUrl)
+    val firstStepBO: StepContainerBO = Persistence.getStep(configUrl = configUrl)
 
-    firstStepBO match {
+    firstStepBO.step match {
       case Some(stepBO) =>
         val (componentBOs, errorComponents): (Option[Set[ComponentBO]], Option[Error]) =
           Persistence.getComponents(stepBO.stepId.get)
@@ -51,18 +51,13 @@ class StartConfig(configUrl: Option[String], currentConfig: CurrentConfig) {
         errorComponents match {
           case Some(error) =>
             StepContainerBO(
-              error = Some(Set(error))
+              error = Some(List(error))
             )
           case _ =>
-            StepContainerBO(
-              step = firstStepBO,
-              componentsForSelection = componentBOs
-            )
+            firstStepBO.copy(componentsForSelection = componentBOs)
         }
       case None =>
-        StepContainerBO(
-          error = Some(Set(errorFirstSTep.get))
-        )
+        firstStepBO
     }
   }
 }

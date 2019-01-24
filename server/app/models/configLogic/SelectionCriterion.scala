@@ -25,7 +25,7 @@ trait SelectionCriterion {
           case _ =>
             val statusSC: StatusSelectionCriterion =
               getSelectionCriterionStatus(previousSelectedComponentsInCurrentConfig.size,
-                selectedComponentBO.currentStep.get)
+                selectedComponentBO.currentStep.get.step.get)
             val status = selectedComponentBO.status.get.copy(selectionCriterion = Some(statusSC))
             selectedComponentBO.copy(status = Some(status))
         }
@@ -45,7 +45,7 @@ trait SelectionCriterion {
           }
 
           val statusSC: StatusSelectionCriterion =
-            getSelectionCriterionStatus(countOfComponentsInCurrentConfig, selectedComponentBO.currentStep.get)
+            getSelectionCriterionStatus(countOfComponentsInCurrentConfig, selectedComponentBO.currentStep.get.step.get)
 
           val status = selectedComponentBO.status.get.copy(selectionCriterion = Some(statusSC))
           selectedComponentBO.copy(status = Some(status))
@@ -64,7 +64,7 @@ trait SelectionCriterion {
 
           val statusSC: StatusSelectionCriterion =
             getSelectionCriterionStatus(countOfComponentsInCurrentConfigWithTempSelectedComponent,
-              selectedComponentBO.currentStep.get)
+              selectedComponentBO.currentStep.get.step.get)
 
           statusSC match {
             case AllowNextComponent() =>

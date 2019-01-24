@@ -116,7 +116,7 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig:
   private def verifyStatusComponentType(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
 
     val componentTypeStatus: StatusComponentType = selectedComponentBO.nextStep.get.error match {
-      case _ : Option[Set[StepNotExist]] => FinalComponent() //TODO verbessern
+      case Some(List(StepNotExist(_))) => FinalComponent() //TODO verbessern
       case None => DefaultComponent()
       case _ => UnknownComponentType()
     }

@@ -38,7 +38,7 @@ class NextStep(currentConfig: CurrentConfig) {
     selectedComponents match {
       case List() =>
         StepContainerBO(
-          error = Some(Set(PreviousStepIncludeNoSelectedComponents(lastStep.stepId)))
+          error = Some(List(PreviousStepIncludeNoSelectedComponents(lastStep.stepId)))
         )
       case _ =>
         val nextStep: StepContainerBO = Persistence.getStep(componentId = selectedComponents.head.componentId)
@@ -48,7 +48,7 @@ class NextStep(currentConfig: CurrentConfig) {
             val (componentsBO, errorComponent): (Option[Set[ComponentBO]], Option[Error])  =
               Persistence.getComponents(nextStep.step.get.stepId.get)
             errorComponent match {
-              case Some(_) => StepContainerBO(error = Some(Set(errorComponent.get)))
+              case Some(_) => StepContainerBO(error = Some(List(errorComponent.get)))
               case None =>
                 //Step zu der CurrentConfig hinzufuegen
                 lastStep.nextStep = Some(StepCurrentConfigBO(

@@ -2,12 +2,10 @@ package controllers.wrapper
 
 import models.bo._
 import org.shared.json.common
-import org.shared.json.common.{JsonError, JsonStatus, JsonStepStatus}
+import org.shared.json.common.{JsonError, JsonStatus}
 import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut, JsonCurrentConfigResult, JsonStepCurrentConfig}
-import org.shared.json.nextStep.{JsonNextStepOut, JsonNextStepResult}
 import org.shared.json.selectedComponent._
 import org.shared.json.step._
-import org.shared.status.nextStep.NextStepExist
 import org.shared.status.selectedComponent.StatusComponent
 
 /**
@@ -25,7 +23,7 @@ trait Wrapper extends RIDConverter {
     */
   def toStepIn(jsonStepIn: JsonStepIn): StepContainerBO = {
     StepContainerBO(
-      configUrl = Some(jsonStepIn.params.configUrl.get)
+      configUrl = Some(jsonStepIn.params.get.configUrl.get)
     )
 
   }
@@ -38,7 +36,7 @@ trait Wrapper extends RIDConverter {
     */
   def toJsonStepOut(stepContainerBO: StepContainerBO): JsonStepOut = {
 
-    val convertedIdsStepContainerBO: StepContainerBO = convertRidToHashforStartConfig(stepContainerBO)
+    val convertedIdsStepContainerBO: StepContainerBO = convertRidToHashForStepContainer(stepContainerBO)
 
     convertedIdsStepContainerBO.step match {
       case Some(_) =>
@@ -90,60 +88,60 @@ trait Wrapper extends RIDConverter {
     * @param nextStepBO : NextStepOut
     * @return JsonNextStepOut
     */
-  def toJsonNextStepOut(nextStepBO: NextStepBO): JsonNextStepOut = {
-
-    nextStepBO.step.get.status.get.nextStep.get match {
-      case NextStepExist() =>
-
-        val nextStepWithConvertedRids: NextStepBO = convertRidToHashForNextStepBO(nextStepBO)
-
-        JsonNextStepOut(
-          result = JsonNextStepResult(
-            common.JsonStep(
-              stepId = nextStepWithConvertedRids.step.get.stepId.get,
-              nameToShow = nextStepWithConvertedRids.step.get.nameToShow.get,
-              components = nextStepWithConvertedRids.componentsForSelection.get.components map (c => {
-                common.JsonComponent(
-                  componentId = c.componentId.get,
-                  nameToShow = c.nameToShow.get
-                )
-              })
-            ),
-            JsonStepStatus(
-              nextStep = Some(JsonStatus(
-                nextStepWithConvertedRids.step.get.status.get.nextStep.get.status,
-                nextStepWithConvertedRids.step.get.status.get.nextStep.get.message
-              )),
-              currentConfig = Some(JsonStatus(
-                status = nextStepWithConvertedRids.step.get.status.get.currentConfig.get.status,
-                message = nextStepWithConvertedRids.step.get.status.get.currentConfig.get.message
-              )),
-              common = Some(JsonStatus(
-                nextStepWithConvertedRids.step.get.status.get.common.get.status,
-                nextStepWithConvertedRids.step.get.status.get.common.get.message
-              ))
-            )
-          )
-        )
-      case _ =>
-        JsonNextStepOut(
-          result = JsonNextStepResult(
-            step = common.JsonStep("", "", List()),
-            JsonStepStatus(
-              nextStep = Some(JsonStatus(
-                nextStepBO.step.get.status.get.nextStep.get.status,
-                nextStepBO.step.get.status.get.nextStep.get.message
-              )),
-              common = Some(JsonStatus(
-                nextStepBO.step.get.status.get.common.get.status,
-                nextStepBO.step.get.status.get.common.get.message
-              ))
-            )
-          )
-        )
-    }
-
-  }
+//  def toJsonNextStepOut(nextStepBO: NextStepBO): JsonNextStepOut = {
+//
+//    nextStepBO.step.get.status.get.nextStep.get match {
+//      case NextStepExist() =>
+//
+//        val nextStepWithConvertedRids: NextStepBO = convertRidToHashForNextStepBO(nextStepBO)
+//
+//        JsonNextStepOut(
+//          result = JsonNextStepResult(
+//            common.JsonStep(
+//              stepId = nextStepWithConvertedRids.step.get.stepId.get,
+//              nameToShow = nextStepWithConvertedRids.step.get.nameToShow.get,
+//              components = nextStepWithConvertedRids.componentsForSelection.get.components map (c => {
+//                common.JsonComponent(
+//                  componentId = c.componentId.get,
+//                  nameToShow = c.nameToShow.get
+//                )
+//              })
+//            ),
+//            JsonStepStatus(
+//              nextStep = Some(JsonStatus(
+//                nextStepWithConvertedRids.step.get.status.get.nextStep.get.status,
+//                nextStepWithConvertedRids.step.get.status.get.nextStep.get.message
+//              )),
+//              currentConfig = Some(JsonStatus(
+//                status = nextStepWithConvertedRids.step.get.status.get.currentConfig.get.status,
+//                message = nextStepWithConvertedRids.step.get.status.get.currentConfig.get.message
+//              )),
+//              common = Some(JsonStatus(
+//                nextStepWithConvertedRids.step.get.status.get.common.get.status,
+//                nextStepWithConvertedRids.step.get.status.get.common.get.message
+//              ))
+//            )
+//          )
+//        )
+//      case _ =>
+//        JsonNextStepOut(
+//          result = JsonNextStepResult(
+//            step = common.JsonStep("", "", List()),
+//            JsonStepStatus(
+//              nextStep = Some(JsonStatus(
+//                nextStepBO.step.get.status.get.nextStep.get.status,
+//                nextStepBO.step.get.status.get.nextStep.get.message
+//              )),
+//              common = Some(JsonStatus(
+//                nextStepBO.step.get.status.get.common.get.status,
+//                nextStepBO.step.get.status.get.common.get.message
+//              ))
+//            )
+//          )
+//        )
+//    }
+//
+//  }
 
   /**
     * @author Gennadi Heimann
@@ -210,7 +208,7 @@ trait Wrapper extends RIDConverter {
     JsonComponentOut(
       result = JsonComponentResult(
         selectedComponentWithHash.selectedComponent.get.componentId.get,
-        selectedComponentWithHash.currentStep.get.stepId.get,
+        selectedComponentWithHash.currentStep.get.step.get.stepId.get,
         JsonComponentStatus(
           status.selectionCriterion match {
             case Some(s) =>

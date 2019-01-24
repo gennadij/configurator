@@ -16,7 +16,7 @@ trait RIDConverter extends RidToHash {
     * @param stepContainerBO: StepContainerBO
     * @return StepContainerBO
     */
-  private[wrapper] def convertRidToHashforStartConfig(stepContainerBO: StepContainerBO): StepContainerBO = {
+  private[wrapper] def convertRidToHashForStepContainer(stepContainerBO: StepContainerBO): StepContainerBO = {
     stepContainerBO.error match {
       case Some(_) => stepContainerBO
       case _ =>
@@ -38,6 +38,23 @@ trait RIDConverter extends RidToHash {
         stepContainerBO.copy(step = Some(stepBOWithHashId), componentsForSelection = componentsBOWithHashId)
     }
   }
+
+//  def convertRidToHashForNextStepBO(nextStepBO: NextStepBO): NextStepBO = {
+//
+//    val nextStepId: String = setIdAndHash(nextStepBO.step.get.stepId.get)._2
+//
+//    val nextStep: StepBO = nextStepBO.step.get.copy(stepId = Some(nextStepId))
+//
+//    val componentHashIds =  nextStepBO.componentsForSelection.get.components map (cBO => {
+//      cBO.copy(componentId = Some(setIdAndHash(cBO.componentId.get)._2))
+//    })
+//
+//    val componentsForSelectionBO: ComponentsForSelectionBO =
+//      nextStepBO.componentsForSelection.get.copy(components = componentHashIds)
+//
+//    nextStepBO.copy(step = Some(nextStep), componentsForSelection = Some(componentsForSelectionBO))
+//
+//  }
 
   /**
     * @author Gennadi Heimann
@@ -67,7 +84,7 @@ trait RIDConverter extends RidToHash {
     */
   private[wrapper] def convertRidToHashForSelectedComponentBO(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
 
-    val stepIdHash: Option[String] = selectedComponentBO.currentStep.get.stepId match {
+    val stepIdHash: Option[String] = selectedComponentBO.currentStep.get.step.get.stepId match {
       case Some(sId) => getHash(sId)
       case None => None
     }
@@ -105,6 +122,8 @@ trait RIDConverter extends RidToHash {
       case None => None
     }
 
+    val currentStepBO: StepBO = selectedComponentBO.currentStep.get.step.get.copy(stepId = stepIdHash)
+
     selectedComponentBO.copy(
       selectedComponent = Some(selectedComponentBO.selectedComponent.get.copy(
         componentId = selectedComponentIdHash,
@@ -112,25 +131,7 @@ trait RIDConverter extends RidToHash {
         excludeDependenciesIn = excludeDependencyInHashId,
         requireDependenciesOut = requireDependencyOutHashId,
         requireDependenciesIn = requireDependencyInHashId)),
-      currentStep = Some(selectedComponentBO.currentStep.get.copy(
-        stepId = stepIdHash)))
-  }
-
-  def convertRidToHashForNextStepBO(nextStepBO: NextStepBO): NextStepBO = {
-
-    val nextStepId: String = setIdAndHash(nextStepBO.step.get.stepId.get)._2
-
-    val nextStep: StepBO = nextStepBO.step.get.copy(stepId = Some(nextStepId))
-
-    val componentHashIds =  nextStepBO.componentsForSelection.get.components map (cBO => {
-      cBO.copy(componentId = Some(setIdAndHash(cBO.componentId.get)._2))
-    })
-
-    val componentsForSelectionBO: ComponentsForSelectionBO =
-      nextStepBO.componentsForSelection.get.copy(components = componentHashIds)
-
-    nextStepBO.copy(step = Some(nextStep), componentsForSelection = Some(componentsForSelectionBO))
-
+      currentStep = Some(selectedComponentBO.currentStep.get.copy(step = Some(currentStepBO))))
   }
 
   def convertRidToHashForStepOrComponentInCurrentConfig(id: String): String = {

@@ -4,8 +4,8 @@ import com.tinkerpop.blueprints.Direction
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import models.bo.{ComponentBO, SelectedComponentBO, StepBO, StepContainerBO}
 import org.shared.error.Error
-import org.shared.status.common.{Status, StatusStep, Success}
-import org.shared.status.selectedComponent.{StatusComponent, StatusCurrentStep}
+import org.shared.status.common.{Status, Success}
+import org.shared.status.selectedComponent.StatusComponent
 
 import scala.collection.JavaConverters._
 /**
@@ -31,7 +31,7 @@ object Persistence {
     }
 
     error match {
-      case Some(_) => StepContainerBO(error = Some(Set(error.get)))
+      case Some(_) => StepContainerBO(error = Some(List(error.get)))
       case None => StepContainerBO(
         step = Some(
           StepBO(
@@ -116,7 +116,7 @@ object Persistence {
       Graph.getCurrentStep(componentId)
 
     error match {
-      case Some(_) => StepContainerBO(error = Some(Set(error.get)))
+      case Some(_) => StepContainerBO(error = Some(List(error.get)))
       case None => StepContainerBO(
         step = Some(StepBO(
           stepId = Some(vCurrentStep.get.getIdentity.toString),

@@ -11,7 +11,7 @@ import play.api.libs.json.{Format, JsPath}
   * Created by Gennadi Heimann 07.01.2019
   */
 case class JsonStepResult(
-                           step: Option[JsonStep] = None, // TODO Option with Standard
+                           step: Option[JsonStep] = None,
                            componentsForSelection: Option[List[JsonComponent]] = None,
                            errors: Option[List[JsonError]] = None,
                            warnings: Option[List[JsonWarning]] = None

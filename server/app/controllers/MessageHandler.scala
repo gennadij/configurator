@@ -5,7 +5,6 @@ import models.configLogic.CurrentConfig
 import org.shared.json.JsonNames
 import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
 import org.shared.json.error.{JsonErrorIn, JsonErrorParams}
-import org.shared.json.nextStep.JsonNextStepIn
 import org.shared.json.selectedComponent.JsonComponentIn
 import org.shared.json.step.JsonStepIn
 import play.api.Logger
@@ -45,7 +44,7 @@ trait MessageHandler extends GenericConfigurator{
     val jsonStepIn: JsResult[JsonStepIn] = Json.fromJson[JsonStepIn](receivedMessage)
     jsonStepIn match {
       case jSIn: JsSuccess[JsonStepIn] =>
-        jSIn.get.params.configUrl match {
+        jSIn.get.params match {
           case Some(_) =>Json.toJson(startConfig(jSIn.get, currentConfig))
           case None => Json.toJson(getNextStep(currentConfig))
         }

@@ -9,8 +9,8 @@ import play.api.libs.json.{Format, Json}
  * Crated by Gennadi Heimann 07.01.2019
  */
 case class JsonStepIn (
-                        json: String = JsonNames.STEP, // TODO Option
-                        params: JsonStepParams
+                        json: String = JsonNames.STEP,
+                        params: Option[JsonStepParams] = None
 )
 
 object JsonStepIn{

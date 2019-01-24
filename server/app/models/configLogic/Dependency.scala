@@ -25,7 +25,7 @@ trait Dependency {
         val excludeComponentsId: List[String] =
           dependencyIn map (_.outId)
 
-        val internComponents: List[String] = selectedComponentBO.currentStep.get.componentIds.get
+        val internComponents: List[String] = selectedComponentBO.currentStep.get.componentsForSelection.get.toList map (_.componentId.get)
 
         val excludeComponentsIdExternal: List[String] =
           excludeComponentsId map (eCsId => internComponents contains  eCsId) zip excludeComponentsId filterNot (_._1) map (_._2)
