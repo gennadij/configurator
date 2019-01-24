@@ -7,8 +7,6 @@ import play.api.libs.json.{Json, OFormat}
  * 
  * Created by Gennadi Heimann 23.12.2016
  * 
- * step: {id: #21:9, kind: "first" components: [... , ...]}
- * 
  */
 
 //TODO TO DELETE
