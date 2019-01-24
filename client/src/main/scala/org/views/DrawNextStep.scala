@@ -1,8 +1,6 @@
 package org.views
 
-import org.scalajs.jquery.{JQuery, jQuery}
-import org.shared.json.nextStep.JsonNextStepOut
-import org.views.html.{ComponentWindow, StatusWindow, StepWindow}
+import org.scalajs.jquery.jQuery
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -10,24 +8,25 @@ import org.views.html.{ComponentWindow, StatusWindow, StepWindow}
   * Created by Gennadi Heimann 09.11.2018
   */
 class DrawNextStep {
-  def drawNextStep(jsonNextStepOut: JsonNextStepOut) = {
+  def drawNextStep(jsonNextStepOut: Any) = {
 
     val jQueryConfigMainWindow = jQuery(HtmlElementText.configMainJQuery)
 
-    val jQueryStepWindow = StepWindow.drawStepWindow(jsonNextStepOut.result.step)
-
-    jQueryConfigMainWindow.append(jQueryStepWindow)
-
-    StatusWindow.drawNextStepStatusWindow(jsonNextStepOut.result.status)
-
-    val jQueryComponentWindows: List[JQuery] =
-      ComponentWindow.drawComponentWindows(jsonNextStepOut.result.step.components)
-
-    jQueryComponentWindows foreach(jQCW => {
-      jQueryStepWindow.append(jQCW)
-    })
-
-    jQueryComponentWindows
+//    val jQueryStepWindow = StepWindow.drawStepWindow(jsonNextStepOut.result.step)
+//
+//    jQueryConfigMainWindow.append(jQueryStepWindow)
+//
+//    StatusWindow.drawNextStepStatusWindow(jsonNextStepOut.result.status)
+//
+//    val jQueryComponentWindows: List[JQuery] =
+//      ComponentWindow.drawComponentWindows(jsonNextStepOut.result.step.components)
+//
+//    jQueryComponentWindows foreach(jQCW => {
+//      jQueryStepWindow.append(jQCW)
+//    })
+//
+//    jQueryComponentWindows
+    ???
   }
 
   def deleteNextStepButton = jQuery(HtmlElementText.buttonJQuery).remove()

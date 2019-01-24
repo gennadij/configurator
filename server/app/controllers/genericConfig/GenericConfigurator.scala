@@ -3,7 +3,6 @@ package controllers.genericConfig
 import controllers.wrapper.Wrapper
 import models.configLogic.{CurrentConfig, NextStep, SelectedComponent, StartConfig}
 import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
-import org.shared.json.nextStep.JsonNextStepOut
 import org.shared.json.selectedComponent.{JsonComponentIn, JsonComponentOut}
 import org.shared.json.step.{JsonStepIn, JsonStepOut}
 

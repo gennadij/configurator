@@ -3,7 +3,6 @@ package org.controllers.websocket
 import org.controllers.{NextStep, SelectedComponent}
 import org.shared.json.JsonNames
 import org.shared.json.currentConfig.JsonCurrentConfigOut
-import org.shared.json.nextStep.JsonNextStepOut
 import org.shared.json.selectedComponent.JsonComponentOut
 import org.views.DrawCurrentConfig
 import play.api.libs.json._
@@ -50,11 +49,12 @@ class MessageHandler {
     }
   }
   private def nextStep(receivedMessage: JsValue): Unit = {
-    val nextStepOut: JsResult[JsonNextStepOut] = Json.fromJson[JsonNextStepOut](receivedMessage)
-    nextStepOut match {
-      case jNSOut: JsSuccess[JsonNextStepOut] =>
-        new NextStep().nextStep(jNSOut.value)
-      case e: JsError => println("Errors -> " + JsonNames.START_CONFIG + ": " + JsError.toJson(e).toString())
-    }
+//    val nextStepOut: JsResult[Any] = Json.fromJson[Any](receivedMessage)
+//    nextStepOut match {
+//      case jNSOut: JsSuccess[Any] =>
+//        new NextStep().nextStep(jNSOut.value)
+//      case e: JsError => println("Errors -> " + JsonNames.START_CONFIG + ": " + JsError.toJson(e).toString())
+//    }
+    ???
   }
 }

@@ -1,10 +1,8 @@
 package org.controllers.action
 
 import org.controllers.websocket.WebSocket
-import org.scalajs.jquery.{JQuery, jQuery}
-import org.shared.json.nextStep.JsonNextStepIn
-import org.views.{DrawNextStep, HtmlElementText}
-import play.api.libs.json.Json
+import org.scalajs.jquery.JQuery
+import org.views.DrawNextStep
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -23,7 +21,8 @@ class NextStep {
 
     new DrawNextStep().deleteNextStepButton
 
-    val jsonNextStep: String = Json.toJson(JsonNextStepIn()).toString()
+    val jsonNextStep: String = ???
+//    Json.toJson(JsonNextStepIn()).toString()
 
     println("OUT -> " + jsonNextStep)
 

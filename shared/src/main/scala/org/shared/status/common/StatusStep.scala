@@ -1,7 +1,6 @@
 package org.shared.status.common
 
 import org.shared.status.currentConfig.StatusCurrentConfig
-import org.shared.status.nextStep.StatusNextStep
 import org.shared.status.selectedComponent.StatusCurrentStep
 
 /**
@@ -11,7 +10,7 @@ import org.shared.status.selectedComponent.StatusCurrentStep
  */
 case class StatusStep(
                        startConfig: Option[Any] = None,
-                       nextStep: Option[StatusNextStep] = None,
+                       nextStep: Option[Any] = None,
                        currentStep: Option[StatusCurrentStep] = None,
                        currentConfig: Option[StatusCurrentConfig] = None,
                        common: Option[Status] = None

@@ -1,10 +1,8 @@
 package org.controllers
 
-import org.controllers.action.Component
 import org.scalajs.jquery.jQuery
-import org.shared.json.nextStep.JsonNextStepOut
 import org.shared.json.selectedComponent.JsonComponentOut
-import org.views.{DrawNextStep, HtmlElementText}
+import org.views.HtmlElementText
 import org.views.html.NextStepButton
 
 /**
@@ -49,16 +47,17 @@ class NextStep {
     }
   }
 
-  def nextStep(jsonNextStepOut: JsonNextStepOut) = {
+  def nextStep(jsonNextStepOut: Any) = {
 
-    jsonNextStepOut.result.status.nextStep.get.status match {
-      case "NEXT_STEP_EXIST" =>
-        val jQueryComponentWindows = new DrawNextStep().drawNextStep(jsonNextStepOut)
-
-        jQueryComponentWindows foreach(jQCW => {
-          new Component().addMouseClickForComponent(jQCW)
-        })
-    }
+//    jsonNextStepOut.result.status.nextStep.get.status match {
+//      case "NEXT_STEP_EXIST" =>
+//        val jQueryComponentWindows = new DrawNextStep().drawNextStep(jsonNextStepOut)
+//
+//        jQueryComponentWindows foreach(jQCW => {
+//          new Component().addMouseClickForComponent(jQCW)
+//        })
+//    }
+    ???
   }
 
 }
