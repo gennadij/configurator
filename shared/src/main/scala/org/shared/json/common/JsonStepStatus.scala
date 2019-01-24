@@ -8,6 +8,7 @@ import play.api.libs.json.{Format, JsPath}
  * 
  * Created by Gennadi Heimann 01.03.2018
  */
+//TODO TO DELETE
 case class JsonStepStatus (
     firstStep: Option[JsonStatus] = None,
     nextStep: Option[JsonStatus] = None,

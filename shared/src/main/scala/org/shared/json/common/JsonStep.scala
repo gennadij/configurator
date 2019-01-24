@@ -11,6 +11,8 @@ import play.api.libs.json.{Json, OFormat}
  * 
  */
 
+//TODO TO DELETE
+
 case class JsonStep (
     stepId: String,
     nameToShow: String,
