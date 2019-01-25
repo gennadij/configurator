@@ -2,10 +2,8 @@ package models.persistence
 
 import com.tinkerpop.blueprints.Direction
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
-import models.bo.{ComponentBO, SelectedComponentBO, StepBO, StepContainerBO}
+import models.bo.{ComponentBO, SelectedComponentContainerBO, StepBO, StepContainerBO}
 import org.shared.error.Error
-import org.shared.status.common.{Status, Success}
-import org.shared.status.selectedComponent.StatusComponent
 
 import scala.collection.JavaConverters._
 /**
@@ -73,35 +71,31 @@ object Persistence {
     * @param selectedComponentId: String
     * @return ContainerComponentBO
     */
-  def getSelectedComponent(selectedComponentId: String): SelectedComponentBO = {
+  def getSelectedComponent(selectedComponentId: String): SelectedComponentContainerBO = {
 
-    val (vComponent, statusCommon): (Option[OrientVertex], Status) = Graph.getComponent(selectedComponentId)
+    val (vComponent, error): (Option[OrientVertex], Option[Error]) = Graph.getComponent(selectedComponentId)
 
-    vComponent match {
-      case Some(vC) =>
+    error match {
+      case Some(error) => SelectedComponentContainerBO(errors = Some(List(error)))
+      case None =>
         val excludeDependencyOut =
-          Graph.getComponentDependenciesOut(vC) filter {_.dependencyType == PropertyKeys.EXCLUDE}
+          Graph.getComponentDependenciesOut(vComponent.get) filter {_.dependencyType == PropertyKeys.EXCLUDE}
         val excludeDependencyIn =
-          Graph.getComponentDependenciesIn(vC) filter {_.dependencyType == PropertyKeys.EXCLUDE}
+          Graph.getComponentDependenciesIn(vComponent.get) filter {_.dependencyType == PropertyKeys.EXCLUDE}
         val requireDependencyOut =
-          Graph.getComponentDependenciesOut(vC) filter {_.dependencyType == PropertyKeys.REQUIRE}
+          Graph.getComponentDependenciesOut(vComponent.get) filter {_.dependencyType == PropertyKeys.REQUIRE}
         val requireDependencyIn =
-          Graph.getComponentDependenciesIn(vC) filter {_.dependencyType == PropertyKeys.REQUIRE}
+          Graph.getComponentDependenciesIn(vComponent.get) filter {_.dependencyType == PropertyKeys.REQUIRE}
 
-        SelectedComponentBO(
-          status = Some(StatusComponent(common = Some(Success()))),
+        SelectedComponentContainerBO(
           selectedComponent = Some(ComponentBO(
-            Some(vC.getIdentity.toString),
-            Some(vC.getProperty(PropertyKeys.NAME_TO_SHOW)),
+            Some(vComponent.get.getIdentity.toString),
+            Some(vComponent.get.getProperty(PropertyKeys.NAME_TO_SHOW)),
             Some(excludeDependencyOut),
             Some(excludeDependencyIn),
             Some(requireDependencyOut),
             Some(requireDependencyIn)
-          ))
-      )
-
-      case None => SelectedComponentBO(
-        Some(StatusComponent(common = Some(statusCommon))))
+          )))
     }
   }
 

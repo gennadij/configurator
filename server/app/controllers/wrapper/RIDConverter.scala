@@ -1,7 +1,7 @@
 package controllers.wrapper
 
 import models.bo._
-import org.shared.json.selectedComponent.JsonComponentIn
+import org.shared.json.selectedComponent.JsonSelectedComponentIn
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -45,14 +45,14 @@ trait RIDConverter extends RidToHash {
     * @param jsonComponentIn: JsonComponentIn
     * @return SelectedComponentBO
     */
-  private[wrapper] def convertHashIdToRidForSelectedComponentBO(jsonComponentIn: JsonComponentIn): SelectedComponentBO = {
+  private[wrapper] def convertHashIdToRidForSelectedComponentBO(jsonComponentIn: JsonSelectedComponentIn): SelectedComponentContainerBO = {
 
     val componentRid: String = getRId(jsonComponentIn.params.componentId) match {
       case Some(id) => id
       case None => ""
     }
 
-    SelectedComponentBO(
+    SelectedComponentContainerBO(
       selectedComponent = Some(ComponentBO(
         componentId = Some(componentRid)
       ))
@@ -65,7 +65,7 @@ trait RIDConverter extends RidToHash {
     * @param selectedComponentBO : SelectedComponentBO
     * @return SelectedComponentBO
     */
-  private[wrapper] def convertRidToHashForSelectedComponentBO(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private[wrapper] def convertRidToHashForSelectedComponentBO(selectedComponentBO: SelectedComponentContainerBO): SelectedComponentContainerBO = {
 
     val stepIdHash: Option[String] = selectedComponentBO.currentStep.get.step.get.stepId match {
       case Some(sId) => getHash(sId)

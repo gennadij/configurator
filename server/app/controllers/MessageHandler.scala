@@ -5,7 +5,7 @@ import models.configLogic.CurrentConfig
 import org.shared.json.JsonNames
 import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
 import org.shared.json.error.{JsonErrorIn, JsonErrorParams}
-import org.shared.json.selectedComponent.JsonComponentIn
+import org.shared.json.selectedComponent.JsonSelectedComponentIn
 import org.shared.json.step.JsonStepIn
 import play.api.Logger
 import play.api.libs.json._
@@ -27,7 +27,7 @@ trait MessageHandler extends GenericConfigurator{
     (receivedMessage \ "json").asOpt[String] match {
       case Some(JsonNames.STEP) => step(receivedMessage, cC)
       case Some(JsonNames.CURRENT_CONFIG) => currentConfig(receivedMessage, cC)
-      case Some(JsonNames.COMPONENT) => selectedComponent(receivedMessage, cC)
+      case Some(JsonNames.SELECTED_COMPONENT) => selectedComponent(receivedMessage, cC)
       case _ => jsonError(errorText = "Input JSON is not permitted")
     }
   }
@@ -73,10 +73,10 @@ trait MessageHandler extends GenericConfigurator{
     * @return JsValue
     */
   def selectedComponent(receivedMessage: JsValue, currentConfig: CurrentConfig): JsValue = {
-    val jsonComponentIn: JsResult[JsonComponentIn] = Json.fromJson[JsonComponentIn](receivedMessage)
+    val jsonComponentIn: JsResult[JsonSelectedComponentIn] = Json.fromJson[JsonSelectedComponentIn](receivedMessage)
     jsonComponentIn match {
-      case _: JsSuccess[JsonComponentIn] => Json.toJson(selectedComponent(jsonComponentIn.get, currentConfig))
-      case e: JsError => jsonError(JsonNames.COMPONENT, e)
+      case _: JsSuccess[JsonSelectedComponentIn] => Json.toJson(selectedComponent(jsonComponentIn.get, currentConfig))
+      case e: JsError => jsonError(JsonNames.SELECTED_COMPONENT, e)
     }
   }
 

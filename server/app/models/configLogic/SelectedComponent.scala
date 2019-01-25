@@ -14,12 +14,12 @@ import org.shared.status.selectedComponent._
 //TODO Definition von Geltungsberechen des Statuses und Prüfung auf Widerholten oder widersprechenden Definitionen
 object SelectedComponent  {
 
-  def verifySelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig: CurrentConfig): SelectedComponentBO = {
+  def verifySelectedComponent(selectedComponentBO: SelectedComponentContainerBO, currentConfig: CurrentConfig): SelectedComponentContainerBO = {
     new SelectedComponent(selectedComponentBO, currentConfig).selectedComponent
   }
 }
 
-class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig: CurrentConfig)
+class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, currentConfig: CurrentConfig)
   extends Dependency with SelectionCriterion {
 
   /**
@@ -27,11 +27,11 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig:
     * @version 0.0.3
     * @return StepBO
     */
-  private def selectedComponent: SelectedComponentBO = {
+  private def selectedComponent: SelectedComponentContainerBO = {
 
     val selectedComponentId: String = selectedComponentBO.selectedComponent.get.componentId.get
 
-    val sCBO: SelectedComponentBO = Persistence.getSelectedComponent(selectedComponentId)
+    val sCBO: SelectedComponentContainerBO = Persistence.getSelectedComponent(selectedComponentId)
 
     sCBO.status.get.common.get match {
       case Success() =>
@@ -83,7 +83,7 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig:
     * @param selectedComponentBO : SelectedComponentBO
     * @return selectedComponentBO
     */
-  private def getCurrentAndNextStepFromPersistence(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private def getCurrentAndNextStepFromPersistence(selectedComponentBO: SelectedComponentContainerBO): SelectedComponentContainerBO = {
 
     val currentStepBO: StepContainerBO = Persistence.getCurrentStep(selectedComponentBO.selectedComponent.get.componentId.get)
 
@@ -98,8 +98,8 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig:
     * @param selectedComponentBO : SelectedComponentBO
     * @return StepBO
     */
-  private def getCurrentStepFromCurrentConfig(selectedComponentBO: SelectedComponentBO,
-                                              currentConfig: CurrentConfig): SelectedComponentBO = {
+  private def getCurrentStepFromCurrentConfig(selectedComponentBO: SelectedComponentContainerBO,
+                                              currentConfig: CurrentConfig): SelectedComponentContainerBO = {
 
     val currentStepCurrentConfig: Option[StepCurrentConfigBO] =
       currentConfig.getCurrentStep(selectedComponentBO.currentStep.get.step.get.stepId.get)
@@ -113,7 +113,7 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig:
     * @param selectedComponentBO : SelectedComponentBO
     * @return SelectedComponentBO
     */
-  private def verifyStatusComponentType(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private def verifyStatusComponentType(selectedComponentBO: SelectedComponentContainerBO): SelectedComponentContainerBO = {
 
     val componentTypeStatus: StatusComponentType = selectedComponentBO.nextStep.get.error match {
       case Some(List(StepNotExist(_))) => FinalComponent() //TODO verbessern
@@ -132,7 +132,7 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig:
     * @param selectedComponentBO : SelectedComponentBO
     * @return SelectedComponentBO
     */
-  private[configLogic] def verifyStatusSelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig: CurrentConfig): SelectedComponentBO = {
+  private[configLogic] def verifyStatusSelectedComponent(selectedComponentBO: SelectedComponentContainerBO, currentConfig: CurrentConfig): SelectedComponentContainerBO = {
     selectedComponentBO.status.get.excludedDependencyInternal.get match {
       case ExcludedComponentInternal() =>
         val status = selectedComponentBO.status.get.copy(selectedComponent = Some(NotAllowedComponent()))
@@ -208,7 +208,7 @@ class SelectedComponent(selectedComponentBO: SelectedComponentBO, currentConfig:
     * @param selectedComponentBO: SelectedComponentBO
     * @return List[String]
     */
-  private[configLogic] def getPossibleComponentToSelect(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private[configLogic] def getPossibleComponentToSelect(selectedComponentBO: SelectedComponentContainerBO): SelectedComponentContainerBO = {
 
     val selectedComponentId = selectedComponentBO.selectedComponent.get.componentId.get
 

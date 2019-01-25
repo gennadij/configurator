@@ -122,7 +122,7 @@ trait Wrapper extends RIDConverter {
     * @return ComponentIn
     */
 
-  def toSelectedComponentBO(jsonComponentIn: JsonComponentIn): SelectedComponentBO =
+  def toSelectedComponentBO(jsonComponentIn: JsonSelectedComponentIn): SelectedComponentContainerBO =
     convertHashIdToRidForSelectedComponentBO(jsonComponentIn)
 
   /**
@@ -131,9 +131,9 @@ trait Wrapper extends RIDConverter {
     * @param selectedComponentBO : ComponentOut
     * @return ComponentIn
     */
-  def toJsonComponentOut(selectedComponentBO: SelectedComponentBO): JsonComponentOut = {
+  def toJsonComponentOut(selectedComponentBO: SelectedComponentContainerBO): JsonComponentOut = {
 
-    val selectedComponentWithHash: SelectedComponentBO = convertRidToHashForSelectedComponentBO(selectedComponentBO)
+    val selectedComponentWithHash: SelectedComponentContainerBO = convertRidToHashForSelectedComponentBO(selectedComponentBO)
 
     val status: StatusComponent = selectedComponentWithHash.status.get
     JsonComponentOut(

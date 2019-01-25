@@ -76,7 +76,7 @@ class Scenario_005_1_Specs extends Specification with MessageHandler with Before
 
       val r_1 = componentOut_21 \ JsonKey.result \ JsonKey.status
 
-      (componentOut_21 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_21 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (r_1 \ JsonKey.componentType \ JsonKey.status).asOpt[String] === Some(DefaultComponent().status)
       (r_1 \ JsonKey.selectedComponent \ JsonKey.status).asOpt[String] === Some(AddedComponent().status)
       (r_1 \ JsonKey.selectionCriterion \ JsonKey.status).asOpt[String] === Some(RequireNextStep().status)
@@ -111,7 +111,7 @@ class Scenario_005_1_Specs extends Specification with MessageHandler with Before
       ((componentOutResult4_21 \ JsonKey.excludeDependenciesIn)(0) \ JsonKey.strategyOfDependencyResolver).asOpt[String].get === Auto.value
 
       val r_2 = componentOutResult4_21 \ JsonKey.status
-      (componentOut4_21 \ JsonKey.json).asOpt[String].get === JsonNames.COMPONENT
+      (componentOut4_21 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (r_2 \ JsonKey.componentType \ JsonKey.status).asOpt[String] === Some(FinalComponent().status)
       (r_2 \ JsonKey.selectedComponent \ JsonKey.status).asOpt[String] === Some(AddedComponent().status)
       (r_2 \ JsonKey.selectionCriterion \ JsonKey.status).asOpt[String] === Some(RequireComponent().status)

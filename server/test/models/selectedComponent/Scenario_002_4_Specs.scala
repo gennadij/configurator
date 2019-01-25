@@ -52,7 +52,7 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
       Logger.info(this.getClass.getSimpleName + ": componentIdC11 " + componentIdC11)
       
       val componentIn_1 = Json.obj(
-          "json" -> JsonNames.COMPONENT
+          "json" -> JsonNames.SELECTED_COMPONENT
           ,"params" -> Json.obj(
                "componentId" -> componentIdC11
            )
@@ -62,7 +62,7 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
       val componentOut_1: JsValue = wC.handleMessage(componentIn_1, wC.currentConfig)
       Logger.info("componentOut_1 " + componentOut_1)
       
-      (componentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_1 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
 
       val statusSelectionCriterium = AllowNextComponent()
       (componentOut_1 \ "result" \ "status" \ JsonKey.selectionCriterion \ "status").asOpt[String].get === statusSelectionCriterium.status
@@ -102,7 +102,7 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
             .map(comp => {(comp \ "componentId").asOpt[String].get}).head
       
       val componentIn_2 = Json.obj(
-          "json" -> JsonNames.COMPONENT
+          "json" -> JsonNames.SELECTED_COMPONENT
           ,"params" -> Json.obj(
                "componentId" -> componentIdC12
            )
@@ -113,7 +113,7 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
       
       Logger.info("componentOut_2 " + componentOut_2)
       
-      (componentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_2 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
 
       val statusSelectionCriterium_2 = RequireNextStep()
       (componentOut_2 \ "result" \ "status" \ JsonKey.selectionCriterion \ "status").asOpt[String].get === statusSelectionCriterium_2.status
@@ -148,7 +148,7 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       val componentIn_3 = Json.obj(
-          "json" -> JsonNames.COMPONENT
+          "json" -> JsonNames.SELECTED_COMPONENT
           ,"params" -> Json.obj(
                "componentId" -> componentIdC12
            )
@@ -159,7 +159,7 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
       
       Logger.info("componentOut_3 " + componentOut_3)
       
-      (componentOut_3 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_3 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
 
       val statusSelectionCriterium_3 = RequireNextStep()
       (componentOut_2 \ "result" \ "status" \ JsonKey.selectionCriterion \ "status").asOpt[String].get === statusSelectionCriterium_3.status

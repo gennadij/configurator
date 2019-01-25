@@ -17,7 +17,7 @@ class MessageHandler {
 
   def handleMessage(receivedMessage: JsValue) = (receivedMessage \ "json").asOpt[String] match {
 //    case Some(JsonNames.START_CONFIG) => startConfig(receivedMessage)
-    case Some(JsonNames.COMPONENT) => selectedComponent(receivedMessage)
+    case Some(JsonNames.SELECTED_COMPONENT) => selectedComponent(receivedMessage)
     case Some(JsonNames.CURRENT_CONFIG) => currentConfig(receivedMessage)
     case Some(JsonNames.NEXT_STEP) => nextStep(receivedMessage)
     case _ => Json.obj("error" -> "keinen Treffer")

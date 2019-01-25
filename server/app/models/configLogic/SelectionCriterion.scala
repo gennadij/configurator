@@ -1,6 +1,6 @@
 package models.configLogic
 
-import models.bo.{ComponentBO, SelectedComponentBO, StepBO}
+import models.bo.{ComponentBO, SelectedComponentContainerBO, StepBO}
 import org.shared.status.selectedComponent._
 
 /**
@@ -10,7 +10,7 @@ import org.shared.status.selectedComponent._
   */
 trait SelectionCriterion {
 
-  private[configLogic] def verifySelectionCriterium(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private[configLogic] def verifySelectionCriterium(selectedComponentBO: SelectedComponentContainerBO): SelectedComponentContainerBO = {
     selectedComponentBO.status.get.excludedDependencyInternal.get match {
       case ExcludedComponentInternal() =>
         val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.stepCurrentConfig match {

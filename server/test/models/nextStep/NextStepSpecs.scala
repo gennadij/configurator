@@ -56,7 +56,7 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       Logger.info(this.getClass.getSimpleName + ": componentIdC11" + componentIdC11)
 
       val jsonComponentIn_1: JsValue = Json.obj(
-          JsonKey.json -> JsonNames.COMPONENT
+          JsonKey.json -> JsonNames.SELECTED_COMPONENT
           ,JsonKey.params -> Json.obj(
                JsonKey.componentId -> componentIdC11
            )
@@ -67,7 +67,7 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       Logger.info(this.getClass.getSimpleName + ": ComponentIn_1 " + jsonComponentIn_1)
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_1 " + jsonComponentOut_1)
       
-      (jsonComponentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (jsonComponentOut_1 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (jsonComponentOut_1 \ "result" \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
       ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"
       ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "visualization").asOpt[String].get === "undef"
@@ -88,7 +88,7 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       Logger.info(this.getClass.getSimpleName + ": componentIdC12 " + componentIdC12)
       
       val jsonComponentIn_2: JsValue = Json.obj(
-          JsonKey.json -> JsonNames.COMPONENT
+          JsonKey.json -> JsonNames.SELECTED_COMPONENT
           ,JsonKey.params -> Json.obj(
                JsonKey.componentId -> componentIdC12
            )
@@ -99,7 +99,7 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       Logger.info(this.getClass.getSimpleName + ": ComponentIn_2 " + jsonComponentIn_2)
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_2 " + jsonComponentOut_2)
       
-      (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (jsonComponentOut_2 \ "result" \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
       ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"
       ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "visualization").asOpt[String].get === "undef"

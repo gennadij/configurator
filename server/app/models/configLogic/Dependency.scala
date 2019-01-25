@@ -1,6 +1,6 @@
 package models.configLogic
 
-import models.bo.SelectedComponentBO
+import models.bo.SelectedComponentContainerBO
 import models.persistence.Persistence
 import org.shared.status.selectedComponent.{ExcludedComponentExternal, ExcludedComponentInternal, NotExcludedComponentInternal, StatusComponent}
 
@@ -17,7 +17,7 @@ trait Dependency {
     * @param selectedComponentBO: SelectedComponentBO
     * @return SelectedComponentBO
     */
-  private[configLogic] def verifyExcludeDependencyInForExternal(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private[configLogic] def verifyExcludeDependencyInForExternal(selectedComponentBO: SelectedComponentContainerBO): SelectedComponentContainerBO = {
     selectedComponentBO.selectedComponent.get.excludeDependenciesIn.get match {
       case List() => selectedComponentBO
       case dependencyIn =>
@@ -32,7 +32,7 @@ trait Dependency {
 
         if (excludeComponentsIdExternal.nonEmpty) {
 
-          val excludeComponents: List[SelectedComponentBO] = {
+          val excludeComponents: List[SelectedComponentContainerBO] = {
             excludeComponentsIdExternal map Persistence.getSelectedComponent
           }
 
@@ -60,7 +60,7 @@ trait Dependency {
     * @param selectedComponentBO : SelectedComponentBO
     * @return SelectedComponentBO
     */
-  private[configLogic] def verifyExcludeDependencyInForInternal(selectedComponentBO: SelectedComponentBO): SelectedComponentBO = {
+  private[configLogic] def verifyExcludeDependencyInForInternal(selectedComponentBO: SelectedComponentContainerBO): SelectedComponentContainerBO = {
     val previousSelectedComponentIdsFromCurrentConfig: List[String] = selectedComponentBO.stepCurrentConfig match {
       case Some(step) => step.components map (_.componentId.get)
       case None => List()

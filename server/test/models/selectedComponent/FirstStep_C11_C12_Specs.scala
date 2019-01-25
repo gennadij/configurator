@@ -55,7 +55,7 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
       Logger.info(this.getClass.getSimpleName + ": componentIdC11 " + componentIdC11)
 
       val jsonComponentIn_1: JsValue = Json.obj(
-          "json" -> JsonNames.COMPONENT
+          "json" -> JsonNames.SELECTED_COMPONENT
           ,"params" -> Json.obj(
                "componentId" -> componentIdC11
            )
@@ -66,7 +66,7 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
       Logger.info(this.getClass.getSimpleName + ": ComponentIn_1 " + jsonComponentIn_1)
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_1 " + jsonComponentOut_1)
 
-      (jsonComponentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (jsonComponentOut_1 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (jsonComponentOut_1 \ "result" \ "selectedComponentId").asOpt[String].get.length must be_>=(30)
       (jsonComponentOut_1 \ "result" \ "stepId").asOpt[String].get.length must be_>=(30)
       (jsonComponentOut_1 \ "result" \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
@@ -95,7 +95,7 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
       Logger.info(this.getClass.getSimpleName + ": componentIdC12 " + componentIdC12)
 
       val jsonComponentIn_2: JsValue = Json.obj(
-          "json" -> JsonNames.COMPONENT
+          "json" -> JsonNames.SELECTED_COMPONENT
           ,"params" -> Json.obj(
                "componentId" -> componentIdC12
            )
@@ -106,7 +106,7 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
       Logger.info(this.getClass.getSimpleName + ": ComponentIn_2 " + jsonComponentIn_2)
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_2 " + jsonComponentOut_2)
 
-      (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
 
       (jsonComponentOut_2 \ "result" \ "selectedComponentId").asOpt[String].get.length must be_>=(30)
       (jsonComponentOut_2 \ "result" \ "stepId").asOpt[String].get.length must be_>=(30)

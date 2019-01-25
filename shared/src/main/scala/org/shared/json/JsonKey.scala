@@ -51,6 +51,10 @@ object JsonKey {
   def excludeDependenciesIn = "excludeDependenciesIn"
   def requireDependenciesOut = "requireDependenciesOut"
   def requireDependenciesIn = "requireDependenciesIn"
+  def lastComponent = "lastComponent"
+  def error = "errors"
+  def warning = "warnings"
+  def info = "info"
 
   //Dependency
   def outId = "outId"

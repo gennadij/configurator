@@ -56,7 +56,7 @@ class FirstStep_C11_C13_Specs extends Specification with MessageHandler with Bef
       Logger.info(this.getClass.getSimpleName + ": componentIdC11" + componentIdC11)
 
       val jsonComponentIn_1: JsValue = Json.obj(
-          "json" -> JsonNames.COMPONENT
+          "json" -> JsonNames.SELECTED_COMPONENT
           ,"params" -> Json.obj(
                "componentId" -> componentIdC11
            )
@@ -67,7 +67,7 @@ class FirstStep_C11_C13_Specs extends Specification with MessageHandler with Bef
       Logger.info(this.getClass.getSimpleName + ": ComponentIn_1 " + jsonComponentIn_1)
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_1 " + jsonComponentOut_1)
       
-      (jsonComponentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (jsonComponentOut_1 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (jsonComponentOut_1 \ "result" \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
       (((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0)) \ "dependencyType").asOpt[String].get === "exclude"
       (((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0)) \ "visualization").asOpt[String].get === "undef"
@@ -92,7 +92,7 @@ class FirstStep_C11_C13_Specs extends Specification with MessageHandler with Bef
       Logger.info(this.getClass.getSimpleName + ": componentIdC13 " + componentIdC13)
       
       val jsonComponentIn_2: JsValue = Json.obj(
-          "json" -> JsonNames.COMPONENT
+          "json" -> JsonNames.SELECTED_COMPONENT
           ,"params" -> Json.obj(
                "componentId" -> componentIdC13
            )
@@ -103,7 +103,7 @@ class FirstStep_C11_C13_Specs extends Specification with MessageHandler with Bef
       Logger.info(this.getClass.getSimpleName + ": ComponentIn_2 " + jsonComponentIn_2)
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_2 " + jsonComponentOut_2)
       
-      (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (jsonComponentOut_2 \ "result" \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 2
       val status_2 = (jsonComponentOut_2 \ "result" \ "status")
       (status_2 \JsonKey.selectionCriterion \ "status").asOpt[String].get === AllowNextComponent().status

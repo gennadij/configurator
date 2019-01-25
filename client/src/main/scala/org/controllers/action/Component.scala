@@ -2,7 +2,7 @@ package org.controllers.action
 
 import org.controllers.websocket.WebSocket
 import org.scalajs.jquery.JQuery
-import org.shared.json.selectedComponent.{JsonComponentIn, JsonComponentParam}
+import org.shared.json.selectedComponent.{JsonSelectedComponentIn, JsonSelectedComponentParam}
 import org.views.HtmlElementText
 import play.api.libs.json.Json
 
@@ -18,8 +18,8 @@ class Component {
   }
 
   def componentSelected(cId: String): Unit = {
-    val jsonComponent: String = Json.toJson(JsonComponentIn(
-      params = JsonComponentParam(
+    val jsonComponent: String = Json.toJson(JsonSelectedComponentIn(
+      params = JsonSelectedComponentParam(
         componentId = cId
       )
     )).toString()

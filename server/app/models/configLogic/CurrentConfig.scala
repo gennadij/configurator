@@ -1,6 +1,6 @@
 package models.configLogic
 
-import models.bo.{ComponentBO, SelectedComponentBO, StepCurrentConfigBO}
+import models.bo.{ComponentBO, SelectedComponentContainerBO, StepCurrentConfigBO}
 import play.api.Logger
 
 /**
@@ -184,7 +184,7 @@ class CurrentConfig {
    * 
    * @return Unit
    */
-  def removeComponent(selectedComponentBO: SelectedComponentBO): List[ComponentBO] = {
+  def removeComponent(selectedComponentBO: SelectedComponentContainerBO): List[ComponentBO] = {
 
     val step: Option[StepCurrentConfigBO] = getCurrentStep(selectedComponentBO.stepCurrentConfig.get.stepId)
 

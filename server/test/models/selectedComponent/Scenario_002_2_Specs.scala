@@ -64,7 +64,7 @@ class Scenario_002_2_Specs  extends Specification with MessageHandler with Befor
       val componentOut_1: JsValue = wC.handleMessage(componentIn_1, wC.currentConfig)
       Logger.info("componentOut_1 " + componentOut_1)
       
-      (componentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_1 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
 
       (componentOut_1 \ "result" \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
       ((componentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"
@@ -120,7 +120,7 @@ class Scenario_002_2_Specs  extends Specification with MessageHandler with Befor
       
       Logger.info("componentOut_2 " + componentOut_2)
       
-      (componentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_2 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
 
       (componentOut_2 \ "result" \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
       ((componentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"

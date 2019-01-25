@@ -39,7 +39,7 @@ class Scenario_002_6_Specs extends Specification with MessageHandler with Before
       
       val componentOut_1: JsValue = CommonFunction.selectComponent(wC, componentIdC11)
       
-      (componentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_1 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (componentOut_1 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (componentOut_1 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
       (componentOut_1 \ "result" \ "status" \JsonKey.selectionCriterion \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"

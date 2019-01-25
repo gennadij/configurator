@@ -179,20 +179,20 @@ class Graph(graph: Option[OrientGraph]) {
     * @param componentId : String
     * @return ComponentOut
     */
-  private def getComponent(componentId: String): (Option[OrientVertex], Status) = {
+  private def getComponent(componentId: String): (Option[OrientVertex], Option[Error]) = {
     try {
       val vComponent = graph.get.getVertex(componentId)
-      (Some(vComponent), Success())
+      (Some(vComponent), None)
 
     } catch {
       case e2: ClassCastException =>
         graph.get.rollback()
         Logger.error(e2.printStackTrace().toString)
-        (None, ODBClassCastError())
+        (None, Some(ClassCast()))
       case e1: Exception =>
         graph.get.rollback()
         Logger.error(e1.printStackTrace().toString)
-        (None, ODBReadError())
+        (None, Some(ODBRead()))
     }
   }
 

@@ -31,7 +31,7 @@ object CommonFunction {
   
   def selectComponent(wC: WebClient, componentId: String): JsValue = {
     val componentIn = Json.obj(
-        "json" -> JsonNames.COMPONENT
+        "json" -> JsonNames.SELECTED_COMPONENT
         ,"params" -> Json.obj(
              "componentId" -> componentId
          )

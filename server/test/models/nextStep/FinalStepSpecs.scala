@@ -54,7 +54,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
         .map(_.componentId).head
 
       val componentIn_1 = Json.obj(
-          JsonKey.json -> JsonNames.COMPONENT
+          JsonKey.json -> JsonNames.SELECTED_COMPONENT
           ,JsonKey.params -> Json.obj(
                JsonKey.componentId -> componentIdC11
            )
@@ -64,7 +64,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
       
       Logger.info("OUT " + jsonComponentOut_1)
       
-      (jsonComponentOut_1 \ JsonKey.json).asOpt[String].get === JsonNames.COMPONENT
+      (jsonComponentOut_1 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (jsonComponentOut_1 \ JsonKey.result \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
       ((jsonComponentOut_1 \ JsonKey.result \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"
       ((jsonComponentOut_1 \ JsonKey.result \ "excludeDependenciesOut")(0) \ "visualization").asOpt[String].get === "undef"
@@ -110,7 +110,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
       Logger.info(this.getClass.getSimpleName + ": componentIdC21 " + componentIdC21)
       
       val componentIn_2 = Json.obj(
-          JsonKey.json -> JsonNames.COMPONENT
+          JsonKey.json -> JsonNames.SELECTED_COMPONENT
           ,JsonKey.params -> Json.obj(
                JsonKey.componentId -> componentIdC21
            )
@@ -121,7 +121,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
       
       Logger.info("componentOut_2 " + componentOut_2)
       
-      (componentOut_2 \ JsonKey.json).asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_2 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (componentOut_2 \ JsonKey.result \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
       (componentOut_2 \ JsonKey.result \ "status" \JsonKey.selectionCriterion \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
       (componentOut_2 \ JsonKey.result \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
@@ -165,7 +165,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
       Logger.info(this.getClass.getSimpleName + ": componentIdC31 " + componentIdC31)
       
       val componentIn_3 = Json.obj(
-          JsonKey.json -> JsonNames.COMPONENT
+          JsonKey.json -> JsonNames.SELECTED_COMPONENT
           ,JsonKey.params -> Json.obj(
                JsonKey.componentId -> componentIdC31
            )
@@ -176,7 +176,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
       
       Logger.info("componentOut_3 " + componentOut_3)
       
-      (componentOut_3 \ JsonKey.json).asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_3 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (componentOut_3 \ JsonKey.result \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 0
       (componentOut_3 \ JsonKey.result \ "status" \JsonKey.selectionCriterion \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
       (componentOut_3 \ JsonKey.result \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
@@ -219,7 +219,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
       Logger.info(this.getClass.getSimpleName + ": componentIdC41 " + componentIdC41)
 
       val componentIn_4 = Json.obj(
-        JsonKey.json -> JsonNames.COMPONENT
+        JsonKey.json -> JsonNames.SELECTED_COMPONENT
         ,JsonKey.params -> Json.obj(
           JsonKey.componentId -> componentIdC31
         )

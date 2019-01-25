@@ -50,7 +50,7 @@ class ComponentKeys extends Specification with MessageHandler with BeforeAfterAl
             .map(comp => {(comp \ "componentId").asOpt[String].get}).head
 
       val jsonComponentIn_1: JsValue = Json.obj(
-          "json" -> JsonNames.COMPONENT
+          "json" -> JsonNames.SELECTED_COMPONENT
           ,"params" -> Json.obj(
                "componentId" -> componentIdC11
            )

@@ -39,7 +39,7 @@ class Scenario_002_17_Specs extends Specification with MessageHandler with Befor
       
       val componentOut_1: JsValue = CommonFunction.selectComponent(wC, componentIdC11)
       
-      (componentOut_1 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_1 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (componentOut_1 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (componentOut_1 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
       (componentOut_1 \ "result" \ "status" \JsonKey.selectionCriterion \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
@@ -61,7 +61,7 @@ class Scenario_002_17_Specs extends Specification with MessageHandler with Befor
       
       val componentOut_2: JsValue = CommonFunction.selectComponent(wC, componentIdC12)
       
-      (componentOut_2 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_2 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (componentOut_2 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (componentOut_2 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
       (componentOut_2 \ "result" \ "status" \JsonKey.selectionCriterion \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
@@ -84,7 +84,7 @@ class Scenario_002_17_Specs extends Specification with MessageHandler with Befor
       
       val componentOut_3: JsValue = CommonFunction.selectComponent(wC, componentIdC13)
       
-      (componentOut_3 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut_3 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (componentOut_3 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (componentOut_3 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "NOT_ALLOWED_COMPONENT"
       (componentOut_3 \ "result" \ "status" \JsonKey.selectionCriterion \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
@@ -118,7 +118,7 @@ class Scenario_002_17_Specs extends Specification with MessageHandler with Befor
       
       val componentOut4_22 = CommonFunction.selectComponent(wC, componentId22)
       
-      (componentOut4_22 \ "json").asOpt[String].get === JsonNames.COMPONENT
+      (componentOut4_22 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (componentOut4_22 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (componentOut4_22 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
       (componentOut4_22 \ "result" \ "status" \JsonKey.selectionCriterion \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"

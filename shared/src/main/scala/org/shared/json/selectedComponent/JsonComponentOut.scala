@@ -9,8 +9,8 @@ import play.api.libs.json.{Format, Json}
  * Created by Gennadi Heimann 13.11.2017
  */
 case class JsonComponentOut (
-    json: String = JsonNames.COMPONENT,
-    result: JsonComponentResult
+                              json: String = JsonNames.SELECTED_COMPONENT,
+                              result: JsonComponentResult
 )
 
 object JsonComponentOut {

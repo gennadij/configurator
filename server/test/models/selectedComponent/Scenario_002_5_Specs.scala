@@ -50,7 +50,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info(this.getClass.getSimpleName + ": componentIdC11 " + componentIdC11)
       
       val componentIn_1 = Json.obj(
-          "json" -> JsonNames.COMPONENT
+          "json" -> JsonNames.SELECTED_COMPONENT
           ,"params" -> Json.obj(
                "componentId" -> componentIdC11
            )
@@ -91,7 +91,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info(this.getClass.getSimpleName + ": componentIdC21 " + componentIdC21)
       
       val componentIn_2 = Json.obj(
-          "json" -> JsonNames.COMPONENT
+          "json" -> JsonNames.SELECTED_COMPONENT
           ,"params" -> Json.obj(
                "componentId" -> componentIdC21
            )
@@ -132,7 +132,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info(this.getClass.getSimpleName + ": componentIdC31 " + componentIdC31)
       
       val componentIn_3 = Json.obj(
-          "json" -> JsonNames.COMPONENT
+          "json" -> JsonNames.SELECTED_COMPONENT
           ,"params" -> Json.obj(
                "componentId" -> componentIdC31
            )
