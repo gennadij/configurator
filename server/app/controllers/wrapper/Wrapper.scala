@@ -1,12 +1,12 @@
 package controllers.wrapper
 
 import models.bo._
+import org.shared.error.Error
 import org.shared.json.common
-import org.shared.json.common.{JsonError, JsonStatus}
+import org.shared.json.common.{JsonError, JsonInfo, JsonWarning}
 import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut, JsonCurrentConfigResult, JsonStepCurrentConfig}
 import org.shared.json.selectedComponent._
 import org.shared.json.step._
-import org.shared.status.selectedComponent.StatusComponent
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -61,13 +61,13 @@ trait Wrapper extends RIDConverter {
       case None => JsonStepOut(
         result = JsonStepResult(
           errors = Some(
-            (stepContainerBO.error.get map {e =>
+            stepContainerBO.error.get map { e =>
               JsonError(
                 message = e.message,
                 name = e.name,
                 code = e.code
               )
-            }).toList
+            }
           )
         )
       )
@@ -131,71 +131,80 @@ trait Wrapper extends RIDConverter {
     * @param selectedComponentBO : ComponentOut
     * @return ComponentIn
     */
-  def toJsonComponentOut(selectedComponentBO: SelectedComponentContainerBO): JsonComponentOut = {
+  def toJsonComponentOut(selectedComponentBO: SelectedComponentContainerBO): JsonSelectedComponentOut = {
 
     val selectedComponentWithHash: SelectedComponentContainerBO = convertRidToHashForSelectedComponentBO(selectedComponentBO)
 
-    val status: StatusComponent = selectedComponentWithHash.status.get
-    JsonComponentOut(
-      result = JsonComponentResult(
-        selectedComponentWithHash.selectedComponent.get.componentId.get,
-        selectedComponentWithHash.currentStep.get.step.get.stepId.get,
-        JsonComponentStatus(
-          status.selectionCriterion match {
-            case Some(s) =>
-              Some(JsonStatus(
-                s.status,
-                s.message
-              ))
-            case None => None
-          },
-          status.selectedComponent match {
-            case Some(s) =>
-              Some(JsonStatus(
-                s.status,
-                s.message
-              ))
-            case None => None
-          },
-          status.excludedDependencyInternal match {
-            case Some(s) =>
-              Some(JsonStatus(
-                s.status,
-                s.message
-              ))
-            case None => None
-          },
-          status.excludedDependencyExternal match {
-            case Some(s) =>
-              Some(JsonStatus(
-                s.status,
-                s.message
-              ))
-            case None => None
-          },
-          status.common match {
-            case Some(s) =>
-              Some(JsonStatus(
-                s.status,
-                s.message
-              ))
-            case None => None
-          },
-          status.componentType match {
-            case Some(s) =>
-              Some(JsonStatus(
-                s.status,
-                s.message
-              ))
-            case None => None
-          }
-        ),
+    JsonSelectedComponentOut(
+      result = JsonSelectedComponentResult(
+        selectedComponentId = selectedComponentWithHash.selectedComponent.get.componentId.get,
+        stepId = selectedComponentWithHash.currentStep.get.step.get.stepId.get,
+        lastComponent = selectedComponentWithHash.selectedComponent.get.lastComponent.get,
+        addedComponent = selectedComponentWithHash.selectedComponent.get.addedComponent.get,
         excludeDependenciesOut = toJsonDependency(selectedComponentWithHash.selectedComponent.get.excludeDependenciesOut),
         excludeDependenciesIn = toJsonDependency(selectedComponentWithHash.selectedComponent.get.excludeDependenciesIn),
         requireDependenciesOut = toJsonDependency(selectedComponentWithHash.selectedComponent.get.requireDependenciesOut),
-        requireDependenciesIn = toJsonDependency(selectedComponentWithHash.selectedComponent.get.requireDependenciesIn)
+        requireDependenciesIn = toJsonDependency(selectedComponentWithHash.selectedComponent.get.requireDependenciesIn),
+        info = Some(getInfo(selectedComponentWithHash.info)),
+        errors = getError(selectedComponentWithHash.errors),
+        warning = Some(getWarning(selectedComponentWithHash.warning))
       )
     )
+  }
+
+  def getInfo(infoBO: Option[InfoBO]): JsonSelectedComponentInfo = {
+    infoBO.getOrElse(InfoBO()).selectionCriterion match {
+      case Some(info) => JsonSelectedComponentInfo(
+        selectionCriterion = Some(JsonInfo(
+          message = info.message,
+          name = info.name,
+          code = info.code
+        ))
+      )
+      case None => JsonSelectedComponentInfo(
+        selectionCriterion = None
+      )
+    }
+  }
+
+
+
+  def getWarning(warningBO: Option[WarningBO]): JsonSelectedComponentWarning = {
+    val eCI: Option[JsonWarning] = warningBO.getOrElse(WarningBO()).excludedComponentInternal match {
+      case Some(w) => Some(JsonWarning(
+        message = w.message,
+        name = w.name,
+        code = w.code
+      ))
+      case None => None
+    }
+    val eCE: Option[JsonWarning] =  warningBO.getOrElse(WarningBO()).excludedComponentExternal match {
+      case Some(w) => Some(JsonWarning(
+        message = w.message,
+        name = w.name,
+        code = w.code
+      ))
+      case None => None
+    }
+
+    JsonSelectedComponentWarning(
+      excludedComponentExternal = eCE,
+      excludedComponentInternal = eCI
+    )
+  }
+
+  def getError(errors: Option[List[Error]]) : Option[List[JsonError]] = {
+    errors match {
+      case Some(err) => Some(err map { e =>
+        JsonError(
+          message = e.message,
+          name = e.name,
+          code = e.code
+        )
+      })
+      case None => None
+    }
+
   }
 
   def toJsonDependency(dependencyBOs: Option[List[DependencyBO]]): Option[List[JsonDependency]] = {

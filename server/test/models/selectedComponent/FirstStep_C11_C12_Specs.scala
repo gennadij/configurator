@@ -33,7 +33,7 @@ class FirstStep_C11_C12_Specs extends Specification with MessageHandler with Bef
 
       val configUrl = "http://config/client_013"
       val startConfigIn = Json.obj(
-          "json" -> JsonNames.START_CONFIG
+          "json" -> JsonNames.STEP
           ,"params" -> Json.obj(
                "configUrl" -> configUrl
            )

@@ -89,12 +89,12 @@ object Persistence {
 
         SelectedComponentContainerBO(
           selectedComponent = Some(ComponentBO(
-            Some(vComponent.get.getIdentity.toString),
-            Some(vComponent.get.getProperty(PropertyKeys.NAME_TO_SHOW)),
-            Some(excludeDependencyOut),
-            Some(excludeDependencyIn),
-            Some(requireDependencyOut),
-            Some(requireDependencyIn)
+            componentId = Some(vComponent.get.getIdentity.toString),
+            nameToShow = Some(vComponent.get.getProperty(PropertyKeys.NAME_TO_SHOW)),
+            excludeDependenciesOut = Some(excludeDependencyOut),
+            excludeDependenciesIn = Some(excludeDependencyIn),
+            requireDependenciesOut = Some(requireDependencyOut),
+            requireDependenciesIn = Some(requireDependencyIn)
           )))
     }
   }

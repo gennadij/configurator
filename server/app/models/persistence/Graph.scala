@@ -5,7 +5,6 @@ import com.tinkerpop.blueprints.{Direction, Edge, Vertex}
 import models.bo.DependencyBO
 import models.bo.types.{Auto, SelectableDecision}
 import org.shared.error.{ClassCast, Error, MultipleSteps, ODBConnection, ODBRead, StepNotExist}
-import org.shared.status.common.{ODBClassCastError, ODBConnectionError, ODBReadError, Status, Success}
 import play.api.Logger
 
 import scala.collection.JavaConverters._
@@ -39,11 +38,11 @@ object Graph {
     * @param componentId : String
     * @return ComponentBO
     */
-  def getComponent(componentId: String): (Option[OrientVertex], Status) = {
+  def getComponent(componentId: String): (Option[OrientVertex], Option[Error]) = {
     val graph: (Option[OrientGraph], String) = ODatabase.getFactory
     graph._1 match {
       case Some(g) => new Graph(Some(g)).getComponent(componentId)
-      case None => (None, ODBConnectionError())
+      case None => (None, Some(ODBConnection()))
     }
   }
 

@@ -1,7 +1,8 @@
 package models.configLogic
 
-import models.bo.{ComponentBO, SelectedComponentContainerBO, StepBO}
-import org.shared.status.selectedComponent._
+import models.bo._
+import org.shared.info
+import org.shared.info._
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -10,78 +11,88 @@ import org.shared.status.selectedComponent._
   */
 trait SelectionCriterion {
 
-  private[configLogic] def verifySelectionCriterium(selectedComponentBO: SelectedComponentContainerBO): SelectedComponentContainerBO = {
-    selectedComponentBO.status.get.excludedDependencyInternal.get match {
-      case ExcludedComponentInternal() =>
-        val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.stepCurrentConfig match {
+  private[configLogic] def verifySelectionCriterion(
+                                                     selectedComponentContainerBO: SelectedComponentContainerBO
+                                                   ): SelectedComponentContainerBO = {
+    selectedComponentContainerBO.warning.getOrElse(WarningBO()).excludedComponentInternal match {
+      case Some(_) =>
+//    selectedComponentBO.status.get.excludedDependencyInternal.get match {
+//      case ExcludedComponentInternal() =>
+        val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentContainerBO.stepCurrentConfig match {
           case Some(step) => step.components
           case None => List()
         }
-        selectedComponentBO.possibleComponentIdsToSelect.get match {
+        selectedComponentContainerBO.possibleComponentIdsToSelect.get match {
           case List() =>
             //RequireNextStep
-            val status = selectedComponentBO.status.get.copy(selectionCriterion = Some(RequireNextStep()))
-            selectedComponentBO.copy(status = Some(status))
+            val infoBO: InfoBO = selectedComponentContainerBO.info.get.copy(selectionCriterion = Some(info.RequireNextStep()))
+            selectedComponentContainerBO.copy(info = Some(infoBO))
+//            val status = selectedComponentBO.status.get.copy(selectionCriterion = Some(RequireNextStep()))
+//            selectedComponentBO.copy(status = Some(status))
           case _ =>
-            val statusSC: StatusSelectionCriterion =
+            val info: Info =
               getSelectionCriterionStatus(previousSelectedComponentsInCurrentConfig.size,
-                selectedComponentBO.currentStep.get.step.get)
-            val status = selectedComponentBO.status.get.copy(selectionCriterion = Some(statusSC))
-            selectedComponentBO.copy(status = Some(status))
+                selectedComponentContainerBO.currentStep.get.step.get)
+//            val status = selectedComponentContainerBO.status.get.copy(selectionCriterion = Some(statusSC))
+//            selectedComponentContainerBO.copy(status = Some(status))
+            selectedComponentContainerBO.copy(info = Some(InfoBO(selectionCriterion = Some(info))))
         }
-
-      case NotExcludedComponentInternal() =>
+      case None =>
+//      case NotExcludedComponentInternal() =>
         val componentIdExist: Boolean =
-          selectedComponentBO.stepCurrentConfig.get.components.exists(
-            _.componentId.get == selectedComponentBO.selectedComponent.get.componentId.get
+          selectedComponentContainerBO.stepCurrentConfig.get.components.exists(
+            _.componentId.get == selectedComponentContainerBO.selectedComponent.get.componentId.get
           )
 
         if (componentIdExist) {
 
-          val countOfComponentsInCurrentConfig: Int = selectedComponentBO.stepCurrentConfig match {
+          val countOfComponentsInCurrentConfig: Int = selectedComponentContainerBO.stepCurrentConfig match {
             case Some(step) if step.components.nonEmpty =>  step.components.size - 1
             case Some(step) if step.components.isEmpty =>  0
             case None => 0
           }
 
-          val statusSC: StatusSelectionCriterion =
-            getSelectionCriterionStatus(countOfComponentsInCurrentConfig, selectedComponentBO.currentStep.get.step.get)
+          val info : Info =
+            getSelectionCriterionStatus(countOfComponentsInCurrentConfig, selectedComponentContainerBO.currentStep.get.step.get)
 
-          val status = selectedComponentBO.status.get.copy(selectionCriterion = Some(statusSC))
-          selectedComponentBO.copy(status = Some(status))
-
+//          val status = selectedComponentContainerBO.status.get.copy(selectionCriterion = Some(statusSC))
+//          selectedComponentContainerBO.copy(status = Some(status))
+            selectedComponentContainerBO.copy(info = Some(InfoBO(selectionCriterion = Some(info))))
         }else{
 
           //TODO im decision_tree nachziehen.
-          val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.stepCurrentConfig match {
+          val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentContainerBO.stepCurrentConfig match {
             case Some(step) => step.components
             case None => List()
           }
           val currentConfigWithTempSelectedComponent: List[ComponentBO] =
-            previousSelectedComponentsInCurrentConfig :+ selectedComponentBO.selectedComponent.get
+            previousSelectedComponentsInCurrentConfig :+ selectedComponentContainerBO.selectedComponent.get
 
           val countOfComponentsInCurrentConfigWithTempSelectedComponent = currentConfigWithTempSelectedComponent.size
 
-          val statusSC: StatusSelectionCriterion =
+          val info: Info =
             getSelectionCriterionStatus(countOfComponentsInCurrentConfigWithTempSelectedComponent,
-              selectedComponentBO.currentStep.get.step.get)
+              selectedComponentContainerBO.currentStep.get.step.get)
 
-          statusSC match {
+          info match {
             case AllowNextComponent() =>
-              selectedComponentBO.possibleComponentIdsToSelect.get match {
+              selectedComponentContainerBO.possibleComponentIdsToSelect.get match {
                 case List() =>
-                  val status = selectedComponentBO.status.get.copy(selectionCriterion = Some(RequireNextStep()))
+//                  val status = selectedComponentContainerBO.status.get.copy(selectionCriterion = Some(RequireNextStep()))
 
-                  selectedComponentBO.copy(status = Some(status))
+//                  selectedComponentContainerBO.copy(status = Some(status))
+                  selectedComponentContainerBO.copy(info = Some(InfoBO(selectionCriterion = Some(RequireNextStep()))))
                 case _ =>
-                  val status = selectedComponentBO.status.get.copy(selectionCriterion = Some(statusSC))
+//                  val status = selectedComponentContainerBO.status.get.copy(selectionCriterion = Some(info))
 
-                  selectedComponentBO.copy(status = Some(status))
+//                  selectedComponentContainerBO.copy(status = Some(status))
+                  selectedComponentContainerBO.copy(info = Some(InfoBO(selectionCriterion = Some(info))))
               }
             case _ =>
-              val status = selectedComponentBO.status.get.copy(selectionCriterion = Some(statusSC))
+//              val status = selectedComponentContainerBO.status.get.copy(selectionCriterion = Some(info))
 
-              selectedComponentBO.copy(status = Some(status))
+//              selectedComponentContainerBO.copy(status = Some(status))
+              selectedComponentContainerBO.copy(info = Some(InfoBO(selectionCriterion = Some(info))))
           }
         }
     }
@@ -93,7 +104,7 @@ trait SelectionCriterion {
     * @param countOfComponents : Int, fatherStep: StepBO
     * @return StatusSelectionCriterium
     */
-  private def getSelectionCriterionStatus(countOfComponents: Int, fatherStep: StepBO): StatusSelectionCriterion = {
+  private def getSelectionCriterionStatus(countOfComponents: Int, fatherStep: StepBO): Info = {
 
     val min: Int = fatherStep.selectionCriterionMin.get
     val max: Int = fatherStep.selectionCriterionMax.get
@@ -103,7 +114,6 @@ trait SelectionCriterion {
       case count if min <= count && max == count => RequireNextStep()
       case count if min <= count && max > count => AllowNextComponent()
       case count if max < count => NotAllowNextComponent()
-      case _ => ErrorSelectionCriterion()
     }
   }
 }

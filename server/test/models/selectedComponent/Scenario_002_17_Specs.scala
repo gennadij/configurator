@@ -102,7 +102,7 @@ class Scenario_002_17_Specs extends Specification with MessageHandler with Befor
       
       val jsonNextStepOut = CommonFunction.nextStep(wC)
       
-      (jsonNextStepOut \ "json").asOpt[String].get === JsonNames.NEXT_STEP
+      (jsonNextStepOut \ "json").asOpt[String].get === JsonNames.STEP
       (jsonNextStepOut \ "result" \ "step" \ "nameToShow").asOpt[String].get === "S2"
       (jsonNextStepOut \ "result" \ "step" \ "components").asOpt[Set[JsValue]].get.size === 2
       (((jsonNextStepOut \ "result" \ "step" \ "components")(0)) \ "nameToShow").asOpt[String].get === "C21"

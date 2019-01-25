@@ -1,4 +1,4 @@
-package org.shared.json.info
+package org.shared.json.common
 
 import play.api.libs.json.{Format, Json}
 

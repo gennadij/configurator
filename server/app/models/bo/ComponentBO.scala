@@ -8,6 +8,8 @@ package models.bo
 case class ComponentBO(
                       componentId: Option[String] = None,
                       nameToShow: Option[String] = None,
+                      lastComponent: Option[Boolean] = None,
+                      addedComponent: Option[Boolean] = None,
                       excludeDependenciesOut: Option[List[DependencyBO]] = None,
                       excludeDependenciesIn: Option[List[DependencyBO]] = None,
                       requireDependenciesOut: Option[List[DependencyBO]] = None,

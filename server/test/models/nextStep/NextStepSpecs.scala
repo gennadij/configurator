@@ -5,7 +5,6 @@ import controllers.websocket.WebClient
 import org.junit.runner.RunWith
 import org.shared.json.step.JsonStepOut
 import org.shared.json.{JsonKey, JsonNames}
-import org.shared.status.selectedComponent.NotExcludedComponentInternal
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
@@ -68,47 +67,47 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_1 " + jsonComponentOut_1)
       
       (jsonComponentOut_1 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
-      (jsonComponentOut_1 \ "result" \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
-      ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"
-      ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "visualization").asOpt[String].get === "undef"
-      ((jsonComponentOut_1 \ "result" \ "excludeDependenciesOut")(0) \ "nameToShow").asOpt[String].get === "(C11) ----> (C13)"
-      (jsonComponentOut_1 \ "result" \ "status" \JsonKey.selectionCriterion \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
-      (jsonComponentOut_1 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
-      (jsonComponentOut_1 \ "result" \ "status" \JsonKey.excludeDependencyInternal \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
-      (jsonComponentOut_1 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
-      (jsonComponentOut_1 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
+      (jsonComponentOut_1 \ JsonKey.result \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
+      ((jsonComponentOut_1 \ JsonKey.result \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"
+      ((jsonComponentOut_1 \ JsonKey.result \ "excludeDependenciesOut")(0) \ "visualization").asOpt[String].get === "undef"
+      ((jsonComponentOut_1 \ JsonKey.result \ "excludeDependenciesOut")(0) \ "nameToShow").asOpt[String].get === "(C11) ----> (C13)"
+      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === "ALLOW_NEXT_COMPONENT"
+      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === true
+      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === false
+//      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === Some({})
+      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.errors).asOpt[JsObject] === None
 
       Logger.info(this.getClass.getSimpleName + ": =================================================")
-      
+
       //User hat ausgewaelt
 
       val componentIdC12: String = sCOut.get.result.componentsForSelection.get.filter(comp => comp.nameToShow == "C12")
         .map(_.componentId).head
 
       Logger.info(this.getClass.getSimpleName + ": componentIdC12 " + componentIdC12)
-      
+
       val jsonComponentIn_2: JsValue = Json.obj(
           JsonKey.json -> JsonNames.SELECTED_COMPONENT
           ,JsonKey.params -> Json.obj(
                JsonKey.componentId -> componentIdC12
            )
       )
-      
+
       val jsonComponentOut_2: JsValue = wC.handleMessage(jsonComponentIn_2, wC.currentConfig)
-      
+
       Logger.info(this.getClass.getSimpleName + ": ComponentIn_2 " + jsonComponentIn_2)
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_2 " + jsonComponentOut_2)
-      
+
       (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
-      (jsonComponentOut_2 \ "result" \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
-      ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"
-      ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "visualization").asOpt[String].get === "undef"
-      ((jsonComponentOut_2 \ "result" \ "excludeDependenciesOut")(0) \ "nameToShow").asOpt[String].get === "(C12) ----> (C13)"
-      (jsonComponentOut_2 \ "result" \ "status" \ JsonKey.selectionCriterion \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
-      (jsonComponentOut_2 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
-      (jsonComponentOut_2 \ "result" \ "status" \JsonKey.excludeDependencyInternal \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
-      (jsonComponentOut_2 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
-      (jsonComponentOut_2 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
+      (jsonComponentOut_2 \ JsonKey.result \ JsonKey.excludeDependenciesOut).asOpt[List[JsValue]].get.size === 1
+      ((jsonComponentOut_2 \ JsonKey.result \ JsonKey.excludeDependenciesOut)(0) \ "dependencyType").asOpt[String].get === "exclude"
+      ((jsonComponentOut_2 \ JsonKey.result \ JsonKey.excludeDependenciesOut)(0) \ "visualization").asOpt[String].get === "undef"
+      ((jsonComponentOut_2 \ JsonKey.result \ JsonKey.excludeDependenciesOut)(0) \ "nameToShow").asOpt[String].get === "(C12) ----> (C13)"
+      (jsonComponentOut_2 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === "REQUIRE_NEXT_STEP"
+      (jsonComponentOut_2 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === true
+      (jsonComponentOut_2 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === false
+//      (jsonComponentOut_2 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === None
+      (jsonComponentOut_2 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
 
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       

@@ -1,7 +1,6 @@
 package org.views
 
-import org.shared.json.selectedComponent.JsonComponentOut
-import org.views.html.{ComponentWindow, StatusWindow}
+import org.shared.json.selectedComponent.JsonSelectedComponentOut
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -10,12 +9,13 @@ import org.views.html.{ComponentWindow, StatusWindow}
   */
 class DrawSelectedComponent {
 
-  def drawSelectedComponent(jsonComponentOut: JsonComponentOut): Unit = {
+  def drawSelectedComponent(jsonComponentOut: JsonSelectedComponentOut): Unit = {
+//TODO
 
-    StatusWindow.drawSelectedComponentStatusWindow(jsonComponentOut.result.status)
-
-    ComponentWindow.markSelectedComponent(
-      jsonComponentOut.result.selectedComponentId,
-      jsonComponentOut.result.status)
+//    StatusWindow.drawSelectedComponentStatusWindow(jsonComponentOut.result.status)
+//
+//    ComponentWindow.markSelectedComponent(
+//      jsonComponentOut.result.selectedComponentId,
+//      jsonComponentOut.result.status)
   }
 }

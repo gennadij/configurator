@@ -36,7 +36,7 @@ class ComponentKeys extends Specification with MessageHandler with BeforeAfterAl
     "Es wird erster Step mit der Komponenten geladen und Component_1_1 und Componente_1_2  ausgewaelt" >> {
       val configUrl = "http://config/client_013"
       val startConfigIn = Json.obj(
-          "json" -> JsonNames.START_CONFIG
+          "json" -> JsonNames.STEP
           ,"params" -> Json.obj(
                "configUrl" -> configUrl
            )

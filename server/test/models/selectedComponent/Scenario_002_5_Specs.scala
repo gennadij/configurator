@@ -31,7 +31,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
     "S1 -> C1 | S2 -> C1 | S3 -> C1" >> {
       val configUrl = "http://config/client_013"
       val startConfigIn = Json.obj(
-          "json" -> JsonNames.START_CONFIG
+          "json" -> JsonNames.STEP
           ,"params" -> Json.obj(
                "configUrl" -> configUrl
            )
@@ -73,7 +73,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       val jsonNextStepIn_2 : JsValue = Json.obj(
-          "json" -> JsonNames.NEXT_STEP
+          "json" -> JsonNames.STEP
       )
       
       val jsonNextStepOut_2 = wC.handleMessage(jsonNextStepIn_2, wC.currentConfig)
@@ -114,7 +114,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       val jsonNextStepIn_3 : JsValue = Json.obj(
-          "json" -> JsonNames.NEXT_STEP
+          "json" -> JsonNames.STEP
       )
       
       val jsonNextStepOut_3 = wC.handleMessage(jsonNextStepIn_3, wC.currentConfig)
@@ -146,7 +146,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       val jsonNextStepIn_4 : JsValue = Json.obj(
-          "json" -> JsonNames.NEXT_STEP
+          "json" -> JsonNames.STEP
       )
       
       val jsonNextStepOut_4 = wC.handleMessage(jsonNextStepIn_4, wC.currentConfig)

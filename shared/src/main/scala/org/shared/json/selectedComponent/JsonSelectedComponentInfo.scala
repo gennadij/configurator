@@ -1,6 +1,6 @@
 package org.shared.json.selectedComponent
 
-import org.shared.json.info.JsonInfo
+import org.shared.json.common.JsonInfo
 import play.api.libs.json.{Format, Json}
 
 /**
@@ -9,8 +9,7 @@ import play.api.libs.json.{Format, Json}
   * Created by Gennadi Heimann 25.01.2019
   */
 case class JsonSelectedComponentInfo (
-                                     selectionCriterion: JsonInfo,
-                                     selectedComponent: JsonInfo
+                                     selectionCriterion: Option[JsonInfo] = None
                                      )
 
 object JsonSelectedComponentInfo {

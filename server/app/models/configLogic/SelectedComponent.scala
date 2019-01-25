@@ -2,9 +2,6 @@ package models.configLogic
 
 import models.bo._
 import models.persistence.Persistence
-import org.shared.error.StepNotExist
-import org.shared.status.common.Success
-import org.shared.status.selectedComponent._
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -33,16 +30,17 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
 
     val sCBO: SelectedComponentContainerBO = Persistence.getSelectedComponent(selectedComponentId)
 
-    sCBO.status.get.common.get match {
-      case Success() =>
+    sCBO.errors match {
+      case None =>
 
-        val sCExtendedOfCurrentAndNextStep = getCurrentAndNextStepFromPersistence(sCBO)
+        val sCExtendedOfCurrentAndNextStep: SelectedComponentContainerBO =
+          getCurrentAndNextStepFromPersistence(sCBO)
 
-        val (statusCurrentStep, statusNextStep) =
+        val (errorCurrentStep, errorNextStep) =
           (sCExtendedOfCurrentAndNextStep.currentStep.get.error,
             sCExtendedOfCurrentAndNextStep.nextStep.get.error)
 
-        (statusCurrentStep, statusNextStep) match {
+        (errorCurrentStep, errorNextStep) match {
           case (None, None) =>
 
             val sCExtendedOfCurrentConfigStep =
@@ -63,7 +61,7 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
               getPossibleComponentToSelect(sCExtendedOfStatusExcludeDependencyExternal)
 
             //Status Selection Criterion
-            val sCExtendedOfStatusSelectionCriterion = verifySelectionCriterium(sCExtendedOfPossibleComponentIdsToSelect)
+            val sCExtendedOfStatusSelectionCriterion = verifySelectionCriterion(sCExtendedOfPossibleComponentIdsToSelect)
 
             // Status Selected Component
             val sCExtendedOFStatusSelectedComponent =
@@ -73,7 +71,7 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
 
           case _ => sCExtendedOfCurrentAndNextStep
         }
-      case _ => sCBO
+      case Some(_) => sCBO
     }
   }
 
@@ -83,7 +81,9 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
     * @param selectedComponentBO : SelectedComponentBO
     * @return selectedComponentBO
     */
-  private def getCurrentAndNextStepFromPersistence(selectedComponentBO: SelectedComponentContainerBO): SelectedComponentContainerBO = {
+  private def getCurrentAndNextStepFromPersistence(
+                                                    selectedComponentBO: SelectedComponentContainerBO
+                                                  ): SelectedComponentContainerBO = {
 
     val currentStepBO: StepContainerBO = Persistence.getCurrentStep(selectedComponentBO.selectedComponent.get.componentId.get)
 
@@ -110,109 +110,139 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
   /**
     * @author Gennadi Heimann
     * @version 0.0.3
-    * @param selectedComponentBO : SelectedComponentBO
+    * @param selectedComponentContainerBO : SelectedComponentBO
     * @return SelectedComponentBO
     */
-  private def verifyStatusComponentType(selectedComponentBO: SelectedComponentContainerBO): SelectedComponentContainerBO = {
+  private def verifyStatusComponentType(
+                                         selectedComponentContainerBO: SelectedComponentContainerBO
+                                       ): SelectedComponentContainerBO = {
+      //TODO delete comments
+//    val componentTypeStatus: StatusComponentType = selectedComponentBO.nextStep.get.error match {
+//      case Some(List(StepNotExist(_))) => FinalComponent()
+//      case None => DefaultComponent()
+//      case _ => UnknownComponentType()
+//    }
 
-    val componentTypeStatus: StatusComponentType = selectedComponentBO.nextStep.get.error match {
-      case Some(List(StepNotExist(_))) => FinalComponent() //TODO verbessern
-      case None => DefaultComponent()
-      case _ => UnknownComponentType()
+    selectedComponentContainerBO.nextStep.get.step match {
+      case Some(_) =>
+        val componentBO = selectedComponentContainerBO.selectedComponent.get.copy(lastComponent = Some(true))
+        selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
+      case None =>
+        val componentBO = selectedComponentContainerBO.selectedComponent.get.copy(lastComponent = Some(false))
+        selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
     }
 
-    val statusComponent: StatusComponent = selectedComponentBO.status.get.copy(componentType = Some(componentTypeStatus))
+//    val statusComponent: StatusComponent = selectedComponentContainerBO.status.get.copy(componentType = Some(componentTypeStatus))
 
-    selectedComponentBO.copy(status = Some(statusComponent))
+//    selectedComponentContainerBO.copy(status = Some(statusComponent))
   }
 
   /**
     * @author Gennadi Heimann
     * @version 0.0.3
-    * @param selectedComponentBO : SelectedComponentBO
+    * @param selectedComponentContainerBO : SelectedComponentBO
     * @return SelectedComponentBO
     */
-  private[configLogic] def verifyStatusSelectedComponent(selectedComponentBO: SelectedComponentContainerBO, currentConfig: CurrentConfig): SelectedComponentContainerBO = {
-    selectedComponentBO.status.get.excludedDependencyInternal.get match {
-      case ExcludedComponentInternal() =>
-        val status = selectedComponentBO.status.get.copy(selectedComponent = Some(NotAllowedComponent()))
+  private[configLogic] def verifyStatusSelectedComponent(
+                                                          selectedComponentContainerBO: SelectedComponentContainerBO, currentConfig: CurrentConfig
+                                                        ): SelectedComponentContainerBO = {
+//    selectedComponentBO.status.get.excludedDependencyInternal.get match {
+    selectedComponentContainerBO.warning.getOrElse(WarningBO()).excludedComponentInternal match {
+//      case ExcludedComponentInternal() =>
+        case Some(_) =>
+//          val status = selectedComponentContainerBO.status.get.copy(selectedComponent = Some(NotAllowedComponent()))
 
-        selectedComponentBO.copy(status = Some(status))
+//          selectedComponentContainerBO.copy(status = Some(status))
+          selectedComponentContainerBO
+        case None =>
+          val isRepeatedSelektionOfComponent: Boolean =
+            selectedComponentContainerBO.stepCurrentConfig.get.components
+              .exists(_.componentId.get == selectedComponentContainerBO.selectedComponent.get.componentId.get)
 
-      case NotExcludedComponentInternal() =>
-        val isRepeatedSelektionOfComponent: Boolean =
-          selectedComponentBO.stepCurrentConfig.get.components
-            .exists(_.componentId.get == selectedComponentBO.selectedComponent.get.componentId.get)
+          if(isRepeatedSelektionOfComponent) {
+            //Die Komponente muss aus der CurrentConfig gelöscht werden
+            // Wiederholte Auswahl der Komponente
+            currentConfig.removeComponent(selectedComponentContainerBO)
 
-        if(isRepeatedSelektionOfComponent) {
-          //Die Komponente muss aus der CurrentConfig gelöscht werden
-          // Wiederholte Auswahl der Komponente
-          currentConfig.removeComponent(selectedComponentBO)
+            val componentBO: ComponentBO =
+              selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(false))
+//            val status = selectedComponentContainerBO.status.get.copy(selectedComponent = Some(RemovedComponent()))
 
-          val status = selectedComponentBO.status.get.copy(selectedComponent = Some(RemovedComponent()))
+//            selectedComponentContainerBO.copy(status = Some(status))
+            selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
 
-          selectedComponentBO.copy(status = Some(status))
+          }else {
+            val componentBO: ComponentBO =
+              selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(false))
+            currentConfig.addComponent(
+              selectedComponentContainerBO.stepCurrentConfig.get, selectedComponentContainerBO.selectedComponent.get)
 
-        }else {
-          selectedComponentBO.status.get.selectionCriterion.get match {
-            case RequireComponent() =>
+            selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
 
-              val status = selectedComponentBO.status.get.copy(selectedComponent = Some(AddedComponent()))
 
-              val component =
-                selectedComponentBO.copy(status = Some(status))
-
-              currentConfig.addComponent(selectedComponentBO.stepCurrentConfig.get, component.selectedComponent.get)
-
-              component
-            case RequireNextStep() =>
-
-              val status = selectedComponentBO.status.get.copy(selectedComponent = Some(AddedComponent()))
-
-              val component =
-                selectedComponentBO.copy(status = Some(status))
-
-              currentConfig.addComponent(selectedComponentBO.stepCurrentConfig.get, component.selectedComponent.get)
-
-              component
-
-            case AllowNextComponent() =>
-
-              val status = selectedComponentBO.status.get.copy(selectedComponent = Some(AddedComponent()))
-
-              val component =
-                selectedComponentBO.copy(status = Some(status))
-
-              currentConfig.addComponent(selectedComponentBO.stepCurrentConfig.get, component.selectedComponent.get)
-
-              component
-
-            case NotAllowNextComponent() =>
-
-              val status = selectedComponentBO.status.get.copy(selectedComponent = Some(NotAllowedComponent()))
-
-              selectedComponentBO.copy(status = Some(status))
-            case ErrorSelectionCriterion() =>
-              val status = selectedComponentBO.status.get.copy(selectionCriterion = Some(ErrorSelectionCriterion()),
-                selectedComponent = Some(ErrorSelectedComponent()))
-
-              selectedComponentBO.copy(status = Some(status))
+//            selectedComponentContainerBO.status.get.selectionCriterion.get match {
+//              case RequireComponent() =>
+//
+//                val status = selectedComponentContainerBO.status.get.copy(selectedComponent = Some(AddedComponent()))
+//
+//                val component =
+//                  selectedComponentContainerBO.copy(status = Some(status))
+//
+//                currentConfig.addComponent(selectedComponentContainerBO.stepCurrentConfig.get, component.selectedComponent.get)
+//
+//                component
+//              case RequireNextStep() =>
+//
+//                val status = selectedComponentContainerBO.status.get.copy(selectedComponent = Some(AddedComponent()))
+//
+//                val component =
+//                  selectedComponentContainerBO.copy(status = Some(status))
+//
+//                currentConfig.addComponent(selectedComponentContainerBO.stepCurrentConfig.get, component.selectedComponent.get)
+//
+//                component
+//
+//              case AllowNextComponent() =>
+//
+//                val status = selectedComponentContainerBO.status.get.copy(selectedComponent = Some(AddedComponent()))
+//
+//                val component =
+//                  selectedComponentContainerBO.copy(status = Some(status))
+//
+//                currentConfig.addComponent(selectedComponentContainerBO.stepCurrentConfig.get, component.selectedComponent.get)
+//
+//                component
+//
+//              case NotAllowNextComponent() =>
+//
+//                val status = selectedComponentContainerBO.status.get.copy(selectedComponent = Some(NotAllowedComponent()))
+//
+//                selectedComponentContainerBO.copy(status = Some(status))
+//              case ErrorSelectionCriterion() =>
+//                val status = selectedComponentContainerBO.status.get.copy(selectionCriterion = Some(ErrorSelectionCriterion()),
+//                  selectedComponent = Some(ErrorSelectedComponent()))
+//
+//                selectedComponentContainerBO.copy(status = Some(status))
+//            }
           }
-        }
+//      case NotExcludedComponentInternal() =>
+
     }
   }
 
   /**
     * @author Gennadi Heimann
     * @version 0.0.2
-    * @param selectedComponentBO: SelectedComponentBO
+    * @param selectedComponentContainerBO: SelectedComponentBO
     * @return List[String]
     */
-  private[configLogic] def getPossibleComponentToSelect(selectedComponentBO: SelectedComponentContainerBO): SelectedComponentContainerBO = {
+  private[configLogic] def getPossibleComponentToSelect(
+                                                         selectedComponentContainerBO: SelectedComponentContainerBO
+                                                       ): SelectedComponentContainerBO = {
 
-    val selectedComponentId = selectedComponentBO.selectedComponent.get.componentId.get
+    val selectedComponentId = selectedComponentContainerBO.selectedComponent.get.componentId.get
 
-    val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentBO.stepCurrentConfig match {
+    val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentContainerBO.stepCurrentConfig match {
       case Some(step) => step.components
       case None => List()
     }
@@ -224,10 +254,10 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
     })).toSet
 
     val fromSelectedComponentExcludedComponentIds: List[String] =
-      selectedComponentBO.selectedComponent.get.excludeDependenciesOut.get map (_.inId)
+      selectedComponentContainerBO.selectedComponent.get.excludeDependenciesOut.get map (_.inId)
 
 
-    val unselectedComponentIds: List[String] = (selectedComponentBO.currentStep.get.componentsForSelection.get.toList map(_.componentId.get)) filterNot (c => { //TODO verbessern
+    val unselectedComponentIds: List[String] = (selectedComponentContainerBO.currentStep.get.componentsForSelection.get.toList map(_.componentId.get)) filterNot (c => { //TODO verbessern
       (previousSelectedComponentsInCurrentConfigIds :::
         fromCurrentConfigExcludedComponentIds.toList.+:(selectedComponentId)).contains(c)
     })
@@ -236,10 +266,21 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
       fromCurrentConfigExcludedComponentIds.contains(uC)
     })
 
-    val unselectedExcludedComponentsFromSelectedComponent: List[String] = selectedComponentBO.status.get.excludedDependencyInternal.get match {
-      case ExcludedComponentInternal() => List()
-      case NotExcludedComponentInternal() => unselectedComponentIds.filter(uC => {fromSelectedComponentExcludedComponentIds.contains(uC)})
-    }
+    val unselectedExcludedComponentsFromSelectedComponent: List[String] =
+      selectedComponentContainerBO.warning match {
+        case Some(warning) => warning.excludedComponentInternal match {
+          case Some(_) => List()
+          case None => unselectedComponentIds.filter(uC => {fromSelectedComponentExcludedComponentIds.contains(uC)})
+
+        }
+        case None => unselectedComponentIds.filter(uC => {fromSelectedComponentExcludedComponentIds.contains(uC)})
+      }
+
+//    val unselectedExcludedComponentsFromSelectedComponent: List[String] =
+//      selectedComponentContainerBO.status.get.excludedDependencyInternal.get match {
+//      case ExcludedComponentInternal() => List()
+//      case NotExcludedComponentInternal() => unselectedComponentIds.filter(uC => {fromSelectedComponentExcludedComponentIds.contains(uC)})
+//    }
 
 
     val unselectedExcludedComponents: List[String] =
@@ -249,6 +290,6 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
     val possibleComponentToSelect: List[String] =
       unselectedComponentIds filterNot(uSIds => {unselectedExcludedComponents.contains(uSIds)})
 
-    selectedComponentBO.copy(possibleComponentIdsToSelect = Some(possibleComponentToSelect))
+    selectedComponentContainerBO.copy(possibleComponentIdsToSelect = Some(possibleComponentToSelect))
   }
 }

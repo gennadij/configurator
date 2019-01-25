@@ -3,7 +3,7 @@ package controllers.genericConfig
 import controllers.wrapper.Wrapper
 import models.configLogic.{CurrentConfig, NextStep, SelectedComponent, StartConfig}
 import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
-import org.shared.json.selectedComponent.{JsonSelectedComponentIn, JsonComponentOut}
+import org.shared.json.selectedComponent.{JsonSelectedComponentIn, JsonSelectedComponentOut}
 import org.shared.json.step.{JsonStepIn, JsonStepOut}
 
 /**
@@ -50,7 +50,7 @@ trait GenericConfigurator extends Wrapper{
     * @param jsonComponentIn : JsonComponentIn
     * @return JsonComponentOut
     */
-  def selectedComponent(jsonComponentIn: JsonSelectedComponentIn, currentConfig: CurrentConfig): JsonComponentOut = {
+  def selectedComponent(jsonComponentIn: JsonSelectedComponentIn, currentConfig: CurrentConfig): JsonSelectedComponentOut = {
     toJsonComponentOut(SelectedComponent.verifySelectedComponent(toSelectedComponentBO(jsonComponentIn), currentConfig))
   }
 }

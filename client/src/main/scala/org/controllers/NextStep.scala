@@ -1,7 +1,7 @@
 package org.controllers
 
 import org.scalajs.jquery.jQuery
-import org.shared.json.selectedComponent.JsonComponentOut
+import org.shared.json.selectedComponent.JsonSelectedComponentOut
 import org.views.HtmlElementText
 import org.views.html.NextStepButton
 
@@ -12,11 +12,11 @@ import org.views.html.NextStepButton
   */
 class NextStep {
 
-  def requirenNextStep(jsonComponentOut: JsonComponentOut) = {
+  def requirenNextStep(jsonComponentOut: JsonSelectedComponentOut) = {
 
-    val componentTypeAndSelectionCriterium: (String, String) =
-      (jsonComponentOut.result.status.selectionCriterion.get.status,
-        jsonComponentOut.result.status.componentType.get.status)
+    val componentTypeAndSelectionCriterium: (String, String) = ???
+//      (jsonComponentOut.result.status.selectionCriterion.get.status,
+//        jsonComponentOut.result.status.componentType.get.status)
 
     componentTypeAndSelectionCriterium match {
       case ("REQUIRE_NEXT_STEP", "DEFAULT_COMPONENT") =>

@@ -15,7 +15,7 @@ object CommonFunction {
   
   def firstStep(wC: WebClient, configUrl: String): JsValue = {
     val startConfigIn = Json.obj(
-          "json" -> JsonNames.START_CONFIG
+          "json" -> JsonNames.STEP
           ,"params" -> Json.obj(
                "configUrl" -> configUrl
            )
@@ -61,7 +61,7 @@ object CommonFunction {
   def nextStep(wC: WebClient): JsValue = {
     
     val jsonNextStepIn : JsValue = Json.obj(
-        "json" -> JsonNames.NEXT_STEP
+        "json" -> JsonNames.STEP
     )
       
     val jsonNextStepOut = wC.handleMessage(jsonNextStepIn, wC.currentConfig)

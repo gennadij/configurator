@@ -1,7 +1,7 @@
 package models.bo
 
 import org.shared.error.Error
-import org.shared.warnings.Warning
+import org.shared.warning.Warning
 
 
 case class StepContainerBO(

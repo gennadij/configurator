@@ -33,7 +33,7 @@ class Scenario_002_2_Specs  extends Specification with MessageHandler with Befor
     "Die Komponente C11 wird zwei mal ausgewaelt" >> {
       val configUrl = "http://config/client_013"
       val startConfigIn = Json.obj(
-          "json" -> JsonNames.START_CONFIG
+          "json" -> JsonNames.STEP
           ,"params" -> Json.obj(
                "configUrl" -> configUrl
            )
