@@ -10,5 +10,5 @@ select expand(classes) from metadata:schema
 
 select strictMode from (
     select expand(classes) from metadata:schema 
-) where name="Step"
+) where name=JsonKey.step
 

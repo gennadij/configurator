@@ -2,13 +2,13 @@ package models.configLogic
 
 import models.bo._
 import models.persistence.Persistence
+import org.shared.error.{StepNotExist}
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
   *
   * Created by Gennadi Heimann 08.02.2018
   */
-//TODO Definition von Geltungsberechen des Statuses und Prüfung auf Widerholten oder widersprechenden Definitionen
 object SelectedComponent  {
 
   def verifySelectedComponent(selectedComponentBO: SelectedComponentContainerBO, currentConfig: CurrentConfig): SelectedComponentContainerBO = {
@@ -41,7 +41,7 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
             sCExtendedOfCurrentAndNextStep.nextStep.get.error)
 
         (errorCurrentStep, errorNextStep) match {
-          case (None, None) =>
+          case (None, None) | (None, Some(List(_: StepNotExist))) => //TODO aktuell
 
             val sCExtendedOfCurrentConfigStep =
               getCurrentStepFromCurrentConfig(sCExtendedOfCurrentAndNextStep, currentConfig)
@@ -125,10 +125,10 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
 
     selectedComponentContainerBO.nextStep.get.step match {
       case Some(_) =>
-        val componentBO = selectedComponentContainerBO.selectedComponent.get.copy(lastComponent = Some(true))
+        val componentBO = selectedComponentContainerBO.selectedComponent.get.copy(lastComponent = Some(false))
         selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
       case None =>
-        val componentBO = selectedComponentContainerBO.selectedComponent.get.copy(lastComponent = Some(false))
+        val componentBO = selectedComponentContainerBO.selectedComponent.get.copy(lastComponent = Some(true))
         selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
     }
 
@@ -150,10 +150,12 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
     selectedComponentContainerBO.warning.getOrElse(WarningBO()).excludedComponentInternal match {
 //      case ExcludedComponentInternal() =>
         case Some(_) =>
+
 //          val status = selectedComponentContainerBO.status.get.copy(selectedComponent = Some(NotAllowedComponent()))
 
 //          selectedComponentContainerBO.copy(status = Some(status))
-          selectedComponentContainerBO
+          val selectedComponent : ComponentBO = selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(false))
+          selectedComponentContainerBO.copy(selectedComponent = Some(selectedComponent))
         case None =>
           val isRepeatedSelektionOfComponent: Boolean =
             selectedComponentContainerBO.stepCurrentConfig.get.components
@@ -173,7 +175,7 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
 
           }else {
             val componentBO: ComponentBO =
-              selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(false))
+              selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(true))
             currentConfig.addComponent(
               selectedComponentContainerBO.stepCurrentConfig.get, selectedComponentContainerBO.selectedComponent.get)
 

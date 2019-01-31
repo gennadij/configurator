@@ -17,6 +17,10 @@ object JsonKey {
   def name = "name"
   def code = "code"
   def warnings = "warnings"
+
+  //Warning
+  def excludedComponentInternal = "excludedComponentInternal"
+
   //Status Common
   def status = "status"
   def common = "common"

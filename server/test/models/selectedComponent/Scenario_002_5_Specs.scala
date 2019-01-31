@@ -3,7 +3,8 @@ package models.selectedComponent
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
-import org.shared.json.JsonNames
+import org.shared.json.step.JsonStepOut
+import org.shared.json.{JsonKey, JsonNames}
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
@@ -15,7 +16,6 @@ import play.api.libs.json.{JsValue, Json}
  * 
  * Created by Gennadi Heimann 22.12.2017
  */
-//noinspection ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses,ScalaUnnecessaryParentheses
 @RunWith(classOf[JUnitRunner])
 class Scenario_002_5_Specs extends Specification with MessageHandler with BeforeAfterAll{
 
@@ -31,9 +31,9 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
     "S1 -> C1 | S2 -> C1 | S3 -> C1" >> {
       val configUrl = "http://config/client_013"
       val startConfigIn = Json.obj(
-          "json" -> JsonNames.STEP
-          ,"params" -> Json.obj(
-               "configUrl" -> configUrl
+          JsonKey.json -> JsonNames.STEP
+          ,JsonKey.params-> Json.obj(
+               JsonKey.configUrl -> configUrl
            )
       )
       
@@ -43,16 +43,17 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info("StartConfigOut " + startConfigOut)
       
       //User hat ausgewaelt Schritt 1
-      val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C11")
-            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
-      
+      val startConfig = Json.fromJson[JsonStepOut](startConfigOut)
+
+      val componentIdC11: String = startConfig.get.result.componentsForSelection.get.filter(comp => comp.nameToShow == "C11")
+        .map(_.componentId).head
+
       Logger.info(this.getClass.getSimpleName + ": componentIdC11 " + componentIdC11)
       
       val componentIn_1 = Json.obj(
-          "json" -> JsonNames.SELECTED_COMPONENT
-          ,"params" -> Json.obj(
-               "componentId" -> componentIdC11
+          JsonKey.json -> JsonNames.SELECTED_COMPONENT
+          ,JsonKey.params-> Json.obj(
+               JsonKey.componentId -> componentIdC11
            )
       )
       Logger.info("componentIn_1 " + componentIn_1)
@@ -62,7 +63,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info("componentOut_1 " + componentOut_1)
       
       val jsonCurrentConfigIn_1 : JsValue = Json.obj(
-          "json" -> JsonNames.CURRENT_CONFIG
+          JsonKey.json -> JsonNames.CURRENT_CONFIG
       )
       
       val jsonCurrentConfigOut_1: JsValue = wC.handleMessage(jsonCurrentConfigIn_1, wC.currentConfig)
@@ -73,7 +74,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       val jsonNextStepIn_2 : JsValue = Json.obj(
-          "json" -> JsonNames.STEP
+          JsonKey.json -> JsonNames.STEP
       )
       
       val jsonNextStepOut_2 = wC.handleMessage(jsonNextStepIn_2, wC.currentConfig)
@@ -84,16 +85,17 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       //User hat ausgewaelt Schritt 2
-      val componentIdC21: String = (jsonNextStepOut_2 \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C21")
-            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
+      val nextStepOut_2 = Json.fromJson[JsonStepOut](jsonNextStepOut_2)
+
+      val componentIdC21: String = nextStepOut_2.get.result.componentsForSelection.get.filter(comp => comp.nameToShow == "C21")
+        .map(_.componentId).head
       
       Logger.info(this.getClass.getSimpleName + ": componentIdC21 " + componentIdC21)
       
       val componentIn_2 = Json.obj(
-          "json" -> JsonNames.SELECTED_COMPONENT
-          ,"params" -> Json.obj(
-               "componentId" -> componentIdC21
+          JsonKey.json -> JsonNames.SELECTED_COMPONENT
+          ,JsonKey.params-> Json.obj(
+               JsonKey.componentId -> componentIdC21
            )
       )
       Logger.info("componentIn_2 " + componentIn_2)
@@ -103,7 +105,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info("componentOut_2 " + componentOut_2)
       
       val jsonCurrentConfigIn_2 : JsValue = Json.obj(
-          "json" -> JsonNames.CURRENT_CONFIG
+          JsonKey.json -> JsonNames.CURRENT_CONFIG
       )
       
       val jsonCurrentConfigOut_2: JsValue = wC.handleMessage(jsonCurrentConfigIn_2, wC.currentConfig)
@@ -114,7 +116,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       val jsonNextStepIn_3 : JsValue = Json.obj(
-          "json" -> JsonNames.STEP
+          JsonKey.json -> JsonNames.STEP
       )
       
       val jsonNextStepOut_3 = wC.handleMessage(jsonNextStepIn_3, wC.currentConfig)
@@ -125,16 +127,18 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       //User hat ausgewaelt
-      val componentIdC31: String = (jsonNextStepOut_3 \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C31")
-            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
-      
+
+      val nextStepOut_3 = Json.fromJson[JsonStepOut](jsonNextStepOut_3)
+
+      val componentIdC31: String = nextStepOut_3.get.result.componentsForSelection.get.filter(comp => comp.nameToShow == "C31")
+        .map(_.componentId).head
+
       Logger.info(this.getClass.getSimpleName + ": componentIdC31 " + componentIdC31)
       
       val componentIn_3 = Json.obj(
-          "json" -> JsonNames.SELECTED_COMPONENT
-          ,"params" -> Json.obj(
-               "componentId" -> componentIdC31
+          JsonKey.json -> JsonNames.SELECTED_COMPONENT
+          ,JsonKey.params-> Json.obj(
+               JsonKey.componentId -> componentIdC31
            )
       )
       Logger.info("componentIn_3 " + componentIn_3)
@@ -146,7 +150,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       val jsonNextStepIn_4 : JsValue = Json.obj(
-          "json" -> JsonNames.STEP
+          JsonKey.json -> JsonNames.STEP
       )
       
       val jsonNextStepOut_4 = wC.handleMessage(jsonNextStepIn_4, wC.currentConfig)
@@ -157,7 +161,7 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       val jsonCurrentConfigIn : JsValue = Json.obj(
-          "json" -> JsonNames.CURRENT_CONFIG
+          JsonKey.json -> JsonNames.CURRENT_CONFIG
       )
       
       val jsonCurrentConfigOut: JsValue = wC.handleMessage(jsonCurrentConfigIn, wC.currentConfig)
@@ -166,13 +170,13 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + jsonCurrentConfigOut)
       
       val result = (jsonCurrentConfigOut \ "result")
-      (jsonCurrentConfigOut \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result \ "step" \ "nameToShow").asOpt[String] === Some("S1")
-      ((result \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C11")
-      ((result \ "step" \ "nextStep" \ "nameToShow").asOpt[String]) === Some("S2")
-      ((result \ "step" \ "nextStep" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C21")
-      ((result \ "step" \ "nextStep" \ "nextStep" \ "nameToShow").asOpt[String]) === Some("S3")
-      ((result \ "step" \ "nextStep" \ "nextStep" \"components")(0) \ "nameToShow").asOpt[String] === Some("C31")
+      (jsonCurrentConfigOut \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
+      (result \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
+      ((result \ JsonKey.step \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
+      ((result \ JsonKey.step \ "nextStep" \ JsonKey.nameToShow).asOpt[String]) === Some("S2")
+      ((result \ JsonKey.step \ "nextStep" \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C21")
+      ((result \ JsonKey.step \ "nextStep" \ "nextStep" \ JsonKey.nameToShow).asOpt[String]) === Some("S3")
+      ((result \ JsonKey.step \ "nextStep" \ "nextStep" \"components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C31")
     }
   }
 }

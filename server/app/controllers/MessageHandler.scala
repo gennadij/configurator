@@ -2,7 +2,7 @@ package controllers
 
 import controllers.genericConfig.GenericConfigurator
 import models.configLogic.CurrentConfig
-import org.shared.json.JsonNames
+import org.shared.json.{JsonKey, JsonNames}
 import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
 import org.shared.json.error.{JsonErrorIn, JsonErrorParams}
 import org.shared.json.selectedComponent.JsonSelectedComponentIn
@@ -24,7 +24,7 @@ trait MessageHandler extends GenericConfigurator{
     * @return JsValue
     */
   def handleMessage(receivedMessage: JsValue, cC: CurrentConfig): JsValue = {
-    (receivedMessage \ "json").asOpt[String] match {
+    (receivedMessage \ JsonKey.json).asOpt[String] match {
       case Some(JsonNames.STEP) => step(receivedMessage, cC)
       case Some(JsonNames.CURRENT_CONFIG) => currentConfig(receivedMessage, cC)
       case Some(JsonNames.SELECTED_COMPONENT) => selectedComponent(receivedMessage, cC)

@@ -76,7 +76,7 @@ class Scenario_005_1_Specs extends Specification with MessageHandler with Before
 
       val r_1 = componentOut_21 \ JsonKey.result \ JsonKey.status
 
-      (componentOut_21 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
+      (componentOut_21 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (r_1 \ JsonKey.componentType \ JsonKey.status).asOpt[String] === Some(DefaultComponent().status)
       (r_1 \ JsonKey.selectedComponent \ JsonKey.status).asOpt[String] === Some(AddedComponent().status)
       (r_1 \ JsonKey.selectionCriterion \ JsonKey.status).asOpt[String] === Some(RequireNextStep().status)
@@ -124,7 +124,7 @@ class Scenario_005_1_Specs extends Specification with MessageHandler with Before
 
       Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + currentConfig)
 
-      val result = currentConfig \ "result"
+      val result = currentConfig \ JsonKey.result
       (currentConfig \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some(s1)
       (result \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 1

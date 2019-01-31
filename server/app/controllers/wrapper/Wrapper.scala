@@ -147,9 +147,13 @@ trait Wrapper extends RIDConverter {
         requireDependenciesIn = toJsonDependency(selectedComponentWithHash.selectedComponent.get.requireDependenciesIn),
         info = Some(getInfo(selectedComponentWithHash.info)),
         errors = getError(selectedComponentWithHash.errors),
-        warning = Some(getWarning(selectedComponentWithHash.warning))
+        warning = getWarning(selectedComponentWithHash.warning)
       )
     )
+  }
+
+  def getAdddeComponent(addedComponent: Option[Boolean]): Option[Boolean] = {
+    ???
   }
 
   def getInfo(infoBO: Option[InfoBO]): JsonSelectedComponentInfo = {
@@ -169,7 +173,7 @@ trait Wrapper extends RIDConverter {
 
 
 
-  def getWarning(warningBO: Option[WarningBO]): JsonSelectedComponentWarning = {
+  def getWarning(warningBO: Option[WarningBO]): Option[JsonSelectedComponentWarning] = {
     val eCI: Option[JsonWarning] = warningBO.getOrElse(WarningBO()).excludedComponentInternal match {
       case Some(w) => Some(JsonWarning(
         message = w.message,
@@ -186,11 +190,21 @@ trait Wrapper extends RIDConverter {
       ))
       case None => None
     }
+    (eCE, eCI) match {
+      case (Some(_), _) =>
+        Some(JsonSelectedComponentWarning(
+          excludedComponentExternal = eCE,
+          excludedComponentInternal = eCI
+        ))
+      case (_, Some(_)) =>
+        Some(JsonSelectedComponentWarning(
+          excludedComponentExternal = eCE,
+          excludedComponentInternal = eCI
+        ))
+      case (None, None) =>
+        None
+    }
 
-    JsonSelectedComponentWarning(
-      excludedComponentExternal = eCE,
-      excludedComponentInternal = eCI
-    )
   }
 
   def getError(errors: Option[List[Error]]) : Option[List[JsonError]] = {

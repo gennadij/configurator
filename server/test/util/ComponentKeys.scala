@@ -36,23 +36,23 @@ class ComponentKeys extends Specification with MessageHandler with BeforeAfterAl
     "Es wird erster Step mit der Komponenten geladen und Component_1_1 und Componente_1_2  ausgewaelt" >> {
       val configUrl = "http://config/client_013"
       val startConfigIn = Json.obj(
-          "json" -> JsonNames.STEP
-          ,"params" -> Json.obj(
-               "configUrl" -> configUrl
+          JsonKey.json -> JsonNames.STEP
+          ,JsonKey.params-> Json.obj(
+               JsonKey.params -> configUrl
            )
       )
 
       val startConfigOut = wC.handleMessage(startConfigIn, wC.currentConfig)
 
       //User hat ausgewaelt
-      val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C11")
-            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
+      val componentIdC11: String = (startConfigOut \ JsonKey.result \ JsonKey.step \ "components").asOpt[List[JsValue]].get
+            .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == "C11")
+            .map(comp => {(comp \ JsonKey.componentId).asOpt[String].get}).head
 
       val jsonComponentIn_1: JsValue = Json.obj(
-          "json" -> JsonNames.SELECTED_COMPONENT
-          ,"params" -> Json.obj(
-               "componentId" -> componentIdC11
+          JsonKey.json -> JsonNames.SELECTED_COMPONENT
+          ,JsonKey.params-> Json.obj(
+               JsonKey.componentId -> componentIdC11
            )
       )
 
@@ -63,34 +63,34 @@ class ComponentKeys extends Specification with MessageHandler with BeforeAfterAl
 
 
       //noinspection ScalaUnnecessaryParentheses
-      (jsonComponentOut_1).asOpt[JsObject].get.keys === Set("json", "result")
+      (jsonComponentOut_1).asOpt[JsObject].get.keys === Set(JsonKey.json, JsonKey.result)
 
-      (jsonComponentOut_1 \ "result").asOpt[JsObject].get.keys ===
+      (jsonComponentOut_1 \ JsonKey.result).asOpt[JsObject].get.keys ===
         Set("selectedComponentId", "stepId", "status",
-          "excludeDependenciesOut", "excludeDependenciesIn", "requireDependenciesOut", "requireDependenciesIn")
+          JsonKey.excludeDependenciesOut, "excludeDependenciesIn", "requireDependenciesOut", "requireDependenciesIn")
 
       //noinspection ExistsEquals
-      (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.exists(_ == JsonKey.selectionCriterion) === true
-      (jsonComponentOut_1 \ "result"\ "status" \ JsonKey.selectionCriterion).asOpt[JsObject].get.keys === Set("status", "message")
+      (jsonComponentOut_1 \ JsonKey.result\ "status").asOpt[JsObject].get.keys.exists(_ == JsonKey.selectionCriterion) === true
+      (jsonComponentOut_1 \ JsonKey.result\ "status" \ JsonKey.selectionCriterion).asOpt[JsObject].get.keys === Set("status", "message")
 
-      (jsonComponentOut_1 \ "result" \ "status").asOpt[JsObject].get.keys.contains("componentType") === true
-      (jsonComponentOut_1 \ "result"\ "status" \ "componentType").asOpt[JsObject].get.keys === Set("status", "message")
+      (jsonComponentOut_1 \ JsonKey.result \ "status").asOpt[JsObject].get.keys.contains("componentType") === true
+      (jsonComponentOut_1 \ JsonKey.result\ "status" \ "componentType").asOpt[JsObject].get.keys === Set("status", "message")
 
-      (jsonComponentOut_1 \ "result" \ "status").asOpt[JsObject].get.keys.contains("common") === true
-      (jsonComponentOut_1 \ "result"\ "status" \ "common").asOpt[JsObject].get.keys === Set("status", "message")
+      (jsonComponentOut_1 \ JsonKey.result \ "status").asOpt[JsObject].get.keys.contains("common") === true
+      (jsonComponentOut_1 \ JsonKey.result\ "status" \ "common").asOpt[JsObject].get.keys === Set("status", "message")
 
       //noinspection ExistsEquals
-      (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.exists(_ == "selectedComponent") === true
-      (jsonComponentOut_1 \ "result"\ "status" \ "selectedComponent").asOpt[JsObject].get.keys === Set("status", "message")
+      (jsonComponentOut_1 \ JsonKey.result\ "status").asOpt[JsObject].get.keys.exists(_ == "selectedComponent") === true
+      (jsonComponentOut_1 \ JsonKey.result\ "status" \ "selectedComponent").asOpt[JsObject].get.keys === Set("status", "message")
 
-      (jsonComponentOut_1 \ "result" \ "status").asOpt[JsObject].get.keys.contains(JsonKey.excludeDependencyInternal) === true
-      (jsonComponentOut_1 \ "result"\ "status" \ JsonKey.excludeDependencyInternal).asOpt[JsObject].get.keys === Set("status", "message")
+      (jsonComponentOut_1 \ JsonKey.result \ "status").asOpt[JsObject].get.keys.contains(JsonKey.excludeDependencyInternal) === true
+      (jsonComponentOut_1 \ JsonKey.result\ "status" \ JsonKey.excludeDependencyInternal).asOpt[JsObject].get.keys === Set("status", "message")
 
-      (jsonComponentOut_1 \ "result"\ "status").asOpt[JsObject].get.keys.size === 6
+      (jsonComponentOut_1 \ JsonKey.result\ "status").asOpt[JsObject].get.keys.size === 6
 
-      (jsonComponentOut_1 \ "result"\ "stepId").asOpt[JsObject] === None
+      (jsonComponentOut_1 \ JsonKey.result\ "stepId").asOpt[JsObject] === None
 
-      (jsonComponentOut_1 \ "result"\ "selectedComponentId").asOpt[JsObject] === None
+      (jsonComponentOut_1 \ JsonKey.result\ "selectedComponentId").asOpt[JsObject] === None
     }
   }
 }

@@ -16,7 +16,7 @@ case class JsonComponent (
 object JsonComponent {
   implicit val jsonComponentFormat: Format[JsonComponent] = Json.format[JsonComponent]
 //    (
-//      (JsPath \ "componentId").write[String] and
+//      (JsPath \ JsonKey.componentId).write[String] and
 //      (JsPath \ "nameToShow").write[String]
 //  )(unlift(JsonComponent.unapply))
 }

@@ -66,15 +66,15 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       Logger.info(this.getClass.getSimpleName + ": ComponentIn_1 " + jsonComponentIn_1)
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_1 " + jsonComponentOut_1)
       
-      (jsonComponentOut_1 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
-      (jsonComponentOut_1 \ JsonKey.result \ "excludeDependenciesOut").asOpt[List[JsValue]].get.size === 1
-      ((jsonComponentOut_1 \ JsonKey.result \ "excludeDependenciesOut")(0) \ "dependencyType").asOpt[String].get === "exclude"
-      ((jsonComponentOut_1 \ JsonKey.result \ "excludeDependenciesOut")(0) \ "visualization").asOpt[String].get === "undef"
-      ((jsonComponentOut_1 \ JsonKey.result \ "excludeDependenciesOut")(0) \ "nameToShow").asOpt[String].get === "(C11) ----> (C13)"
+      (jsonComponentOut_1 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
+      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.excludeDependenciesOut).asOpt[List[JsValue]].get.size === 1
+      ((jsonComponentOut_1 \ JsonKey.result \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.dependencyType).asOpt[String].get === "exclude"
+      ((jsonComponentOut_1 \ JsonKey.result \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.visualization).asOpt[String].get === "undef"
+      ((jsonComponentOut_1 \ JsonKey.result \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.nameToShow).asOpt[String].get === "(C11) ----> (C13)"
       (jsonComponentOut_1 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === "ALLOW_NEXT_COMPONENT"
-      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === true
-      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === false
-//      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === Some({})
+      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
+      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === true
+      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === None
       (jsonComponentOut_1 \ JsonKey.result \ JsonKey.errors).asOpt[JsObject] === None
 
       Logger.info(this.getClass.getSimpleName + ": =================================================")
@@ -98,15 +98,15 @@ class NextStepSpecs extends Specification with MessageHandler with BeforeAfterAl
       Logger.info(this.getClass.getSimpleName + ": ComponentIn_2 " + jsonComponentIn_2)
       Logger.info(this.getClass.getSimpleName + ": ComponentOut_2 " + jsonComponentOut_2)
 
-      (jsonComponentOut_2 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
+      (jsonComponentOut_2 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (jsonComponentOut_2 \ JsonKey.result \ JsonKey.excludeDependenciesOut).asOpt[List[JsValue]].get.size === 1
-      ((jsonComponentOut_2 \ JsonKey.result \ JsonKey.excludeDependenciesOut)(0) \ "dependencyType").asOpt[String].get === "exclude"
-      ((jsonComponentOut_2 \ JsonKey.result \ JsonKey.excludeDependenciesOut)(0) \ "visualization").asOpt[String].get === "undef"
-      ((jsonComponentOut_2 \ JsonKey.result \ JsonKey.excludeDependenciesOut)(0) \ "nameToShow").asOpt[String].get === "(C12) ----> (C13)"
+      ((jsonComponentOut_2 \ JsonKey.result \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.dependencyType).asOpt[String].get === "exclude"
+      ((jsonComponentOut_2 \ JsonKey.result \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.visualization).asOpt[String].get === "undef"
+      ((jsonComponentOut_2 \ JsonKey.result \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.nameToShow).asOpt[String].get === "(C12) ----> (C13)"
       (jsonComponentOut_2 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === "REQUIRE_NEXT_STEP"
-      (jsonComponentOut_2 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === true
-      (jsonComponentOut_2 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === false
-//      (jsonComponentOut_2 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === None
+      (jsonComponentOut_2 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
+      (jsonComponentOut_2 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === true
+      (jsonComponentOut_2 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === None
       (jsonComponentOut_2 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
 
       Logger.info(this.getClass.getSimpleName + ": =================================================")

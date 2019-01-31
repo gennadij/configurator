@@ -85,8 +85,16 @@ trait Dependency {
 //          selectedComponentContainerBO.status.get.copy(excludedDependencyInternal = Some(NotExcludedComponentInternal()))
 //        selectedComponentContainerBO.copy(status = Some(statusNotExcludedComponent))
       case _ =>
-        val warningBO: WarningBO =
-          selectedComponentContainerBO.warning.get.copy(excludedComponentInternal = Some(ExcludedComponentInternal()))
+        val warningBO: WarningBO = selectedComponentContainerBO.warning match {
+          case Some(_) =>
+            selectedComponentContainerBO.warning.get.copy(excludedComponentInternal = Some(ExcludedComponentInternal()))
+          case None    =>
+            WarningBO(
+              excludedComponentInternal = Some(ExcludedComponentInternal())
+            )
+//            selectedComponentContainerBO.copy(warning = warningBO)
+        }
+
 
         selectedComponentContainerBO.copy(warning = Some(warningBO))
 //        val statusExcludedComponent: StatusComponent =

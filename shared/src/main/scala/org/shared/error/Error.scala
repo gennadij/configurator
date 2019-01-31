@@ -14,7 +14,7 @@ sealed abstract class Error (
 //Action SelectedComponent = 02
 //Unbekannt = 03
 //Datenbank = 04
-case class StepNotExist(stepId: String = "undefined")  extends Error(
+case class StepNotExist(stepId: String = "undefined") extends Error(
   message = s"Der aufgeforderte Schritt (stepId = $stepId) exestiert nicht in dem Datenbank",
   name ="STEP_NOT_EXIST",
   code = "E010001")

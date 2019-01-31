@@ -33,13 +33,13 @@ class Scenario_002_6_Specs extends Specification with MessageHandler with Before
       val startConfigOut = CommonFunction.firstStep(wC, configUrl)
       //User hat ausgewaelt Schritt 1
       val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C11")
-            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
+            .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == "C11")
+            .map(comp => {(comp \ JsonKey.componentId).asOpt[String].get}).head
       
       
       val componentOut_1: JsValue = CommonFunction.selectComponent(wC, componentIdC11)
       
-      (componentOut_1 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
+      (componentOut_1 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (componentOut_1 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
       (componentOut_1 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
       (componentOut_1 \ "result" \ "status" \JsonKey.selectionCriterion \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
@@ -49,10 +49,10 @@ class Scenario_002_6_Specs extends Specification with MessageHandler with Before
       val jsonCurrentConfigOut_1: JsValue = CommonFunction.currentCongig(wC)
       
       val result_1 = (jsonCurrentConfigOut_1 \ "result")
-      (jsonCurrentConfigOut_1 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result_1 \ "step" \ "nameToShow").asOpt[String] === Some("S1")
+      (jsonCurrentConfigOut_1 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
+      (result_1 \ "step" \ JsonKey.nameToShow).asOpt[String] === Some("S1")
       (result_1 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
-      ((result_1 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C11")
+      ((result_1 \ "step" \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
     }
   }
 }

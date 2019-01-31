@@ -2,15 +2,16 @@ package models.selectedComponent
 
 import controllers.MessageHandler
 import controllers.websocket.WebClient
-import org.shared.status.common.Success
-import org.shared.status.selectedComponent._
 import org.junit.runner.RunWith
+import org.shared.info
+import org.shared.info.{AllowNextComponent, RequireNextStep}
+import org.shared.json.step.JsonStepOut
 import org.shared.json.{JsonKey, JsonNames}
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
 import play.api.Logger
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -33,9 +34,9 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
     "Die Komponente C11, C12, C11 wird ausgewaelt" >> {
       val configUrl = "http://config/client_013"
       val startConfigIn = Json.obj(
-          "json" -> JsonNames.STEP
-          ,"params" -> Json.obj(
-               "configUrl" -> configUrl
+          JsonKey.json -> JsonNames.STEP
+          ,JsonKey.params-> Json.obj(
+               JsonKey.configUrl -> configUrl
            )
       )
       
@@ -43,18 +44,19 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       
       Logger.info("StartConfigIn " + startConfigIn)
       Logger.info("StartConfigOut " + startConfigOut)
-      
-      //User hat ausgewaelt Component 1
-      val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C11")
-            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
-      
+
+      val startConfig = Json.fromJson[JsonStepOut](startConfigOut)
+
+      //      //User hat ausgewaelt
+      val componentIdC11: String = startConfig.get.result.componentsForSelection.get.filter(comp => comp.nameToShow == "C11")
+        .map(_.componentId).head
+
       Logger.info(this.getClass.getSimpleName + ": componentIdC11 " + componentIdC11)
       
       val componentIn_1 = Json.obj(
-          "json" -> JsonNames.SELECTED_COMPONENT
-          ,"params" -> Json.obj(
-               "componentId" -> componentIdC11
+          JsonKey.json -> JsonNames.SELECTED_COMPONENT
+          ,JsonKey.params-> Json.obj(
+               JsonKey.componentId -> componentIdC11
            )
       )
       Logger.info("componentIn_1 " + componentIn_1)
@@ -62,29 +64,16 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       val componentOut_1: JsValue = wC.handleMessage(componentIn_1, wC.currentConfig)
       Logger.info("componentOut_1 " + componentOut_1)
       
-      (componentOut_1 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
+      (componentOut_1 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
 
-      val statusSelectionCriterium = AllowNextComponent()
-      (componentOut_1 \ "result" \ "status" \ JsonKey.selectionCriterion \ "status").asOpt[String].get === statusSelectionCriterium.status
-      (componentOut_1 \ "result" \ "status" \ JsonKey.selectionCriterion \ "message").asOpt[String].get === statusSelectionCriterium.message
-      
-      val statusSelectedComponent = AddedComponent()
-      
-      (componentOut_1 \ "result" \ "status" \ "selectedComponent" \ "status").asOpt[String].get === statusSelectedComponent.status
-      (componentOut_1 \ "result" \ "status" \ "selectedComponent" \ "message").asOpt[String].get === statusSelectedComponent.message
-      
-      val statusExcludeDependency = NotExcludedComponentInternal()
-      
-      (componentOut_1 \ "result" \ "status" \ JsonKey.excludeDependencyInternal \ "status").asOpt[String].get === statusExcludeDependency.status
-      (componentOut_1 \ "result" \ "status" \ JsonKey.excludeDependencyInternal \ "message").asOpt[String].get === statusExcludeDependency.message
-      
-      val statusCommon = Success()
-      
-      (componentOut_1 \ "result" \ "status" \ "common" \ "status").asOpt[String].get === statusCommon.status
-      (componentOut_1 \ "result" \ "status" \ "common" \ "message").asOpt[String].get === statusCommon.message
-      
+      (componentOut_1 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === "ALLOW_NEXT_COMPONENT"
+      (componentOut_1 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
+      (componentOut_1 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === true
+      (componentOut_1 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === None
+      (componentOut_1 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
+
       val jsonCurrentConfigIn_1 : JsValue = Json.obj(
-          "json" -> JsonNames.CURRENT_CONFIG
+          JsonKey.json -> JsonNames.CURRENT_CONFIG
       )
       
       val jsonCurrentConfigOut_1: JsValue = wC.handleMessage(jsonCurrentConfigIn_1, wC.currentConfig)
@@ -93,22 +82,21 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + jsonCurrentConfigOut_1)
       
        val result_1 = (jsonCurrentConfigOut_1 \ "result")
-      (jsonCurrentConfigOut_1 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result_1 \ "step" \ "nameToShow").asOpt[String] === Some("S1")
-      (result_1 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
-      ((result_1 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C11")
+      (jsonCurrentConfigOut_1 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
+      (result_1 \ JsonKey.step \ "nameToShow").asOpt[String] === Some("S1")
+      (result_1 \ JsonKey.step \ "components").asOpt[List[JsValue]].get.size === 1
+      ((result_1 \ JsonKey.step \ "components")(0) \ "nameToShow").asOpt[String] === Some("C11")
       
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
       //User hat ausgewaelt Component 2
-      val componentIdC12: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C12")
-            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
+      val componentIdC12: String = startConfig.get.result.componentsForSelection.get.filter(comp => comp.nameToShow == "C12")
+        .map(_.componentId).head
       
       val componentIn_2 = Json.obj(
-          "json" -> JsonNames.SELECTED_COMPONENT
-          ,"params" -> Json.obj(
-               "componentId" -> componentIdC12
+          JsonKey.json -> JsonNames.SELECTED_COMPONENT
+          ,JsonKey.params-> Json.obj(
+               JsonKey.componentId -> componentIdC12
            )
       )
       Logger.info("componentIn_2 " + componentIn_2)
@@ -117,30 +105,17 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       
       Logger.info("componentOut_2 " + componentOut_2)
       
-      (componentOut_2 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
+      (componentOut_2 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
 
-      val statusSelectionCriterium_2 = RequireNextStep()
-      (componentOut_2 \ "result" \ "status" \ JsonKey.selectionCriterion \ "status").asOpt[String].get === statusSelectionCriterium_2.status
-      (componentOut_2 \ "result" \ "status" \ JsonKey.selectionCriterion \ "message").asOpt[String].get === statusSelectionCriterium_2.message
-      
-      val statusSelectedComponent_2 = AddedComponent()
-      
-      (componentOut_2 \ "result" \ "status" \ "selectedComponent" \ "status").asOpt[String].get === statusSelectedComponent_2.status
-      (componentOut_2 \ "result" \ "status" \ "selectedComponent" \ "message").asOpt[String].get === statusSelectedComponent_2.message
-      
-      val statusExcludeDependency_2 = NotExcludedComponentInternal()
-      
-      (componentOut_2 \ "result" \ "status" \ JsonKey.excludeDependencyInternal \ "status").asOpt[String].get === statusExcludeDependency_2.status
-      (componentOut_2 \ "result" \ "status" \ JsonKey.excludeDependencyInternal \ "message").asOpt[String].get === statusExcludeDependency_2.message
-      
-      val statusCommon_2 = Success()
-      
-      (componentOut_2 \ "result" \ "status" \ "common" \ "status").asOpt[String].get === statusCommon_2.status
-      (componentOut_2 \ "result" \ "status" \ "common" \ "message").asOpt[String].get === statusCommon_2.message
-      
-      
+      (componentOut_2 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === RequireNextStep().name
+      (componentOut_2 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
+      (componentOut_2 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === true
+      (componentOut_2 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === None
+      (componentOut_2 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
+
+
       val jsonCurrentConfigIn_2 : JsValue = Json.obj(
-          "json" -> JsonNames.CURRENT_CONFIG
+          JsonKey.json -> JsonNames.CURRENT_CONFIG
       )
       
       val jsonCurrentConfigOut_2: JsValue = wC.handleMessage(jsonCurrentConfigIn_2, wC.currentConfig)
@@ -149,20 +124,16 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + jsonCurrentConfigOut_2)
       
       val result_2 = (jsonCurrentConfigOut_2 \ "result")
-      (jsonCurrentConfigOut_2 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result_2 \ "step" \ "nameToShow").asOpt[String] === Some("S1")
-      (result_2 \ "step" \ "components").asOpt[List[JsValue]].get.size === 2
+      (jsonCurrentConfigOut_2 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
+      (result_2 \ JsonKey.step \ "nameToShow").asOpt[String] === Some("S1")
+      (result_2 \ JsonKey.step \ "components").asOpt[List[JsValue]].get.size === 2
       
       Logger.info(this.getClass.getSimpleName + ": =================================================")
-      
-//      val componentIdC12: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-//            .filter(comp => (comp \ "nameToShow").asOpt[String].get == "C_1_2_user29_v016")
-//            .map(comp => {(comp \ "componentId").asOpt[String].get}).head
-      
+
       val componentIn_3 = Json.obj(
-          "json" -> JsonNames.SELECTED_COMPONENT
-          ,"params" -> Json.obj(
-               "componentId" -> componentIdC11
+          JsonKey.json -> JsonNames.SELECTED_COMPONENT
+          ,JsonKey.params-> Json.obj(
+               JsonKey.componentId -> componentIdC11
            )
       )
       Logger.info("componentIn_3 " + componentIn_3)
@@ -171,29 +142,16 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       
       Logger.info("componentOut_3 " + componentOut_3)
       
-      (componentOut_3 \ "json").asOpt[String].get === JsonNames.SELECTED_COMPONENT
+      (componentOut_3 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
 
-      val statusSelectionCriterium_3 = RequireNextStep()
-      (componentOut_2 \ "result" \ "status" \ JsonKey.selectionCriterion \ "status").asOpt[String].get === statusSelectionCriterium_3.status
-      (componentOut_2 \ "result" \ "status" \ JsonKey.selectionCriterion \ "message").asOpt[String].get === statusSelectionCriterium_3.message
-      
-      val statusSelectedComponent_3 = RemovedComponent()
-      
-      (componentOut_3 \ "result" \ "status" \ "selectedComponent" \ "status").asOpt[String].get === statusSelectedComponent_3.status
-      (componentOut_3 \ "result" \ "status" \ "selectedComponent" \ "message").asOpt[String].get === statusSelectedComponent_3.message
-      
-      val statusExcludeDependency_3 = NotExcludedComponentInternal()
-      
-      (componentOut_3 \ "result" \ "status" \ JsonKey.excludeDependencyInternal \ "status").asOpt[String].get === statusExcludeDependency_3.status
-      (componentOut_3 \ "result" \ "status" \ JsonKey.excludeDependencyInternal \ "message").asOpt[String].get === statusExcludeDependency_3.message
-      
-      val statusCommon_3 = Success()
-      
-      (componentOut_3 \ "result" \ "status" \ "common" \ "status").asOpt[String].get === statusCommon_3.status
-      (componentOut_3 \ "result" \ "status" \ "common" \ "message").asOpt[String].get === statusCommon_3.message
-      
+      (componentOut_3 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === AllowNextComponent().name
+      (componentOut_3 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
+      (componentOut_3 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === false
+      (componentOut_3 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === None
+      (componentOut_3 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
+
       val jsonCurrentConfigIn_3 : JsValue = Json.obj(
-          "json" -> JsonNames.CURRENT_CONFIG
+          JsonKey.json -> JsonNames.CURRENT_CONFIG
       )
       
       val jsonCurrentConfigOut_3: JsValue = wC.handleMessage(jsonCurrentConfigIn_2, wC.currentConfig)
@@ -202,10 +160,10 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + jsonCurrentConfigOut_3)
       
       val result_3 = (jsonCurrentConfigOut_3 \ "result")
-      (jsonCurrentConfigOut_3 \ "json").asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result_3 \ "step" \ "nameToShow").asOpt[String] === Some("S1")
-      (result_3 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
-      ((result_3 \ "step" \ "components")(0) \ "nameToShow").asOpt[String] === Some("C12")
+      (jsonCurrentConfigOut_3 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
+      (result_3 \ JsonKey.step \ "nameToShow").asOpt[String] === Some("S1")
+      (result_3 \ JsonKey.step \ "components").asOpt[List[JsValue]].get.size === 1
+      ((result_3 \ JsonKey.step \ "components")(0) \ "nameToShow").asOpt[String] === Some("C12")
     }
   }
 }

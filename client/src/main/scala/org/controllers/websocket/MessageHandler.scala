@@ -1,6 +1,6 @@
 package org.controllers.websocket
 
-import org.shared.json.JsonNames
+import org.shared.json.{JsonKey, JsonNames}
 import play.api.libs.json._
 
 /**
@@ -11,7 +11,7 @@ import play.api.libs.json._
 class MessageHandler {
 
 
-  def handleMessage(receivedMessage: JsValue) = (receivedMessage \ "json").asOpt[String] match {
+  def handleMessage(receivedMessage: JsValue) = (receivedMessage \ JsonKey.json).asOpt[String] match {
 //    case Some(JsonNames.START_CONFIG) => startConfig(receivedMessage)
     case Some(JsonNames.SELECTED_COMPONENT) => selectedComponent(receivedMessage)
     case Some(JsonNames.CURRENT_CONFIG) => currentConfig(receivedMessage)

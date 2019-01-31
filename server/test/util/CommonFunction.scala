@@ -1,7 +1,7 @@
 package util
 
 import controllers.websocket.WebClient
-import org.shared.json.JsonNames
+import org.shared.json.{JsonKey, JsonNames}
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import play.api.Logger
@@ -15,9 +15,9 @@ object CommonFunction {
   
   def firstStep(wC: WebClient, configUrl: String): JsValue = {
     val startConfigIn = Json.obj(
-          "json" -> JsonNames.STEP
-          ,"params" -> Json.obj(
-               "configUrl" -> configUrl
+          JsonKey.json -> JsonNames.STEP
+          ,JsonKey.params-> Json.obj(
+               JsonKey.params -> configUrl
            )
       )
       
@@ -31,9 +31,9 @@ object CommonFunction {
   
   def selectComponent(wC: WebClient, componentId: String): JsValue = {
     val componentIn = Json.obj(
-        "json" -> JsonNames.SELECTED_COMPONENT
-        ,"params" -> Json.obj(
-             "componentId" -> componentId
+        JsonKey.json -> JsonNames.SELECTED_COMPONENT
+        ,JsonKey.params-> Json.obj(
+             JsonKey.componentId -> componentId
          )
     )
     
@@ -47,7 +47,7 @@ object CommonFunction {
   
   def currentCongig(wC: WebClient): JsValue = {
     val jsonCurrentConfigIn : JsValue = Json.obj(
-        "json" -> JsonNames.CURRENT_CONFIG
+        JsonKey.json -> JsonNames.CURRENT_CONFIG
     )
     
     val jsonCurrentConfigOut: JsValue = wC.handleMessage(jsonCurrentConfigIn, wC.currentConfig)
@@ -61,7 +61,7 @@ object CommonFunction {
   def nextStep(wC: WebClient): JsValue = {
     
     val jsonNextStepIn : JsValue = Json.obj(
-        "json" -> JsonNames.STEP
+        JsonKey.json -> JsonNames.STEP
     )
       
     val jsonNextStepOut = wC.handleMessage(jsonNextStepIn, wC.currentConfig)
