@@ -1,7 +1,6 @@
 package models.configLogic
 
 import models.bo._
-import org.shared.info
 import org.shared.info._
 
 /**
@@ -25,8 +24,18 @@ trait SelectionCriterion {
         selectedComponentContainerBO.possibleComponentIdsToSelect.get match {
           case List() =>
             //RequireNextStep
-            val infoBO: InfoBO = selectedComponentContainerBO.info.get.copy(selectionCriterion = Some(info.RequireNextStep()))
+            //TODO Info is None
+            val infoBO = selectedComponentContainerBO.info match {
+              case Some(info) =>
+                selectedComponentContainerBO.info.get.copy(selectionCriterion = Some(RequireNextStep()))
+              case None =>
+                InfoBO(
+                  selectionCriterion = Some(RequireNextStep())
+                )
+            }
+
             selectedComponentContainerBO.copy(info = Some(infoBO))
+
 //            val status = selectedComponentBO.status.get.copy(selectionCriterion = Some(RequireNextStep()))
 //            selectedComponentBO.copy(status = Some(status))
           case _ =>
