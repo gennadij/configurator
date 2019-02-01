@@ -41,7 +41,7 @@ class ConvertRidToHashInCurrentConfig extends Specification with MessageHandler 
       Logger.info("StartConfigOut " + startConfigOut)
 
       //User hat ausgewaelt Component 1
-      val componentIdC11: String = (startConfigOut \ JsonKey.result \ JsonKey.step \ "components").asOpt[List[JsValue]].get
+      val componentIdC11: String = (startConfigOut \ JsonKey.result \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get
         .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == "C11")
         .map(comp => {(comp \ JsonKey.componentId).asOpt[String].get}).head
 
@@ -61,23 +61,23 @@ class ConvertRidToHashInCurrentConfig extends Specification with MessageHandler 
       (componentOut_1 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
 
       val statusSelectionCriterium = AllowNextComponent()
-      (componentOut_1 \ "result" \ "status" \ JsonKey.selectionCriterion \ "status").asOpt[String].get === statusSelectionCriterium.status
-      (componentOut_1 \ "result" \ "status" \ JsonKey.selectionCriterion \ "message").asOpt[String].get === statusSelectionCriterium.message
+      (componentOut_1 \ JsonKey.result \ "status" \ JsonKey.selectionCriterion \ "status").asOpt[String].get === statusSelectionCriterium.status
+      (componentOut_1 \ JsonKey.result \ "status" \ JsonKey.selectionCriterion \ "message").asOpt[String].get === statusSelectionCriterium.message
 
       val statusSelectedComponent = AddedComponent()
 
-      (componentOut_1 \ "result" \ "status" \ "selectedComponent" \ "status").asOpt[String].get === statusSelectedComponent.status
-      (componentOut_1 \ "result" \ "status" \ "selectedComponent" \ "message").asOpt[String].get === statusSelectedComponent.message
+      (componentOut_1 \ JsonKey.result \ "status" \ "selectedComponent" \ "status").asOpt[String].get === statusSelectedComponent.status
+      (componentOut_1 \ JsonKey.result \ "status" \ "selectedComponent" \ "message").asOpt[String].get === statusSelectedComponent.message
 
       val statusExcludeDependency = NotExcludedComponentInternal()
 
-      (componentOut_1 \ "result" \ "status" \ JsonKey.excludeDependencyInternal \ "status").asOpt[String].get === statusExcludeDependency.status
-      (componentOut_1 \ "result" \ "status" \ JsonKey.excludeDependencyInternal \ "message").asOpt[String].get === statusExcludeDependency.message
+      (componentOut_1 \ JsonKey.result \ "status" \ JsonKey.excludeDependencyInternal \ "status").asOpt[String].get === statusExcludeDependency.status
+      (componentOut_1 \ JsonKey.result \ "status" \ JsonKey.excludeDependencyInternal \ "message").asOpt[String].get === statusExcludeDependency.message
 
       val statusCommon = Success()
 
-      (componentOut_1 \ "result" \ "status" \ "common" \ "status").asOpt[String].get === statusCommon.status
-      (componentOut_1 \ "result" \ "status" \ "common" \ "message").asOpt[String].get === statusCommon.message
+      (componentOut_1 \ JsonKey.result \ "status" \ "common" \ "status").asOpt[String].get === statusCommon.status
+      (componentOut_1 \ JsonKey.result \ "status" \ "common" \ "message").asOpt[String].get === statusCommon.message
 
       val jsonCurrentConfigIn_1 : JsValue = Json.obj(
         JsonKey.json -> JsonNames.CURRENT_CONFIG
@@ -88,18 +88,18 @@ class ConvertRidToHashInCurrentConfig extends Specification with MessageHandler 
       Logger.info(this.getClass.getSimpleName + ": currentConfigIn " + jsonCurrentConfigIn_1)
       Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + jsonCurrentConfigOut_1)
 
-      val result_1 = (jsonCurrentConfigOut_1 \ "result")
+      val result_1 = (jsonCurrentConfigOut_1 \ JsonKey.result)
       (jsonCurrentConfigOut_1 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_1 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
       (result_1 \ JsonKey.step \ "stepId").asOpt[String].get.size must be_<=(32) and be_>=(30)
-      (result_1 \ JsonKey.step \ "components").asOpt[List[JsValue]].get.size === 1
-      ((result_1 \ JsonKey.step \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
-      ((result_1 \ JsonKey.step \ "components")(0) \ JsonKey.componentId).asOpt[String].get.size must be_<=(32) and be_>=(30)
+      (result_1 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 1
+      ((result_1 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
+      ((result_1 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.componentId).asOpt[String].get.size must be_<=(32) and be_>=(30)
 
       Logger.info(this.getClass.getSimpleName + ": =================================================")
 
       //User hat ausgewaelt Component 2
-      val componentIdC12: String = (startConfigOut \ "result" \ JsonKey.step \ "components").asOpt[List[JsValue]].get
+      val componentIdC12: String = (startConfigOut \ JsonKey.result \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get
         .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == "C12")
         .map(comp => {(comp \ JsonKey.componentId).asOpt[String].get}).head
 
@@ -149,12 +149,12 @@ class ConvertRidToHashInCurrentConfig extends Specification with MessageHandler 
       val result_2 = (jsonCurrentConfigOut_2 \ "result")
       (jsonCurrentConfigOut_2 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_2 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
-      (result_2 \ JsonKey.step \ "components").asOpt[List[JsValue]].get.size === 2
+      (result_2 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 2
       (result_2 \ JsonKey.step \ "stepId").asOpt[String].get.size must be_<=(32) and be_>=(30)
-      ((result_2 \ JsonKey.step \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
-      ((result_2 \ JsonKey.step \ "components")(0) \ JsonKey.componentId).asOpt[String].get.size must be_<=(32) and be_>=(30)
-      ((result_2 \ JsonKey.step \ "components")(1) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
-      ((result_2 \ JsonKey.step \ "components")(1) \ JsonKey.componentId).asOpt[String].get.size must be_<=(32) and be_>=(30)
+      ((result_2 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
+      ((result_2 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.componentId).asOpt[String].get.size must be_<=(32) and be_>=(30)
+      ((result_2 \ JsonKey.step \ JsonKey.components)(1) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
+      ((result_2 \ JsonKey.step \ JsonKey.components)(1) \ JsonKey.componentId).asOpt[String].get.size must be_<=(32) and be_>=(30)
     }
   }
 }

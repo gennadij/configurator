@@ -32,7 +32,7 @@ class Scenario_002_16_Specs extends Specification with MessageHandler with Befor
       
       val startConfigOut = CommonFunction.firstStep(wC, configUrl)
       
-      val componentIdC11: String = (startConfigOut \ "result" \ JsonKey.step \ "components").asOpt[List[JsValue]].get
+      val componentIdC11: String = (startConfigOut \ "result" \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get
             .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == "C11")
             .map(comp => {(comp \ JsonKey.componentId).asOpt[String].get}).head
       
@@ -51,10 +51,10 @@ class Scenario_002_16_Specs extends Specification with MessageHandler with Befor
       val result_1 = (jsonCurrentConfigOut_1 \ "result")
       (jsonCurrentConfigOut_1 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_1 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
-      (result_1 \ JsonKey.step \ "components").asOpt[List[JsValue]].get.size === 1
-      ((result_1 \ JsonKey.step \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
+      (result_1 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 1
+      ((result_1 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
       
-      val componentIdC12: String = (startConfigOut \ "result" \ JsonKey.step \ "components").asOpt[List[JsValue]].get
+      val componentIdC12: String = (startConfigOut \ "result" \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get
             .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == "C12")
             .map(comp => {(comp \ JsonKey.componentId).asOpt[String].get}).head
       
@@ -74,11 +74,11 @@ class Scenario_002_16_Specs extends Specification with MessageHandler with Befor
       val result_2 = (jsonCurrentConfigOut_2 \ JsonKey.result \ JsonKey.step)
       (jsonCurrentConfigOut_2 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_2 \ JsonKey.nameToShow).asOpt[String] === Some("S1")
-      (result_2 \ "components").asOpt[List[JsValue]].get.size === 2
-      ((result_2 \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
-      ((result_2 \ "components")(1) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
+      (result_2 \ JsonKey.components).asOpt[List[JsValue]].get.size === 2
+      ((result_2 \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
+      ((result_2 \ JsonKey.components)(1) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
       
-      val componentIdC13: String = (startConfigOut \ "result" \ JsonKey.step \ "components").asOpt[List[JsValue]].get
+      val componentIdC13: String = (startConfigOut \ "result" \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get
             .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == "C13")
             .map(comp => {(comp \ JsonKey.componentId).asOpt[String].get}).head
       
@@ -98,23 +98,23 @@ class Scenario_002_16_Specs extends Specification with MessageHandler with Befor
       val result_3 = (jsonCurrentConfigOut_3 \ "result")
       (jsonCurrentConfigOut_3 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_3 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
-      (result_3 \ JsonKey.step \ "components").asOpt[List[JsValue]].get.size === 2
-      ((result_3 \ JsonKey.step \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
-      ((result_3 \ JsonKey.step \ "components")(1) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
+      (result_3 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 2
+      ((result_3 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
+      ((result_3 \ JsonKey.step \ JsonKey.components)(1) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
       
       val jsonNextStepOut = CommonFunction.nextStep(wC)
       
       (jsonNextStepOut \ JsonKey.json).asOpt[String].get === JsonNames.STEP
       (jsonNextStepOut \ "result" \ JsonKey.step \ JsonKey.nameToShow).asOpt[String].get === "S2"
-      (jsonNextStepOut \ "result" \ JsonKey.step \ "components").asOpt[Set[JsValue]].get.size === 2
-      (((jsonNextStepOut \ "result" \ JsonKey.step \ "components")(0)) \ JsonKey.nameToShow).asOpt[String].get === "C21"
-      (((jsonNextStepOut \ "result" \ JsonKey.step \ "components")(1)) \ JsonKey.nameToShow).asOpt[String].get === "C22"
+      (jsonNextStepOut \ "result" \ JsonKey.step \ JsonKey.components).asOpt[Set[JsValue]].get.size === 2
+      (((jsonNextStepOut \ "result" \ JsonKey.step \ JsonKey.components)(0)) \ JsonKey.nameToShow).asOpt[String].get === "C21"
+      (((jsonNextStepOut \ "result" \ JsonKey.step \ JsonKey.components)(1)) \ JsonKey.nameToShow).asOpt[String].get === "C22"
       (jsonNextStepOut \ "result" \ "status" \ "firstStep").asOpt[String] === None
       (jsonNextStepOut \ "result" \ "status" \ "nextStep" \ "status").asOpt[String].get === "NEXT_STEP_EXIST"
       (jsonNextStepOut \ "result" \ "status" \ "fatherStep").asOpt[String] === None
       (jsonNextStepOut \ "result" \ "status" \ "common" \ "status").asOpt[String].get === "SUCCESS"
       
-      val componentId21: String = (jsonNextStepOut \ "result" \ JsonKey.step \ "components").asOpt[List[JsValue]].get
+      val componentId21: String = (jsonNextStepOut \ "result" \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get
             .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == "C21")
             .map(comp => {(comp \ JsonKey.componentId).asOpt[String].get}).head
             
@@ -134,11 +134,11 @@ class Scenario_002_16_Specs extends Specification with MessageHandler with Befor
       val result_4 = (jsonCurrentConfigOut_4 \ "result")
       (jsonCurrentConfigOut_4 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_4 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
-      (result_4 \ JsonKey.step \ "components").asOpt[List[JsValue]].get.size === 2
-      ((result_4 \ JsonKey.step \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
-      ((result_4 \ JsonKey.step \ "components")(1) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
+      (result_4 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 2
+      ((result_4 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
+      ((result_4 \ JsonKey.step \ JsonKey.components)(1) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
       
-      val componentId22: String = (jsonNextStepOut \ "result" \ JsonKey.step \ "components").asOpt[List[JsValue]].get
+      val componentId22: String = (jsonNextStepOut \ "result" \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get
             .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == "C22")
             .map(comp => {(comp \ JsonKey.componentId).asOpt[String].get}).head
       
@@ -157,9 +157,9 @@ class Scenario_002_16_Specs extends Specification with MessageHandler with Befor
       val result_5 = (jsonCurrentConfigOut_5 \ "result")
       (jsonCurrentConfigOut_5 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_5 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
-      (result_5 \ JsonKey.step \ "components").asOpt[List[JsValue]].get.size === 2
-      ((result_5 \ JsonKey.step \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
-      ((result_5 \ JsonKey.step \ "components")(1) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
+      (result_5 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 2
+      ((result_5 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
+      ((result_5 \ JsonKey.step \ JsonKey.components)(1) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
     }
   }
 }

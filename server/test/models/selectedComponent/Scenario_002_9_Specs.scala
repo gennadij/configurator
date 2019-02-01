@@ -113,9 +113,9 @@ class Scenario_002_9_Specs extends Specification with MessageHandler with Before
       
       val result_4 = (jsonCurrentConfigOut_4 \ "result")
       (jsonCurrentConfigOut_4 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result_4 \ "step" \ JsonKey.nameToShow).asOpt[String] === Some("S1")
-      (result_4 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
-      ((result_4 \ "step" \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
+      (result_4 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
+      (result_4 \ JsonKey.step \ "components").asOpt[List[JsValue]].get.size === 1
+      ((result_4 \ JsonKey.step \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
     }
   }
 }

@@ -17,7 +17,7 @@ object CommonFunction {
     val startConfigIn = Json.obj(
           JsonKey.json -> JsonNames.STEP
           ,JsonKey.params-> Json.obj(
-               JsonKey.params -> configUrl
+               JsonKey.configUrl -> configUrl
            )
       )
       

@@ -179,7 +179,7 @@ class Scenario_002_13_Specs extends Specification with MessageHandler with Befor
       
       val jsonCurrentConfigOut_8: JsValue = CommonFunction.currentCongig(wC)
       
-      val result_8 = (jsonCurrentConfigOut_8 \ "result")
+      val result_8 = (jsonCurrentConfigOut_8 \ JsonKey.result)
       (jsonCurrentConfigOut_8 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_8 \ JsonKey.step \ "nameToShow").asOpt[String] === Some("S1")
       (result_8 \ JsonKey.step \ "components").asOpt[List[JsValue]].get.size === 1

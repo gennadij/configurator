@@ -45,7 +45,7 @@ class ComponentKeys extends Specification with MessageHandler with BeforeAfterAl
       val startConfigOut = wC.handleMessage(startConfigIn, wC.currentConfig)
 
       //User hat ausgewaelt
-      val componentIdC11: String = (startConfigOut \ JsonKey.result \ JsonKey.step \ "components").asOpt[List[JsValue]].get
+      val componentIdC11: String = (startConfigOut \ JsonKey.result \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get
             .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == "C11")
             .map(comp => {(comp \ JsonKey.componentId).asOpt[String].get}).head
 

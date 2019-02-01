@@ -3,12 +3,13 @@ package models.selectedComponent
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
+import org.shared.info.{AllowNextComponent, RequireNextStep}
+import org.shared.json.step.JsonStepOut
 import org.shared.json.{JsonKey, JsonNames}
-import org.shared.status.selectedComponent.NotExcludedComponentInternal
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsObject, JsValue, Json}
 import util.CommonFunction
 
 /**
@@ -31,50 +32,51 @@ class Scenario_002_7_Specs extends Specification with MessageHandler with Before
       val configUrl = "http://config/client_013"
       
       val startConfigOut = CommonFunction.firstStep(wC, configUrl)
-      
-      val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == "C11")
-            .map(comp => {(comp \ JsonKey.componentId).asOpt[String].get}).head
+
+      val startConfig = Json.fromJson[JsonStepOut](startConfigOut)
+
+      val componentIdC11: String = startConfig.get.result.componentsForSelection.get.filter(comp => comp.nameToShow == "C11")
+        .map(_.componentId).head
       
       
       val componentOut_1: JsValue = CommonFunction.selectComponent(wC, componentIdC11)
       
       (componentOut_1 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
-      (componentOut_1 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
-      (componentOut_1 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
-      (componentOut_1 \ "result" \ "status" \JsonKey.selectionCriterion \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
-      (componentOut_1 \ "result" \ "status" \JsonKey.excludeDependencyInternal \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
-      (componentOut_1 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
-      
+
+      (componentOut_1 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === AllowNextComponent().name
+      (componentOut_1 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
+      (componentOut_1 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === true
+      (componentOut_1 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === None
+      (componentOut_1 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
+
       val jsonCurrentConfigOut_1: JsValue = CommonFunction.currentCongig(wC)
       
-      val result_1 = (jsonCurrentConfigOut_1 \ "result")
+      val result_1 = (jsonCurrentConfigOut_1 \ JsonKey.result)
       (jsonCurrentConfigOut_1 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result_1 \ "step" \ JsonKey.nameToShow).asOpt[String] === Some("S1")
-      (result_1 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
-      ((result_1 \ "step" \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
-      
-      val componentIdC12: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == "C12")
-            .map(comp => {(comp \ JsonKey.componentId).asOpt[String].get}).head
-      
+      (result_1 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
+      (result_1 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 1
+      ((result_1 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
+
+      val componentIdC12: String = startConfig.get.result.componentsForSelection.get.filter(comp => comp.nameToShow == "C12")
+        .map(_.componentId).head
       
       val componentOut_2: JsValue = CommonFunction.selectComponent(wC, componentIdC12)
       
       (componentOut_2 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
-      (componentOut_2 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
-      (componentOut_2 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
-      (componentOut_2 \ "result" \ "status" \JsonKey.selectionCriterion \ "status").asOpt[String].get === "REQUIRE_NEXT_STEP"
-      (componentOut_2 \ "result" \ "status" \JsonKey.excludeDependencyInternal \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
-      (componentOut_2 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
-      
+
+      (componentOut_2 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === RequireNextStep().name
+      (componentOut_2 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
+      (componentOut_2 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === true
+      (componentOut_2 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === None
+      (componentOut_2 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
+
       val jsonCurrentConfigOut_2: JsValue = CommonFunction.currentCongig(wC)
       
-      val result_2 = (jsonCurrentConfigOut_2 \ "result")
+      val result_2 = (jsonCurrentConfigOut_2 \ JsonKey.result)
       (jsonCurrentConfigOut_2 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result_2 \ "step" \ JsonKey.nameToShow).asOpt[String] === Some("S1")
-      (result_2 \ "step" \ "components").asOpt[List[JsValue]].get.size === 2
-      ((result_2 \ "step" \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
+      (result_2 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
+      (result_2 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 2
+      ((result_2 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
     }
   }
 }

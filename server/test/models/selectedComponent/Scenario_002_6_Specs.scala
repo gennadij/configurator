@@ -3,12 +3,12 @@ package models.selectedComponent
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
+import org.shared.json.step.JsonStepOut
 import org.shared.json.{JsonKey, JsonNames}
-import org.shared.status.selectedComponent.NotExcludedComponentInternal
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsObject, JsValue, Json}
 import util.CommonFunction
 
 /**
@@ -31,28 +31,35 @@ class Scenario_002_6_Specs extends Specification with MessageHandler with Before
       val configUrl = "http://config/client_013"
       
       val startConfigOut = CommonFunction.firstStep(wC, configUrl)
+
       //User hat ausgewaelt Schritt 1
-      val componentIdC11: String = (startConfigOut \ "result" \ "step" \ "components").asOpt[List[JsValue]].get
-            .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == "C11")
-            .map(comp => {(comp \ JsonKey.componentId).asOpt[String].get}).head
-      
-      
+      val startConfig = Json.fromJson[JsonStepOut](startConfigOut)
+
+      val componentIdC11: String = startConfig.get.result.componentsForSelection.get.filter(comp => comp.nameToShow == "C11")
+        .map(_.componentId).head
+
       val componentOut_1: JsValue = CommonFunction.selectComponent(wC, componentIdC11)
       
       (componentOut_1 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
-      (componentOut_1 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
-      (componentOut_1 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
-      (componentOut_1 \ "result" \ "status" \JsonKey.selectionCriterion \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
-      (componentOut_1 \ "result" \ "status" \JsonKey.excludeDependencyInternal \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
-      (componentOut_1 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
+      
+      (componentOut_1 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === "ALLOW_NEXT_COMPONENT"
+      (componentOut_1 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
+      (componentOut_1 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === true
+      (componentOut_1 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === None
+      (componentOut_1 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
+//      (componentOut_1 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
+//      (componentOut_1 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
+//      (componentOut_1 \ "result" \ "status" \JsonKey.selectionCriterion \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
+//      (componentOut_1 \ "result" \ "status" \JsonKey.excludeDependencyInternal \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
+//      (componentOut_1 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
       
       val jsonCurrentConfigOut_1: JsValue = CommonFunction.currentCongig(wC)
       
       val result_1 = (jsonCurrentConfigOut_1 \ "result")
       (jsonCurrentConfigOut_1 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result_1 \ "step" \ JsonKey.nameToShow).asOpt[String] === Some("S1")
-      (result_1 \ "step" \ "components").asOpt[List[JsValue]].get.size === 1
-      ((result_1 \ "step" \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
+      (result_1 \ JsonKey.step\ JsonKey.nameToShow).asOpt[String] === Some("S1")
+      (result_1 \ JsonKey.step\ JsonKey.components).asOpt[List[JsValue]].get.size === 1
+      ((result_1 \ JsonKey.step\ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
     }
   }
 }

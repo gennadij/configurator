@@ -169,14 +169,14 @@ class Scenario_002_5_Specs extends Specification with MessageHandler with Before
       Logger.info(this.getClass.getSimpleName + ": currentConfigIn " + jsonCurrentConfigIn)
       Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + jsonCurrentConfigOut)
       
-      val result = (jsonCurrentConfigOut \ "result")
+      val result = (jsonCurrentConfigOut \ JsonKey.result)
       (jsonCurrentConfigOut \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
-      ((result \ JsonKey.step \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
+      ((result \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
       ((result \ JsonKey.step \ "nextStep" \ JsonKey.nameToShow).asOpt[String]) === Some("S2")
-      ((result \ JsonKey.step \ "nextStep" \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C21")
+      ((result \ JsonKey.step \ "nextStep" \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C21")
       ((result \ JsonKey.step \ "nextStep" \ "nextStep" \ JsonKey.nameToShow).asOpt[String]) === Some("S3")
-      ((result \ JsonKey.step \ "nextStep" \ "nextStep" \"components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C31")
+      ((result \ JsonKey.step \ "nextStep" \ "nextStep" \JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C31")
     }
   }
 }

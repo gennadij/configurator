@@ -10,5 +10,5 @@ object JsonNames {
   val CURRENT_CONFIG: String = "CurrentConfig"
   val SELECTED_COMPONENT: String = "SelectedComponent"
   val ERROR: String = "error"
-  val STEP : String = "step"
+  val STEP : String = JsonKey.step
 }
