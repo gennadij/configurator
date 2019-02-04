@@ -2,7 +2,6 @@ package org.views.html
 
 import org.scalajs.jquery.{JQuery, jQuery}
 import org.shared.json.common.JsonComponent
-import org.shared.json.selectedComponent.JsonComponentStatus
 import org.views.HtmlElementText
 
 /**
@@ -28,6 +27,7 @@ object ComponentWindow {
   }
 
   def markSelectedComponent(selectedComponentId: String, jsonComponentStatus: JsonComponentStatus): JQuery = {
+
     jsonComponentStatus.selectedComponent.get.status match {
       case "ADDED_COMPONENT"        =>
         jQuery(s"#$selectedComponentId").css("background-color", "#9FF781")

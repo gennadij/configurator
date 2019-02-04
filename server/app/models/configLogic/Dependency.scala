@@ -83,10 +83,6 @@ trait Dependency {
     excludeComponentsIds match {
       case List() =>
         selectedComponentContainerBO
-        //TODO Delete comments
-//        val statusNotExcludedComponent: StatusComponent
-//          selectedComponentContainerBO.status.get.copy(excludedDependencyInternal = Some(NotExcludedComponentInternal()))
-//        selectedComponentContainerBO.copy(status = Some(statusNotExcludedComponent))
       case _ =>
         val warningBO: WarningBO = selectedComponentContainerBO.warning match {
           case Some(_) =>
@@ -95,14 +91,8 @@ trait Dependency {
             WarningBO(
               excludedComponentInternal = Some(ExcludedComponentInternal())
             )
-//            selectedComponentContainerBO.copy(warning = warningBO)
         }
-
-
         selectedComponentContainerBO.copy(warning = Some(warningBO))
-//        val statusExcludedComponent: StatusComponent =
-//          selectedComponentContainerBO.status.get.copy(excludedDependencyInternal = Some(ExcludedComponentInternal()))
-//        selectedComponentContainerBO.copy(status = Some(statusExcludedComponent))
     }
   }
 }

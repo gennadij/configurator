@@ -41,7 +41,7 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
             sCExtendedOfCurrentAndNextStep.nextStep.get.error)
 
         (errorCurrentStep, errorNextStep) match {
-          case (None, None) | (None, Some(List(_: StepNotExist))) => //TODO aktuell
+          case (None, None) | (None, Some(List(_: StepNotExist))) =>
 
             val sCExtendedOfCurrentConfigStep =
               getCurrentStepFromCurrentConfig(sCExtendedOfCurrentAndNextStep, currentConfig)
@@ -116,13 +116,6 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
   private def verifyStatusComponentType(
                                          selectedComponentContainerBO: SelectedComponentContainerBO
                                        ): SelectedComponentContainerBO = {
-      //TODO delete comments
-//    val componentTypeStatus: StatusComponentType = selectedComponentBO.nextStep.get.error match {
-//      case Some(List(StepNotExist(_))) => FinalComponent()
-//      case None => DefaultComponent()
-//      case _ => UnknownComponentType()
-//    }
-
     selectedComponentContainerBO.nextStep.get.step match {
       case Some(_) =>
         val componentBO = selectedComponentContainerBO.selectedComponent.get.copy(lastComponent = Some(false))
@@ -131,10 +124,6 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
         val componentBO = selectedComponentContainerBO.selectedComponent.get.copy(lastComponent = Some(true))
         selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
     }
-
-//    val statusComponent: StatusComponent = selectedComponentContainerBO.status.get.copy(componentType = Some(componentTypeStatus))
-
-//    selectedComponentContainerBO.copy(status = Some(statusComponent))
   }
 
   /**
