@@ -20,14 +20,14 @@ case class JsonStepCurrentConfig (
 object JsonStepCurrentConfig {
   implicit val jsonStepCurrentConfigWrites: Writes[JsonStepCurrentConfig] = (
     (JsPath \ "stepId").write[String] and
-    (JsPath \ "nameToShow").write[String] and
+    (JsPath \ JsonKey.nameToShow).write[String] and
     (JsPath \ JsonKey.components).write(Writes.list[JsonComponent](JsonComponent.jsonComponentFormat)) and
     (JsPath \ "nextStep").lazyWrite(Writes.optionWithNull[JsonStepCurrentConfig](jsonStepCurrentConfigWrites))
   )(unlift(JsonStepCurrentConfig.unapply))
 
   implicit val jsonStepCurrentConfigReads: Reads[JsonStepCurrentConfig] = (
     (JsPath \ "stepId").read[String] and
-      (JsPath \ "nameToShow").read[String] and
+      (JsPath \ JsonKey.nameToShow).read[String] and
       (JsPath \ JsonKey.components).read(Reads.list[JsonComponent](JsonComponent.jsonComponentFormat)) and
       (JsPath \ "nextStep").lazyRead(Reads.optionWithNull[JsonStepCurrentConfig](jsonStepCurrentConfigReads))
     )(JsonStepCurrentConfig.apply _)

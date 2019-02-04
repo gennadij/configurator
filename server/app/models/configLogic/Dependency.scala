@@ -47,8 +47,11 @@ trait Dependency {
 //                List()))
 //            )
 
-          val warningBO: WarningBO =
-            selectedComponentContainerBO.warning.get.copy(excludedComponentExternal = Some(ExcludedComponentExternal()))
+          val warningBO: WarningBO  = WarningBO(
+            excludedComponentExternal = Some(ExcludedComponentExternal())
+          )
+//            selectedComponentContainerBO.warning.get.copy(excludedComponentExternal = Some(ExcludedComponentExternal()))
+
           selectedComponentContainerBO.copy(warning = Some(warningBO))
           //TODO Die Komponente muss aus der CurentConfig entfernt werden
         } else {

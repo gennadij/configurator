@@ -122,7 +122,7 @@ trait SelectionCriterion {
       case count if min > count && max > count => RequireComponent()
       case count if min <= count && max == count => RequireNextStep()
       case count if min <= count && max > count => AllowNextComponent()
-      case count if max < count => NotAllowNextComponent()
+      case count if max < count => NotAllowedComponent()
     }
   }
 }

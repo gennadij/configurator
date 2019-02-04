@@ -28,8 +28,8 @@ case class AllowNextComponent() extends Info(
   code = "I010003"
 )
 
-case class NotAllowNextComponent() extends Info(
+case class NotAllowedComponent() extends Info(
   message = "",
-  name = "NOT_ALLOW_NEXT_COMPONENT",
+  name = "NOT_ALLOWED_COMPONENT",
   code = "I010004"
 )

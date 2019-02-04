@@ -17,6 +17,6 @@ object JsonComponent {
   implicit val jsonComponentFormat: Format[JsonComponent] = Json.format[JsonComponent]
 //    (
 //      (JsPath \ JsonKey.componentId).write[String] and
-//      (JsPath \ "nameToShow").write[String]
+//      (JsPath \ JsonKey.nameToShow).write[String]
 //  )(unlift(JsonComponent.unapply))
 }

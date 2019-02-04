@@ -82,9 +82,9 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
       
        val result_1 = (jsonCurrentConfigOut_1 \ JsonKey.result)
       (jsonCurrentConfigOut_1 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result_1 \ JsonKey.step \ "nameToShow").asOpt[String] === Some("S1")
+      (result_1 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
       (result_1 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 1
-      ((result_1 \ JsonKey.step \ JsonKey.components)(0) \ "nameToShow").asOpt[String] === Some("C11")
+      ((result_1 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
       
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
@@ -124,7 +124,7 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
       
       val result_2 = (jsonCurrentConfigOut_2 \ JsonKey.result)
       (jsonCurrentConfigOut_2 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result_2 \ JsonKey.step \ "nameToShow").asOpt[String] === Some("S1")
+      (result_2 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
       (result_2 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 2
       
       Logger.info(this.getClass.getSimpleName + ": =================================================")
@@ -161,9 +161,9 @@ class Scenario_002_4_Specs  extends Specification with MessageHandler with Befor
       
       val result_3 = (jsonCurrentConfigOut_3 \ JsonKey.result)
       (jsonCurrentConfigOut_3 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
-      (result_3 \ JsonKey.step \ "nameToShow").asOpt[String] === Some("S1")
-      (result_3 \ JsonKey.step \ "components").asOpt[List[JsValue]].get.size === 1
-      ((result_3 \ JsonKey.step \ "components")(0) \ "nameToShow").asOpt[String] === Some("C11")
+      (result_3 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
+      (result_3 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 1
+      ((result_3 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
     }
   }
 }

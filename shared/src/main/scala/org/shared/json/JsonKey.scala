@@ -20,6 +20,7 @@ object JsonKey {
 
   //Warning
   def excludedComponentInternal = "excludedComponentInternal"
+  def excludedComponentExternal = "excludedComponentExternal"
 
   //Status Common
   def status = "status"
