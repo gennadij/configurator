@@ -1,7 +1,8 @@
 package org.views.html
 
 import org.scalajs.jquery.{JQuery, jQuery}
-import org.shared.json.common.JsonComponent
+import org.shared.json.selectedComponent.{JsonSelectedComponentResult, JsonSelectedComponentWarning}
+import org.shared.json.step.JsonComponent
 import org.views.HtmlElementText
 
 /**
@@ -22,18 +23,24 @@ object ComponentWindow {
       jQueryDivComponent.append(HtmlElementText.componentText(c))
 
       jQueryDivComponent
-
     })
   }
 
-  def markSelectedComponent(selectedComponentId: String, jsonComponentStatus: JsonComponentStatus): JQuery = {
+  def markSelectedComponent(selectedComponentId: String,
+                            jsonSelectedComponentResult: JsonSelectedComponentResult): JQuery = {
 
-    jsonComponentStatus.selectedComponent.get.status match {
-      case "ADDED_COMPONENT"        =>
+    val (warning: Option[JsonSelectedComponentWarning], isAddedComponent: Boolean) = jsonSelectedComponentResult.warning match {
+      case Some(warning) => (Some(warning), jsonSelectedComponentResult.addedComponent)
+      case None => (None, jsonSelectedComponentResult.addedComponent)
+    }
+    println(warning, isAddedComponent)
+
+      (warning, isAddedComponent) match {
+      case (None, true)        =>
         jQuery(s"#$selectedComponentId").css("background-color", "#9FF781")
-      case "REMOVED_COMPONENT"      =>
+      case (None, false)      =>
         jQuery(s"#$selectedComponentId").css("background-color", "#F5A9D0")
-      case "NOT_ALLOWED_COMPONENT"  =>
+      case (Some(_), _)  =>
         jQuery(s"#$selectedComponentId").css("background-color", "#B40431")
     }
   }

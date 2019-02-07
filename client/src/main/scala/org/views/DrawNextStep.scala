@@ -1,6 +1,8 @@
 package org.views
 
-import org.scalajs.jquery.jQuery
+import org.scalajs.jquery.{JQuery, jQuery}
+import org.shared.json.step.JsonStepOut
+import org.views.html.{ComponentWindow, ConfigMainWindow, StatusWindow, StepWindow}
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -8,25 +10,31 @@ import org.scalajs.jquery.jQuery
   * Created by Gennadi Heimann 09.11.2018
   */
 class DrawNextStep {
-  def drawNextStep(jsonNextStepOut: Any) = {
+  def drawNextStep(jsonStepOut: JsonStepOut): List[JQuery] = {
+    var jQueryConfigMainWindow: JQuery = jQuery()
+    if (jQuery(HtmlElementText.configMainJQuery).length == 0) {
+      val jQueryCMWindow = ConfigMainWindow.drawConfigMainInSection
+      println(jQuery(HtmlElementText.configMainJQuery).length)
+      jQuery(HtmlElementText.section).append(jQueryCMWindow)
+      jQueryConfigMainWindow = jQuery(HtmlElementText.configMainJQuery)
+    }else{
+      jQueryConfigMainWindow = jQuery(HtmlElementText.configMainJQuery)
+    }
 
-    val jQueryConfigMainWindow = jQuery(HtmlElementText.configMainJQuery)
+    val jQueryStepWindow = StepWindow.drawStepWindow(jsonStepOut.result.step.get)
 
-//    val jQueryStepWindow = StepWindow.drawStepWindow(jsonNextStepOut.result.step)
-//
-//    jQueryConfigMainWindow.append(jQueryStepWindow)
-//
-//    StatusWindow.drawNextStepStatusWindow(jsonNextStepOut.result.status)
-//
-//    val jQueryComponentWindows: List[JQuery] =
-//      ComponentWindow.drawComponentWindows(jsonNextStepOut.result.step.components)
-//
-//    jQueryComponentWindows foreach(jQCW => {
-//      jQueryStepWindow.append(jQCW)
-//    })
-//
-//    jQueryComponentWindows
-    ???
+    jQueryConfigMainWindow.append(jQueryStepWindow)
+
+    StatusWindow.drawStepStatusWindow(jsonStepOut.result)
+
+    val jQueryComponentWindows: List[JQuery] =
+      ComponentWindow.drawComponentWindows(jsonStepOut.result.componentsForSelection.get)
+
+    jQueryComponentWindows foreach(jQCW => {
+      jQueryStepWindow.append(jQCW)
+    })
+
+    jQueryComponentWindows
   }
 
   def deleteNextStepButton = jQuery(HtmlElementText.buttonJQuery).remove()

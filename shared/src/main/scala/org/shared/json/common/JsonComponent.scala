@@ -8,7 +8,7 @@ import play.api.libs.json._
  * {id: #22:9, kind: immutable, nextStep: #27:11}
  */
 
-case class JsonComponent (
+case class JsonComponent ( //TODO DELETE
     componentId: String,
     nameToShow: String
                          )

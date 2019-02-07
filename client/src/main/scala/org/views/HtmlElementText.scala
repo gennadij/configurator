@@ -1,6 +1,7 @@
 package org.views
 
-import org.shared.json.common.{JsonComponent, JsonStep}
+import org.shared.json.step.{JsonComponent, JsonStep}
+
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com

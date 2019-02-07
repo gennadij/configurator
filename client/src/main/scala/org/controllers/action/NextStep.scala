@@ -2,7 +2,9 @@ package org.controllers.action
 
 import org.controllers.websocket.WebSocket
 import org.scalajs.jquery.JQuery
+import org.shared.json.step.JsonStepIn
 import org.views.DrawNextStep
+import play.api.libs.json.Json
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -21,8 +23,7 @@ class NextStep {
 
     new DrawNextStep().deleteNextStepButton
 
-    val jsonNextStep: String = ???
-//    Json.toJson(JsonNextStepIn()).toString()
+    val jsonNextStep: String = Json.toJson(JsonStepIn()).toString()
 
     println("OUT -> " + jsonNextStep)
 

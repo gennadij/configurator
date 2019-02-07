@@ -1,8 +1,10 @@
 package org.controllers
 
+import org.controllers.action.Component
 import org.scalajs.jquery.jQuery
 import org.shared.json.selectedComponent.JsonSelectedComponentOut
-import org.views.HtmlElementText
+import org.shared.json.step.JsonStepOut
+import org.views.{DrawNextStep, HtmlElementText}
 import org.views.html.NextStepButton
 
 /**
@@ -12,34 +14,35 @@ import org.views.html.NextStepButton
   */
 class NextStep {
 
-  def requirenNextStep(jsonComponentOut: JsonSelectedComponentOut) = {
+  def requireNextStep(jsonComponentOut: JsonSelectedComponentOut) = {
 
-    val componentTypeAndSelectionCriterium: (String, String) = ???
-//      (jsonComponentOut.result.status.selectionCriterion.get.status,
-//        jsonComponentOut.result.status.componentType.get.status)
+    val isLastStepAndSelectionCriterionWarning: (Boolean, String) = jsonComponentOut.result.info match {
+      case Some(info) => (jsonComponentOut.result.lastComponent, info.selectionCriterion.get.name)
+      case None => (jsonComponentOut.result.lastComponent, "") //TODO anpassen fuer None
+    }
 
-    componentTypeAndSelectionCriterium match {
-      case ("REQUIRE_NEXT_STEP", "DEFAULT_COMPONENT") =>
-
-        jQuery(HtmlElementText.buttonJQuery).remove()
-        val jQueryButtonNextStep = NextStepButton.drawNextStepButton(jsonComponentOut.result.stepId)
-        new action.NextStep().addMouseClick(jQueryButtonNextStep)
-
-      case ("REQUIRE_NEXT_STEP", "FINAL_COMPONENT") =>
-
-        jQuery(HtmlElementText.buttonJQuery).remove()
-
-      case ("REQUIRE_COMPONENT", _) =>
-
-        jQuery(HtmlElementText.buttonJQuery).remove()
-
-      case ("ALLOW_NEXT_COMPONENT", "DEFAULT_COMPONENT") =>
+    isLastStepAndSelectionCriterionWarning match {
+      case (false, "REQUIRE_NEXT_STEP") =>
 
         jQuery(HtmlElementText.buttonJQuery).remove()
         val jQueryButtonNextStep = NextStepButton.drawNextStepButton(jsonComponentOut.result.stepId)
         new action.NextStep().addMouseClick(jQueryButtonNextStep)
 
-      case ("ALLOW_NEXT_COMPONENT", "FINAL_COMPONENT") =>
+      case (true, "REQUIRE_NEXT_STEP") =>
+
+        jQuery(HtmlElementText.buttonJQuery).remove()
+
+      case (_, "REQUIRE_COMPONENT") =>
+
+        jQuery(HtmlElementText.buttonJQuery).remove()
+
+      case (false, "ALLOW_NEXT_COMPONENT") =>
+
+        jQuery(HtmlElementText.buttonJQuery).remove()
+        val jQueryButtonNextStep = NextStepButton.drawNextStepButton(jsonComponentOut.result.stepId)
+        new action.NextStep().addMouseClick(jQueryButtonNextStep)
+
+      case (true, "ALLOW_NEXT_COMPONENT") =>
 
         jQuery(HtmlElementText.buttonJQuery).remove()
 
@@ -47,17 +50,15 @@ class NextStep {
     }
   }
 
-  def nextStep(jsonNextStepOut: Any) = {
+  def nextStep(jsonStepOut: JsonStepOut) = {
 
-//    jsonNextStepOut.result.status.nextStep.get.status match {
-//      case "NEXT_STEP_EXIST" =>
-//        val jQueryComponentWindows = new DrawNextStep().drawNextStep(jsonNextStepOut)
-//
-//        jQueryComponentWindows foreach(jQCW => {
-//          new Component().addMouseClickForComponent(jQCW)
-//        })
-//    }
-    ???
+    jsonStepOut.result.errors match {
+      case _ =>
+        val jQueryComponentWindows = new DrawNextStep().drawNextStep(jsonStepOut)
+
+        jQueryComponentWindows foreach(jQCW => {
+          new Component().addMouseClickForComponent(jQCW)
+        })
+    }
   }
-
 }

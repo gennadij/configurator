@@ -1,8 +1,5 @@
 package org.controllers
 
-import org.controllers.action.Component
-import org.views.DrawStartConfig
-
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
   *
@@ -10,12 +7,12 @@ import org.views.DrawStartConfig
   */
 class StartConfig(jsonStartConfigOut: Any/*JsonStartConfigOut*/) {
 
-  private[controllers] def startConfig = {
-
-    val jQueryComponentWindows = new DrawStartConfig(jsonStartConfigOut).drawStartConfig
-
-    jQueryComponentWindows foreach(jQCW => {
-      new Component().addMouseClickForComponent(jQCW)
-    })
-  }
+//  private[controllers] def startConfig = {
+//
+//    val jQueryComponentWindows = new DrawStartConfig(jsonStartConfigOut).drawStartConfig
+//
+//    jQueryComponentWindows foreach(jQCW => {
+//      new Component().addMouseClickForComponent(jQCW)
+//    })
+//  }
 }
