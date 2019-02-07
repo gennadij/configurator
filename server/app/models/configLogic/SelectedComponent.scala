@@ -1,8 +1,11 @@
 package models.configLogic
 
 import models.bo._
+import models.bo.component.{ComponentBO, SelectedComponentContainerBO}
+import models.bo.step.{StepContainerBO, StepCurrentConfigBO}
+import models.bo.warning.WarningBO
 import models.persistence.Persistence
-import org.shared.error.{StepNotExist}
+import org.shared.error.StepNotExist
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com

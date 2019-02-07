@@ -1,6 +1,9 @@
 package controllers.wrapper
 
 import models.bo._
+import models.bo.component.{ComponentBO, SelectedComponentContainerBO}
+import models.bo.dependency.DependencyBO
+import models.bo.step.{StepBO, StepContainerBO}
 import org.shared.json.selectedComponent.JsonSelectedComponentIn
 
 /**

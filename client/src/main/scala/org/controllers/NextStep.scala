@@ -18,7 +18,7 @@ class NextStep {
 
     val isLastStepAndSelectionCriterionWarning: (Boolean, String) = jsonComponentOut.result.info match {
       case Some(info) => (jsonComponentOut.result.lastComponent, info.selectionCriterion.get.name)
-      case None => (jsonComponentOut.result.lastComponent, "") //TODO anpassen fuer None
+      case None => (jsonComponentOut.result.lastComponent, "")
     }
 
     isLastStepAndSelectionCriterionWarning match {

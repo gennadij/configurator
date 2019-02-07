@@ -1,8 +1,13 @@
 package controllers.wrapper
 
 import models.bo._
+import models.bo.component.SelectedComponentContainerBO
+import models.bo.dependency.DependencyBO
+import models.bo.info.InfoBO
+import models.bo.step.{StepContainerBO, StepCurrentConfigBO}
+import models.bo.warning.WarningBO
 import org.shared.error.Error
-import org.shared.json.common
+import org.shared.json.{common, currentConfig}
 import org.shared.json.common.{JsonError, JsonInfo, JsonWarning}
 import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut, JsonCurrentConfigResult, JsonStepCurrentConfig}
 import org.shared.json.selectedComponent._
@@ -104,7 +109,7 @@ trait Wrapper extends RIDConverter {
           convertRidToHashForStepOrComponentInCurrentConfig(nextStep.stepId),
           nextStep.nameToShow,
           nextStep.components map (c => {
-            common.JsonComponent(
+            currentConfig.JsonComponent(
               convertRidToHashForStepOrComponentInCurrentConfig(c.componentId.get),
               c.nameToShow.get
             )

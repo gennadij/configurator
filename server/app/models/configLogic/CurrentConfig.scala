@@ -1,6 +1,8 @@
 package models.configLogic
 
-import models.bo.{ComponentBO, SelectedComponentContainerBO, StepCurrentConfigBO}
+import models.bo.step.StepCurrentConfigBO
+import models.bo.SelectedComponentContainerBO
+import models.bo.component.{ComponentBO, SelectedComponentContainerBO}
 import play.api.Logger
 
 /**

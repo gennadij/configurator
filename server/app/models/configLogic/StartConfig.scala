@@ -1,6 +1,8 @@
 package models.configLogic
 
-import models.bo._
+import models.bo.component.ComponentBO
+import models.bo.{step, _}
+import models.bo.step.{StepContainerBO, StepCurrentConfigBO}
 import models.persistence.Persistence
 import org.shared.error.Error
 
@@ -50,7 +52,7 @@ class StartConfig(configUrl: Option[String], currentConfig: CurrentConfig) {
 
         errorComponents match {
           case Some(error) =>
-            StepContainerBO(
+            step.StepContainerBO(
               error = Some(List(error))
             )
           case _ =>

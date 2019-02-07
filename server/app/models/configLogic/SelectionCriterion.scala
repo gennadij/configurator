@@ -1,6 +1,10 @@
 package models.configLogic
 
 import models.bo._
+import models.bo.component.{ComponentBO, SelectedComponentContainerBO}
+import models.bo.info.InfoBO
+import models.bo.step.StepBO
+import models.bo.warning.WarningBO
 import org.shared.info._
 
 /**

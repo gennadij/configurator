@@ -1,7 +1,6 @@
 package org.shared.json.currentConfig
 
 import org.shared.json.JsonKey
-import org.shared.json.common.JsonComponent
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 

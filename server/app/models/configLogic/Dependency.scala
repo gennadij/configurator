@@ -1,6 +1,7 @@
 package models.configLogic
 
-import models.bo.{SelectedComponentContainerBO, WarningBO}
+import models.bo.component.SelectedComponentContainerBO
+import models.bo.warning.WarningBO
 import models.persistence.Persistence
 import org.shared.warning.{ExcludedComponentExternal, ExcludedComponentInternal}
 

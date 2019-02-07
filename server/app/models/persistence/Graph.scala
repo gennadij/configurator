@@ -2,7 +2,7 @@ package models.persistence
 
 import com.tinkerpop.blueprints.impls.orient.{OrientEdge, OrientGraph, OrientVertex}
 import com.tinkerpop.blueprints.{Direction, Edge, Vertex}
-import models.bo.DependencyBO
+import models.bo.dependency.DependencyBO
 import models.bo.types.{Auto, SelectableDecision}
 import org.shared.error.{ClassCast, Error, MultipleSteps, ODBConnection, ODBRead, StepNotExist}
 import play.api.Logger
