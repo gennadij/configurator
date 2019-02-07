@@ -4,7 +4,6 @@ import com.tinkerpop.blueprints.Direction
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import models.bo.component.{ComponentBO, SelectedComponentContainerBO}
 import models.bo.step.{StepBO, StepContainerBO}
-import models.bo.{SelectedComponentContainerBO, StepBO, component, step}
 import org.shared.error.Error
 
 import scala.collection.JavaConverters._
@@ -31,7 +30,7 @@ object Persistence {
     }
 
     error match {
-      case Some(_) => step.StepContainerBO(error = Some(List(error.get)))
+      case Some(_) => StepContainerBO(error = Some(List(error.get)))
       case None => StepContainerBO(
         step = Some(
           StepBO(
@@ -78,7 +77,7 @@ object Persistence {
     val (vComponent, error): (Option[OrientVertex], Option[Error]) = Graph.getComponent(selectedComponentId)
 
     error match {
-      case Some(error) => component.SelectedComponentContainerBO(errors = Some(List(error)))
+      case Some(error) => SelectedComponentContainerBO(errors = Some(List(error)))
       case None =>
         val excludeDependencyOut =
           Graph.getComponentDependenciesOut(vComponent.get) filter {_.dependencyType == PropertyKeys.EXCLUDE}
@@ -112,7 +111,7 @@ object Persistence {
       Graph.getCurrentStep(componentId)
 
     error match {
-      case Some(_) => step.StepContainerBO(error = Some(List(error.get)))
+      case Some(_) => StepContainerBO(error = Some(List(error.get)))
       case None => StepContainerBO(
         step = Some(StepBO(
           stepId = Some(vCurrentStep.get.getIdentity.toString),

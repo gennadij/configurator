@@ -5,8 +5,6 @@ import controllers.websocket.WebClient
 import models.bo.types.Auto
 import org.junit.runner.RunWith
 import org.shared.json.{JsonKey, JsonNames}
-import org.shared.status.common.Success
-import org.shared.status.selectedComponent._
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
