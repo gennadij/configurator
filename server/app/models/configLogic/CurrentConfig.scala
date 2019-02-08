@@ -11,8 +11,7 @@ import play.api.Logger
  */
 trait CurrentConfig {
 
-//  var firstStep: Option[StepCurrentConfigBO] = None
-  
+
   /**
    * @author Gennadi Heimann
    * 
@@ -46,7 +45,6 @@ trait CurrentConfig {
    */
   def addFirstStep(currentConfigContainerBO: CurrentConfigContainerBO, firstStep: StepCurrentConfigBO): Unit = {
     currentConfigContainerBO.currentConfig = Some(firstStep)
-    //    this.firstStep = Some(firstStep)
   }
   
   /**
@@ -64,7 +62,6 @@ trait CurrentConfig {
              fatherStep: Option[StepCurrentConfigBO]): Unit = {
     fatherStep match {
       case Some(fS) => fS.nextStep = currentStep
-//      case None => firstStep = currentStep
       case None => currentConfigContainerBO.currentConfig = currentStep
     }
   }
@@ -101,7 +98,6 @@ trait CurrentConfig {
    * @return StepCurrentConfig
    */
   def getLastStep(currentConfigContainerBO: CurrentConfigContainerBO): StepCurrentConfigBO = {
-//    val firstStep = this.firstStep.get
     getLastStepRecursive(currentConfigContainerBO.currentConfig.get)
   }
   
@@ -134,7 +130,6 @@ trait CurrentConfig {
   private def getStep(
                        currentConfigContainerBO: CurrentConfigContainerBO, stepId: String): Option[StepCurrentConfigBO] = {
     getStepRecursive(currentConfigContainerBO.currentConfig, stepId)
-//    getStepRecursive(this.firstStep, stepId)
   }
   
   /**
@@ -167,8 +162,7 @@ trait CurrentConfig {
   private def printCurrentConfig(
                                   currentConfigContainerBO: CurrentConfigContainerBO
                                 ): Unit = getNextStep(currentConfigContainerBO.currentConfig)
-//    getNextStep(this.firstStep)
-  
+
   /**
    * @author Gennadi Heimann
    * 

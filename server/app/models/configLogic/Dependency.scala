@@ -44,6 +44,7 @@ trait Dependency {
           //TODO SelectedComponente darf nicht in die aktuelle Konfiguration hinzugefuegt werden.
           //TODO selectedComponent als componente, die nicht in CurrentConfig hinzugefuegt werden darf, merken.
 
+
 //          val nameToShowExcludeComponents: List[String] = excludeComponents map (_.selectedComponent.get.nameToShow.get)
 
 //          val statusExcludedComponent: StatusComponent =
@@ -58,7 +59,7 @@ trait Dependency {
           )
 //            selectedComponentContainerBO.warning.get.copy(excludedComponentExternal = Some(ExcludedComponentExternal()))
 
-          selectedComponentContainerBO.copy(warning = Some(warningBO))
+          selectedComponentContainerBO.copy(addedComponentCurrentConfig = Some(false), warning = Some(warningBO))
           //TODO Die Komponente muss aus der CurentConfig entfernt werden
         } else {
           //es gab keine excludeDependencies External

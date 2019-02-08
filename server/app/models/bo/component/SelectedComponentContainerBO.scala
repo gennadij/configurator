@@ -17,7 +17,7 @@ case class SelectedComponentContainerBO(
                                          nextStep: Option[StepContainerBO] = None,
                                          stepCurrentConfig: Option[StepCurrentConfigBO] = None,
                                          possibleComponentIdsToSelect : Option[List[String]] = None,
-                                         addedComponentToCurrentConfig: Option[Boolean] = None,
+                                         addedComponentCurrentConfig: Option[Boolean] = None,
                                          info: Option[InfoBO] = None,
                                          errors: Option[List[Error]] = None,
                                          warning: Option[WarningBO] = None
