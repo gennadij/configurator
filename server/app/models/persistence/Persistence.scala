@@ -3,7 +3,7 @@ package models.persistence
 import com.tinkerpop.blueprints.Direction
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
 import models.bo.component.{ComponentBO, SelectedComponentContainerBO}
-import models.bo.step.{StepBO, StepContainerBO}
+import models.bo.step.{ComponentForSelectionBO, StepBO, StepContainerBO}
 import org.shared.error.Error
 
 import scala.collection.JavaConverters._
@@ -50,18 +50,18 @@ object Persistence {
     * @param stepId : String
     * @return ComponentsBO
     */
-  def getComponents(stepId: String): (Option[Set[ComponentBO]], Option[Error])  = {
-    val (vComponents, error): (Option[Set[OrientVertex]], Option[Error]) = Graph.getComponents(stepId)
+  def getComponents(stepId: String): (Option[List[ComponentForSelectionBO]], Option[Error])  = {
+    val (vComponents, error): (Option[List[OrientVertex]], Option[Error]) = Graph.getComponents(stepId)
 
     vComponents match {
       case Some(vCs) =>
-        val componentBOs = vCs map (vC => {
-          ComponentBO(
+        val componentsForSelectionBO: List[ComponentForSelectionBO] = vCs map (vC => {
+          ComponentForSelectionBO(
               componentId = Some(vC.getIdentity.toString),
               nameToShow = Some(vC.getProperty(PropertyKeys.NAME_TO_SHOW))
           )
         })
-        (Some(componentBOs.toSet), None)
+        (Some(componentsForSelectionBO), None)
       case None => (None, error)
     }
   }
@@ -123,12 +123,12 @@ object Persistence {
           Some(
             (
               vCurrentStep.get.getEdges(Direction.OUT, PropertyKeys.HAS_COMPONENT).asScala.toList map (hC => {
-                ComponentBO(
+                ComponentForSelectionBO(
                   componentId = Some(hC.getVertex(Direction.IN).asInstanceOf[OrientVertex].getIdentity.toString()
                   )
                 )
               })
-              ).toSet
+              )
           )
       )
     }

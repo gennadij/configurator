@@ -1,4 +1,4 @@
-package models.bo.step
+package models.bo.currentConfig
 
 import models.bo.component.ComponentBO
 

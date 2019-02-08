@@ -11,11 +11,9 @@ import play.api.libs.json.JsValue
  */
 
 object WebClient {
+
   def init: WebClient = {
-
-    val webClient = new WebClient(new CurrentConfig)
-
-    webClient
+   new WebClient(new CurrentConfig)
   }
 }
 

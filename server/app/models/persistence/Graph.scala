@@ -80,7 +80,7 @@ object Graph {
     * @param stepId : String
     * @return List[ComponentBO]
     */
-  def getComponents(stepId: String): (Option[Set[OrientVertex]], Option[Error]) = {
+  def getComponents(stepId: String): (Option[List[OrientVertex]], Option[Error]) = {
     val graph: (Option[OrientGraph], String) = ODatabase.getFactory
     graph._1 match {
       case Some(g) => new Graph(Some(g)).getComponents(stepId)
@@ -153,13 +153,13 @@ class Graph(graph: Option[OrientGraph]) {
     * @param stepId : String
     * @return List[ComponentBO]
     */
-  private def getComponents(stepId: String): (Option[Set[OrientVertex]], Option[Error]) = {
+  private def getComponents(stepId: String): (Option[List[OrientVertex]], Option[Error]) = {
 
     try {
       val vStep: OrientVertex = graph.get.getVertex(stepId)
       val eHasComponents: List[Edge] = vStep.getEdges(Direction.OUT).asScala.toList
       val vComponents: List[OrientVertex] = eHasComponents.map(_.getVertex(Direction.IN).asInstanceOf[OrientVertex])
-      (Some(vComponents.toSet), None)
+      (Some(vComponents), None)
     } catch {
       case e2: ClassCastException =>
         graph.get.rollback()

@@ -1,8 +1,9 @@
 package models.configLogic
 
 import models.bo.component.ComponentBO
-import models.bo.{step, _}
-import models.bo.step.{StepContainerBO, StepCurrentConfigBO}
+import models.bo.currentConfig.StepCurrentConfigBO
+import models.bo.step
+import models.bo.step.{ComponentForSelectionBO, StepContainerBO}
 import models.persistence.Persistence
 import org.shared.error.{Error, PreviousStepIncludeNoSelectedComponents}
 
@@ -47,7 +48,7 @@ class NextStep(currentConfig: CurrentConfig) {
         nextStep.error match {
           case Some(e) => StepContainerBO(error = Some(e))
           case None =>
-            val (componentsBO, errorComponent): (Option[Set[ComponentBO]], Option[Error])  =
+            val (componentsForSelectionBO, errorComponent): (Option[List[ComponentForSelectionBO]], Option[Error])  =
               Persistence.getComponents(nextStep.step.get.stepId.get)
             errorComponent match {
               case Some(_) => step.StepContainerBO(error = Some(List(errorComponent.get)))
@@ -59,7 +60,7 @@ class NextStep(currentConfig: CurrentConfig) {
                 ))
                 step.StepContainerBO(
                   step = nextStep.step,
-                  componentsForSelection = componentsBO
+                  componentsForSelection = componentsForSelectionBO
                 )
             }
         }

@@ -1,9 +1,8 @@
 package controllers.wrapper
 
-import models.bo._
 import models.bo.component.{ComponentBO, SelectedComponentContainerBO}
 import models.bo.dependency.DependencyBO
-import models.bo.step.{StepBO, StepContainerBO}
+import models.bo.step.{ComponentForSelectionBO, StepBO, StepContainerBO}
 import org.shared.json.selectedComponent.JsonSelectedComponentIn
 
 /**
@@ -27,7 +26,7 @@ trait RIDConverter extends RidToHash {
 
         val stepBOWithHashId: StepBO = stepContainerBO.step.get.copy(stepId = Some(stepIdHash))
 
-        val componentsBOWithHashId: Option[Set[ComponentBO]] =
+        val componentsBOWithHashId: Option[List[ComponentForSelectionBO]] =
           stepContainerBO.error match {
             case Some(_) => None
 

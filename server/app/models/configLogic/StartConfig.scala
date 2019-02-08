@@ -1,8 +1,8 @@
 package models.configLogic
 
-import models.bo.component.ComponentBO
-import models.bo.{step, _}
-import models.bo.step.{StepContainerBO, StepCurrentConfigBO}
+import models.bo.currentConfig.StepCurrentConfigBO
+import models.bo.step
+import models.bo.step.{ComponentForSelectionBO, StepContainerBO}
 import models.persistence.Persistence
 import org.shared.error.Error
 
@@ -39,7 +39,7 @@ class StartConfig(configUrl: Option[String], currentConfig: CurrentConfig) {
 
     firstStepBO.step match {
       case Some(stepBO) =>
-        val (componentBOs, errorComponents): (Option[Set[ComponentBO]], Option[Error]) =
+        val (componentsForSelectionBO, errorComponents): (Option[List[ComponentForSelectionBO]], Option[Error]) =
           Persistence.getComponents(stepBO.stepId.get)
 
         val firstStepCurrentConfig: StepCurrentConfigBO = StepCurrentConfigBO(
@@ -56,7 +56,7 @@ class StartConfig(configUrl: Option[String], currentConfig: CurrentConfig) {
               error = Some(List(error))
             )
           case _ =>
-            firstStepBO.copy(componentsForSelection = componentBOs)
+            firstStepBO.copy(componentsForSelection = componentsForSelectionBO)
         }
       case None =>
         firstStepBO

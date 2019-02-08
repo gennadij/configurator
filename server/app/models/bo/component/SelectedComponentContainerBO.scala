@@ -1,7 +1,8 @@
 package models.bo.component
 
+import models.bo.currentConfig.StepCurrentConfigBO
 import models.bo.info.InfoBO
-import models.bo.step.{StepContainerBO, StepCurrentConfigBO}
+import models.bo.step.StepContainerBO
 import models.bo.warning.WarningBO
 import org.shared.error.Error
 
@@ -11,7 +12,6 @@ import org.shared.error.Error
   * Created by Gennadi Heimann 09.02.2018
   */
 case class SelectedComponentContainerBO(
-                                         //                                status: Option[StatusComponent] = None,
                                          selectedComponent: Option[ComponentBO] = None,
                                          currentStep: Option[StepContainerBO] = None,
                                          nextStep: Option[StepContainerBO] = None,

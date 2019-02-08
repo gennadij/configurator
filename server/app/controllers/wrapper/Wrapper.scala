@@ -2,9 +2,10 @@ package controllers.wrapper
 
 import models.bo._
 import models.bo.component.SelectedComponentContainerBO
+import models.bo.currentConfig.StepCurrentConfigBO
 import models.bo.dependency.DependencyBO
 import models.bo.info.InfoBO
-import models.bo.step.{StepContainerBO, StepCurrentConfigBO}
+import models.bo.step.StepContainerBO
 import models.bo.warning.WarningBO
 import org.shared.error.Error
 import org.shared.json.{common, currentConfig}

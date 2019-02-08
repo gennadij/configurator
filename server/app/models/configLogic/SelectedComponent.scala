@@ -2,7 +2,8 @@ package models.configLogic
 
 import models.bo._
 import models.bo.component.{ComponentBO, SelectedComponentContainerBO}
-import models.bo.step.{StepContainerBO, StepCurrentConfigBO}
+import models.bo.currentConfig.StepCurrentConfigBO
+import models.bo.step.StepContainerBO
 import models.bo.warning.WarningBO
 import models.persistence.Persistence
 import org.shared.error.StepNotExist
