@@ -41,7 +41,7 @@ trait GenericConfigurator extends Wrapper{
     * @return JsonCurrentConfigOut
     */
   def currentConfig(jsonCurrentConfigIn: JsonCurrentConfigIn, currentConfig: CurrentConfig): JsonCurrentConfigOut = {
-    toJsonCurrentConfigOut(currentConfig.getCurrentConfig)
+    toJsonCurrentConfigOut(currentConfig.getCurrentConfig) //TODO es kann direct ref zu der CurrentConfig weitergegeben
   }
 
   /**

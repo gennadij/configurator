@@ -1,6 +1,6 @@
 package models.configLogic
 
-import models.bo.component.ComponentBO
+import models.bo.component.SelectedComponentBO
 import models.bo.currentConfig.StepCurrentConfigBO
 import models.bo.step
 import models.bo.step.{ComponentForSelectionBO, StepContainerBO}
@@ -36,7 +36,7 @@ class NextStep(currentConfig: CurrentConfig) {
 
     val lastStep: StepCurrentConfigBO = currentConfig.getLastStep
 
-    val selectedComponents: List[ComponentBO] = lastStep.components
+    val selectedComponents: List[SelectedComponentBO] = lastStep.components
 
     selectedComponents match {
       case List() =>

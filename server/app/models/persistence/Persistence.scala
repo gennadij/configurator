@@ -2,7 +2,7 @@ package models.persistence
 
 import com.tinkerpop.blueprints.Direction
 import com.tinkerpop.blueprints.impls.orient.OrientVertex
-import models.bo.component.{ComponentBO, SelectedComponentContainerBO}
+import models.bo.component.{SelectedComponentBO, SelectedComponentContainerBO}
 import models.bo.step.{ComponentForSelectionBO, StepBO, StepContainerBO}
 import org.shared.error.Error
 
@@ -89,7 +89,7 @@ object Persistence {
           Graph.getComponentDependenciesIn(vComponent.get) filter {_.dependencyType == PropertyKeys.REQUIRE}
 
         SelectedComponentContainerBO(
-          selectedComponent = Some(ComponentBO(
+          selectedComponent = Some(SelectedComponentBO(
             componentId = Some(vComponent.get.getIdentity.toString),
             nameToShow = Some(vComponent.get.getProperty(PropertyKeys.NAME_TO_SHOW)),
             excludeDependenciesOut = Some(excludeDependencyOut),

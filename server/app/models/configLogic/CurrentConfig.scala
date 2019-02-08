@@ -1,7 +1,7 @@
 package models.configLogic
 
-import models.bo.component.{ComponentBO, SelectedComponentContainerBO}
-import models.bo.currentConfig.StepCurrentConfigBO
+import models.bo.component.{SelectedComponentBO, SelectedComponentContainerBO}
+import models.bo.currentConfig.{CurrentConfigContainerBO, StepCurrentConfigBO}
 import play.api.Logger
 
 /**
@@ -9,9 +9,9 @@ import play.api.Logger
  *
  * Crated by Gennadi Heimann 28.02.2017
  */
-class CurrentConfig {
+trait CurrentConfig {
 
-  var firstStep: Option[StepCurrentConfigBO] = None
+//  var firstStep: Option[StepCurrentConfigBO] = None
   
   /**
    * @author Gennadi Heimann
@@ -22,11 +22,15 @@ class CurrentConfig {
    * 
    * @return Unit
    */
-  def addComponent(step: StepCurrentConfigBO, component: ComponentBO): Unit = {
+  def addComponent(
+                    currentConfigContainerBO: CurrentConfigContainerBO,
+                    step: StepCurrentConfigBO,
+                    component: SelectedComponentBO): Unit = {
     
-    val currentStep: Option[StepCurrentConfigBO] = getStep(step.stepId)
+    val currentStep: Option[StepCurrentConfigBO] =
+      getStep(currentConfigContainerBO, step.stepId)
     
-    val currentComponents: List[ComponentBO] = currentStep.get.components
+    val currentComponents: List[SelectedComponentBO] = currentStep.get.components
 
     currentStep.get.components = currentComponents.::(component)
   }
@@ -40,8 +44,9 @@ class CurrentConfig {
    * 
    * @return Unit
    */
-  def addFirstStep(firstStep: StepCurrentConfigBO): Unit = {
-    this.firstStep = Some(firstStep)
+  def addFirstStep(currentConfigContainerBO: CurrentConfigContainerBO, firstStep: StepCurrentConfigBO): Unit = {
+    currentConfigContainerBO.currentConfig = Some(firstStep)
+    //    this.firstStep = Some(firstStep)
   }
   
   /**
@@ -53,10 +58,14 @@ class CurrentConfig {
    * 
    * @return Unit
    */
-  def addStep(currentStep: Option[StepCurrentConfigBO], fatherStep: Option[StepCurrentConfigBO]): Unit = {
+  def addStep(
+             currentConfigContainerBO: CurrentConfigContainerBO,
+             currentStep: Option[StepCurrentConfigBO],
+             fatherStep: Option[StepCurrentConfigBO]): Unit = {
     fatherStep match {
       case Some(fS) => fS.nextStep = currentStep
-      case None => firstStep = currentStep
+//      case None => firstStep = currentStep
+      case None => currentConfigContainerBO.currentConfig = currentStep
     }
   }
   
@@ -69,8 +78,10 @@ class CurrentConfig {
    * 
    * @return Option[StepCurrentConfig]
    */
-  def getCurrentStep(stepId: String): Option[StepCurrentConfigBO] = {
-    getStep(stepId)
+  def getCurrentStep(
+                      currentConfigContainerBO: CurrentConfigContainerBO, stepId: String
+                    ): Option[StepCurrentConfigBO] = {
+    getStep(currentConfigContainerBO, stepId)
   }
   
   /**
@@ -80,7 +91,7 @@ class CurrentConfig {
    * 
    * @return Option[StepCurrentConfigBO]
    */
-  def getCurrentConfig: Option[StepCurrentConfigBO] = this.firstStep
+//  def getCurrentConfig: Option[StepCurrentConfigBO] = this.firstStep
   
   /**
    * @author Gennadi Heimann
@@ -89,9 +100,9 @@ class CurrentConfig {
    * 
    * @return StepCurrentConfig
    */
-  def getLastStep: StepCurrentConfigBO = {
-    val firstStep = this.firstStep.get
-    getLastStepRecursive(firstStep)
+  def getLastStep(currentConfigContainerBO: CurrentConfigContainerBO): StepCurrentConfigBO = {
+//    val firstStep = this.firstStep.get
+    getLastStepRecursive(currentConfigContainerBO.currentConfig.get)
   }
   
   /**
@@ -120,9 +131,10 @@ class CurrentConfig {
    * 
    * @return Option[StepCurrentConfig]
    */
-  private def getStep(stepId: String): Option[StepCurrentConfigBO] = {
-    
-    getStepRecursive(this.firstStep, stepId)
+  private def getStep(
+                       currentConfigContainerBO: CurrentConfigContainerBO, stepId: String): Option[StepCurrentConfigBO] = {
+    getStepRecursive(currentConfigContainerBO.currentConfig, stepId)
+//    getStepRecursive(this.firstStep, stepId)
   }
   
   /**
@@ -152,7 +164,10 @@ class CurrentConfig {
    * 
    * @return Unit
    */
-  private def printCurrentConfig(): Unit = getNextStep(this.firstStep)
+  private def printCurrentConfig(
+                                  currentConfigContainerBO: CurrentConfigContainerBO
+                                ): Unit = getNextStep(currentConfigContainerBO.currentConfig)
+//    getNextStep(this.firstStep)
   
   /**
    * @author Gennadi Heimann
@@ -185,9 +200,13 @@ class CurrentConfig {
    * 
    * @return Unit
    */
-  def removeComponent(selectedComponentBO: SelectedComponentContainerBO): List[ComponentBO] = {
+  def removeComponent(
+                       currentConfigContainerBO: CurrentConfigContainerBO,
+                       selectedComponentBO: SelectedComponentContainerBO
+                     ): List[SelectedComponentBO] = {
 
-    val step: Option[StepCurrentConfigBO] = getCurrentStep(selectedComponentBO.stepCurrentConfig.get.stepId)
+    val step: Option[StepCurrentConfigBO] =
+      getCurrentStep(currentConfigContainerBO, selectedComponentBO.stepCurrentConfig.get.stepId)
 
     Logger.info(this.getClass.getSimpleName + ": " + step.get.components + " " + selectedComponentBO.selectedComponent.get.componentId.get)
     Logger.info("Step with deleted component " + step.get.getClass.hashCode())
@@ -196,7 +215,7 @@ class CurrentConfig {
 
     Logger.info("Step with deleted component " + step.get.components)
 
-    printCurrentConfig()
+    printCurrentConfig(currentConfigContainerBO)
 
     step.get.components
   }

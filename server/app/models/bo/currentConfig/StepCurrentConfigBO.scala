@@ -1,6 +1,6 @@
 package models.bo.currentConfig
 
-import models.bo.component.ComponentBO
+import models.bo.component.SelectedComponentBO
 
 /**
  * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -10,6 +10,6 @@ import models.bo.component.ComponentBO
 case class StepCurrentConfigBO (
                                  stepId: String,
                                  nameToShow: String,
-                                 var components: List[ComponentBO] = List(),
+                                 var components: List[SelectedComponentBO] = List(),
                                  var nextStep: Option[StepCurrentConfigBO] = None
 )

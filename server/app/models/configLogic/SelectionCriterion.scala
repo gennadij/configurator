@@ -1,7 +1,7 @@
 package models.configLogic
 
 import models.bo._
-import models.bo.component.{ComponentBO, SelectedComponentContainerBO}
+import models.bo.component.{SelectedComponentBO, SelectedComponentContainerBO}
 import models.bo.info.InfoBO
 import models.bo.step.StepBO
 import models.bo.warning.WarningBO
@@ -21,7 +21,7 @@ trait SelectionCriterion {
       case Some(_) =>
 //    selectedComponentBO.status.get.excludedDependencyInternal.get match {
 //      case ExcludedComponentInternal() =>
-        val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentContainerBO.stepCurrentConfig match {
+        val previousSelectedComponentsInCurrentConfig: List[SelectedComponentBO] = selectedComponentContainerBO.stepCurrentConfig match {
           case Some(step) => step.components
           case None => List()
         }
@@ -74,11 +74,11 @@ trait SelectionCriterion {
         }else{
 
           //TODO im decision_tree nachziehen.
-          val previousSelectedComponentsInCurrentConfig: List[ComponentBO] = selectedComponentContainerBO.stepCurrentConfig match {
+          val previousSelectedComponentsInCurrentConfig: List[SelectedComponentBO] = selectedComponentContainerBO.stepCurrentConfig match {
             case Some(step) => step.components
             case None => List()
           }
-          val currentConfigWithTempSelectedComponent: List[ComponentBO] =
+          val currentConfigWithTempSelectedComponent: List[SelectedComponentBO] =
             previousSelectedComponentsInCurrentConfig :+ selectedComponentContainerBO.selectedComponent.get
 
           val countOfComponentsInCurrentConfigWithTempSelectedComponent = currentConfigWithTempSelectedComponent.size

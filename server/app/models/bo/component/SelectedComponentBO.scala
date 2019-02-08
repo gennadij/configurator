@@ -7,7 +7,7 @@ import models.bo.dependency.DependencyBO
   *
   * Created by Gennadi Heimann 10.07.2018
   */
-case class ComponentBO(
+case class SelectedComponentBO(
                       componentId: Option[String] = None,
                       nameToShow: Option[String] = None,
                       lastComponent: Option[Boolean] = None,

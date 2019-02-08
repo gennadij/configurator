@@ -1,6 +1,6 @@
 package controllers.wrapper
 
-import models.bo.component.{ComponentBO, SelectedComponentContainerBO}
+import models.bo.component.{SelectedComponentBO, SelectedComponentContainerBO}
 import models.bo.dependency.DependencyBO
 import models.bo.step.{ComponentForSelectionBO, StepBO, StepContainerBO}
 import org.shared.json.selectedComponent.JsonSelectedComponentIn
@@ -55,7 +55,7 @@ trait RIDConverter extends RidToHash {
     }
 
     SelectedComponentContainerBO(
-      selectedComponent = Some(ComponentBO(
+      selectedComponent = Some(SelectedComponentBO(
         componentId = Some(componentRid)
       ))
     )
