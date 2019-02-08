@@ -9,7 +9,7 @@ import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
 import play.api.Logger
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.JsValue
 import util.CommonFunction
 
 @RunWith(classOf[JUnitRunner])
@@ -75,11 +75,11 @@ class Scenario_005_1_Specs extends Specification with MessageHandler with Before
       val r_1 = componentOut_21 \ JsonKey.result \ JsonKey.status
 
       (componentOut_21 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
-      (r_1 \ JsonKey.componentType \ JsonKey.status).asOpt[String] === Some(DefaultComponent().status)
-      (r_1 \ JsonKey.selectedComponent \ JsonKey.status).asOpt[String] === Some(AddedComponent().status)
-      (r_1 \ JsonKey.selectionCriterion \ JsonKey.status).asOpt[String] === Some(RequireNextStep().status)
-      (r_1 \ JsonKey.excludeDependencyInternal \ JsonKey.status).asOpt[String] === Some(NotExcludedComponentInternal().status)
-      (r_1 \ JsonKey.common \ JsonKey.status).asOpt[String] === Some(Success().status)
+//      (r_1 \ JsonKey.componentType \ JsonKey.status).asOpt[String] === Some(DefaultComponent().status)
+//      (r_1 \ JsonKey.selectedComponent \ JsonKey.status).asOpt[String] === Some(AddedComponent().status)
+//      (r_1 \ JsonKey.selectionCriterion \ JsonKey.status).asOpt[String] === Some(RequireNextStep().status)
+//      (r_1 \ JsonKey.excludeDependencyInternal \ JsonKey.status).asOpt[String] === Some(NotExcludedComponentInternal().status)
+//      (r_1 \ JsonKey.common \ JsonKey.status).asOpt[String] === Some(Success().status)
 
       val jsonNextStepComponents_S3 = CommonFunction.nextStep(wC) \ JsonKey.result \ JsonKey.step \ JsonKey.components
 
@@ -110,13 +110,13 @@ class Scenario_005_1_Specs extends Specification with MessageHandler with Before
 
       val r_2 = componentOutResult4_21 \ JsonKey.status
       (componentOut4_21 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
-      (r_2 \ JsonKey.componentType \ JsonKey.status).asOpt[String] === Some(FinalComponent().status)
-      (r_2 \ JsonKey.selectedComponent \ JsonKey.status).asOpt[String] === Some(AddedComponent().status)
-      (r_2 \ JsonKey.selectionCriterion \ JsonKey.status).asOpt[String] === Some(RequireComponent().status)
-      (r_2 \ JsonKey.excludeDependencyInternal \ JsonKey.status).asOpt[String] === Some(NotExcludedComponentInternal().status)
-      (r_2 \ JsonKey.excludeDependencyExternal \ JsonKey.message).asOpt[String] ===
-        Some(ExcludedComponentExternal(List("C21"), List()).message)
-      (r_2 \ JsonKey.common \ JsonKey.status).asOpt[String] === Some(Success().status)
+//      (r_2 \ JsonKey.componentType \ JsonKey.status).asOpt[String] === Some(FinalComponent().status)
+//      (r_2 \ JsonKey.selectedComponent \ JsonKey.status).asOpt[String] === Some(AddedComponent().status)
+//      (r_2 \ JsonKey.selectionCriterion \ JsonKey.status).asOpt[String] === Some(RequireComponent().status)
+//      (r_2 \ JsonKey.excludeDependencyInternal \ JsonKey.status).asOpt[String] === Some(NotExcludedComponentInternal().status)
+//      (r_2 \ JsonKey.excludeDependencyExternal \ JsonKey.message).asOpt[String] ===
+//        Some(ExcludedComponentExternal(List("C21"), List()).message)
+//      (r_2 \ JsonKey.common \ JsonKey.status).asOpt[String] === Some(Success().status)
 
       val currentConfig = CommonFunction.currentCongig(wC)
 

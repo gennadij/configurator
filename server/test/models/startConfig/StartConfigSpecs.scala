@@ -39,7 +39,7 @@ class StartConfigSpecs extends Specification with MessageHandler with BeforeAfte
       
       
       
-      val startConfigOut = wC.handleMessage(startConfigIn, wC.currentConfig)
+      val startConfigOut = wC.handleMessage(startConfigIn, wC.currentConfigContainerBO)
       Logger.info("IN -> " + startConfigIn.toString())
       Logger.info("OUT -> " + startConfigOut.toString())
       

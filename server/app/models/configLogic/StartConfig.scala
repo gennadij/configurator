@@ -1,6 +1,6 @@
 package models.configLogic
 
-import models.bo.currentConfig.StepCurrentConfigBO
+import models.bo.currentConfig.{CurrentConfigContainerBO, StepCurrentConfigBO}
 import models.bo.step
 import models.bo.step.{ComponentForSelectionBO, StepContainerBO}
 import models.persistence.Persistence
@@ -20,12 +20,21 @@ object StartConfig {
     * @param stepContainerBO : StartConfigIn
     * @return StartConfigOut
     */
-  def startConfig(stepContainerBO: StepContainerBO, currentConfig: CurrentConfig): StepContainerBO = {
-    new StartConfig(stepContainerBO.configUrl, currentConfig).startConfig
+  def startConfig(stepContainerBO: StepContainerBO,
+//                  currentConfig: CurrentConfig
+                 currentConfigContainerBO: CurrentConfigContainerBO
+                 ): StepContainerBO = {
+    new StartConfig(stepContainerBO.configUrl,
+//      currentConfig
+      currentConfigContainerBO
+    ).startConfig
   }
 }
 
-class StartConfig(configUrl: Option[String], currentConfig: CurrentConfig) {
+class StartConfig(
+                   configUrl: Option[String],
+                   currentConfigContainerBO: CurrentConfigContainerBO
+                 ) extends  CurrentConfig {
 
 
   /**
@@ -48,7 +57,7 @@ class StartConfig(configUrl: Option[String], currentConfig: CurrentConfig) {
         )
 
         // Fuege den ersten Schritt zu der aktuelle Konfiguration hinzu
-        currentConfig.addFirstStep(firstStepCurrentConfig)
+        addFirstStep(currentConfigContainerBO, firstStepCurrentConfig)
 
         errorComponents match {
           case Some(error) =>

@@ -1,7 +1,7 @@
 package models.configLogic
 
 import models.bo.component.SelectedComponentBO
-import models.bo.currentConfig.StepCurrentConfigBO
+import models.bo.currentConfig.{CurrentConfigContainerBO, StepCurrentConfigBO}
 import models.bo.step
 import models.bo.step.{ComponentForSelectionBO, StepContainerBO}
 import models.persistence.Persistence
@@ -19,13 +19,15 @@ object NextStep {
     * @version 0.0.2
     * @return NextStepOut
     */
-  def getNextStep(currentConfig: CurrentConfig): StepContainerBO = {
-    new NextStep(currentConfig).getNextStep
+  def getNextStep(
+                 currentConfigContainerBO: CurrentConfigContainerBO
+                 ): StepContainerBO = {
+    new NextStep(currentConfigContainerBO).getNextStep
   }
 }
 
 
-class NextStep(currentConfig: CurrentConfig) {
+class NextStep(currentConfigContainerBO: CurrentConfigContainerBO) extends CurrentConfig {
 
   /**
     * @author Gennadi Heimann
@@ -34,7 +36,7 @@ class NextStep(currentConfig: CurrentConfig) {
     */
   private def getNextStep: StepContainerBO = {
 
-    val lastStep: StepCurrentConfigBO = currentConfig.getLastStep
+    val lastStep: StepCurrentConfigBO = getLastStep(currentConfigContainerBO)
 
     val selectedComponents: List[SelectedComponentBO] = lastStep.components
 

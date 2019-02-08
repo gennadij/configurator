@@ -38,7 +38,7 @@ class StartConfigWithDefectURLSpecs extends Specification with MessageHandler wi
 
       Logger.info(startConfigIn.toString())
       
-      val startConfigOut = wC.handleMessage(startConfigIn, wC.currentConfig)
+      val startConfigOut = wC.handleMessage(startConfigIn, wC.currentConfigContainerBO)
 
       Logger.info(startConfigOut.toString())
       

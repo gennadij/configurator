@@ -39,10 +39,10 @@ class Scenario_002_11_Specs extends Specification with MessageHandler with Befor
       
       CommonFunction.selectComponent(wC, componentIdC11)
       
-      val jsonCurrentConfigOut_1: JsValue = CommonFunction.currentCongig(wC)
+      val jsoncurrentConfigContainerBOOut_1: JsValue = CommonFunction.currentCongig(wC)
       
-      val result_1 = (jsonCurrentConfigOut_1 \ JsonKey.result)
-      (jsonCurrentConfigOut_1 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
+      val result_1 = (jsoncurrentConfigContainerBOOut_1 \ JsonKey.result)
+      (jsoncurrentConfigContainerBOOut_1 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_1 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
       (result_1 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 1
       ((result_1 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
@@ -52,10 +52,10 @@ class Scenario_002_11_Specs extends Specification with MessageHandler with Befor
 
       CommonFunction.selectComponent(wC, componentIdC12)
       
-      val jsonCurrentConfigOut_2: JsValue = CommonFunction.currentCongig(wC)
+      val jsoncurrentConfigContainerBOOut_2: JsValue = CommonFunction.currentCongig(wC)
       
-      val result_2 = (jsonCurrentConfigOut_2 \ JsonKey.result)
-      (jsonCurrentConfigOut_2 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
+      val result_2 = (jsoncurrentConfigContainerBOOut_2 \ JsonKey.result)
+      (jsoncurrentConfigContainerBOOut_2 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_2 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
       (result_2 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 2
       ((result_2 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
@@ -66,10 +66,10 @@ class Scenario_002_11_Specs extends Specification with MessageHandler with Befor
       
       val componentOut_3: JsValue = CommonFunction.selectComponent(wC, componentIdC13)
       
-      val jsonCurrentConfigOut_3: JsValue = CommonFunction.currentCongig(wC)
+      val jsoncurrentConfigContainerBOOut_3: JsValue = CommonFunction.currentCongig(wC)
       
-      val result_3 = (jsonCurrentConfigOut_3 \ JsonKey.result)
-      (jsonCurrentConfigOut_3 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
+      val result_3 = (jsoncurrentConfigContainerBOOut_3 \ JsonKey.result)
+      (jsoncurrentConfigContainerBOOut_3 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_3 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
       (result_3 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 2
       ((result_3 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
@@ -77,20 +77,20 @@ class Scenario_002_11_Specs extends Specification with MessageHandler with Befor
       
       CommonFunction.selectComponent(wC, componentIdC11)
       
-      val jsonCurrentConfigOut_4: JsValue = CommonFunction.currentCongig(wC)
+      val jsoncurrentConfigContainerBOOut_4: JsValue = CommonFunction.currentCongig(wC)
       
-      val result_4 = (jsonCurrentConfigOut_4 \ JsonKey.result)
-      (jsonCurrentConfigOut_4 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
+      val result_4 = (jsoncurrentConfigContainerBOOut_4 \ JsonKey.result)
+      (jsoncurrentConfigContainerBOOut_4 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_4 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
       (result_4 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 1
       ((result_4 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
 
       CommonFunction.selectComponent(wC, componentIdC12)
       
-      val jsonCurrentConfigOut_5: JsValue = CommonFunction.currentCongig(wC)
+      val jsoncurrentConfigContainerBOOut_5: JsValue = CommonFunction.currentCongig(wC)
       
-      val result_5 = (jsonCurrentConfigOut_5 \ JsonKey.result)
-      (jsonCurrentConfigOut_5 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
+      val result_5 = (jsoncurrentConfigContainerBOOut_5 \ JsonKey.result)
+      (jsoncurrentConfigContainerBOOut_5 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_5 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
       (result_5 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 0
 
@@ -104,10 +104,10 @@ class Scenario_002_11_Specs extends Specification with MessageHandler with Befor
       (componentOut_6 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === None
       (componentOut_6 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
 
-      val jsonCurrentConfigOut_6: JsValue = CommonFunction.currentCongig(wC)
+      val jsoncurrentConfigContainerBOOut_6: JsValue = CommonFunction.currentCongig(wC)
       
-      val result_6 = (jsonCurrentConfigOut_6 \ JsonKey.result)
-      (jsonCurrentConfigOut_6 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
+      val result_6 = (jsoncurrentConfigContainerBOOut_6 \ JsonKey.result)
+      (jsoncurrentConfigContainerBOOut_6 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_6 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
       (result_6 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 1
       ((result_6 \ JsonKey.step \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C13")

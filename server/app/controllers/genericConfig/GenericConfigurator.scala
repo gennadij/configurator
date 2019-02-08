@@ -1,7 +1,8 @@
 package controllers.genericConfig
 
 import controllers.wrapper.Wrapper
-import models.configLogic.{CurrentConfig, NextStep, SelectedComponent, StartConfig}
+import models.bo.currentConfig.CurrentConfigContainerBO
+import models.configLogic.{NextStep, SelectedComponent, StartConfig}
 import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
 import org.shared.json.selectedComponent.{JsonSelectedComponentIn, JsonSelectedComponentOut}
 import org.shared.json.step.{JsonStepIn, JsonStepOut}
@@ -23,8 +24,8 @@ trait GenericConfigurator extends Wrapper{
     * @param jsonStepIn : JsonStartConfigIn
     * @return JsonStartConfigOut
     */
-  def startConfig(jsonStepIn: JsonStepIn, currentConfig: CurrentConfig): JsonStepOut = {
-    toJsonStepOut(StartConfig.startConfig(toStepIn(jsonStepIn), currentConfig))
+  def startConfig(jsonStepIn: JsonStepIn, currentConfigContainerBO: CurrentConfigContainerBO): JsonStepOut = {
+    toJsonStepOut(StartConfig.startConfig(toStepIn(jsonStepIn), currentConfigContainerBO))
   }
 
   /**
@@ -32,7 +33,7 @@ trait GenericConfigurator extends Wrapper{
     * @version 0.0.1
     * @return JsonNextStepOut
     */
-  def getNextStep(currentConfig: CurrentConfig): JsonStepOut = toJsonStepOut(NextStep.getNextStep(currentConfig))
+  def getNextStep(currentConfigContainerBO: CurrentConfigContainerBO): JsonStepOut = toJsonStepOut(NextStep.getNextStep(currentConfigContainerBO))
 
   /**
     * @author Gennadi Heimann
@@ -40,8 +41,8 @@ trait GenericConfigurator extends Wrapper{
     * @param jsonCurrentConfigIn : JsonCurrentConfigIn
     * @return JsonCurrentConfigOut
     */
-  def currentConfig(jsonCurrentConfigIn: JsonCurrentConfigIn, currentConfig: CurrentConfig): JsonCurrentConfigOut = {
-    toJsonCurrentConfigOut(currentConfig.getCurrentConfig) //TODO es kann direct ref zu der CurrentConfig weitergegeben
+  def currentConfig(jsonCurrentConfigIn: JsonCurrentConfigIn, currentConfigContainerBO: CurrentConfigContainerBO): JsonCurrentConfigOut = {
+    toJsonCurrentConfigOut(currentConfigContainerBO.currentConfig)
   }
 
   /**
@@ -50,7 +51,7 @@ trait GenericConfigurator extends Wrapper{
     * @param jsonComponentIn : JsonComponentIn
     * @return JsonComponentOut
     */
-  def selectedComponent(jsonComponentIn: JsonSelectedComponentIn, currentConfig: CurrentConfig): JsonSelectedComponentOut = {
-    toJsonComponentOut(SelectedComponent.verifySelectedComponent(toSelectedComponentBO(jsonComponentIn), currentConfig))
+  def selectedComponent(jsonComponentIn: JsonSelectedComponentIn, currentConfigContainerBO: CurrentConfigContainerBO): JsonSelectedComponentOut = {
+    toJsonComponentOut(SelectedComponent.verifySelectedComponent(toSelectedComponentBO(jsonComponentIn), currentConfigContainerBO))
   }
 }

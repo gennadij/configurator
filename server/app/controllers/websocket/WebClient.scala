@@ -1,7 +1,7 @@
 package controllers.websocket
 
 import controllers.MessageHandler
-import models.configLogic.CurrentConfig
+import models.bo.currentConfig.CurrentConfigContainerBO
 import play.api.libs.json.JsValue
 
 /**
@@ -13,13 +13,19 @@ import play.api.libs.json.JsValue
 object WebClient {
 
   def init: WebClient = {
-   new WebClient(new CurrentConfig)
+   new WebClient(
+     CurrentConfigContainerBO()
+   )
   }
 }
 
-class WebClient(val currentConfig: CurrentConfig) extends MessageHandler {
+class WebClient(
+               val currentConfigContainerBO: CurrentConfigContainerBO
+               ) extends MessageHandler {
 
   def handleClientMessage(receivedMessage: JsValue): JsValue = {
-    handleMessage(receivedMessage, currentConfig)
+    handleMessage(receivedMessage,
+      currentConfigContainerBO
+    )
   }
 }

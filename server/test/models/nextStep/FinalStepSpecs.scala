@@ -40,7 +40,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
            )
       )
       
-      val startConfigOut = wC.handleMessage(startConfigIn, wC.currentConfig)
+      val startConfigOut = wC.handleMessage(startConfigIn, wC.currentConfigContainerBO)
       
       Logger.info("IN " + startConfigIn)
       Logger.info("OUT" + startConfigOut)
@@ -59,7 +59,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
            )
       )
 
-      val jsonComponentOut_1: JsValue = wC.handleMessage(componentIn_1, wC.currentConfig)
+      val jsonComponentOut_1: JsValue = wC.handleMessage(componentIn_1, wC.currentConfigContainerBO)
       
       Logger.info("OUT " + jsonComponentOut_1)
       
@@ -82,7 +82,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
           JsonKey.json -> JsonNames.STEP
       )
       
-      val jsonNextStepOut_2 = wC.handleMessage(jsonNextStepIn_2, wC.currentConfig)
+      val jsonNextStepOut_2 = wC.handleMessage(jsonNextStepIn_2, wC.currentConfigContainerBO)
       
       Logger.info(this.getClass.getSimpleName + ": nextStepIn_2 " + jsonNextStepIn_2)
       Logger.info(this.getClass.getSimpleName + ": nextStepOut_2 " + jsonNextStepOut_2)
@@ -116,7 +116,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
       )
       Logger.info("componentIn_2 " + componentIn_2)
       
-      val componentOut_2: JsValue = wC.handleMessage(componentIn_2, wC.currentConfig)
+      val componentOut_2: JsValue = wC.handleMessage(componentIn_2, wC.currentConfigContainerBO)
       
       Logger.info("componentOut_2 " + componentOut_2)
       
@@ -134,7 +134,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
           JsonKey.json -> JsonNames.STEP
       )
       
-      val jsonNextStepOut_3 = wC.handleMessage(jsonNextStepIn_3, wC.currentConfig)
+      val jsonNextStepOut_3 = wC.handleMessage(jsonNextStepIn_3, wC.currentConfigContainerBO)
       
       Logger.info(this.getClass.getSimpleName + ": nextStepIn_3 " + jsonNextStepIn_3)
       Logger.info(this.getClass.getSimpleName + ": nextStepOut_3 " + jsonNextStepOut_3)
@@ -170,7 +170,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
       )
       Logger.info("componentIn_3 " + componentIn_3)
       
-      val componentOut_3: JsValue = wC.handleMessage(componentIn_3, wC.currentConfig)
+      val componentOut_3: JsValue = wC.handleMessage(componentIn_3, wC.currentConfigContainerBO)
       
       Logger.info("componentOut_3 " + componentOut_3)
       
@@ -188,7 +188,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
           JsonKey.json -> JsonNames.STEP
       )
       
-      val jsonNextStepOut_4 = wC.handleMessage(jsonNextStepIn_4, wC.currentConfig)
+      val jsonNextStepOut_4 = wC.handleMessage(jsonNextStepIn_4, wC.currentConfigContainerBO)
       
       Logger.info(this.getClass.getSimpleName + ": nextStepIn_4 " + jsonNextStepIn_4)
       Logger.info(this.getClass.getSimpleName + ": nextStepOut_4 " + jsonNextStepOut_4)
@@ -224,7 +224,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
       )
       Logger.info("componentIn_4 " + componentIn_4)
 
-      val componentOut_4: JsValue = wC.handleMessage(componentIn_4, wC.currentConfig)
+      val componentOut_4: JsValue = wC.handleMessage(componentIn_4, wC.currentConfigContainerBO)
 
       Logger.info("componentOut_4 " + componentOut_4)
       "" === ""
@@ -243,7 +243,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
 
       Logger.info("jsonCurrentConfigIn " + jsonCurrentConfigIn)
 
-      val jsonCurrentConfigOut = wC.handleMessage(jsonCurrentConfigIn, wC.currentConfig)
+      val jsonCurrentConfigOut = wC.handleMessage(jsonCurrentConfigIn, wC.currentConfigContainerBO)
 
       Logger.info("jsonCurrentConfigOut " + jsonCurrentConfigOut)
 

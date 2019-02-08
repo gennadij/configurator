@@ -3,7 +3,6 @@ package models.selectedComponent
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
-import org.shared.info
 import org.shared.info.{AllowNextComponent, RequireNextStep}
 import org.shared.json.step.JsonStepOut
 import org.shared.json.{JsonKey, JsonNames}
@@ -40,7 +39,7 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
            )
       )
       
-      val startConfigOut = wC.handleMessage(startConfigIn, wC.currentConfig)
+      val startConfigOut = wC.handleMessage(startConfigIn, wC.currentConfigContainerBO)
       
       Logger.info("StartConfigIn " + startConfigIn)
       Logger.info("StartConfigOut " + startConfigOut)
@@ -61,7 +60,7 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       )
       Logger.info("componentIn_1 " + componentIn_1)
       
-      val componentOut_1: JsValue = wC.handleMessage(componentIn_1, wC.currentConfig)
+      val componentOut_1: JsValue = wC.handleMessage(componentIn_1, wC.currentConfigContainerBO)
       Logger.info("componentOut_1 " + componentOut_1)
       
       (componentOut_1 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
@@ -76,7 +75,7 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
           JsonKey.json -> JsonNames.CURRENT_CONFIG
       )
       
-      val jsonCurrentConfigOut_1: JsValue = wC.handleMessage(jsonCurrentConfigIn_1, wC.currentConfig)
+      val jsonCurrentConfigOut_1: JsValue = wC.handleMessage(jsonCurrentConfigIn_1, wC.currentConfigContainerBO)
       
       Logger.info(this.getClass.getSimpleName + ": currentConfigIn " + jsonCurrentConfigIn_1)
       Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + jsonCurrentConfigOut_1)
@@ -101,7 +100,7 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       )
       Logger.info("componentIn_2 " + componentIn_2)
       
-      val componentOut_2: JsValue = wC.handleMessage(componentIn_2, wC.currentConfig)
+      val componentOut_2: JsValue = wC.handleMessage(componentIn_2, wC.currentConfigContainerBO)
       
       Logger.info("componentOut_2 " + componentOut_2)
       
@@ -118,7 +117,7 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
           JsonKey.json -> JsonNames.CURRENT_CONFIG
       )
       
-      val jsonCurrentConfigOut_2: JsValue = wC.handleMessage(jsonCurrentConfigIn_2, wC.currentConfig)
+      val jsonCurrentConfigOut_2: JsValue = wC.handleMessage(jsonCurrentConfigIn_2, wC.currentConfigContainerBO)
       
       Logger.info(this.getClass.getSimpleName + ": currentConfigIn " + jsonCurrentConfigIn_2)
       Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + jsonCurrentConfigOut_2)
@@ -138,7 +137,7 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
       )
       Logger.info("componentIn_3 " + componentIn_3)
       
-      val componentOut_3: JsValue = wC.handleMessage(componentIn_3, wC.currentConfig)
+      val componentOut_3: JsValue = wC.handleMessage(componentIn_3, wC.currentConfigContainerBO)
       
       Logger.info("componentOut_3 " + componentOut_3)
       
@@ -154,7 +153,7 @@ class Scenario_002_3_Specs  extends Specification with MessageHandler with Befor
           JsonKey.json -> JsonNames.CURRENT_CONFIG
       )
       
-      val jsonCurrentConfigOut_3: JsValue = wC.handleMessage(jsonCurrentConfigIn_2, wC.currentConfig)
+      val jsonCurrentConfigOut_3: JsValue = wC.handleMessage(jsonCurrentConfigIn_2, wC.currentConfigContainerBO)
       
       Logger.info(this.getClass.getSimpleName + ": currentConfigIn " + jsonCurrentConfigIn_3)
       Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + jsonCurrentConfigOut_3)

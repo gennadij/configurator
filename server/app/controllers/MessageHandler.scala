@@ -1,12 +1,12 @@
 package controllers
 
 import controllers.genericConfig.GenericConfigurator
-import models.configLogic.CurrentConfig
-import org.shared.json.{JsonKey, JsonNames}
+import models.bo.currentConfig.CurrentConfigContainerBO
 import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut}
 import org.shared.json.error.{JsonErrorIn, JsonErrorParams}
 import org.shared.json.selectedComponent.JsonSelectedComponentIn
 import org.shared.json.step.JsonStepIn
+import org.shared.json.{JsonKey, JsonNames}
 import play.api.Logger
 import play.api.libs.json._
 
@@ -23,11 +23,14 @@ trait MessageHandler extends GenericConfigurator{
     * @param receivedMessage : JsValue, client: Config
     * @return JsValue
     */
-  def handleMessage(receivedMessage: JsValue, cC: CurrentConfig): JsValue = {
+  def handleMessage(receivedMessage: JsValue,
+//                    cC: CurrentConfig
+                   currentConfigContainerBO: CurrentConfigContainerBO
+                   ): JsValue = {
     (receivedMessage \ JsonKey.json).asOpt[String] match {
-      case Some(JsonNames.STEP) => step(receivedMessage, cC)
-      case Some(JsonNames.CURRENT_CONFIG) => currentConfig(receivedMessage, cC)
-      case Some(JsonNames.SELECTED_COMPONENT) => selectedComponent(receivedMessage, cC)
+      case Some(JsonNames.STEP) => step(receivedMessage, currentConfigContainerBO)
+      case Some(JsonNames.CURRENT_CONFIG) => currentConfig(receivedMessage, currentConfigContainerBO)
+      case Some(JsonNames.SELECTED_COMPONENT) => selectedComponent(receivedMessage, currentConfigContainerBO)
       case _ => jsonError(errorText = "Input JSON is not permitted")
     }
   }
@@ -38,13 +41,15 @@ trait MessageHandler extends GenericConfigurator{
     * @param receivedMessage : JsValue
     * @return JsValue
     */
-  private def step(receivedMessage: JsValue, currentConfig: CurrentConfig): JsValue = {
+  private def step(receivedMessage: JsValue,
+                  currentConfigContainerBO: CurrentConfigContainerBO
+                  ): JsValue = {
     val jsonStepIn: JsResult[JsonStepIn] = Json.fromJson[JsonStepIn](receivedMessage)
     jsonStepIn match {
       case jSIn: JsSuccess[JsonStepIn] =>
         jSIn.get.params match {
-          case Some(_) =>Json.toJson(startConfig(jSIn.get, currentConfig))
-          case None => Json.toJson(getNextStep(currentConfig))
+          case Some(_) =>Json.toJson(startConfig(jSIn.get, currentConfigContainerBO))
+          case None => Json.toJson(getNextStep(currentConfigContainerBO))
         }
       case e: JsError => jsonError(JsonNames.STEP, e)
     }
@@ -56,13 +61,13 @@ trait MessageHandler extends GenericConfigurator{
     * @param receivedMessage: JsValue
     * @return JsValue
     */
-  private def currentConfig(receivedMessage: JsValue, cC: CurrentConfig): JsValue = {
+  private def currentConfig(receivedMessage: JsValue, currentConfigContainerBO: CurrentConfigContainerBO): JsValue = {
     val jsonCurrentConfigIn: JsResult[JsonCurrentConfigIn] = Json.fromJson[JsonCurrentConfigIn](receivedMessage)
     jsonCurrentConfigIn match {
       case s: JsSuccess[JsonCurrentConfigIn] => s
       case e: JsError => Logger.error("Errors -> " + JsonNames.CURRENT_CONFIG + ": " + JsError.toJson(e).toString())
     }
-    val jsonCurrentConfigOut: JsonCurrentConfigOut = currentConfig(jsonCurrentConfigIn.get, cC)
+    val jsonCurrentConfigOut: JsonCurrentConfigOut = currentConfig(jsonCurrentConfigIn.get, currentConfigContainerBO)
     Json.toJson(jsonCurrentConfigOut)
   }
 
@@ -72,10 +77,10 @@ trait MessageHandler extends GenericConfigurator{
     * @param receivedMessage: JsValue
     * @return JsValue
     */
-  def selectedComponent(receivedMessage: JsValue, currentConfig: CurrentConfig): JsValue = {
+  def selectedComponent(receivedMessage: JsValue, currentConfigContainerBO: CurrentConfigContainerBO): JsValue = {
     val jsonComponentIn: JsResult[JsonSelectedComponentIn] = Json.fromJson[JsonSelectedComponentIn](receivedMessage)
     jsonComponentIn match {
-      case _: JsSuccess[JsonSelectedComponentIn] => Json.toJson(selectedComponent(jsonComponentIn.get, currentConfig))
+      case _: JsSuccess[JsonSelectedComponentIn] => Json.toJson(selectedComponent(jsonComponentIn.get, currentConfigContainerBO))
       case e: JsError => jsonError(JsonNames.SELECTED_COMPONENT, e)
     }
   }
