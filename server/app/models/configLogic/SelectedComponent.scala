@@ -1,6 +1,5 @@
 package models.configLogic
 
-import models.bo._
 import models.bo.component.{ComponentBO, SelectedComponentContainerBO}
 import models.bo.step.{StepContainerBO, StepCurrentConfigBO}
 import models.bo.warning.WarningBO
@@ -138,14 +137,8 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
   private[configLogic] def verifyStatusSelectedComponent(
                                                           selectedComponentContainerBO: SelectedComponentContainerBO, currentConfig: CurrentConfig
                                                         ): SelectedComponentContainerBO = {
-//    selectedComponentBO.status.get.excludedDependencyInternal.get match {
     selectedComponentContainerBO.warning.getOrElse(WarningBO()).excludedComponentInternal match {
-//      case ExcludedComponentInternal() =>
         case Some(_) =>
-
-//          val status = selectedComponentContainerBO.status.get.copy(selectedComponent = Some(NotAllowedComponent()))
-
-//          selectedComponentContainerBO.copy(status = Some(status))
           val selectedComponent : ComponentBO = selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(false))
           selectedComponentContainerBO.copy(selectedComponent = Some(selectedComponent))
         case None =>
@@ -160,67 +153,18 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
 
             val componentBO: ComponentBO =
               selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(false))
-//            val status = selectedComponentContainerBO.status.get.copy(selectedComponent = Some(RemovedComponent()))
-
-//            selectedComponentContainerBO.copy(status = Some(status))
             selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
 
           }else {
             val componentBO: ComponentBO =
               selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(true))
+
+            //TODO Die Komponente soll nach allen Pruefungen hinzugefügt werden.
             currentConfig.addComponent(
               selectedComponentContainerBO.stepCurrentConfig.get, selectedComponentContainerBO.selectedComponent.get)
 
             selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
-
-
-//            selectedComponentContainerBO.status.get.selectionCriterion.get match {
-//              case RequireComponent() =>
-//
-//                val status = selectedComponentContainerBO.status.get.copy(selectedComponent = Some(AddedComponent()))
-//
-//                val component =
-//                  selectedComponentContainerBO.copy(status = Some(status))
-//
-//                currentConfig.addComponent(selectedComponentContainerBO.stepCurrentConfig.get, component.selectedComponent.get)
-//
-//                component
-//              case RequireNextStep() =>
-//
-//                val status = selectedComponentContainerBO.status.get.copy(selectedComponent = Some(AddedComponent()))
-//
-//                val component =
-//                  selectedComponentContainerBO.copy(status = Some(status))
-//
-//                currentConfig.addComponent(selectedComponentContainerBO.stepCurrentConfig.get, component.selectedComponent.get)
-//
-//                component
-//
-//              case AllowNextComponent() =>
-//
-//                val status = selectedComponentContainerBO.status.get.copy(selectedComponent = Some(AddedComponent()))
-//
-//                val component =
-//                  selectedComponentContainerBO.copy(status = Some(status))
-//
-//                currentConfig.addComponent(selectedComponentContainerBO.stepCurrentConfig.get, component.selectedComponent.get)
-//
-//                component
-//
-//              case NotAllowNextComponent() =>
-//
-//                val status = selectedComponentContainerBO.status.get.copy(selectedComponent = Some(NotAllowedComponent()))
-//
-//                selectedComponentContainerBO.copy(status = Some(status))
-//              case ErrorSelectionCriterion() =>
-//                val status = selectedComponentContainerBO.status.get.copy(selectionCriterion = Some(ErrorSelectionCriterion()),
-//                  selectedComponent = Some(ErrorSelectedComponent()))
-//
-//                selectedComponentContainerBO.copy(status = Some(status))
-//            }
           }
-//      case NotExcludedComponentInternal() =>
-
     }
   }
 
@@ -251,7 +195,9 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
       selectedComponentContainerBO.selectedComponent.get.excludeDependenciesOut.get map (_.inId)
 
 
-    val unselectedComponentIds: List[String] = (selectedComponentContainerBO.currentStep.get.componentsForSelection.get.toList map(_.componentId.get)) filterNot (c => { //TODO verbessern
+    val unselectedComponentIds: List[String] = (
+      selectedComponentContainerBO.currentStep.get.componentsForSelection.get.toList map(_.componentId.get)
+      ) filterNot (c => {
       (previousSelectedComponentsInCurrentConfigIds :::
         fromCurrentConfigExcludedComponentIds.toList.+:(selectedComponentId)).contains(c)
     })
@@ -269,13 +215,6 @@ class SelectedComponent(selectedComponentBO: SelectedComponentContainerBO, curre
         }
         case None => unselectedComponentIds.filter(uC => {fromSelectedComponentExcludedComponentIds.contains(uC)})
       }
-
-//    val unselectedExcludedComponentsFromSelectedComponent: List[String] =
-//      selectedComponentContainerBO.status.get.excludedDependencyInternal.get match {
-//      case ExcludedComponentInternal() => List()
-//      case NotExcludedComponentInternal() => unselectedComponentIds.filter(uC => {fromSelectedComponentExcludedComponentIds.contains(uC)})
-//    }
-
 
     val unselectedExcludedComponents: List[String] =
       unselectedExcludedComponentsFromCurrentConfigComponentsIds ::: unselectedExcludedComponentsFromSelectedComponent

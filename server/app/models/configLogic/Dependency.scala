@@ -30,14 +30,19 @@ trait Dependency {
 
         val internComponents: List[String] = selectedComponentContainerBO.currentStep.get.componentsForSelection.get.toList map (_.componentId.get)
 
+        //aus excludeComponentes die excludeComponentsExternal entfernen (ausfiltern)
         val excludeComponentsIdExternal: List[String] =
           excludeComponentsId map (eCsId => internComponents contains  eCsId) zip excludeComponentsId filterNot (_._1) map (_._2)
 
         if (excludeComponentsIdExternal.nonEmpty) {
 
+          //hole ueber componentId excludeComponentsExternal aus DB
           val excludeComponents: List[SelectedComponentContainerBO] = {
             excludeComponentsIdExternal map Persistence.getSelectedComponent
           }
+
+          //TODO SelectedComponente darf nicht in die aktuelle Konfiguration hinzugefuegt werden.
+          //TODO selectedComponent als componente, die nicht in CurrentConfig hinzugefuegt werden darf, merken.
 
 //          val nameToShowExcludeComponents: List[String] = excludeComponents map (_.selectedComponent.get.nameToShow.get)
 
@@ -56,6 +61,7 @@ trait Dependency {
           selectedComponentContainerBO.copy(warning = Some(warningBO))
           //TODO Die Komponente muss aus der CurentConfig entfernt werden
         } else {
+          //es gab keine excludeDependencies External
           selectedComponentContainerBO
         }
     }
