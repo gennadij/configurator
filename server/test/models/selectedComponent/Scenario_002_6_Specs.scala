@@ -53,7 +53,7 @@ class Scenario_002_6_Specs extends Specification with MessageHandler with Before
 //      (componentOut_1 \ "result" \ "status" \JsonKey.excludeDependencyInternal \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
 //      (componentOut_1 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
       
-      val jsonCurrentConfigOut_1: JsValue = CommonFunction.currentCongig(wC)
+      val jsonCurrentConfigOut_1: JsValue = CommonFunction.currentConfig(wC)
       
       val result_1 = (jsonCurrentConfigOut_1 \ "result")
       (jsonCurrentConfigOut_1 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)

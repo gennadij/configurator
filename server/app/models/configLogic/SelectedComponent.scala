@@ -186,14 +186,18 @@ class SelectedComponent (
           }else {
             val componentBO: SelectedComponentBO =
               selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(true))
-            //TODO addComponent to CurrentConfig
 
-//            addComponent(
-//              currentConfigContainerBO,
-//              selectedComponentContainerBO.stepCurrentConfig.get,
-//              selectedComponentContainerBO.selectedComponent.get)
+            selectedComponentContainerBO.addedComponentCurrentConfig match {
+              case Some(addedComponentCurrentConfig) =>
+                if(addedComponentCurrentConfig)
+                  selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
+                else
+                  selectedComponentContainerBO.copy(addedComponentCurrentConfig = Some(false), selectedComponent = Some(componentBO))
+              case None =>
+                selectedComponentContainerBO.copy(addedComponentCurrentConfig = Some(true), selectedComponent = Some(componentBO))
+            }
 
-            selectedComponentContainerBO.copy(addedComponentCurrentConfig = Some(true), selectedComponent = Some(componentBO))
+
           }
     }
   }

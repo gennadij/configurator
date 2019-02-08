@@ -76,7 +76,7 @@ class FinalStepSpecs extends Specification with MessageHandler with BeforeAfterA
 
       Logger.info(this.getClass.getSimpleName + ": =================================================")
       
-      Logger.info(this.getClass.getSimpleName + ": currentConfig " + CommonFunction.currentCongig(wC))
+      Logger.info(this.getClass.getSimpleName + ": currentConfig " + CommonFunction.currentConfig(wC))
       
       val jsonNextStepIn_2 : JsValue = Json.obj(
           JsonKey.json -> JsonNames.STEP

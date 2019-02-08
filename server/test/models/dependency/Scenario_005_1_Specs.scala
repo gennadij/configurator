@@ -4,12 +4,15 @@ import controllers.MessageHandler
 import controllers.websocket.WebClient
 import models.bo.types.Auto
 import org.junit.runner.RunWith
+import org.shared.info.{RequireComponent, RequireNextStep}
+import org.shared.json.step.JsonStepOut
 import org.shared.json.{JsonKey, JsonNames}
+import org.shared.warning.ExcludedComponentExternal
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
 import play.api.Logger
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsObject, JsValue, Json}
 import util.CommonFunction
 
 @RunWith(classOf[JUnitRunner])
@@ -42,20 +45,19 @@ class Scenario_005_1_Specs extends Specification with MessageHandler with Before
 
       val startConfigOut_S1 = CommonFunction.firstStep(wC, configUrl)
 
-//      val sCOut = Json.fromJson[JsonStartConfigOut](startConfigOut_S1)
-//
-      val componentIdC11: String = ???
-      // sCOut.get.result.step.components.filter(comp => comp.nameToShow == c11)
-//        .map(_.componentId).head
+      val startConfig = Json.fromJson[JsonStepOut](startConfigOut_S1)
+
+      val componentIdC11: String = startConfig.get.result.componentsForSelection.get.filter(comp => comp.nameToShow == "C11")
+        .map(_.componentId).head
 
       CommonFunction.selectComponent(wC, componentIdC11)
 
-//      CommonFunction.currentCongig(wC)
+      CommonFunction.currentConfig(wC)
 
       val jsonNextStepOut_S2 = CommonFunction.nextStep(wC)
 
       val componentId21: String =
-        (jsonNextStepOut_S2 \ JsonKey.result \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get
+        (jsonNextStepOut_S2 \ JsonKey.result \ JsonKey.componentsForSelection).asOpt[List[JsValue]].get
         .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == c21)
         .map(comp => {(comp \ JsonKey.componentId).asOpt[String].get}).head
 
@@ -75,13 +77,13 @@ class Scenario_005_1_Specs extends Specification with MessageHandler with Before
       val r_1 = componentOut_21 \ JsonKey.result \ JsonKey.status
 
       (componentOut_21 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
-//      (r_1 \ JsonKey.componentType \ JsonKey.status).asOpt[String] === Some(DefaultComponent().status)
-//      (r_1 \ JsonKey.selectedComponent \ JsonKey.status).asOpt[String] === Some(AddedComponent().status)
-//      (r_1 \ JsonKey.selectionCriterion \ JsonKey.status).asOpt[String] === Some(RequireNextStep().status)
-//      (r_1 \ JsonKey.excludeDependencyInternal \ JsonKey.status).asOpt[String] === Some(NotExcludedComponentInternal().status)
-//      (r_1 \ JsonKey.common \ JsonKey.status).asOpt[String] === Some(Success().status)
+      (componentOut_21 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === RequireNextStep().name
+      (componentOut_21 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
+      (componentOut_21 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === true
+      (componentOut_21 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === None
+      (componentOut_21 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
 
-      val jsonNextStepComponents_S3 = CommonFunction.nextStep(wC) \ JsonKey.result \ JsonKey.step \ JsonKey.components
+      val jsonNextStepComponents_S3 = CommonFunction.nextStep(wC) \ JsonKey.result \ JsonKey.componentsForSelection
 
       val componentId33: String = jsonNextStepComponents_S3.asOpt[List[JsValue]].get
         .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == c33)
@@ -89,7 +91,7 @@ class Scenario_005_1_Specs extends Specification with MessageHandler with Before
 
       CommonFunction.selectComponent(wC, componentId33)
 
-      val jsonNextStepComponents_S5 = CommonFunction.nextStep(wC) \ JsonKey.result \ JsonKey.step \ JsonKey.components
+      val jsonNextStepComponents_S5 = CommonFunction.nextStep(wC) \ JsonKey.result \ JsonKey.componentsForSelection
 
       val componentId51: String = jsonNextStepComponents_S5.asOpt[List[JsValue]].get
         .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == c51)
@@ -110,15 +112,17 @@ class Scenario_005_1_Specs extends Specification with MessageHandler with Before
 
       val r_2 = componentOutResult4_21 \ JsonKey.status
       (componentOut4_21 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
-//      (r_2 \ JsonKey.componentType \ JsonKey.status).asOpt[String] === Some(FinalComponent().status)
-//      (r_2 \ JsonKey.selectedComponent \ JsonKey.status).asOpt[String] === Some(AddedComponent().status)
-//      (r_2 \ JsonKey.selectionCriterion \ JsonKey.status).asOpt[String] === Some(RequireComponent().status)
-//      (r_2 \ JsonKey.excludeDependencyInternal \ JsonKey.status).asOpt[String] === Some(NotExcludedComponentInternal().status)
-//      (r_2 \ JsonKey.excludeDependencyExternal \ JsonKey.message).asOpt[String] ===
-//        Some(ExcludedComponentExternal(List("C21"), List()).message)
-//      (r_2 \ JsonKey.common \ JsonKey.status).asOpt[String] === Some(Success().status)
+      val result_21 = componentOut4_21 \ JsonKey.result
+      (result_21 \ JsonKey.excludeDependenciesOut).asOpt[List[JsValue]].get.size === 0
+      (result_21 \ JsonKey.excludeDependenciesIn).asOpt[List[JsValue]].get.size === 1
+      (((result_21 \ JsonKey.excludeDependenciesIn)(0)) \ JsonKey.nameToShow).asOpt[String].get === "(C21) ---> (C51)"
+      (result_21 \ JsonKey.lastComponent ).asOpt[Boolean].get === true
+      (result_21 \ JsonKey.addedComponent ).asOpt[Boolean].get === true //TODO muss false sein
+      (result_21 \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === RequireComponent().name
+      (result_21 \ JsonKey.warning \ JsonKey.excludedComponentExternal \ JsonKey.name).asOpt[String] === Some(ExcludedComponentExternal().name)
+      (result_21 \ JsonKey.errors ).asOpt[JsObject] === None
 
-      val currentConfig = CommonFunction.currentCongig(wC)
+      val currentConfig = CommonFunction.currentConfig(wC)
 
       Logger.info(this.getClass.getSimpleName + ": currentConfigOut " + currentConfig)
 

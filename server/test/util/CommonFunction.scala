@@ -45,7 +45,7 @@ object CommonFunction {
     componentOut
   }
   
-  def currentCongig(wC: WebClient): JsValue = {
+  def currentConfig(wC: WebClient): JsValue = {
     val jsonCurrentConfigIn : JsValue = Json.obj(
         JsonKey.json -> JsonNames.CURRENT_CONFIG
     )
