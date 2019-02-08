@@ -85,21 +85,4 @@ object StatusWindow {
       case None => ""
     }
   }
-
-//  def drawNextStepStatusWindow(jsonStepOutResult: JsonStepResult) :JQuery = {
-//
-//    jQuery(HtmlElementText.statusJQuery).remove()
-//
-//    val jQueryDiv = jQuery(HtmlElementText.statusDiv)
-//
-//    jQueryDiv.attr(HtmlElementText.id, HtmlElementText.statusHtml)
-//    jQueryDiv.attr(HtmlElementText.clazz, HtmlElementText.statusHtml)
-//
-//    val htmlStatus = "TODO Error, Warning, Info"
-////      jsonStepStatus.nextStep.get.status +" , " + jsonStepStatus.common.get.status
-//
-//    jQueryDiv.append(htmlStatus)
-//
-//    jQuery(HtmlElementText.header).append(jQueryDiv)
-//  }
 }
