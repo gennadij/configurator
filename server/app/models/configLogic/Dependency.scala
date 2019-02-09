@@ -1,6 +1,6 @@
 package models.configLogic
 
-import models.bo.component.SelectedComponentContainerBO
+import models.bo.component.{SelectedComponentBO, SelectedComponentContainerBO}
 import models.bo.warning.WarningBO
 import models.persistence.Persistence
 import org.shared.warning.{ExcludedComponentExternal, ExcludedComponentInternal}
@@ -41,9 +41,8 @@ trait Dependency {
             excludeComponentsIdExternal map Persistence.getSelectedComponent
           }
 
-          //TODO SelectedComponente darf nicht in die aktuelle Konfiguration hinzugefuegt werden.
-          //TODO selectedComponent als componente, die nicht in CurrentConfig hinzugefuegt werden darf, merken.
-
+          //TODO erkennen wenn selectedComponent von der Komponente die noch nicht ausgewählt war ausgeschlossen
+          //TODO Scenario_005_2
 
 //          val nameToShowExcludeComponents: List[String] = excludeComponents map (_.selectedComponent.get.nameToShow.get)
 
@@ -57,10 +56,10 @@ trait Dependency {
           val warningBO: WarningBO  = WarningBO(
             excludedComponentExternal = Some(ExcludedComponentExternal())
           )
-//            selectedComponentContainerBO.warning.get.copy(excludedComponentExternal = Some(ExcludedComponentExternal()))
 
-          selectedComponentContainerBO.copy(addedComponentCurrentConfig = Some(false), warning = Some(warningBO))
-          //TODO Die Komponente muss aus der CurentConfig entfernt werden
+          val selectedComponent: SelectedComponentBO = selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(false))
+
+          selectedComponentContainerBO.copy(selectedComponent = Some(selectedComponent), warning = Some(warningBO))
         } else {
           //es gab keine excludeDependencies External
           selectedComponentContainerBO

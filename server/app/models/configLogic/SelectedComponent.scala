@@ -76,19 +76,26 @@ class SelectedComponent (
             val sCExtendedOFStatusSelectedComponent =
               verifyStatusSelectedComponent(sCExtendedOfStatusSelectionCriterion, currentConfigContainerBO)
 
-            sCExtendedOFStatusSelectedComponent.addedComponentCurrentConfig match {
-              case Some(isAddedComponent) =>
-                if(isAddedComponent) {
-                              addComponent(
-                                currentConfigContainerBO,
-                                sCExtendedOFStatusSelectedComponent.stepCurrentConfig.get,
-                                sCExtendedOFStatusSelectedComponent.selectedComponent.get)
-                  sCExtendedOFStatusSelectedComponent
-                }else{
-                  removeComponent(currentConfigContainerBO, sCExtendedOFStatusSelectedComponent)
-                  sCExtendedOFStatusSelectedComponent
-                }
-              case None => sCExtendedOFStatusSelectedComponent
+            //TODO
+            /*
+            adddedComponent wird untersucht
+            wenn true wird die Komponente hinzugefuegt
+            wenn false wird geprüft ob der zu löschender Komponente in der CurrentConfig exestiert
+              wenn Ja wird entfernt
+              wenn Nein nichts gemacht
+             */
+            if(sCExtendedOFStatusSelectedComponent.selectedComponent.get.addedComponent.get) {
+
+              addComponent(
+                currentConfigContainerBO,
+                sCExtendedOFStatusSelectedComponent.stepCurrentConfig.get,
+                sCExtendedOFStatusSelectedComponent.selectedComponent.get)
+
+              sCExtendedOFStatusSelectedComponent
+
+            }else{
+              removeComponent(currentConfigContainerBO, sCExtendedOFStatusSelectedComponent)
+              sCExtendedOFStatusSelectedComponent
             }
           case _ => sCExtendedOfCurrentAndNextStep
         }
@@ -174,30 +181,29 @@ class SelectedComponent (
           if(isRepeatedSelektionOfComponent) {
             //Die Komponente muss aus der CurrentConfig gelöscht werden
             // Wiederholte Auswahl der Komponente
-
-            //TODO removeComponent
-//            removeComponent(currentConfigContainerBO, selectedComponentContainerBO)
-
             val componentBO: SelectedComponentBO =
               selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(false))
 
-            selectedComponentContainerBO.copy(addedComponentCurrentConfig = Some(false), selectedComponent = Some(componentBO))
+            selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
 
           }else {
-            val componentBO: SelectedComponentBO =
-              selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(true))
 
-            selectedComponentContainerBO.addedComponentCurrentConfig match {
-              case Some(addedComponentCurrentConfig) =>
-                if(addedComponentCurrentConfig)
+            selectedComponentContainerBO.selectedComponent.get.addedComponent match {
+              case Some(addedComponent) =>
+                if(addedComponent) {
+                  val componentBO: SelectedComponentBO =
+                    selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(true))
                   selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
-                else
-                  selectedComponentContainerBO.copy(addedComponentCurrentConfig = Some(false), selectedComponent = Some(componentBO))
+                }else{
+                  val componentBO: SelectedComponentBO =
+                    selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(false))
+                  selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
+                }
               case None =>
-                selectedComponentContainerBO.copy(addedComponentCurrentConfig = Some(true), selectedComponent = Some(componentBO))
+                val componentBO: SelectedComponentBO =
+                  selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(true))
+                selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
             }
-
-
           }
     }
   }

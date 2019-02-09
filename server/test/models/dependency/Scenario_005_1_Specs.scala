@@ -110,14 +110,13 @@ class Scenario_005_1_Specs extends Specification with MessageHandler with Before
       ((componentOutResult4_21 \ JsonKey.excludeDependenciesIn)(0) \ JsonKey.nameToShow).asOpt[String].get === "(C21) ---> (C51)"
       ((componentOutResult4_21 \ JsonKey.excludeDependenciesIn)(0) \ JsonKey.strategyOfDependencyResolver).asOpt[String].get === Auto.value
 
-      val r_2 = componentOutResult4_21 \ JsonKey.status
       (componentOut4_21 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
       val result_21 = componentOut4_21 \ JsonKey.result
       (result_21 \ JsonKey.excludeDependenciesOut).asOpt[List[JsValue]].get.size === 0
       (result_21 \ JsonKey.excludeDependenciesIn).asOpt[List[JsValue]].get.size === 1
       (((result_21 \ JsonKey.excludeDependenciesIn)(0)) \ JsonKey.nameToShow).asOpt[String].get === "(C21) ---> (C51)"
       (result_21 \ JsonKey.lastComponent ).asOpt[Boolean].get === true
-      (result_21 \ JsonKey.addedComponent ).asOpt[Boolean].get === true //TODO muss false sein
+      (result_21 \ JsonKey.addedComponent ).asOpt[Boolean].get === false
       (result_21 \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === RequireComponent().name
       (result_21 \ JsonKey.warning \ JsonKey.excludedComponentExternal \ JsonKey.name).asOpt[String] === Some(ExcludedComponentExternal().name)
       (result_21 \ JsonKey.errors ).asOpt[JsObject] === None
