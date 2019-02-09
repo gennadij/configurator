@@ -213,4 +213,16 @@ trait CurrentConfig {
 
     step.get.components
   }
+
+  def getAllComponents(currentConfigContainerBO: CurrentConfigContainerBO): List[String] = {
+    getAllComponentsRecursive(currentConfigContainerBO.currentConfig.get, List())
+  }
+
+  private def getAllComponentsRecursive(stepCurrentConfigBO: StepCurrentConfigBO, allComponentsId: List[String]): List[String] = {
+    stepCurrentConfigBO.nextStep match {
+      case Some(nextStep) =>
+        getAllComponentsRecursive(nextStep, allComponentsId ::: stepCurrentConfigBO.components.map(_.componentId.get))
+      case None => allComponentsId ::: stepCurrentConfigBO.components.map(_.componentId.get)
+    }
+  }
 }

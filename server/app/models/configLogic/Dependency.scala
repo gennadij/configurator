@@ -1,6 +1,7 @@
 package models.configLogic
 
 import models.bo.component.{SelectedComponentBO, SelectedComponentContainerBO}
+import models.bo.currentConfig.CurrentConfigContainerBO
 import models.bo.warning.WarningBO
 import models.persistence.Persistence
 import org.shared.warning.{ExcludedComponentExternal, ExcludedComponentInternal}
@@ -10,7 +11,7 @@ import org.shared.warning.{ExcludedComponentExternal, ExcludedComponentInternal}
   *
   * Created by Gennadi Heimann 03.01.2019
   */
-trait Dependency {
+trait Dependency extends CurrentConfig {
 
   /**
     * @author Gennadi Heimann
@@ -19,7 +20,8 @@ trait Dependency {
     * @return SelectedComponentBO
     */
   private[configLogic] def verifyExcludeDependencyInForExternal(
-                                                                 selectedComponentContainerBO: SelectedComponentContainerBO
+                                                                 selectedComponentContainerBO: SelectedComponentContainerBO,
+                                                                 currentConfigContainerBO: CurrentConfigContainerBO
                                                                ): SelectedComponentContainerBO = {
     selectedComponentContainerBO.selectedComponent.get.excludeDependenciesIn.get match {
       case List() => selectedComponentContainerBO
@@ -28,7 +30,7 @@ trait Dependency {
         val excludeComponentsId: List[String] =
           dependencyIn map (_.outId)
 
-        val internComponents: List[String] = selectedComponentContainerBO.currentStep.get.componentsForSelection.get.toList map (_.componentId.get)
+        val internComponents: List[String] = selectedComponentContainerBO.currentStep.get.componentsForSelection.get map (_.componentId.get)
 
         //aus excludeComponentes die excludeComponentsExternal entfernen (ausfiltern)
         val excludeComponentsIdExternal: List[String] =
@@ -41,6 +43,22 @@ trait Dependency {
             excludeComponentsIdExternal map Persistence.getSelectedComponent
           }
 
+          val allSelectedComponents = getAllComponents(currentConfigContainerBO)
+
+          allSelectedComponents.map(allCId => excludeComponentsIdExternal.contains(allCId)).filter(_ == true) match {
+            case Nil =>
+              println("excludeComponent ist nicht von dem SelectedComponents")
+              selectedComponentContainerBO
+            case _ =>
+              println("excludeComponent ist aus der SelectedComponents " + excludeComponents.head.selectedComponent.get.nameToShow)
+              val warningBO: WarningBO  = WarningBO(
+                excludedComponentExternal = Some(ExcludedComponentExternal())
+              )
+
+              val selectedComponent: SelectedComponentBO = selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(false))
+
+              selectedComponentContainerBO.copy(selectedComponent = Some(selectedComponent), warning = Some(warningBO))
+          }
           //TODO erkennen wenn selectedComponent von der Komponente die noch nicht ausgewählt war ausgeschlossen
           //TODO Scenario_005_2
 
@@ -53,13 +71,7 @@ trait Dependency {
 //                List()))
 //            )
 
-          val warningBO: WarningBO  = WarningBO(
-            excludedComponentExternal = Some(ExcludedComponentExternal())
-          )
 
-          val selectedComponent: SelectedComponentBO = selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(false))
-
-          selectedComponentContainerBO.copy(selectedComponent = Some(selectedComponent), warning = Some(warningBO))
         } else {
           //es gab keine excludeDependencies External
           selectedComponentContainerBO

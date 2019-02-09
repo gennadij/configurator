@@ -64,7 +64,7 @@ class SelectedComponent (
 
             //Status Exclude Dependency for external Components
             val sCExtendedOfStatusExcludeDependencyExternal =
-              verifyExcludeDependencyInForExternal(sCExtendedOfStatusExcludeDependencyInternal)
+              verifyExcludeDependencyInForExternal(sCExtendedOfStatusExcludeDependencyInternal, currentConfigContainerBO)
 
             val sCExtendedOfPossibleComponentIdsToSelect =
               getPossibleComponentToSelect(sCExtendedOfStatusExcludeDependencyExternal)
@@ -76,14 +76,6 @@ class SelectedComponent (
             val sCExtendedOFStatusSelectedComponent =
               verifyStatusSelectedComponent(sCExtendedOfStatusSelectionCriterion, currentConfigContainerBO)
 
-            //TODO
-            /*
-            adddedComponent wird untersucht
-            wenn true wird die Komponente hinzugefuegt
-            wenn false wird geprüft ob der zu löschender Komponente in der CurrentConfig exestiert
-              wenn Ja wird entfernt
-              wenn Nein nichts gemacht
-             */
             if(sCExtendedOFStatusSelectedComponent.selectedComponent.get.addedComponent.get) {
 
               addComponent(
