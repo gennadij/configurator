@@ -1,7 +1,7 @@
 package models.configLogic
 
 import models.bo.component.{SelectedComponentBO, SelectedComponentContainerBO}
-import models.bo.currentConfig.{CurrentConfigContainerBO, StepCurrentConfigBO}
+import models.bo.currentConfig.{CurrentConfigContainerBO, CurrentConfigStepBO}
 import models.bo.step.StepContainerBO
 import models.bo.warning.WarningBO
 import models.persistence.Persistence
@@ -55,26 +55,28 @@ class SelectedComponent (
               getCurrentStepFromCurrentConfig(sCExtendedOfCurrentAndNextStep, currentConfigContainerBO
               )
 
-            // Status Component Typ
-            val sCExtendedOfStatusComponentTyp = verifyStatusComponentType(sCExtendedOfCurrentConfigStep)
+            // Is selected component final component
+            val sCExtendedOfStatusComponentTyp = isSelectedComponentFinalComponent(sCExtendedOfCurrentConfigStep)
 
-            //Status Exclude Dependency for internal Components
+            //Warning Exclude Dependency for internal Components
             val sCExtendedOfStatusExcludeDependencyInternal =
               verifyExcludeDependencyInForInternal(sCExtendedOfStatusComponentTyp)
 
-            //Status Exclude Dependency for external Components
+            //Warning Exclude Dependency for external Components
             val sCExtendedOfStatusExcludeDependencyExternal =
               verifyExcludeDependencyInForExternal(sCExtendedOfStatusExcludeDependencyInternal, currentConfigContainerBO)
+
+
 
             val sCExtendedOfPossibleComponentIdsToSelect =
               getPossibleComponentToSelect(sCExtendedOfStatusExcludeDependencyExternal)
 
             //Status Selection Criterion
-            val sCExtendedOfStatusSelectionCriterion = verifySelectionCriterion(sCExtendedOfPossibleComponentIdsToSelect)
+            val sCExtendedOfInfoSelectionCriterion = verifySelectionCriterion(sCExtendedOfPossibleComponentIdsToSelect)
 
-            // Status Selected Component
+            // Is selected componen added to CurrentConfig
             val sCExtendedOFStatusSelectedComponent =
-              verifyStatusSelectedComponent(sCExtendedOfStatusSelectionCriterion, currentConfigContainerBO)
+              isSelectedComponentAddedComponent(sCExtendedOfInfoSelectionCriterion, currentConfigContainerBO)
 
             if(sCExtendedOFStatusSelectedComponent.selectedComponent.get.addedComponent.get) {
 
@@ -123,7 +125,7 @@ class SelectedComponent (
                                                currentConfigContainerBO: CurrentConfigContainerBO
                                              ): SelectedComponentContainerBO = {
 
-    val currentStepCurrentConfig: Option[StepCurrentConfigBO] =
+    val currentStepCurrentConfig: Option[CurrentConfigStepBO] =
       getCurrentStep(
         currentConfigContainerBO,
         selectedComponentBO.currentStep.get.step.get.stepId.get)
@@ -137,7 +139,7 @@ class SelectedComponent (
     * @param selectedComponentContainerBO : SelectedComponentBO
     * @return SelectedComponentBO
     */
-  private def verifyStatusComponentType(
+  private def isSelectedComponentFinalComponent(
                                          selectedComponentContainerBO: SelectedComponentContainerBO
                                        ): SelectedComponentContainerBO = {
     selectedComponentContainerBO.nextStep.get.step match {
@@ -156,7 +158,7 @@ class SelectedComponent (
     * @param selectedComponentContainerBO : SelectedComponentBO
     * @return SelectedComponentBO
     */
-  private[configLogic] def verifyStatusSelectedComponent(
+  private[configLogic] def isSelectedComponentAddedComponent(
                                                           selectedComponentContainerBO: SelectedComponentContainerBO,
                                                         currentConfigContainerBO: CurrentConfigContainerBO
                                                         ): SelectedComponentContainerBO = {

@@ -6,5 +6,5 @@ package models.bo.currentConfig
   * Created by Gennadi Heimann 08.02.2019
   */
 case class CurrentConfigContainerBO(
-                                  var currentConfig: Option[StepCurrentConfigBO] = None
+                                  var currentConfig: Option[CurrentConfigStepBO] = None
                                   )

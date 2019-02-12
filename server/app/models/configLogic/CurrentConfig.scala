@@ -1,7 +1,7 @@
 package models.configLogic
 
 import models.bo.component.{SelectedComponentBO, SelectedComponentContainerBO}
-import models.bo.currentConfig.{CurrentConfigContainerBO, StepCurrentConfigBO}
+import models.bo.currentConfig.{CurrentConfigContainerBO, CurrentConfigStepBO}
 import play.api.Logger
 
 /**
@@ -23,10 +23,10 @@ trait CurrentConfig {
    */
   def addComponent(
                     currentConfigContainerBO: CurrentConfigContainerBO,
-                    step: StepCurrentConfigBO,
+                    step: CurrentConfigStepBO,
                     component: SelectedComponentBO): Unit = {
     
-    val currentStep: Option[StepCurrentConfigBO] =
+    val currentStep: Option[CurrentConfigStepBO] =
       getStep(currentConfigContainerBO, step.stepId)
     
     val currentComponents: List[SelectedComponentBO] = currentStep.get.components
@@ -43,7 +43,7 @@ trait CurrentConfig {
    * 
    * @return Unit
    */
-  def addFirstStep(currentConfigContainerBO: CurrentConfigContainerBO, firstStep: StepCurrentConfigBO): Unit = {
+  def addFirstStep(currentConfigContainerBO: CurrentConfigContainerBO, firstStep: CurrentConfigStepBO): Unit = {
     currentConfigContainerBO.currentConfig = Some(firstStep)
   }
   
@@ -57,9 +57,9 @@ trait CurrentConfig {
    * @return Unit
    */
   def addStep(
-             currentConfigContainerBO: CurrentConfigContainerBO,
-             currentStep: Option[StepCurrentConfigBO],
-             fatherStep: Option[StepCurrentConfigBO]): Unit = {
+               currentConfigContainerBO: CurrentConfigContainerBO,
+               currentStep: Option[CurrentConfigStepBO],
+               fatherStep: Option[CurrentConfigStepBO]): Unit = {
     fatherStep match {
       case Some(fS) => fS.nextStep = currentStep
       case None => currentConfigContainerBO.currentConfig = currentStep
@@ -77,7 +77,7 @@ trait CurrentConfig {
    */
   def getCurrentStep(
                       currentConfigContainerBO: CurrentConfigContainerBO, stepId: String
-                    ): Option[StepCurrentConfigBO] = {
+                    ): Option[CurrentConfigStepBO] = {
     getStep(currentConfigContainerBO, stepId)
   }
   
@@ -97,7 +97,7 @@ trait CurrentConfig {
    * 
    * @return StepCurrentConfig
    */
-  def getLastStep(currentConfigContainerBO: CurrentConfigContainerBO): StepCurrentConfigBO = {
+  def getLastStep(currentConfigContainerBO: CurrentConfigContainerBO): CurrentConfigStepBO = {
     getLastStepRecursive(currentConfigContainerBO.currentConfig.get)
   }
   
@@ -110,7 +110,7 @@ trait CurrentConfig {
    * 
    * @return StepCurrentConfig
    */
-  private def getLastStepRecursive(step: StepCurrentConfigBO): StepCurrentConfigBO = {
+  private def getLastStepRecursive(step: CurrentConfigStepBO): CurrentConfigStepBO = {
     
     step.nextStep match {
       case Some(s) => getLastStepRecursive(s)
@@ -128,7 +128,7 @@ trait CurrentConfig {
    * @return Option[StepCurrentConfig]
    */
   private def getStep(
-                       currentConfigContainerBO: CurrentConfigContainerBO, stepId: String): Option[StepCurrentConfigBO] = {
+                       currentConfigContainerBO: CurrentConfigContainerBO, stepId: String): Option[CurrentConfigStepBO] = {
     getStepRecursive(currentConfigContainerBO.currentConfig, stepId)
   }
   
@@ -141,7 +141,7 @@ trait CurrentConfig {
    * 
    * @return Option[StepCurrentConfig]
    */
-  private def getStepRecursive(stepA: Option[StepCurrentConfigBO], stepId: String): Option[StepCurrentConfigBO] = {
+  private def getStepRecursive(stepA: Option[CurrentConfigStepBO], stepId: String): Option[CurrentConfigStepBO] = {
     if(stepA.get.stepId == stepId){
       stepA
     }else{
@@ -172,7 +172,7 @@ trait CurrentConfig {
    * 
    * @return Unit
    */
-  private def getNextStep(step: Option[StepCurrentConfigBO]): Unit = {
+  private def getNextStep(step: Option[CurrentConfigStepBO]): Unit = {
     step.get.nextStep match {
       case Some(_) =>
         Logger.info(step.get.getClass.hashCode() + " -> " + step.get.stepId + " -> " + step.get.nameToShow)
@@ -190,22 +190,22 @@ trait CurrentConfig {
    * 
    * @version 0.0.2
    * 
-   * @param selectedComponentBO: SelectedComponentBO
-   * 
+   * @param componentBOToRemove: SelectedComponentBO
+   *
    * @return Unit
    */
   def removeComponent(
                        currentConfigContainerBO: CurrentConfigContainerBO,
-                       selectedComponentBO: SelectedComponentContainerBO
+                       componentBOToRemove: SelectedComponentContainerBO
                      ): List[SelectedComponentBO] = {
 
-    val step: Option[StepCurrentConfigBO] =
-      getCurrentStep(currentConfigContainerBO, selectedComponentBO.stepCurrentConfig.get.stepId)
+    val step: Option[CurrentConfigStepBO] =
+      getCurrentStep(currentConfigContainerBO, componentBOToRemove.stepCurrentConfig.get.stepId)
 
-    Logger.info(this.getClass.getSimpleName + ": " + step.get.components + " " + selectedComponentBO.selectedComponent.get.componentId.get)
+    Logger.info(this.getClass.getSimpleName + ": " + step.get.components + " " + componentBOToRemove.selectedComponent.get.componentId.get)
     Logger.info("Step with deleted component " + step.get.getClass.hashCode())
 
-    step.get.components = step.get.components.filterNot(_.componentId == selectedComponentBO.selectedComponent.get.componentId)
+    step.get.components = step.get.components.filterNot(_.componentId == componentBOToRemove.selectedComponent.get.componentId)
 
     Logger.info("Step with deleted component " + step.get.components)
 
@@ -218,7 +218,7 @@ trait CurrentConfig {
     getAllComponentsRecursive(currentConfigContainerBO.currentConfig.get, List())
   }
 
-  private def getAllComponentsRecursive(stepCurrentConfigBO: StepCurrentConfigBO, allComponentsId: List[String]): List[String] = {
+  private def getAllComponentsRecursive(stepCurrentConfigBO: CurrentConfigStepBO, allComponentsId: List[String]): List[String] = {
     stepCurrentConfigBO.nextStep match {
       case Some(nextStep) =>
         getAllComponentsRecursive(nextStep, allComponentsId ::: stepCurrentConfigBO.components.map(_.componentId.get))

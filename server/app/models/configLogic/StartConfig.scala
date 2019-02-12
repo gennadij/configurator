@@ -1,6 +1,6 @@
 package models.configLogic
 
-import models.bo.currentConfig.{CurrentConfigContainerBO, StepCurrentConfigBO}
+import models.bo.currentConfig.{CurrentConfigContainerBO, CurrentConfigStepBO}
 import models.bo.step
 import models.bo.step.{ComponentForSelectionBO, StepContainerBO}
 import models.persistence.Persistence
@@ -51,7 +51,7 @@ class StartConfig(
         val (componentsForSelectionBO, errorComponents): (Option[List[ComponentForSelectionBO]], Option[Error]) =
           Persistence.getComponents(stepBO.stepId.get)
 
-        val firstStepCurrentConfig: StepCurrentConfigBO = StepCurrentConfigBO(
+        val firstStepCurrentConfig: CurrentConfigStepBO = CurrentConfigStepBO(
           stepBO.stepId.get,
           stepBO.nameToShow.get
         )

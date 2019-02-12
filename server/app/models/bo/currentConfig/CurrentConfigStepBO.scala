@@ -7,9 +7,9 @@ import models.bo.component.SelectedComponentBO
  *
  * Created by Gennadi Heimann 18.11.2017
  */
-case class StepCurrentConfigBO (
+case class CurrentConfigStepBO(
                                  stepId: String,
                                  nameToShow: String,
                                  var components: List[SelectedComponentBO] = List(),
-                                 var nextStep: Option[StepCurrentConfigBO] = None
+                                 var nextStep: Option[CurrentConfigStepBO] = None
 )

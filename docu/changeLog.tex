@@ -56,23 +56,9 @@ auch aus der $<CurrentConfig>$ entfernt.\\
 
 \section{v0.0.5}
 
-\textbf{@created on 13.12.2017}\\
-\textbf{@finished on} \\
-\textbf{@name }\\
-
-\noindent Jede Schritt in dem Konfigurator kann eine Abhängigkeit zu dem Schritt oder
-Komponente haben. Das bedeutet, dass geladene Schritt eine Komponente oder einen
-Schritt ausschlie\ss{}en oder fordern kann.\\
-
-\noindent \textbf{@created on 16.11.2018}\\
-\textbf{@finished on }\\
-\textbf{@name }\\
-
-\noindent Der Webclient soll prüfen, ob ein nächster Schritt exestiert. Wenn ja, kein Button für NextStep erstellen.\\
-
 \noindent \textbf{@created on 16.11.2018}\\
 \textbf{@finished on} \\
-\textbf{@name Auflösung der Abhängigkeit}\\
+\textbf{@name Auflösung der Abhängigkeit zwischen Komponenten}\\
 
 \noindent Implementierung von $<exclude>$ und $<require>$ Abhängigkeiten zwischen der externen Komponenten.
 Es wird zwischen verschiedene Arten der Auflösung der Abhängigkeiten $<StrategyOfDependencyResolver>$ gesehen.
@@ -93,20 +79,25 @@ C1 - ausschließende Komponente\\
 C2 - ausgeschlossene Komponent\\
 
 Aussage 1: Komponente C1 schließt die Komponente C2 aus der Konfiguration aus. Das bedeutet, dass
-der Komponente C2 darf nicht ausgewählt werden, wenn die Komponente C1 davor ausgewählt war. Das war 
+der Komponente C2 darf nicht ausgewählt werden, wenn die Komponente C1 davor ausgewählt war. Das ist 
 eine $<forward>$ Auflösung der Abhängigkeit.\\
 
 Aussage 2: Komponente C1 schließt die Komponente C2 aus der Konfiguration aus. 
-Aber im Gegensatz zu der Aussage 1 wird die Komponente C2 vor C1 ausgewählt. Das bedeutet, 
-dass die Komponnte C2 aus der Konfiguration entfernt wird und rekursiv nach 
+Aber im Gegensatz zu der Aussage 1 wird die Komponente C2 vor C1 ausgewählt war. Das bedeutet, 
+dass die Komponente C2 aus der Konfiguration entfernt wird und rekursiv nach 
 anderen Abhängigkeiten gesucht und aufgelöst. Diese Auflösung wird als $<reverse>$ Auflösung 
-der Abhängigkeiten genannt.\\
+der Abhängigkeiten genannt.\\\\
 
-\textbf{In dieser Version wird nur automatische Auflösung der Abhängigkeit implementiert.}
+Bei der $<reverse>$ Auflösung muss beachtet werden, wenn die ausgeschlossene Komponente einzige 
+ausgewählte Komponente in dem Schritt ist. (muss überdacht werden) In dieser Situation wird die 
+ausgeschlossene Komponente aus der aktueller Konfiguration entfernt werden.  
+
+
+\noindent\textbf{In dieser Version wird nur automatische Auflösung der Abhängigkeit implementiert.}\\
 
 \noindent\textbf{@created on 23.11.2018}\\
 \textbf{@finished on }\\
-\textbf{@name }\\
+\textbf{@name Arten des Konfigurationsverlaufes}\\
 
 \noindent Erkennung der Konfigurationsverlauf.\\
 Es gibt zwei Konfigurationverläufe: 
@@ -123,21 +114,28 @@ Es gibt zwei Konfigurationverläufe:
 
 \noindent Die Abhängigkeiten zu der aktuelle Konfiguration hinzufügen.\\
 
-\noindent @created on 23.11.2018\\
-@finished on \\
+\noindent \textbf{@created on 23.11.2018}\\
+\textbf{@finished on }\\\\
 Die Logik Ausdenken mit der die Info zu der ausgewählte Komponente veranschaulicht.\\
 
 \subsection{v0.0.6}
 
-\noindent @created on 23.11.2018\\
-@finished on \\
+\textbf{@created on 13.12.2017}\\
+\textbf{@finished on} \\
+\textbf{@name }\\
 
-\noindent @created on 18.01.2019\\
-@finished on 06.02.2019\\
+\noindent Jeder Schritt in dem Konfigurator kann eine Abhängigkeit zu dem Schritt oder
+Komponente haben. Das bedeutet, dass geladene Schritt eine Komponente oder einen
+Schritt ausschließen oder fordern kann. Die Implementierung der Abhängigkeit von und zu
+dem Schritt wird in dieser Version implementiert.\\
+
+\noindent \textbf{@created on 18.01.2019}\\
+\textbf{@finished on 06.02.2019}\\\\
+
 Implementierung von Warnungen und Information und Fehler Objekten.
 
-\noindent @created on 06.02.2019\\
-@finished on \\
+\noindent \textbf{@created on 06.02.2019}\\
+\textbf{@finished on}\\\\
 Die Texte für Info, Warning werden aus dem DB ausgelesen, da sie über Admin angepasst werden müssen.
 
 Visualisierung der Abhängigkeit (behavior)

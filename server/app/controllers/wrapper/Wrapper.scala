@@ -2,7 +2,7 @@ package controllers.wrapper
 
 import models.bo._
 import models.bo.component.SelectedComponentContainerBO
-import models.bo.currentConfig.StepCurrentConfigBO
+import models.bo.currentConfig.CurrentConfigStepBO
 import models.bo.dependency.DependencyBO
 import models.bo.info.InfoBO
 import models.bo.step.StepContainerBO
@@ -94,7 +94,7 @@ trait Wrapper extends RIDConverter {
     * @param step : Option[StepCurrentConfigBO]
     * @return JsonCurrentConfigOut
     */
-  def toJsonCurrentConfigOut(step: Option[StepCurrentConfigBO]): JsonCurrentConfigOut = {
+  def toJsonCurrentConfigOut(step: Option[CurrentConfigStepBO]): JsonCurrentConfigOut = {
     JsonCurrentConfigOut(
       result = JsonCurrentConfigResult(
         step = getJsonCurrentStepRecursive(step)
@@ -103,7 +103,7 @@ trait Wrapper extends RIDConverter {
   }
 
 
-  def getJsonCurrentStepRecursive(firstStep: Option[StepCurrentConfigBO]): Option[JsonStepCurrentConfig] = {
+  def getJsonCurrentStepRecursive(firstStep: Option[CurrentConfigStepBO]): Option[JsonStepCurrentConfig] = {
     firstStep match {
       case Some(nextStep) =>
         Some(JsonStepCurrentConfig(

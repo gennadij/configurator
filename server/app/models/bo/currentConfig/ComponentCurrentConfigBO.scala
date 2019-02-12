@@ -6,5 +6,5 @@ package models.bo.currentConfig
   * Created by Gennadi Heimann 16.07.2018
   */
 case class ComponentCurrentConfigBO (
-
+//TODO implementieren
                                     )

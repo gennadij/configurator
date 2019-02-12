@@ -1,6 +1,6 @@
 package models.bo.component
 
-import models.bo.currentConfig.StepCurrentConfigBO
+import models.bo.currentConfig.CurrentConfigStepBO
 import models.bo.info.InfoBO
 import models.bo.step.StepContainerBO
 import models.bo.warning.WarningBO
@@ -15,7 +15,7 @@ case class SelectedComponentContainerBO(
                                          selectedComponent: Option[SelectedComponentBO] = None,
                                          currentStep: Option[StepContainerBO] = None,
                                          nextStep: Option[StepContainerBO] = None,
-                                         stepCurrentConfig: Option[StepCurrentConfigBO] = None,
+                                         stepCurrentConfig: Option[CurrentConfigStepBO] = None,
                                          possibleComponentIdsToSelect : Option[List[String]] = None,
                                          info: Option[InfoBO] = None,
                                          errors: Option[List[Error]] = None,
