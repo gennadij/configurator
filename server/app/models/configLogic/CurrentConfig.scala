@@ -75,70 +75,70 @@ trait CurrentConfig {
    * 
    * @return Option[StepCurrentConfig]
    */
-  def getCurrentStep(
+  def getCurrentConfigStep(
                       currentConfigContainerBO: CurrentConfigContainerBO, stepId: String
                     ): Option[CurrentConfigStepBO] = {
     getStep(currentConfigContainerBO, stepId)
   }
-  
+
   /**
    * @author Gennadi Heimann
-   * 
+   *
    * @version 0.0.1
-   * 
+   *
    * @return Option[StepCurrentConfigBO]
    */
 //  def getCurrentConfig: Option[StepCurrentConfigBO] = this.firstStep
-  
+
   /**
    * @author Gennadi Heimann
-   * 
+   *
    * @version 0.0.1
-   * 
+   *
    * @return StepCurrentConfig
    */
   def getLastStep(currentConfigContainerBO: CurrentConfigContainerBO): CurrentConfigStepBO = {
     getLastStepRecursive(currentConfigContainerBO.currentConfig.get)
   }
-  
+
   /**
    * @author Gennadi Heimann
-   * 
+   *
    * @version 0.0.1
-   * 
+   *
    * @param step: StepCurrentConfigBO
-   * 
+   *
    * @return StepCurrentConfig
    */
   private def getLastStepRecursive(step: CurrentConfigStepBO): CurrentConfigStepBO = {
-    
+
     step.nextStep match {
       case Some(s) => getLastStepRecursive(s)
       case None => step
     }
   }
-  
+
   /**
    * @author Gennadi Heimann
-   * 
+   *
    * @version 0.0.1
-   * 
+   *
    * @param stepId: String
-   * 
+   *
    * @return Option[StepCurrentConfig]
    */
   private def getStep(
                        currentConfigContainerBO: CurrentConfigContainerBO, stepId: String): Option[CurrentConfigStepBO] = {
     getStepRecursive(currentConfigContainerBO.currentConfig, stepId)
   }
-  
+
   /**
    * @author Gennadi Heimann
-   * 
+   *
    * @version 0.0.1
-   * 
+   *
    * @param stepA: Option[StepCurrentConfigBO], stepId: String
-   * 
+   *
    * @return Option[StepCurrentConfig]
    */
   private def getStepRecursive(stepA: Option[CurrentConfigStepBO], stepId: String): Option[CurrentConfigStepBO] = {
@@ -151,12 +151,12 @@ trait CurrentConfig {
       }
     }
   }
-  
+
   /**
    * @author Gennadi Heimann
-   * 
+   *
    * @version 0.0.1
-   * 
+   *
    * @return Unit
    */
   private def printCurrentConfig(
@@ -165,11 +165,11 @@ trait CurrentConfig {
 
   /**
    * @author Gennadi Heimann
-   * 
+   *
    * @version 0.0.1
-   * 
+   *
    * @param step: Option[StepCurrentConfigBO]
-   * 
+   *
    * @return Unit
    */
   private def getNextStep(step: Option[CurrentConfigStepBO]): Unit = {
@@ -183,24 +183,24 @@ trait CurrentConfig {
         step.get.components.reverse foreach {component => Logger.info("====" + component.hashCode() + "-" + component.componentId + " -> " + component.nameToShow)}
     }
   }
-  
-  
+
+
   /**
    * @author Gennadi Heimann
-   * 
+   *
    * @version 0.0.2
-   * 
+   *
    * @param componentBOToRemove: SelectedComponentBO
    *
    * @return Unit
    */
-  def removeComponent(
+  def removeComponentInternal(
                        currentConfigContainerBO: CurrentConfigContainerBO,
                        componentBOToRemove: SelectedComponentContainerBO
                      ): List[SelectedComponentBO] = {
 
     val step: Option[CurrentConfigStepBO] =
-      getCurrentStep(currentConfigContainerBO, componentBOToRemove.stepCurrentConfig.get.stepId)
+      getCurrentConfigStep(currentConfigContainerBO, componentBOToRemove.stepCurrentConfig.get.stepId)
 
     Logger.info(this.getClass.getSimpleName + ": " + step.get.components + " " + componentBOToRemove.selectedComponent.get.componentId.get)
     Logger.info("Step with deleted component " + step.get.getClass.hashCode())
@@ -212,6 +212,15 @@ trait CurrentConfig {
     printCurrentConfig(currentConfigContainerBO)
 
     step.get.components
+  }
+
+  def removeComponentExternal(
+                             currentConfigStepBO: CurrentConfigStepBO,
+                             componentToRemove: SelectedComponentBO): List[SelectedComponentBO] = {
+
+    currentConfigStepBO.components = currentConfigStepBO.components.filterNot(_.componentId == componentToRemove.componentId)
+
+    currentConfigStepBO.components
   }
 
   def getAllComponents(currentConfigContainerBO: CurrentConfigContainerBO): List[String] = {

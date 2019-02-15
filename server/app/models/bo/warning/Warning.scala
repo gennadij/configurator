@@ -22,3 +22,15 @@ case class ExcludedComponentExternal() extends Warning(
   name = "EXCLUDED_COMPONENT_EXTERNAL",
   code = "W010002"
 )
+
+case class ExcludeComponentInternal(excludedComponentId: List[String] = List()) extends Warning(
+  message = "Ausgeschlossene Komponente " + excludedComponentId.mkString(sep = ", ") + ".",
+  name = "EXCLUDE_COMPONENT_EXTERNAL",
+  code = "W010003"
+)
+
+case class ExcludeComponentExternal(excludedComponentId: List[String] = List()) extends Warning(
+  message = "Ausgeschlossene Komponente " + excludedComponentId.mkString(sep = ", ") + ".",
+  name = "EXCLUDE_COMPONENT_EXTERNAL",
+  code = "W010003"
+)

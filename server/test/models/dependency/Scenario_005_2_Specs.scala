@@ -7,7 +7,7 @@ import org.junit.runner.RunWith
 import org.shared.info.{RequireComponent, RequireNextStep}
 import org.shared.json.step.JsonStepOut
 import org.shared.json.{JsonKey, JsonNames}
-import org.shared.warning.ExcludedComponentExternal
+import org.shared.warning.ExcludeComponentExternal
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
@@ -123,8 +123,8 @@ class Scenario_005_2_Specs extends Specification with MessageHandler with Before
       (componentOutResult_51 \ JsonKey.lastComponent ).asOpt[Boolean].get === true
       (componentOutResult_51 \ JsonKey.addedComponent ).asOpt[Boolean].get === true //TODO muss false sein
       (componentOutResult_51 \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === RequireComponent().name
-      //TODO ExcludeComponentExternal
-//      (componentOutResult_51 \ JsonKey.warning \ JsonKey.excludedComponentExternal \ JsonKey.name).asOpt[String] === Some(ExcludedComponentExternal().name)
+      (componentOutResult_51 \ JsonKey.warning \ JsonKey.excludedComponentExternal \ JsonKey.name).asOpt[String] === Some(ExcludeComponentExternal().name)
+      (componentOutResult_51 \ JsonKey.warning \ JsonKey.excludedComponentExternal \ JsonKey.message).asOpt[String].get === "Ausgeschlossene Komponente #50:76."
       (componentOutResult_51 \ JsonKey.errors ).asOpt[JsObject] === None
 
       val currentConfig = CommonFunction.currentConfig(wC)

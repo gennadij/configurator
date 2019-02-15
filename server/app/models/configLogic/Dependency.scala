@@ -1,12 +1,12 @@
 package models.configLogic
 
 import models.bo.component.{SelectedComponentBO, SelectedComponentContainerBO}
-import models.bo.currentConfig.CurrentConfigContainerBO
-import models.bo.dependency.DependencyBO
+import models.bo.currentConfig.{CurrentConfigContainerBO, CurrentConfigStepBO}
+import models.bo.step.{ComponentForSelectionBO, StepContainerBO}
 import models.bo.types.{Auto, SelectableDecision}
 import models.bo.warning.WarningBO
 import models.persistence.Persistence
-import org.shared.warning.{ExcludedComponentExternal, ExcludedComponentInternal}
+import org.shared.warning.{ExcludeComponentExternal, ExcludedComponentExternal, ExcludedComponentInternal}
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -116,36 +116,34 @@ trait Dependency extends CurrentConfig {
                                                                   currentConfigContainerBO: CurrentConfigContainerBO
                                                                 ): SelectedComponentContainerBO = {
     selectedComponentContainerBO.selectedComponent.get.excludeDependenciesOut match {
-      case Some(List.empty) => selectedComponentContainerBO
-      case _ =>
-        val dependencyBO: List[DependencyBO] =
-          selectedComponentContainerBO.selectedComponent.get.excludeDependenciesIn.get
+      case Some(List()) => selectedComponentContainerBO
+      case Some(excludeDependenciesOut) =>
 
-        val dBOStrategyOfDRAuto: List[DependencyBO] =
-          dependencyBO filter {_.strategyOfDependencyResolver == Auto}
-        val dBOStrategyOfDRSelectableDecision: List[DependencyBO] =
-          dependencyBO filter {_.strategyOfDependencyResolver == SelectableDecision}
+        val warnings: List[String] = excludeDependenciesOut map { eDOut =>
+          eDOut.strategyOfDependencyResolver match {
+            case Auto =>
+              val componentToRemove: SelectedComponentBO = Persistence.getSelectedComponent(eDOut.inId).selectedComponent.get
 
-        //Auto
+              val componentForSelectionBO: List[ComponentForSelectionBO] = selectedComponentContainerBO.currentStep.get.componentsForSelection.get
 
-        if (dBOStrategyOfDRAuto.nonEmpty) {
-          val inDependencyIds = dBOStrategyOfDRAuto map {_.inId}
+              if(componentForSelectionBO.exists(_.componentId.get == componentToRemove.componentId.get))
+                ""
+              else {
+                val stepBO: StepContainerBO = Persistence.getCurrentStep(componentToRemove.componentId.get)
 
-          inDependencyIds foreach { c =>
-            removeComponent(currentConfigContainerBO, Persistence.getSelectedComponent(c))
+                val currentConfigStepBO: Option[CurrentConfigStepBO] = getCurrentConfigStep(currentConfigContainerBO, stepBO.step.get.stepId.get)
+
+                removeComponentExternal(currentConfigStepBO.get, componentToRemove)
+
+                componentToRemove.componentId.get
+              }
+            case SelectableDecision => ""
           }
         }
 
-        //TODO separate Warning für ausschliessende Komponente und ausgeschlossene Komponente erstellen
-        //TODO Hinweis dass die ausgeschlossene Komponente automatisch aus der CurtentConfig entfernt wird
-
-        val warningBO: WarningBO  = WarningBO(
-          excludedComponentExternal = Some(ExcludedComponentExternal())
-        )
-
-        val selectedComponent: SelectedComponentBO = selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(false))
-
-        selectedComponentContainerBO.copy(selectedComponent = Some(selectedComponent), warning = Some(warningBO))
+        selectedComponentContainerBO.copy(warning = Some(WarningBO(
+          excludedComponentExternal = Some(ExcludeComponentExternal(warnings))
+        )))
     }
   }
 

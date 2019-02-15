@@ -63,13 +63,14 @@ class SelectedComponent (
               verifyExcludeDependencyInForInternal(sCExtendedOfStatusComponentTyp)
 
             //Warning Exclude Dependency for external Components
-            val sCExtendedOfStatusExcludeDependencyExternal =
+            val sCExtendedOfStatusExcludeDependencyInExternal =
               verifyExcludeDependencyInForExternal(sCExtendedOfStatusExcludeDependencyInternal, currentConfigContainerBO)
 
-
+            val sCExtendedOfStatusExcludeDependencyOutExternal =
+              verifyExcludeDependencyOutForExternal(sCExtendedOfStatusExcludeDependencyInExternal, currentConfigContainerBO)
 
             val sCExtendedOfPossibleComponentIdsToSelect =
-              getPossibleComponentToSelect(sCExtendedOfStatusExcludeDependencyExternal)
+              getPossibleComponentToSelect(sCExtendedOfStatusExcludeDependencyOutExternal)
 
             //Status Selection Criterion
             val sCExtendedOfInfoSelectionCriterion = verifySelectionCriterion(sCExtendedOfPossibleComponentIdsToSelect)
@@ -88,7 +89,7 @@ class SelectedComponent (
               sCExtendedOFStatusSelectedComponent
 
             }else{
-              removeComponent(currentConfigContainerBO, sCExtendedOFStatusSelectedComponent)
+              removeComponentInternal(currentConfigContainerBO, sCExtendedOFStatusSelectedComponent)
               sCExtendedOFStatusSelectedComponent
             }
           case _ => sCExtendedOfCurrentAndNextStep
@@ -126,7 +127,7 @@ class SelectedComponent (
                                              ): SelectedComponentContainerBO = {
 
     val currentStepCurrentConfig: Option[CurrentConfigStepBO] =
-      getCurrentStep(
+      getCurrentConfigStep(
         currentConfigContainerBO,
         selectedComponentBO.currentStep.get.step.get.stepId.get)
 
