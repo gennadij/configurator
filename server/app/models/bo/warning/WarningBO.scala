@@ -9,5 +9,7 @@ import org.shared.warning.Warning
   */
 case class WarningBO(
                       excludedComponentExternal: Option[Warning] = None,
-                      excludedComponentInternal: Option[Warning] = None
+                      excludedComponentInternal: Option[Warning] = None,
+                      excludeComponentExternal: Option[Warning] = None,
+                      excludeComponentInternal: Option[Warning] = None
                     )

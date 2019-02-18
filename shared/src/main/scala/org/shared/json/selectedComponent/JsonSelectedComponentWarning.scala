@@ -10,7 +10,9 @@ import play.api.libs.json.{Format, Json}
   */
 case class JsonSelectedComponentWarning (
                                           excludedComponentExternal: Option[JsonWarning] = None,
-                                          excludedComponentInternal: Option[JsonWarning] = None
+                                          excludedComponentInternal: Option[JsonWarning] = None,
+                                          excludeComponentExternal: Option[JsonWarning] = None,
+                                          excludeComponentInternal: Option[JsonWarning] = None
                                         )
 
 object JsonSelectedComponentWarning {

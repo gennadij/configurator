@@ -119,7 +119,7 @@ trait Dependency extends CurrentConfig {
       case Some(List()) => selectedComponentContainerBO
       case Some(excludeDependenciesOut) =>
 
-        val warnings: List[String] = excludeDependenciesOut map { eDOut =>
+        val excludeComponentsId: List[String] = excludeDependenciesOut map { eDOut =>
           eDOut.strategyOfDependencyResolver match {
             case Auto =>
               val componentToRemove: SelectedComponentBO = Persistence.getSelectedComponent(eDOut.inId).selectedComponent.get
@@ -127,7 +127,7 @@ trait Dependency extends CurrentConfig {
               val componentForSelectionBO: List[ComponentForSelectionBO] = selectedComponentContainerBO.currentStep.get.componentsForSelection.get
 
               if(componentForSelectionBO.exists(_.componentId.get == componentToRemove.componentId.get))
-                ""
+                componentToRemove.componentId.get
               else {
                 val stepBO: StepContainerBO = Persistence.getCurrentStep(componentToRemove.componentId.get)
 
@@ -142,7 +142,7 @@ trait Dependency extends CurrentConfig {
         }
 
         selectedComponentContainerBO.copy(warning = Some(WarningBO(
-          excludedComponentExternal = Some(ExcludeComponentExternal(warnings))
+          excludeComponentExternal = Some(ExcludeComponentExternal(excludeComponentsId))
         )))
     }
   }
