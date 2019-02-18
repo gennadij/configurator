@@ -141,9 +141,16 @@ trait Dependency extends CurrentConfig {
           }
         }
 
-        selectedComponentContainerBO.copy(warning = Some(WarningBO(
-          excludeComponentExternal = Some(ExcludeComponentExternal(excludeComponentsId))
-        )))
+        val warningBO: WarningBO = selectedComponentContainerBO.warning match {
+          case Some(_) =>
+            selectedComponentContainerBO.warning.get.copy(excludeComponentExternal = Some(ExcludeComponentExternal(excludeComponentsId)))
+          case None =>
+            WarningBO(
+              excludeComponentExternal = Some(ExcludeComponentExternal(excludeComponentsId))
+            )
+        }
+
+        selectedComponentContainerBO.copy(warning = Some(warningBO))
     }
   }
 
