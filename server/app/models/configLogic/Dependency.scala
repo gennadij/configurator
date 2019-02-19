@@ -132,10 +132,14 @@ trait Dependency extends CurrentConfig {
                 val stepBO: StepContainerBO = Persistence.getCurrentStep(componentToRemove.componentId.get)
 
                 val currentConfigStepBO: Option[CurrentConfigStepBO] = getCurrentConfigStep(currentConfigContainerBO, stepBO.step.get.stepId.get)
-
-                removeComponentExternal(currentConfigStepBO.get, componentToRemove)
-
-                componentToRemove.componentId.get
+                currentConfigStepBO match {
+                  //Step exestiert in der CurrentConfig
+                  case Some(currentConfigStepBO) =>
+                    removeComponentExternal(currentConfigStepBO, componentToRemove)
+                    componentToRemove.componentId.get
+                  //Step exestiert nicht in der CurrentConfig => Futur Configuration
+                  case None => componentToRemove.componentId.get
+                }
               }
             case SelectableDecision => ""
           }
