@@ -47,10 +47,16 @@ trait Dependency extends CurrentConfig {
 
           val allSelectedComponents = getAllComponents(currentConfigContainerBO)
 
-          allSelectedComponents.map(allCId => excludeComponentsIdExternal.contains(allCId)).filter(_ == true) match {
+          allSelectedComponents.map(allCId => excludeComponentsIdExternal.contains(allCId)).filter (_ == true) match {
             case Nil =>
-              // Es gibt keine externe ausschliessende Komponente
+              // Unter ausgewälten Komponenten exestiert keine ausschliessende Komponente
+              val warningBO: WarningBO  = WarningBO(
+                excludedComponentExternal = Some(ExcludedComponentExternal())
+              )
+
               selectedComponentContainerBO
+
+              selectedComponentContainerBO.copy(warning = Some(warningBO))
             case _ =>
               //SelectedComponent is excluded from external
 

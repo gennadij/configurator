@@ -7,7 +7,7 @@ import org.junit.runner.RunWith
 import org.shared.info.{RequireComponent, RequireNextStep}
 import org.shared.json.step.JsonStepOut
 import org.shared.json.{JsonKey, JsonNames}
-import org.shared.warning.ExcludeComponentExternal
+import org.shared.warning.{ExcludeComponentExternal, ExcludedComponentExternal}
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
@@ -86,8 +86,8 @@ class Scenario_005_2_Specs extends Specification with MessageHandler with Before
       (r_22 \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === RequireNextStep().name
       (r_22 \ JsonKey.lastComponent ).asOpt[Boolean].get === false
       (r_22 \ JsonKey.addedComponent ).asOpt[Boolean].get === true
-      (r_22 \ JsonKey.warning).asOpt[JsObject] === None //TODO ExcludeComponentExternal -> welche Komponente
-//      (r_22 \ JsonKey.warning \ JsonKey.excludedComponentExternal \ JsonKey.name).asOpt[String] === Some(ExcludedComponentExternal().name)
+//      (r_22 \ JsonKey.warning).asOpt[JsObject] === None
+      (r_22 \ JsonKey.warning \ JsonKey.excludedComponentExternal \ JsonKey.name).asOpt[String] === Some(ExcludedComponentExternal().name)
       (r_22 \ JsonKey.errors ).asOpt[JsObject] === None
 
       val jsonNextStepComponents_S3 = CommonFunction.nextStep(wC) \ JsonKey.result \ JsonKey.componentsForSelection
@@ -100,32 +100,32 @@ class Scenario_005_2_Specs extends Specification with MessageHandler with Before
 
       val jsonNextStepComponents_S5 = CommonFunction.nextStep(wC) \ JsonKey.result \ JsonKey.componentsForSelection
 
-      val componentId51: String = jsonNextStepComponents_S5.asOpt[List[JsValue]].get
+      val componentId52: String = jsonNextStepComponents_S5.asOpt[List[JsValue]].get
         .filter(comp => (comp \ JsonKey.nameToShow).asOpt[String].get == c52)
         .map(comp => {(comp \ JsonKey.componentId).asOpt[String].get}).head
 
-      val componentOut51 = CommonFunction.selectComponent(wC, componentId51)
+      val componentOut52 = CommonFunction.selectComponent(wC, componentId52)
 
-      (componentOut51 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
+      (componentOut52 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
 
-      val componentOutResult_51 = componentOut51 \ JsonKey.result
+      val componentOutResult_52 = componentOut52 \ JsonKey.result
 
-      (componentOutResult_51 \ JsonKey.selectedComponentId).asOpt[String].get.length must be_>=(30)
-      (componentOutResult_51 \ JsonKey.stepId).asOpt[String].get.length must be_>=(30)
+      (componentOutResult_52 \ JsonKey.selectedComponentId).asOpt[String].get.length must be_>=(30)
+      (componentOutResult_52 \ JsonKey.stepId).asOpt[String].get.length must be_>=(30)
 
-      (componentOutResult_51 \ JsonKey.excludeDependenciesOut).asOpt[List[JsValue]].get.size === 1
-      (componentOutResult_51 \ JsonKey.excludeDependenciesIn).asOpt[List[JsValue]].get.size === 0
-      ((componentOutResult_51 \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.dependencyType).asOpt[String].get === "exclude"
-      ((componentOutResult_51 \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.visualization).asOpt[String].get === "undef"
-      ((componentOutResult_51 \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.nameToShow).asOpt[String].get === "(C52) ---> (C22)"
-      ((componentOutResult_51 \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.strategyOfDependencyResolver).asOpt[String].get === Auto.value
+      (componentOutResult_52 \ JsonKey.excludeDependenciesOut).asOpt[List[JsValue]].get.size === 1
+      (componentOutResult_52 \ JsonKey.excludeDependenciesIn).asOpt[List[JsValue]].get.size === 0
+      ((componentOutResult_52 \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.dependencyType).asOpt[String].get === "exclude"
+      ((componentOutResult_52 \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.visualization).asOpt[String].get === "undef"
+      ((componentOutResult_52 \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.nameToShow).asOpt[String].get === "(C52) ---> (C22)"
+      ((componentOutResult_52 \ JsonKey.excludeDependenciesOut)(0) \ JsonKey.strategyOfDependencyResolver).asOpt[String].get === Auto.value
 
-      (componentOutResult_51 \ JsonKey.lastComponent ).asOpt[Boolean].get === true
-      (componentOutResult_51 \ JsonKey.addedComponent ).asOpt[Boolean].get === true //TODO muss false sein
-      (componentOutResult_51 \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === RequireComponent().name
-      (componentOutResult_51 \ JsonKey.warning \ JsonKey.excludedComponentExternal \ JsonKey.name).asOpt[String] === Some(ExcludeComponentExternal().name)
-      (componentOutResult_51 \ JsonKey.warning \ JsonKey.excludedComponentExternal \ JsonKey.message).asOpt[String].get === "Ausgeschlossene Komponente #50:76."
-      (componentOutResult_51 \ JsonKey.errors ).asOpt[JsObject] === None
+      (componentOutResult_52 \ JsonKey.lastComponent ).asOpt[Boolean].get === true
+      (componentOutResult_52 \ JsonKey.addedComponent ).asOpt[Boolean].get === true
+      (componentOutResult_52 \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === RequireComponent().name
+      (componentOutResult_52 \ JsonKey.warning \ JsonKey.excludeComponentExternal \ JsonKey.name).asOpt[String] === Some(ExcludeComponentExternal().name)
+      (componentOutResult_52 \ JsonKey.warning \ JsonKey.excludeComponentExternal \ JsonKey.message).asOpt[String].get === "Ausgeschlossene Komponente #50:76."
+      (componentOutResult_52 \ JsonKey.errors ).asOpt[JsObject] === None
 
       val currentConfig = CommonFunction.currentConfig(wC)
 
@@ -142,8 +142,6 @@ class Scenario_005_2_Specs extends Specification with MessageHandler with Before
       (nextStep_1 \ JsonKey.nameToShow).asOpt[String] === Some(s2)
       (nextStep_1 \ JsonKey.components).asOpt[List[JsValue]].get.size === 0
       (nextStep_1 \ JsonKey.stepId).asOpt[String].get.length must be_<=(32) and be_>=(30)
-//      ((nextStep_1 \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some(c22)
-//      ((nextStep_1 \ JsonKey.components) (0) \ JsonKey.componentId).asOpt[String].get.length must be_<=(32) and be_>=(30)
       val nextStep_2 = nextStep_1 \ JsonKey.nextStep
       (nextStep_2 \ JsonKey.nameToShow).asOpt[String] === Some(s3)
       (nextStep_2 \ JsonKey.components).asOpt[List[JsValue]].get.size === 1

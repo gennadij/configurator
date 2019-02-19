@@ -1,6 +1,5 @@
 package controllers.wrapper
 
-import models.bo._
 import models.bo.component.SelectedComponentContainerBO
 import models.bo.currentConfig.CurrentConfigStepBO
 import models.bo.dependency.DependencyBO
@@ -8,8 +7,8 @@ import models.bo.info.InfoBO
 import models.bo.step.StepContainerBO
 import models.bo.warning.WarningBO
 import org.shared.error.Error
-import org.shared.json.{common, currentConfig}
 import org.shared.json.common.{JsonError, JsonInfo, JsonWarning}
+import org.shared.json.currentConfig
 import org.shared.json.currentConfig.{JsonCurrentConfigIn, JsonCurrentConfigOut, JsonCurrentConfigResult, JsonStepCurrentConfig}
 import org.shared.json.selectedComponent._
 import org.shared.json.step._
@@ -180,7 +179,7 @@ trait Wrapper extends RIDConverter {
 
 
   def getWarning(warningBO: Option[WarningBO]): Option[JsonSelectedComponentWarning] = {
-    val eCI: Option[JsonWarning] = warningBO.getOrElse(WarningBO()).excludedComponentInternal match {
+    val excludedCI: Option[JsonWarning] = warningBO.getOrElse(WarningBO()).excludedComponentInternal match {
       case Some(w) => Some(JsonWarning(
         message = w.message,
         name = w.name,
@@ -188,7 +187,7 @@ trait Wrapper extends RIDConverter {
       ))
       case None => None
     }
-    val eCE: Option[JsonWarning] =  warningBO.getOrElse(WarningBO()).excludedComponentExternal match {
+    val excludedCE: Option[JsonWarning] =  warningBO.getOrElse(WarningBO()).excludedComponentExternal match {
       case Some(w) => Some(JsonWarning(
         message = w.message,
         name = w.name,
@@ -196,18 +195,54 @@ trait Wrapper extends RIDConverter {
       ))
       case None => None
     }
-    (eCE, eCI) match {
-      case (Some(_), _) =>
+    val excludeCI: Option[JsonWarning] =  warningBO.getOrElse(WarningBO()).excludeComponentInternal match {
+      case Some(w) => Some(JsonWarning(
+        message = w.message,
+        name = w.name,
+        code = w.code
+      ))
+      case None => None
+    }
+    val excludeCE: Option[JsonWarning] =  warningBO.getOrElse(WarningBO()).excludeComponentExternal match {
+      case Some(w) => Some(JsonWarning(
+        message = w.message,
+        name = w.name,
+        code = w.code
+      ))
+      case None => None
+    }
+
+
+    (excludedCE, excludedCI, excludeCE, excludeCI) match {
+      case (Some(_), _, _, _) =>
         Some(JsonSelectedComponentWarning(
-          excludedComponentExternal = eCE,
-          excludedComponentInternal = eCI
+          excludedComponentExternal = excludedCE,
+          excludedComponentInternal = excludedCI,
+          excludeComponentExternal = excludeCE,
+          excludeComponentInternal = excludeCI
         ))
-      case (_, Some(_)) =>
+      case (_, Some(_), _, _) =>
         Some(JsonSelectedComponentWarning(
-          excludedComponentExternal = eCE,
-          excludedComponentInternal = eCI
+          excludedComponentExternal = excludedCE,
+          excludedComponentInternal = excludedCI,
+          excludeComponentExternal = excludeCE,
+          excludeComponentInternal = excludeCI
         ))
-      case (None, None) =>
+      case (_, _, Some(_), _) =>
+        Some(JsonSelectedComponentWarning(
+          excludedComponentExternal = excludedCE,
+          excludedComponentInternal = excludedCI,
+          excludeComponentExternal = excludeCE,
+          excludeComponentInternal = excludeCI
+        ))
+      case (_, _, _, Some(_)) =>
+        Some(JsonSelectedComponentWarning(
+          excludedComponentExternal = excludedCE,
+          excludedComponentInternal = excludedCI,
+          excludeComponentExternal = excludeCE,
+          excludeComponentInternal = excludeCI
+        ))
+      case (None, None, None, None) =>
         None
     }
 

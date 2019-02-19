@@ -3,11 +3,10 @@ package models.selectedComponent
 import controllers.MessageHandler
 import controllers.websocket.WebClient
 import org.junit.runner.RunWith
-import org.shared.info
 import org.shared.info.AllowNextComponent
 import org.shared.json.step.JsonStepOut
 import org.shared.json.{JsonKey, JsonNames}
-import org.shared.warning.ExcludedComponentInternal
+import org.shared.warning.{ExcludeComponentExternal, ExcludedComponentInternal}
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
@@ -76,7 +75,9 @@ class FirstStep_C11_C13_Specs extends Specification with MessageHandler with Bef
       (jsonComponentOut_1 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === "ALLOW_NEXT_COMPONENT"
       (jsonComponentOut_1 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
       (jsonComponentOut_1 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === true
-      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === None
+      //TODO ExcludeComponentInternal
+      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.warning \ JsonKey.excludeComponentExternal \ JsonKey.name).asOpt[String] ===
+        Some(ExcludeComponentExternal().name)
       (jsonComponentOut_1 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
 
       Logger.info(this.getClass.getSimpleName + ": =================================================")

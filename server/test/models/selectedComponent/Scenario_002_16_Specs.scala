@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.shared.info.{NotAllowedComponent, RequireNextStep}
 import org.shared.json.step.JsonStepOut
 import org.shared.json.{JsonKey, JsonNames}
-import org.shared.warning.ExcludedComponentExternal
+import org.shared.warning.{ExcludeComponentExternal, ExcludedComponentExternal}
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
@@ -76,7 +76,9 @@ class Scenario_002_16_Specs extends Specification with MessageHandler with Befor
       (componentOut4_21 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === RequireNextStep().name
       (componentOut4_21 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
       (componentOut4_21 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === true
-      (componentOut4_21 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === None
+      //TODO ExcludeComponentInternal
+      (componentOut4_21 \ JsonKey.result \ JsonKey.warning \ JsonKey.excludeComponentExternal \ JsonKey.name).asOpt[String] ===
+        Some(ExcludeComponentExternal().name)
       (componentOut4_21 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
 
       val jsonCurrentConfigOut_4: JsValue = CommonFunction.currentConfig(wC)
