@@ -230,7 +230,8 @@ class SelectedComponent (
       selectedComponentContainerBO.selectedComponent.get.excludeDependenciesOut.get map (_.inId)
 
 
-    val unselectedComponentIds: List[String] = (selectedComponentContainerBO.currentStep.get.componentsForSelection.get map(_.componentId.get)) filterNot (c => { //TODO verbessern
+    val unselectedComponentIds: List[String] =
+      (selectedComponentContainerBO.currentStep.get.componentsForSelection.get map(_.componentId.get)) filterNot (c => {
       (previousSelectedComponentsInCurrentConfigIds :::
         fromCurrentConfigExcludedComponentIds.toList.+:(selectedComponentId)).contains(c)
     })

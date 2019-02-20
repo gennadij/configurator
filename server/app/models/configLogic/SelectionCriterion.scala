@@ -25,7 +25,6 @@ trait SelectionCriterion {
         selectedComponentContainerBO.possibleComponentIdsToSelect.get match {
           case List() =>
             //RequireNextStep
-            //TODO Info is None
             val infoBO = selectedComponentContainerBO.info match {
               case Some(info) =>
                 selectedComponentContainerBO.info.get.copy(selectionCriterion = Some(RequireNextStep()))
@@ -63,7 +62,6 @@ trait SelectionCriterion {
             selectedComponentContainerBO.copy(info = Some(InfoBO(selectionCriterion = Some(info))))
         }else{
 
-          //TODO im decision_tree nachziehen.
           val previousSelectedComponentsInCurrentConfig: List[SelectedComponentBO] = selectedComponentContainerBO.stepCurrentConfig match {
             case Some(step) => step.components
             case None => List()

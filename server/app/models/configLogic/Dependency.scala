@@ -160,7 +160,7 @@ trait Dependency extends CurrentConfig {
         val excludeComponentsIdExternal: List[String] = (excludeComponentsId.filterNot(_._2)).map(_._1)
 
         //TODO Specs für die Komponente mit external und internal exclude Komponenten
-        //TODO Refaktoring
+        //TODO Refactoring
 
         (excludeComponentsIdInternal, excludeComponentsIdExternal) match {
           case (List(), List()) => selectedComponentContainerBO
