@@ -5,9 +5,11 @@ package org.shared.warning
   *
   * Created by Gennadi Heimann 18.01.2019
   */
-sealed abstract class Warning (val message: String,
-                    val name: String,
-                    val code: String)
+sealed abstract class Warning (
+                                val message: String,
+                                val name: String,
+                                val code: String
+                              )
 
 //excluded 01
 //require 02

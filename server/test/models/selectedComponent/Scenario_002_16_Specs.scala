@@ -76,9 +76,9 @@ class Scenario_002_16_Specs extends Specification with MessageHandler with Befor
       (componentOut4_21 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === RequireNextStep().name
       (componentOut4_21 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
       (componentOut4_21 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === true
-      //TODO ExcludeComponentInternal
+      (componentOut4_21 \ JsonKey.result \ JsonKey.warning \ JsonKey.excludeComponentInternal).asOpt[String] === None
       (componentOut4_21 \ JsonKey.result \ JsonKey.warning \ JsonKey.excludeComponentExternal \ JsonKey.name).asOpt[String] ===
-        Some(ExcludeComponentExternal().name)
+      Some(ExcludeComponentExternal().name)
       (componentOut4_21 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
 
       val jsonCurrentConfigOut_4: JsValue = CommonFunction.currentConfig(wC)

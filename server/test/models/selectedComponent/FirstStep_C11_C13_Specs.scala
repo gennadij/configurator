@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.shared.info.AllowNextComponent
 import org.shared.json.step.JsonStepOut
 import org.shared.json.{JsonKey, JsonNames}
-import org.shared.warning.{ExcludeComponentExternal, ExcludedComponentInternal}
+import org.shared.warning.{ExcludeComponentInternal, ExcludedComponentInternal}
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
@@ -75,9 +75,9 @@ class FirstStep_C11_C13_Specs extends Specification with MessageHandler with Bef
       (jsonComponentOut_1 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === "ALLOW_NEXT_COMPONENT"
       (jsonComponentOut_1 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
       (jsonComponentOut_1 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === true
-      //TODO ExcludeComponentInternal
-      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.warning \ JsonKey.excludeComponentExternal \ JsonKey.name).asOpt[String] ===
-        Some(ExcludeComponentExternal().name)
+      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.warning \ JsonKey.excludeComponentInternal \ JsonKey.name).asOpt[String] ===
+        Some(ExcludeComponentInternal().name)
+      (jsonComponentOut_1 \ JsonKey.result \ JsonKey.warning \ JsonKey.excludeComponentExternal).asOpt[String] === None
       (jsonComponentOut_1 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
 
       Logger.info(this.getClass.getSimpleName + ": =================================================")

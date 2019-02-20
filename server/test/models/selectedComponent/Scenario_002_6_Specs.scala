@@ -5,6 +5,7 @@ import controllers.websocket.WebClient
 import org.junit.runner.RunWith
 import org.shared.json.step.JsonStepOut
 import org.shared.json.{JsonKey, JsonNames}
+import org.shared.warning.ExcludeComponentInternal
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
@@ -45,14 +46,11 @@ class Scenario_002_6_Specs extends Specification with MessageHandler with Before
       (componentOut_1 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === "ALLOW_NEXT_COMPONENT"
       (componentOut_1 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
       (componentOut_1 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === true
-      (componentOut_1 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === None
+      (componentOut_1 \ JsonKey.result \ JsonKey.warning \ JsonKey.excludeComponentInternal \ JsonKey.name).asOpt[String] ===
+        Some(ExcludeComponentInternal().name)
+      (componentOut_1 \ JsonKey.result \ JsonKey.warning \ JsonKey.excludeComponentExternal).asOpt[String] === None
       (componentOut_1 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
-//      (componentOut_1 \ "result" \ "status" \"componentType" \ "status").asOpt[String].get === "DEFAULT_COMPONENT"
-//      (componentOut_1 \ "result" \ "status" \"selectedComponent" \ "status").asOpt[String].get === "ADDED_COMPONENT"
-//      (componentOut_1 \ "result" \ "status" \JsonKey.selectionCriterion \ "status").asOpt[String].get === "ALLOW_NEXT_COMPONENT"
-//      (componentOut_1 \ "result" \ "status" \JsonKey.excludeDependencyInternal \ "status").asOpt[String] === Some(NotExcludedComponentInternal().status)
-//      (componentOut_1 \ "result" \ "status" \"common" \ "status").asOpt[String].get === "SUCCESS"
-      
+
       val jsonCurrentConfigOut_1: JsValue = CommonFunction.currentConfig(wC)
       
       val result_1 = (jsonCurrentConfigOut_1 \ "result")

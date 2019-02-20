@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.shared.info.RequireNextStep
 import org.shared.json.step.JsonStepOut
 import org.shared.json.{JsonKey, JsonNames}
-import org.shared.warning.ExcludeComponentExternal
+import org.shared.warning.ExcludeComponentInternal
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
@@ -102,10 +102,9 @@ class Scenario_002_11_Specs extends Specification with MessageHandler with Befor
       (componentOut_6 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === RequireNextStep().name
       (componentOut_6 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
       (componentOut_6 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === true
-      //TODO ExcludeComponentInternal
-      (componentOut_6 \ JsonKey.result \ JsonKey.warning \ JsonKey.excludeComponentExternal \ JsonKey.name).asOpt[String] ===
-        Some(ExcludeComponentExternal().name)
-//      (componentOut_6 \ JsonKey.result \ JsonKey.warning).asOpt[JsObject] === None
+      (componentOut_6 \ JsonKey.result \ JsonKey.warning \ JsonKey.excludeComponentInternal \ JsonKey.name).asOpt[String] ===
+        Some(ExcludeComponentInternal().name)
+      (componentOut_6 \ JsonKey.result \ JsonKey.warning \ JsonKey.excludeComponentExternal).asOpt[String] === None
       (componentOut_6 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
 
       val jsoncurrentConfigContainerBOOut_6: JsValue = CommonFunction.currentConfig(wC)
@@ -114,7 +113,7 @@ class Scenario_002_11_Specs extends Specification with MessageHandler with Befor
       (jsoncurrentConfigContainerBOOut_6 \ JsonKey.json).asOpt[String] === Some(JsonNames.CURRENT_CONFIG)
       (result_6 \ JsonKey.step \ JsonKey.nameToShow).asOpt[String] === Some("S1")
       (result_6 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 1
-      ((result_6 \ JsonKey.step \ "components")(0) \ JsonKey.nameToShow).asOpt[String] === Some("C13")
+      ((result_6 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C13")
     }
   }
 }
