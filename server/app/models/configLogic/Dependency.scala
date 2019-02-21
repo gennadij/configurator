@@ -6,8 +6,7 @@ import models.bo.step.{ComponentForSelectionBO, StepContainerBO}
 import models.bo.types.{Auto, SelectableDecision}
 import models.bo.warning.WarningBO
 import models.persistence.Persistence
-import org.shared.warning
-import org.shared.warning.{ExcludeComponentExternal, ExcludeComponentInternal, ExcludedComponentExternal, ExcludedComponentInternal}
+import org.shared.warning._
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -41,11 +40,6 @@ trait Dependency extends CurrentConfig {
 
         if (excludeComponentsIdExternal.nonEmpty) {
 
-          //hole ueber componentId excludeComponentsExternal aus DB
-          val excludeComponents: List[SelectedComponentContainerBO] = {
-            excludeComponentsIdExternal map Persistence.getSelectedComponent
-          }
-
           val allSelectedComponents = getAllComponents(currentConfigContainerBO)
 
           allSelectedComponents.map(allCId => excludeComponentsIdExternal.contains(allCId)).filter (_ == true) match {
@@ -54,8 +48,6 @@ trait Dependency extends CurrentConfig {
               val warningBO: WarningBO  = WarningBO(
                 excludedComponentExternal = Some(ExcludedComponentExternal())
               )
-
-              selectedComponentContainerBO
 
               selectedComponentContainerBO.copy(warning = Some(warningBO))
             case _ =>
@@ -122,6 +114,8 @@ trait Dependency extends CurrentConfig {
                                                                   selectedComponentContainerBO: SelectedComponentContainerBO,
                                                                   currentConfigContainerBO: CurrentConfigContainerBO
                                                                 ): SelectedComponentContainerBO = {
+
+
     selectedComponentContainerBO.selectedComponent.get.excludeDependenciesOut match {
       case Some(List()) => selectedComponentContainerBO
       case Some(excludeDependenciesOut) =>
@@ -144,9 +138,9 @@ trait Dependency extends CurrentConfig {
 
                 currentConfigStepBO match {
                   //Step exestiert in der CurrentConfig
-                  case Some(currentConfigStepBO) =>
+                  case Some(cCSBO) =>
                     val componentToRemove: SelectedComponentBO = Persistence.getSelectedComponent(eDOut.inId).selectedComponent.get
-                    removeComponentExternal(currentConfigStepBO, componentToRemove)
+                    removeComponentExternal(cCSBO, componentToRemove)
                     (eDOut.inId, false)
                   //Step exestiert nicht in der CurrentConfig => Futur Configuration
                   case None => (eDOut.inId, false)
@@ -156,66 +150,49 @@ trait Dependency extends CurrentConfig {
           }
         }
 
-        val excludeComponentsIdInternal: List[String] = (excludeComponentsId.filter(_._2)).map(_._1)
-        val excludeComponentsIdExternal: List[String] = (excludeComponentsId.filterNot(_._2)).map(_._1)
-
-        //TODO Specs für die Komponente mit external und internal exclude Komponenten
-        //TODO Refactoring
+        val excludeComponentsIdInternal: List[String] = excludeComponentsId.filter(_._2).map(_._1)
+        val excludeComponentsIdExternal: List[String] = excludeComponentsId.filterNot(_._2).map(_._1)
 
         (excludeComponentsIdInternal, excludeComponentsIdExternal) match {
           case (List(), List()) => selectedComponentContainerBO
           case (internal, List()) =>
-            val warningBO: WarningBO = selectedComponentContainerBO.warning match {
-              case Some(_) =>
-                selectedComponentContainerBO.warning.get.copy(
-                  excludeComponentInternal = Some(ExcludeComponentInternal(internal)))
-              case None =>
-                WarningBO(
-                  excludeComponentInternal = Some(warning.ExcludeComponentInternal(internal))
-                )
-            }
-            selectedComponentContainerBO.copy(warning = Some(warningBO))
+            selectedComponentContainerBO.copy(warning =
+              getWarningBO(warningInternal = Some(ExcludeComponentInternal(internal)),
+                selectedComponentContainerBO = selectedComponentContainerBO))
           case (List(), external) =>
-            val warningBO: WarningBO = selectedComponentContainerBO.warning match {
-              case Some(_) =>
-                selectedComponentContainerBO.warning.get.copy(
-                  excludeComponentExternal = Some(ExcludeComponentExternal(external)))
-              case None =>
-                WarningBO(
-                  excludeComponentExternal = Some(ExcludeComponentExternal(external))
-                )
-            }
-            selectedComponentContainerBO.copy(warning = Some(warningBO))
+            selectedComponentContainerBO.copy(warning =
+              getWarningBO(
+                warningExternal = Some(ExcludeComponentExternal(external)),
+                selectedComponentContainerBO = selectedComponentContainerBO))
           case (internal, external) =>
-            val warningBO: WarningBO = selectedComponentContainerBO.warning match {
-              case Some(_) =>
-                selectedComponentContainerBO.warning.get.copy(
-                  excludeComponentInternal = Some(ExcludeComponentInternal(internal)),
-                  excludeComponentExternal = Some(ExcludeComponentExternal(external))
-                )
-              case None =>
-                WarningBO(
-                  excludeComponentInternal = Some(ExcludeComponentInternal(internal)),
-                  excludeComponentExternal = Some(ExcludeComponentExternal(external))
-                )
-            }
-            selectedComponentContainerBO.copy(warning = Some(warningBO))
+            selectedComponentContainerBO.copy(warning =
+              getWarningBO(
+                warningInternal = Some(ExcludeComponentInternal(internal)),
+                warningExternal = Some(ExcludeComponentExternal(external)),
+                selectedComponentContainerBO = selectedComponentContainerBO
+              )
+            )
 
         }
-
-
-//        val warningBO: WarningBO = selectedComponentContainerBO.warning match {
-//          case Some(_) =>
-//            selectedComponentContainerBO.warning.get.copy(
-//              excludeComponentExternal = Some(ExcludeComponentExternal(excludeComponentsId)))
-//          case None =>
-//            WarningBO(
-//              excludeComponentExternal = Some(ExcludeComponentExternal(excludeComponentsId))
-//            )
-//        }
-//
-//        selectedComponentContainerBO.copy(warning = Some(warningBO))
+      case None => selectedComponentContainerBO
     }
   }
 
+  def getWarningBO(
+                    warningInternal: Option[Warning] = None,
+                    warningExternal: Option[Warning] = None,
+                    selectedComponentContainerBO: SelectedComponentContainerBO
+                  ): Option[WarningBO] = {
+    selectedComponentContainerBO.warning match {
+      case Some(_) =>
+        Some(selectedComponentContainerBO.warning.get.copy(
+          excludeComponentInternal = warningInternal,
+          excludeComponentExternal = warningExternal))
+      case None =>
+        Some(WarningBO(
+          excludeComponentInternal = warningInternal,
+          excludeComponentExternal = warningExternal
+        ))
+    }
+  }
 }

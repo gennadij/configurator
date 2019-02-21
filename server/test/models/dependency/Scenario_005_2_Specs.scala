@@ -124,7 +124,6 @@ class Scenario_005_2_Specs extends Specification with MessageHandler with Before
       (componentOutResult_52 \ JsonKey.addedComponent ).asOpt[Boolean].get === true
       (componentOutResult_52 \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === RequireComponent().name
       (componentOutResult_52 \ JsonKey.warning \ JsonKey.excludeComponentExternal \ JsonKey.name).asOpt[String] === Some(ExcludeComponentExternal().name)
-      (componentOutResult_52 \ JsonKey.warning \ JsonKey.excludeComponentExternal \ JsonKey.message).asOpt[String].get === "Ausgeschlossene Komponente #50:76."
       (componentOutResult_52 \ JsonKey.errors ).asOpt[JsObject] === None
 
       val currentConfig = CommonFunction.currentConfig(wC)

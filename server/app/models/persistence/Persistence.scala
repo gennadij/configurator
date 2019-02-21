@@ -36,8 +36,8 @@ object Persistence {
           StepBO(
             stepId = Some(vStep.get.getIdentity.toString),
             nameToShow = Some(vStep.get.getProperty(PropertyKeys.NAME_TO_SHOW).toString),
-            selectionCriterionMin = Some(vStep.get.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN)),
-            selectionCriterionMax = Some(vStep.get.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX))
+            selectionCriterionMin = Some(vStep.get.getProperty(PropertyKeys.SELECTION_CRITERION_MIN)),
+            selectionCriterionMax = Some(vStep.get.getProperty(PropertyKeys.SELECTION_CRITERION_MAX))
           )
         )
       )
@@ -116,8 +116,8 @@ object Persistence {
         step = Some(StepBO(
           stepId = Some(vCurrentStep.get.getIdentity.toString),
           nameToShow = Some(vCurrentStep.get.getProperty(PropertyKeys.NAME_TO_SHOW).toString),
-          selectionCriterionMin = Some(vCurrentStep.get.getProperty(PropertyKeys.SELECTION_CRITERIUM_MIN).toString.toInt),
-          Some(vCurrentStep.get.getProperty(PropertyKeys.SELECTION_CRITERIUM_MAX).toString.toInt)
+          selectionCriterionMin = Some(vCurrentStep.get.getProperty(PropertyKeys.SELECTION_CRITERION_MIN).toString.toInt),
+          Some(vCurrentStep.get.getProperty(PropertyKeys.SELECTION_CRITERION_MAX).toString.toInt)
         )),
         componentsForSelection =
           Some(

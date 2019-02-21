@@ -109,8 +109,6 @@ object Graph {
   }
 
 }
-//TODO In der OrientDB Client war der Test bei der RegExp erfolgreich
-
 
 class Graph(graph: Option[OrientGraph]) {
 

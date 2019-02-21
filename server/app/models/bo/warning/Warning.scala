@@ -18,7 +18,7 @@ case class ExcludedComponentInternal() extends Warning(
   name = "EXCLUDED_COMPONENT_INTERNAL",
   code = "W010001"
 )
-//TODO ausschliessende Komponent Id
+
 case class ExcludedComponentExternal() extends Warning(
   message = "",
   name = "EXCLUDED_COMPONENT_EXTERNAL",
@@ -31,10 +31,10 @@ case class ExcludeComponentInternal(excludedComponentId: List[String] = List()) 
   code = "W010003"
 )
 
-//TODO es soll eine HashId sein
+
 
 case class ExcludeComponentExternal(excludedComponentId: List[String] = List()) extends Warning(
-  message = "Ausgeschlossene Komponente " + excludedComponentId.mkString(sep = ", ") + ".",
+  message = "Die ausgewählte Komponente schließt andere Komponente aus",
   name = "EXCLUDE_COMPONENT_EXTERNAL",
   code = "W010003"
 )

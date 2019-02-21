@@ -15,7 +15,7 @@ CREATE PROPERTY Config.configUrl STRING;
 CREATE INDEX configUrl ON Config (configUrl) UNIQUE;
 CREATE PROPERTY Config.configurationCourse String;
 ALTER PROPERTY Config.configurationCourse MANDATORY TRUE;
-ALTER PROPERTY Config.configurationCourse REGEXP "(sequence|sabstitute)";
+ALTER PROPERTY Config.configurationCourse REGEXP "(sequence|substitute)";
 #ALTER CLASS Config STRICTMODE TRUE;
 
 CREATE CLASS hasStep EXTENDS E;
@@ -23,8 +23,8 @@ CREATE CLASS hasStep EXTENDS E;
 
 CREATE CLASS Step EXTENDS V;
 CREATE PROPERTY Step.kind STRING;
-CREATE PROPERTY Step.selectionCriteriumMin STRING;
-CREATE PROPERTY Step.selectionCriteriumMax STRING;
+CREATE PROPERTY Step.selectionCriterionMin STRING;
+CREATE PROPERTY Step.selectionCriterionMax STRING;
 CREATE PROPERTY Step.nameToShow STRING;
 #ALTER CLASS Step STRICTMODE TRUE;
 

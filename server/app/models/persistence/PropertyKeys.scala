@@ -6,7 +6,6 @@ package models.persistence
   * Created by Gennadi Heimann 
   */
 object PropertyKeys {
-  // TODO SelectionCriterion im DB und in Persistence anpassen
   val CONFIG_URL = "configUrl"
   val ADMIN_USER = "AdminUser"
   val COMPONENT = "Component"
@@ -21,8 +20,8 @@ object PropertyKeys {
   val OUT: String = "out"
   val VISUALIZATION: String = "visualization"
   val DEPENDENCY_TYPE: String = "dependencyType"
-  val SELECTION_CRITERIUM_MIN: String = "selectionCriteriumMin"
-  val SELECTION_CRITERIUM_MAX: String = "selectionCriteriumMax"
+  val SELECTION_CRITERION_MIN: String = "selectionCriterionMin"
+  val SELECTION_CRITERION_MAX: String = "selectionCriterionMax"
   val EXCLUDE: String = "exclude"
   val REQUIRE: String = "require"
   val STRATEGY_OF_DEPENDENCY_RESOLVER = "strategyOfDependencyResolver"
