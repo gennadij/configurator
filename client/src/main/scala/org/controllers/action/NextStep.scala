@@ -3,7 +3,7 @@ package org.controllers.action
 import org.controllers.websocket.WebSocket
 import org.scalajs.jquery.JQuery
 import org.shared.json.step.JsonStepIn
-import org.views.DrawNextStep
+import org.views.DrawStep
 import play.api.libs.json.Json
 
 /**
@@ -21,7 +21,7 @@ class NextStep {
 
   def actionNextStep(): Unit = {
 
-    new DrawNextStep().deleteNextStepButton
+    new DrawStep().deleteNextStepButton
 
     val jsonNextStep: String = Json.toJson(JsonStepIn()).toString()
 

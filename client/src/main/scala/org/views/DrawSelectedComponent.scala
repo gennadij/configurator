@@ -13,6 +13,7 @@ class DrawSelectedComponent {
   def drawSelectedComponent(jsonComponentOut: JsonSelectedComponentOut): Unit = {
 
     StatusWindow.drawSelectedComponentStatusWindow(jsonComponentOut.result)
+    StatusWindow.drawSelectedComponentInfoWindow(jsonComponentOut.result)
 
     ComponentWindow.markSelectedComponent(
       jsonComponentOut.result.selectedComponentId,

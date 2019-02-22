@@ -4,7 +4,7 @@ import org.controllers.action.Component
 import org.scalajs.jquery.jQuery
 import org.shared.json.selectedComponent.JsonSelectedComponentOut
 import org.shared.json.step.JsonStepOut
-import org.views.{DrawNextStep, HtmlElementText}
+import org.views.{DrawStep, HtmlElementText}
 import org.views.html.NextStepButton
 
 /**
@@ -54,7 +54,7 @@ class NextStep {
 
     jsonStepOut.result.errors match {
       case _ =>
-        val jQueryComponentWindows = new DrawNextStep().drawNextStep(jsonStepOut)
+        val jQueryComponentWindows = new DrawStep().drawNextStep(jsonStepOut)
 
         jQueryComponentWindows foreach(jQCW => {
           new Component().addMouseClickForComponent(jQCW)

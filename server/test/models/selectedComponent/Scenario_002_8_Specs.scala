@@ -94,7 +94,8 @@ class Scenario_002_8_Specs extends Specification with MessageHandler with Before
       (result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
       (result \ JsonKey.addedComponent ).asOpt[Boolean].get === false
       (result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === RequireNextStep().name
-      (result \ JsonKey.warning \ JsonKey.excludedComponentInternal \ JsonKey.name).asOpt[String] === Some(ExcludedComponentInternal().name)
+      (result \ JsonKey.warning \ JsonKey.excludedComponentInternal \ JsonKey.name).asOpt[String] ===
+        Some(ExcludedComponentInternal().name)
       (result \ JsonKey.errors ).asOpt[JsObject] === None
       
       val jsonCurrentConfigOut_3: JsValue = CommonFunction.currentConfig(wC)

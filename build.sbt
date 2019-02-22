@@ -37,7 +37,7 @@ lazy val client = (project in file("client")).settings(commonSettings).settings(
   skip in packageJSDependencies := false,
   jsDependencies ++= Seq(
     "org.webjars" % "jquery" % "2.1.4" / "2.1.4/jquery.js",
-	"org.webjars" % "jquery-ui" % "1.11.4" / "jquery-ui.js" dependsOn "jquery.js"
+	  "org.webjars" % "jquery-ui" % "1.11.4" / "jquery-ui.js" dependsOn "jquery.js"
   )
 ).enablePlugins(ScalaJSPlugin, ScalaJSWeb).
   dependsOn(sharedJs)

@@ -23,10 +23,17 @@ object HtmlElementText {
   def configMainJQuery =                            "#main"
   def configMainDiv =                               "<div> <center> <h3> Konfigurator </h3> </center> </div>"
 
+  //TODO zu der Warning umbennen
   //Status
   def statusHtml =                                  "status"
   def statusJQuery =                                "#status"
   def statusDiv =                                   "<div></div>"
+
+  //Info
+
+  def infoHtml =                                  "info"
+  def infoJQuery =                                "#info"
+  def infoDiv =                                   "<div></div>"
 
   //Step
   def classStep =                                   "step"

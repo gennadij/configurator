@@ -72,7 +72,6 @@ class Scenario_002_16_Specs extends Specification with MessageHandler with Befor
       val componentOut4_21 = CommonFunction.selectComponent(wC, componentId21)
 
       (componentOut4_21 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
-      (componentOut4_21 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
       (componentOut4_21 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === RequireNextStep().name
       (componentOut4_21 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
       (componentOut4_21 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === true
@@ -100,10 +99,12 @@ class Scenario_002_16_Specs extends Specification with MessageHandler with Befor
       val r_9 = componentOut4_22 \ JsonKey.result \ JsonKey.status
       (componentOut4_22 \ JsonKey.json).asOpt[String].get === JsonNames.SELECTED_COMPONENT
 
-      (componentOut4_22 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get === NotAllowedComponent().name
+      (componentOut4_22 \ JsonKey.result \ JsonKey.info \ JsonKey.selectionCriterion \ JsonKey.name).asOpt[String].get ===
+        NotAllowedComponent().name
       (componentOut4_22 \ JsonKey.result \ JsonKey.lastComponent ).asOpt[Boolean].get === false
-      (componentOut4_22 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === true
-      (componentOut4_22 \ JsonKey.result \ JsonKey.warning \ JsonKey.excludedComponentExternal \ JsonKey.name).asOpt[String] === Some(ExcludedComponentExternal().name)
+      (componentOut4_22 \ JsonKey.result \ JsonKey.addedComponent ).asOpt[Boolean].get === false
+      (componentOut4_22 \ JsonKey.result \ JsonKey.warning \ JsonKey.excludedComponentExternal \ JsonKey.name).asOpt[String] ===
+        Some(ExcludedComponentExternal().name)
       (componentOut4_22 \ JsonKey.result \ JsonKey.errors ).asOpt[JsObject] === None
 
       val jsonCurrentConfigOut_5: JsValue = CommonFunction.currentConfig(wC)
@@ -114,7 +115,8 @@ class Scenario_002_16_Specs extends Specification with MessageHandler with Befor
       (result_5 \ JsonKey.step \ JsonKey.components).asOpt[List[JsValue]].get.size === 2
       ((result_5 \ JsonKey.step \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C12")
       ((result_5 \ JsonKey.step \ JsonKey.components)(1) \ JsonKey.nameToShow).asOpt[String] === Some("C11")
-      val nextStep_5 = result_4 \ JsonKey.step \ JsonKey.nextStep
+      val nextStep_5 = result_5 \ JsonKey.step \ JsonKey.nextStep
+      (nextStep_5 \ JsonKey.components).asOpt[List[JsValue]].get.size === 1
       ((nextStep_5 \ JsonKey.components)(0) \ JsonKey.nameToShow).asOpt[String] === Some("C21")
     }
   }

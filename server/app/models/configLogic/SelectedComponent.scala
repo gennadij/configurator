@@ -6,6 +6,7 @@ import models.bo.step.StepContainerBO
 import models.bo.warning.WarningBO
 import models.persistence.Persistence
 import org.shared.error.StepNotExist
+import org.shared.info.NotAllowedComponent
 
 /**
   * Copyright (C) 2016 Gennadi Heimann genaheimann@gmail.com
@@ -163,17 +164,18 @@ class SelectedComponent (
                                                           selectedComponentContainerBO: SelectedComponentContainerBO,
                                                         currentConfigContainerBO: CurrentConfigContainerBO
                                                         ): SelectedComponentContainerBO = {
+
     selectedComponentContainerBO.warning.getOrElse(WarningBO()).excludedComponentInternal match {
         case Some(_) =>
 
           val selectedComponent : SelectedComponentBO = selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(false))
           selectedComponentContainerBO.copy(selectedComponent = Some(selectedComponent))
         case None =>
-          val isRepeatedSelektionOfComponent: Boolean =
+          val isRepeatedSelectionOfComponent: Boolean =
             selectedComponentContainerBO.stepCurrentConfig.get.components
               .exists(_.componentId.get == selectedComponentContainerBO.selectedComponent.get.componentId.get)
 
-          if(isRepeatedSelektionOfComponent) {
+          if(isRepeatedSelectionOfComponent) {
             //Die Komponente muss aus der CurrentConfig gelöscht werden
             // Wiederholte Auswahl der Komponente
             val componentBO: SelectedComponentBO =
@@ -182,22 +184,42 @@ class SelectedComponent (
             selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
 
           }else {
-
             selectedComponentContainerBO.selectedComponent.get.addedComponent match {
-              case Some(addedComponent) =>
-                if(addedComponent) {
-                  val componentBO: SelectedComponentBO =
-                    selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(true))
-                  selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
-                }else{
-                  val componentBO: SelectedComponentBO =
-                    selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(false))
-                  selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
+              case Some(_) =>
+                selectedComponentContainerBO.info match {
+                  case Some(i) => i.selectionCriterion match {
+                    case Some(NotAllowedComponent()) =>
+                      val componentBO: SelectedComponentBO =
+                        selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(false))
+
+                        selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
+                    case Some(_) => selectedComponentContainerBO
+                    case None => selectedComponentContainerBO
+                  }
+                  case None => selectedComponentContainerBO
                 }
               case None =>
-                val componentBO: SelectedComponentBO =
-                  selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(true))
-                selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
+                selectedComponentContainerBO.info match {
+                  case Some(i) => i.selectionCriterion match {
+                    case Some(NotAllowedComponent()) =>
+                      val componentBO: SelectedComponentBO =
+                        selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(false))
+
+                      selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
+                    case Some(_) =>
+                      val componentBO: SelectedComponentBO =
+                        selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(true))
+                      selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
+                    case None =>
+                      val componentBO: SelectedComponentBO =
+                        selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(true))
+                      selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
+                  }
+                  case None =>
+                    val componentBO: SelectedComponentBO =
+                      selectedComponentContainerBO.selectedComponent.get.copy(addedComponent = Some(true))
+                    selectedComponentContainerBO.copy(selectedComponent = Some(componentBO))
+                }
             }
           }
     }

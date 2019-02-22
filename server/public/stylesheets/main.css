@@ -18,12 +18,27 @@ section {
     border-radius : 10px;
     padding : 10px;
 }
+
+#info {
+    background-color: #F7F8E0;
+    position:absolute;
+    top : 1%;
+    left : 35%;
+    overflow:hidden;
+    z-index:-10;
+    border-color : #282828 ;
+    border-style : solid;
+    border-width : medium;
+    border-radius : 10px;
+    padding : 10px;
+}
+
 #main {
     overflow-x: auto;
     overflow-y: auto;
 	background-color: #F7F8E0;
 	position:absolute;
-    top : 15%;
+    top : 27%;
     bottom : 1%;
     left : 1%;
     right : 20%;

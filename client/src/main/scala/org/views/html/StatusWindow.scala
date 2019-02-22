@@ -38,6 +38,71 @@ object StatusWindow {
     jQuery(HtmlElementText.header).append(jQueryDiv)
   }
 
+  def drawSelectedComponentInfoWindow(jsonSelectedComponentResult: JsonSelectedComponentResult): JQuery = {
+    jQuery("#info").remove()
+
+    val jQueryDiv = jQuery(HtmlElementText.infoDiv)
+
+    jQueryDiv.attr(HtmlElementText.id, HtmlElementText.infoHtml)
+    jQueryDiv.attr(HtmlElementText.clazz, HtmlElementText.infoHtml)
+
+    val errorMessage: String = jsonSelectedComponentResult.errors match {
+      case Some(e) => (e map (_.message)).toString()
+      case None => ""
+    }
+
+    val warningExcludedInternal: String = jsonSelectedComponentResult.warning match {
+      case Some(w) => w.excludedComponentInternal match {
+        case Some(eI) => eI.message
+        case None => ""
+      }
+      case None => ""
+    }
+
+    val warningExcludedExternal: String = jsonSelectedComponentResult.warning match {
+      case Some(w) => w.excludedComponentExternal match {
+        case Some(eE) => eE.message
+        case None => ""
+      }
+      case None => ""
+    }
+
+    val warningExcludeExternal: String = jsonSelectedComponentResult.warning match {
+      case Some(w) => w.excludeComponentExternal match {
+        case Some(eE) => eE.message
+        case None => ""
+      }
+      case None => ""
+    }
+
+    val warningExcludeInternal: String = jsonSelectedComponentResult.warning match {
+      case Some(w) => w.excludeComponentInternal match {
+        case Some(eI) => eI.message
+        case None => ""
+      }
+      case None => ""
+    }
+
+    val warningMessage = warningExcludedInternal + warningExcludedExternal + warningExcludeInternal + warningExcludeExternal
+
+    val infoMessage = jsonSelectedComponentResult.info match {
+      case Some(i) => i.selectionCriterion match {
+        case Some(sC) => sC.message
+        case None => ""
+      }
+      case None => ""
+    }
+
+    val htmlMessage =
+      "Error: " + errorMessage + "<br>" +
+        "Warning: " + warningMessage + "<br>" +
+        "Info: " + infoMessage
+
+    jQueryDiv.append(htmlMessage)
+
+    jQuery(HtmlElementText.header).append(jQueryDiv)
+  }
+
   def drawSelectedComponentStatusWindow(jsonSelectedComponentResult: JsonSelectedComponentResult): JQuery = {
 
     jQuery("#status").remove()
@@ -54,9 +119,13 @@ object StatusWindow {
 
     val textWarning: String = jsonSelectedComponentResult.warning match {
       case Some(warning) =>
-        getWarningForSxcludedComponent(warning.excludedComponentInternal) +
-          " ||" +
-        getWarningForSxcludedComponent(warning.excludedComponentExternal)
+        "excludedComponentInternal=" + getWarning(warning.excludedComponentInternal) +
+        "<br> &emsp;" +
+        "excludedComponentExternal=" + getWarning(warning.excludedComponentExternal) +
+        "<br> &emsp;" +
+        "excludeComponentExternal=" + getWarning(warning.excludeComponentExternal) +
+        "<br> &emsp;" +
+        "excludeComponentInternal=" + getWarning(warning.excludeComponentInternal)
       case None => "No Warning"
     }
 
@@ -65,7 +134,12 @@ object StatusWindow {
       case None => "No Info"
     }
 
-    val htmlStatus = textError + " || " + textWarning + " || " + textInfo
+    val htmlStatus =
+      "Error: " + textError +
+        " <br> " +
+      "Warning: " + textWarning +
+        " <br> " +
+      "Info: " + textInfo
 
     jQueryDiv.append(htmlStatus)
 
@@ -75,14 +149,14 @@ object StatusWindow {
   private def getInfoSelectionCriterion(i: Option[JsonInfo]): String = {
     i match {
       case Some(i) => i.name
-      case None => ""
+      case None => "No Warning"
     }
   }
 
-  private def getWarningForSxcludedComponent(w: Option[JsonWarning]): String = {
+  private def getWarning(w: Option[JsonWarning]): String = {
     w match {
       case Some(w) => w.name
-      case None => ""
+      case None => "No Warning"
     }
   }
 }

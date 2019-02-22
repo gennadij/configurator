@@ -1,7 +1,7 @@
 package org.views.html
 
 import org.scalajs.jquery.{JQuery, jQuery}
-import org.shared.json.selectedComponent.{JsonSelectedComponentResult, JsonSelectedComponentWarning}
+import org.shared.json.selectedComponent.JsonSelectedComponentResult
 import org.shared.json.step.JsonComponent
 import org.views.HtmlElementText
 
@@ -29,19 +29,25 @@ object ComponentWindow {
   def markSelectedComponent(selectedComponentId: String,
                             jsonSelectedComponentResult: JsonSelectedComponentResult): JQuery = {
 
-    val (warning: Option[JsonSelectedComponentWarning], isAddedComponent: Boolean) = jsonSelectedComponentResult.warning match {
-      case Some(warning) => (Some(warning), jsonSelectedComponentResult.addedComponent)
-      case None => (None, jsonSelectedComponentResult.addedComponent)
-    }
-    println(warning, isAddedComponent)
+    jsonSelectedComponentResult.warning match {
+      case Some(w) =>
 
-      (warning, isAddedComponent) match {
-      case (None, true)        =>
+        val excludedComponentInternalCode: Option[String] = w.excludedComponentInternal match {
+          case Some(eCI) => Some(eCI.code)
+          case None => None
+        }
+
+        (excludedComponentInternalCode, jsonSelectedComponentResult.addedComponent) match {
+          case (None, true) =>
+            jQuery(s"#$selectedComponentId").css("background-color", "#9FF781")
+          case (None, false)      =>
+            jQuery(s"#$selectedComponentId").css("background-color", "#F5A9D0")
+          case (Some(_), _)  =>
+            jQuery(s"#$selectedComponentId").css("background-color", "#B40431")
+        }
+
+      case None =>
         jQuery(s"#$selectedComponentId").css("background-color", "#9FF781")
-      case (None, false)      =>
-        jQuery(s"#$selectedComponentId").css("background-color", "#F5A9D0")
-      case (Some(_), _)  =>
-        jQuery(s"#$selectedComponentId").css("background-color", "#B40431")
     }
   }
 }

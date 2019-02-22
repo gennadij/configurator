@@ -15,7 +15,7 @@ import play.api.libs.json._
  */
 class MessageHandler {
 
-
+//TODO definition allen Aktion
   def handleMessage(receivedMessage: JsValue) = (receivedMessage \ JsonKey.json).asOpt[String] match {
     case Some(JsonNames.SELECTED_COMPONENT) => selectedComponent(receivedMessage)
     case Some(JsonNames.CURRENT_CONFIG) => currentConfig(receivedMessage)
